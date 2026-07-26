@@ -1,3 +1,9 @@
+# V0.6.0 — note assets
+
+La V0.6.0 ne nécessite aucun nouveau visuel binaire : elle réutilise les icônes PWA, avatars et le Hibou officiel déjà présents. Le manifeste machine `assets/assets-manifest.json` est porté en V0.6.0.
+
+---
+
 # Le Nid des Champions — Manifeste maître des assets
 
 > **Source de vérité pour tous les fichiers graphiques du projet.**
