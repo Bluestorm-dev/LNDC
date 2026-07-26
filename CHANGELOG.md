@@ -1,5 +1,22 @@
 # Changelog
 
+## V0.5.5a — Correctif Teams
+
+- mini-carte Team : fond de couleurs/motifs atténué et assombri pour préserver la lisibilité ;
+- un capitaine seul peut quitter sa Team sans la dissoudre ;
+- une Team sans membre devient **vacante** et reste visible dans l’annuaire ;
+- reprise d’une Team vacante avec attribution automatique du capitanat ;
+- réactivation par le dernier capitaine d’une Team dissoute/archivée ;
+- récupération possible des Teams dissoutes involontairement en V0.5.5 ;
+- distinction claire entre quitter, dissoudre et supprimer définitivement ;
+- suppression définitive d’une Team réservée au **Super Admin** ;
+- audit `team_hard_delete` conservé avant suppression physique ;
+- nettoyage du logo Team courant dans Supabase Storage lorsque possible ;
+- migration `014_patch_v0.5.5a_team_vacancy_moderation.sql` + HOTFIX V0.5.5a ;
+- cache PWA `nid-champions-v0.5.5a`.
+
+---
+
 ## V0.5.5 — Finitions accueil & Teams
 
 - avatar/logo joueur affiché en grand dans le hero d’accueil ;

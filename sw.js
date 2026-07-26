@@ -1,4 +1,4 @@
-const CACHE = "nid-champions-v0.5.5";
+const CACHE = "nid-champions-v0.5.5a";
 const CORE = [
   "./",
   "./index.html",

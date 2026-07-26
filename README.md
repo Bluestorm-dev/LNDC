@@ -1,4 +1,44 @@
-# Le Nid des Champions — V0.5.5
+# Le Nid des Champions — V0.5.5a
+
+## V0.5.5a — Correctif Teams avant V0.6.0
+
+Petit correctif de finition basé sur V0.5.5.
+
+### Prévisualisation Team
+
+- les couleurs et le motif du blason sont toujours repris dans la mini-carte de prévisualisation ;
+- le motif est désormais **suggéré** en arrière-plan : atténué, agrandi et recouvert d’un voile sombre ;
+- le texte, le nombre de membres et le nom de Team restent lisibles même avec des bandes rouges/blanches ou des quartiers très contrastés.
+
+### Quitter / dissoudre / reprendre
+
+- un capitaine **seul peut maintenant quitter sa Team sans la dissoudre** ;
+- la Team devient alors **vacante**, reste dans l’annuaire et peut être reprise ;
+- le premier joueur qui reprend une Team vacante en devient capitaine ;
+- une Team explicitement dissoute reste archivée ;
+- son dernier capitaine peut la **réactiver** depuis le bloc « Anciennes Teams » ;
+- une Team déjà dissoute en V0.5.5 peut donc être récupérée après installation de ce correctif.
+
+### Modération Super Admin
+
+- l’Admin peut toujours dissoudre une Team ;
+- **seul le Super Admin** dispose de `Supprimer définitivement` ;
+- la suppression physique efface la Team et les données communautaires liées par cascade ;
+- l’action est inscrite dans `audit_logs` avant suppression ;
+- le front tente également de supprimer le logo uploadé actuellement utilisé dans le bucket `team-logos`.
+
+### Mise à jour depuis V0.5.5
+
+1. Sauvegarder la base Supabase.
+2. Exécuter `sql/HOTFIX_V0.5.5a_EXISTING_DB.sql` avec le rôle postgres.
+3. Déployer les fichiers front V0.5.5a.
+4. Conserver les vraies valeurs de `config.js`.
+5. Faire `Ctrl + F5` ou fermer/réouvrir la PWA.
+6. Suivre `docs/TEST_CHECKLIST_V0.5.5a.md`.
+
+Pour une base neuve : `sql/000_INSTALL_FRESH_V0.5.5a.sql`.
+
+---
 
 
 ## V0.5.5 — Finitions accueil & Teams
