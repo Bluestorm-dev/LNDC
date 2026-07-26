@@ -1,0 +1,56 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.5.5a
+============================================
+
+OBJET
+-----
+Correctif final Teams avant la V0.6.0 :
+- prévisualisation des motifs plus discrète et texte lisible ;
+- capitaine seul autorisé à quitter sans dissoudre ;
+- Team vide conservée comme Team vacante ;
+- reprise d’une Team vacante ;
+- réactivation d’une Team dissoute par son dernier capitaine ;
+- suppression définitive réservée au Super Admin.
+
+MISE À JOUR DEPUIS V0.5.5
+-------------------------
+1. Sauvegarder la base Supabase.
+2. Supabase > SQL Editor > rôle postgres/par défaut.
+3. Exécuter : sql/HOTFIX_V0.5.5a_EXISTING_DB.sql
+4. Vérifier que app_settings.app_version vaut "0.5.5a".
+5. Déployer les fichiers V0.5.5a sur GitHub Pages.
+6. Conserver les vraies valeurs de config.js.
+7. Faire Ctrl+F5 ou fermer/réouvrir la PWA.
+8. Exécuter : node tests/release-v0.5.5a.mjs
+9. Suivre : docs/TEST_CHECKLIST_V0.5.5a.md
+
+TEAM DÉJÀ DISSOUTE EN V0.5.5
+-----------------------------
+Après le HOTFIX, si tu étais son dernier capitaine, elle apparaît dans
+Teams > Anciennes Teams avec le bouton Réactiver.
+
+RÈGLES
+------
+QUITTER :
+- membre normal : quitte simplement ;
+- capitaine avec d’autres membres : doit transmettre le capitanat ;
+- capitaine seul : quitte et laisse la Team active mais vacante.
+
+DISSoudre :
+- archive la Team ;
+- elle disparaît de l’annuaire actif ;
+- son dernier capitaine peut la réactiver.
+
+SUPPRIMER DÉFINITIVEMENT :
+- Super Admin uniquement ;
+- suppression physique de public.teams ;
+- memberships, demandes, invitations et événements liés sont supprimés par cascade ;
+- un audit team_hard_delete est conservé ;
+- le logo uploadé actuellement associé est supprimé du Storage par le front lorsque possible.
+
+INSTALLATION SUR UN SUPABASE NEUF
+---------------------------------
+Utiliser : sql/000_INSTALL_FRESH_V0.5.5a.sql
+
+IMPORTANT
+---------
+Ne jamais remplacer config.js par config.example.js sur le site déjà configuré.

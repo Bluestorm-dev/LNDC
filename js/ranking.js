@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.5.5 — historique, classements et live
+// Le Nid des Champions V0.5.5a — historique, classements et live
   function renderHistory() {
     const panel=$("#historyPanel"); if(!panel)return;
     const rows=state.history.filter(r=>["finished","cancelled"].includes(r.match_status));

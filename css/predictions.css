@@ -1,4 +1,4 @@
-/* V0.5.5 — phase de ligue, pronostics et administration matchs */
+/* V0.5.5a — phase de ligue, pronostics et administration matchs */
 /* V0.1.1 — validation des inscriptions */
 .registration-request{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
 .registration-request:last-child{border-bottom:0}.registration-request .muted{font-size:.82rem;margin-top:3px}.request-meta{display:flex;gap:8px;align-items:center;margin-top:8px;font-size:.72rem;color:var(--muted)}.request-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}

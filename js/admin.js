@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.5.5 — administration
+// Le Nid des Champions V0.5.5a — administration
   function renderAdmin() {
     renderAdminBuilder(); renderKnockoutBuilder(); renderAdminMatches(); renderClubPreview(); renderAdminKnockout(); renderPhaseMultipliers(); renderAdminTeams(); loadAvatarModeration();
     const section=$("#registrationAdminSection");

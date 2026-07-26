@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.5.5 — noyau, état et utilitaires
+// Le Nid des Champions V0.5.5a — noyau, état et utilitaires
   const CFG = window.NIDC_CONFIG || {};
   const configured = Boolean(
     CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY &&
