@@ -1,4 +1,32 @@
-# Le Nid des Champions — V0.5.4
+# Le Nid des Champions — V0.5.5
+
+
+## V0.5.5 — Finitions accueil & Teams
+
+Cette version termine les ajustements de la branche V0.5 avant la V0.6.0.
+
+### Nouveautés
+
+- l’avatar/logo personnel est affiché **en grand sur l’accueil**, avec l’habillage Team s’il existe ;
+- un onglet **⚙ Gestion** rend enfin visibles les actions de Team : quitter, transférer le capitanat, exclure un membre, invitations, demandes et dissolution ;
+- le capitaine peut **transférer puis quitter** en une seule séquence guidée ;
+- l’atelier Team propose désormais des fonds deux couleurs de type blason : moitiés, bandes et quartiers, en plus des dégradés ;
+- la prévisualisation Team utilise le **vrai avatar du joueur**, et non plus une simple initiale ;
+- l’épaisseur du cadre Team autour des avatars et blasons est légèrement réduite.
+
+### Mise à jour depuis V0.5.4
+
+1. Dans Supabase > SQL Editor, exécuter `sql/HOTFIX_V0.5.5_EXISTING_DB.sql` avec le rôle postgres.
+2. Déployer tous les fichiers front V0.5.5.
+3. Conserver les vraies valeurs de `config.js`.
+4. Faire `Ctrl + F5` ou fermer/réouvrir la PWA.
+5. Suivre `docs/TEST_CHECKLIST_V0.5.5.md`.
+
+Le HOTFIX **ne recrée pas les Teams** : il élargit uniquement la liste des styles de fond autorisés et met à jour la fonction de création.
+
+Notice détaillée : `installation/INSTALLATION_V0.5.5.txt`.
+
+---
 
 
 ## V0.5.4 — Réorganisation du front

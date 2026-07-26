@@ -1,5 +1,22 @@
 # Changelog
 
+## V0.5.5 — Finitions accueil & Teams
+
+- avatar/logo joueur affiché en grand dans le hero d’accueil ;
+- nouvel onglet Team **Gestion** pour rendre accessibles les actions sensibles ;
+- quitter une Team pour les membres ;
+- transfert de capitanat pour le capitaine ;
+- séquence guidée « transférer puis quitter » pour un capitaine ;
+- exclusion de membres, invitations, demandes d’adhésion et dissolution regroupées dans Gestion ;
+- nouveaux fonds deux couleurs : moitié verticale/horizontale/diagonale, bandes verticales/horizontales/diagonales et quartiers ;
+- conservation des dégradés existants ;
+- vrai avatar joueur dans la prévisualisation de personnalisation Team ;
+- cadre Team légèrement aminci ;
+- migration SQL `013_patch_v0.5.5_team_polish.sql` et HOTFIX V0.5.5 ;
+- cache PWA incrémenté en `nid-champions-v0.5.5`.
+
+---
+
 ## V0.5.4 — Réorganisation du front
 
 - version **front-only**, sans migration Supabase ;
