@@ -1,4 +1,73 @@
-# Le Nid des Champions — V0.5.5a
+# Le Nid des Champions — V0.6.0
+
+## Hibou, rivalités & notifications
+
+La V0.6.0 fait entrer le Nid dans sa phase **communication** : le joueur dispose d’un centre de notifications interne, de Web Push multi-appareils, d’un rival principal avec un duel par journée UEFA et d’un véritable canal privé avec le Hibou masqué.
+
+### Notifications
+
+- cloche avec compteur non lu et filtres `Toutes / Matchs / Rival / Team / Hibou / Système` ;
+- lu/non lu, suppression et « tout marquer comme lu » ;
+- liens profonds vers pronostics, Team, rival ou conversation ;
+- préférences par catégorie ;
+- rappels 24 h / 3 h / 1 h / 30 min, avec **3 h + 30 min activés par défaut** ;
+- quiet hours **23 h → 8 h** configurables selon le fuseau de l’appareil ;
+- notifications regroupées pour éviter le spam ;
+- Web Push via l’Edge Function `push-dispatch` et VAPID ;
+- plusieurs appareils par joueur, désactivation et nettoyage des abonnements invalides.
+
+### Rivalités
+
+- un rival principal parmi tous les joueurs actifs, même dans sa propre Team ;
+- aucune acceptation du rival ; il est immédiatement prévenu ;
+- un changement maximum par journée UEFA et verrouillage au premier coup d’envoi ;
+- un duel par journée, égalité = nul ;
+- rivalité mutuelle détectée ;
+- historique conservé lors des changements de rival ;
+- fiche complète : bilan, points, plus grosse victoire/défaite, série, trajectoire et anciens rivaux ;
+- aperçu rapide depuis le classement ;
+- provocations du Hibou réglables : Sage, Piquant, Sans pitié ou Automatique.
+
+### Hibou & tickets
+
+- messages du Hibou globaux, ciblés Team ou ciblés joueur ;
+- Super Admin : envoi central ou depuis le profil rapide d’un joueur ;
+- tickets privés `Bug / Suggestion / Question / Modification / Autre` ;
+- vraie conversation joueur ↔ Hibou ;
+- 3 captures maximum, PNG/JPG/WebP, 5 Mo chacune ;
+- diagnostic technique automatique pour un ticket Bug ;
+- seul le Super Admin accède aux tickets ;
+- priorité décidée par le Super Admin ;
+- le joueur peut marquer son ticket comme résolu.
+
+### Administration Push
+
+- journal de livraisons avec destinataire, appareil, statut et erreur ;
+- **Test Push Super Admin** vers soi-même ou un joueur précis ;
+- test rapide et test personnalisé ;
+- pas de bouton de test global dans cette version ;
+- messages système critiques séparés des messages ordinaires du Hibou.
+
+### Mise à jour depuis V0.5.5a
+
+1. Sauvegarder Supabase.
+2. Exécuter `sql/HOTFIX_V0.6.0_EXISTING_DB.sql` avec le rôle postgres.
+3. Déployer `supabase/functions/push-dispatch`.
+4. Générer/configurer les clés VAPID et `PUSH_CRON_SECRET`.
+5. Planifier `push-dispatch` toutes les 15 minutes avec `sql/ENABLE_PUSH_CRON_V0.6.0_TEMPLATE.sql`.
+6. Déployer le front en conservant les vraies valeurs de `config.js`.
+7. Faire `Ctrl + F5` ou relancer la PWA.
+8. Exécuter `node tests/release-v0.6.0.mjs` puis suivre `docs/TEST_CHECKLIST_V0.6.0.md`.
+
+Notice complète : `installation/INSTALLATION_V0.6.0.txt`.
+
+Pour une base neuve : `sql/000_INSTALL_FRESH_V0.6.0.sql`.
+
+> Les secrets VAPID privés, le service role et le secret Cron ne doivent jamais être placés dans le front ou dans GitHub.
+
+---
+
+# Historique V0.5.x
 
 ## V0.5.5a — Correctif Teams avant V0.6.0
 

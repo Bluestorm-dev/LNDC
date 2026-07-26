@@ -1,5 +1,35 @@
 # Changelog
 
+## V0.6.0 — Hibou, rivalités & notifications
+
+- centre de notifications interne avec compteur, filtres, lu/non lu, suppression et deep links ;
+- préférences de catégories, rappels et quiet hours ;
+- opt-in Push volontaire : aucune demande navigateur au premier écran ;
+- Web Push multi-appareils, VAPID et Edge Function `push-dispatch` ;
+- rappels groupés de pronostics et champion ;
+- résumés groupés de journée ;
+- notifications de classement significatives ;
+- journal de livraison Push et invalidation automatique des abonnements 404/410 ;
+- Test Push Super Admin vers soi-même ou un joueur précis ;
+- messages système critiques ;
+- rival principal, changement une fois par journée, verrouillage au premier coup d’envoi ;
+- notification du rival choisi et détection des rivalités mutuelles ;
+- duels par journée UEFA avec victoire/nul/défaite ;
+- notification avant duel et bilan automatique à la fin ;
+- historique des anciens rivaux, courbe et statistiques ;
+- tonalité Hibou Sage / Piquant / Sans pitié / Automatique ;
+- messages Hibou globaux, Team et individuels ;
+- tickets privés au Hibou avec conversation, priorités Super Admin et résolution joueur ;
+- captures privées `support-captures`, 3 images max, 5 Mo/image ;
+- contexte technique automatique pour les tickets Bug ;
+- notifications Team automatiques ;
+- profil rapide des joueurs depuis le classement avec action Hibou Super Admin ;
+- migration `015_patch_v0.6.0_hibou_rivals_notifications.sql` ;
+- installation fraîche `000_INSTALL_FRESH_V0.6.0.sql` ;
+- cache PWA `nid-champions-v0.6.0`.
+
+---
+
 ## V0.5.5a — Correctif Teams
 
 - mini-carte Team : fond de couleurs/motifs atténué et assombri pour préserver la lisibilité ;

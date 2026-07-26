@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/teams.css" />
   <link rel="stylesheet" href="css/avatars.css" />
+  <link rel="stylesheet" href="css/communication.css" />
   <title>Le Nid des Champions</title>
 </head>
 <body>
@@ -77,7 +78,7 @@
         <span class="sidebar-profile-copy"><strong id="sidebarUserName">—</strong><small id="sidebarUserClub">Club de cœur : —</small></span>
         <span class="sidebar-chevron">›</span>
       </button>
-      <div class="sidebar-foot"><span class="status-dot"></span><span>Le Nid est connecté</span><small>V0.5.5a</small></div>
+      <div class="sidebar-foot"><span class="status-dot"></span><span>Le Nid est connecté</span><small>V0.6.0</small></div>
     </aside>
 
     <section class="workspace">
@@ -85,6 +86,7 @@
         <div class="mobile-brand"><img src="assets/icons/icon-192.png" alt="" /><strong>Le Nid des Champions</strong></div>
         <div class="page-heading"><span class="eyebrow">Champions League</span><h1 id="pageTitle">Accueil</h1></div>
         <div class="actions desktop-actions">
+          <button id="notificationBell" class="notification-bell" type="button" aria-label="Notifications"><span>🔔</span><b id="notificationBellCount" class="hidden">0</b></button>
           <span id="backendStatus" class="status-chip"><i class="status-dot"></i><span>Supabase</span></span>
           <button id="logoutBtn" class="btn secondary small">Déconnexion</button>
         </div>
@@ -96,13 +98,15 @@
     <section id="view-home" class="view">
       <article class="home-hero card">
         <div class="home-hero-copy">
-          <span class="eyebrow gold">Soirées européennes · V0.5.5a</span>
+          <span class="eyebrow gold">Soirées européennes · V0.6.0</span>
           <h2 id="welcomeTitle">Bienvenue dans le Nid européen.</h2>
           <p id="welcomeText">Tout ce qui compte maintenant, sans dérouler tout le calendrier sous ton bec.</p>
           <div class="home-actions"><button class="btn" data-jump="matches">Faire mes pronostics</button><button class="btn secondary" data-jump="profile">Mon profil & mes champions</button></div>
         </div>
         <div class="home-orbit"><i></i><i></i><i></i><div id="homeHeroAvatar" class="home-hero-avatar" aria-label="Mon avatar"></div></div>
       </article>
+
+      <article id="homePushPrompt" class="card home-push-prompt hidden" aria-live="polite"></article>
 
       <div class="home-kpi-strip">
         <article class="home-kpi"><span>Rang</span><strong id="kpiRank">—</strong><small>classement général</small></article>
@@ -126,6 +130,8 @@
           <div id="homeChampionSummary" class="home-champion-summary"><div class="empty">Chargement…</div></div>
         </article>
 
+        <article id="homeRivalCard" class="card home-rival-card"><div class="empty">Chargement du rival…</div></article>
+
         <article class="card home-owl-card hibou">
           <img class="home-owl-mark home-owl-image" src="assets/branding/owl/owl-masked-main.png" alt="Hibou masqué" /><div><span class="eyebrow gold">Le Hibou masqué</span><blockquote id="hibouMessage">« Les casseroles ont déjà réservé leur soirée. »</blockquote></div>
         </article>
@@ -142,7 +148,7 @@
 
 
     <section id="view-knockout" class="view hidden">
-      <div class="knockout-hero card card-pad"><div><span class="eyebrow">Phases finales · V0.5.5a</span><h2>Du barrage à la coupe.</h2><p class="muted">Aller-retour, cumul, score à 120 minutes, tirs au but et qualifié. Le tableau se propage automatiquement quand une confrontation est terminée.</p></div><span class="ko-live-mark">⚔️</span></div>
+      <div class="knockout-hero card card-pad"><div><span class="eyebrow">Phases finales · V0.6.0</span><h2>Du barrage à la coupe.</h2><p class="muted">Aller-retour, cumul, score à 120 minutes, tirs au but et qualifié. Le tableau se propage automatiquement quand une confrontation est terminée.</p></div><span class="ko-live-mark">⚔️</span></div>
       <div id="knockoutPhaseTabs" class="knockout-phase-tabs"></div>
       <div id="knockoutSummary" class="knockout-summary"></div>
       <div id="knockoutPanel" class="knockout-grid"><article class="card card-pad"><div class="empty">Le tableau des phases finales n'est pas encore installé.</div></article></div>
@@ -197,7 +203,7 @@
     <section id="view-teams" class="view hidden">
       <div class="teams-hero card card-pad">
         <div>
-          <span class="eyebrow gold">V0.5.5a · Communautés</span>
+          <span class="eyebrow gold">V0.6.0 · Communautés</span>
           <h2>Les Teams du Nid</h2>
           <p class="muted">Une seule Team par saison. Une identité commune, des cadres reconnaissables et trois classements dédiés.</p>
         </div>
@@ -219,6 +225,11 @@
       <div id="teamDirectory" class="team-directory"></div>
     </section>
 
+    <section id="view-rival" class="view hidden">
+      <div class="section-title"><div><span class="eyebrow gold">V0.6.0 · Rivalités</span><h3>Ma Némésis</h3><p>Un duel par journée UEFA. Aucun point bonus : seulement l’honneur, les statistiques et les piques du Hibou.</p></div><span class="chip">⚔️ DUELS</span></div>
+      <div id="rivalPagePanel"><article class="card card-pad"><div class="empty">Chargement de la rivalité…</div></article></div>
+    </section>
+
     <section id="view-profile" class="view hidden">
       <div class="section-title profile-title"><div><span class="eyebrow">Mon espace</span><h3>Profil & champions</h3><p>Ton identité dans le Nid et tes deux paris les plus importants de la saison.</p></div></div>
 
@@ -232,11 +243,14 @@
         <div id="profileMsg" class="form-msg"></div>
       </article>
 
-      <div class="section-title avatar-profile-title"><div><span class="eyebrow">Identité visuelle</span><h3>Mon avatar</h3><p>Choisis un Hibou officiel ou envoie ton propre PNG/JPG/WebP. Les uploads personnels passent par la modération Admin.</p></div><span class="chip">V0.5.5a</span></div>
+      <div class="section-title avatar-profile-title"><div><span class="eyebrow">Identité visuelle</span><h3>Mon avatar</h3><p>Choisis un Hibou officiel ou envoie ton propre PNG/JPG/WebP. Les uploads personnels passent par la modération Admin.</p></div><span class="chip">V0.6.0</span></div>
       <article id="avatarEditor" class="card card-pad avatar-editor-card-v053"><div class="empty">Chargement de la bibliothèque…</div></article>
 
       <div class="section-title profile-team-title"><div><span class="eyebrow">Communauté</span><h3>Ma Team</h3><p>Ton appartenance actuelle et son identité visuelle.</p></div></div>
       <article id="profileTeamCard" class="card card-pad profile-team-card"><div class="empty">Chargement…</div></article>
+
+      <div class="section-title"><div><span class="eyebrow">Communication</span><h3>Hibou & notifications</h3><p>Choisis ce qui peut te prévenir, le niveau de piquant du Hibou et les heures où le Nid doit se taire.</p></div><span class="chip">🔔 V0.6.0</span></div>
+      <article id="notificationPreferencesPanel" class="card card-pad"><div class="empty">Chargement des préférences…</div></article>
 
       <div class="section-title champions-profile-title"><div><span class="eyebrow gold">Pronostic saison</span><h3>Mes champions</h3><p>Le choix n°1 vaut 100 points. Le choix n°2 vaut 50 points lorsqu'il s'ouvre après la phase de ligue.</p></div><span class="chip">CHOIX CACHÉS</span></div>
       <div class="champion-grid profile-champion-grid">
@@ -248,7 +262,7 @@
     </section>
 
     <section id="view-admin" class="view hidden">
-      <div class="section-title"><div><h3>Administration</h3><p>Saisie des scores LIVE, résultats finaux et pilotage du calendrier européen.</p></div><span class="chip">V0.5.5a</span></div>
+      <div class="section-title"><div><h3>Administration</h3><p>Saisie des scores LIVE, résultats finaux et pilotage du calendrier européen.</p></div><span class="chip">V0.6.0</span></div>
       <div class="grid grid-2">
         <article class="card card-pad"><span class="eyebrow">Saison</span><h3>Compétition complète</h3><p class="muted">Phase de ligue, barrages, huitièmes, quarts, demies et finale.</p></article>
         <article class="card card-pad"><span class="eyebrow">Résultats</span><h3>LIVE MANUAL</h3><p class="muted">L'Admin saisit les scores en direct. Le classement provisoire est recalculé immédiatement côté serveur.</p></article>
@@ -275,7 +289,7 @@
         <div id="clubPreview" class="club-preview"></div>
       </article>
 
-      <div class="section-title"><div><h3>Champions & phases finales</h3><p>Prépare le tableau, règle les multiplicateurs et teste toute la compétition jusqu'à la finale.</p></div><span class="chip">V0.5.5a</span></div>
+      <div class="section-title"><div><h3>Champions & phases finales</h3><p>Prépare le tableau, règle les multiplicateurs et teste toute la compétition jusqu'à la finale.</p></div><span class="chip">V0.6.0</span></div>
       <article class="card card-pad knockout-admin-card">
         <div class="admin-sync-row"><div><strong>Moteur phases finales</strong><p class="muted">Le générateur TEST crée 8 barrages, 8 huitièmes, 4 quarts, 2 demies et 1 finale. Les gagnants sont reportés automatiquement dans le tour suivant.</p></div><div class="actions"><button id="seedKnockoutBtn" class="btn gold small">Générer tableau TEST</button><button id="assignDefaultChampionBtn" class="btn secondary small">Attribuer OM aux oublis</button></div></div>
         <div id="knockoutAdminStatus" class="form-msg"></div>
@@ -301,11 +315,22 @@
       <div class="section-title"><div><h3>Modération des avatars</h3><p>Valide ou refuse les images personnelles avant leur affichage public dans le Nid.</p></div><span class="chip">ADMIN</span></div>
       <article id="avatarModerationPanel" class="card card-pad avatar-moderation-panel"><div class="empty">Chargement…</div></article>
 
-      <div class="section-title"><div><h3>Gestion des Teams</h3><p>Annuaire, membres, capitaine, identité et historique. Les interventions administratives restent journalisées.</p></div><span class="chip">V0.5.5a</span></div>
+      <div class="section-title"><div><h3>Gestion des Teams</h3><p>Annuaire, membres, capitaine, identité et historique. Les interventions administratives restent journalisées.</p></div><span class="chip">V0.6.0</span></div>
       <article class="card card-pad">
         <div class="admin-sync-row"><div><strong>Communautés du Nid</strong><p class="muted">Recherche une Team et ouvre sa fiche. Les capitaines gèrent normalement leur propre communauté ; l'Admin intervient uniquement en correction ou modération.</p></div><input id="adminTeamSearch" class="admin-team-search" type="search" placeholder="Nom ou capitaine…"></div>
         <div id="adminTeamsPanel" class="admin-teams-panel"><div class="empty">Chargement…</div></div>
       </article>
+
+      <section id="communicationAdminSection">
+        <div class="section-title"><div><h3>Hibou masqué</h3><p>Messages globaux, Team ou individuels. Les messages urgents restent distincts des animations ordinaires.</p></div><span class="chip">SUPER ADMIN</span></div>
+        <article id="adminOwlPanel" class="card card-pad"><div class="empty">Chargement…</div></article>
+
+        <div class="section-title"><div><h3>Tickets au Hibou</h3><p>Conversations privées, captures et diagnostic technique. Les Admin classiques n’y ont pas accès.</p></div><span class="chip">PRIVÉ</span></div>
+        <article id="adminSupportPanel" class="card card-pad"><div class="empty">Chargement…</div></article>
+
+        <div class="section-title"><div><h3>Notifications & Web Push</h3><p>Journal de livraison, appareils et test Push vers toi ou un joueur précis.</p></div><span class="chip">PUSH</span></div>
+        <article id="adminNotificationsPanel" class="card card-pad"><div class="empty">Chargement…</div></article>
+      </section>
 
       <div class="section-title"><div><h3>Créer manuellement</h3><p>Le mode manuel reste toujours disponible, même sans API.</p></div></div>
       <article class="card card-pad admin-builder">
@@ -343,6 +368,10 @@
   <script src="js/core.js"></script>
   <script src="js/avatars.js"></script>
   <script src="js/teams.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/rivals.js"></script>
+  <script src="js/support.js"></script>
+  <script src="js/owl.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/data.js"></script>
   <script src="js/champions.js"></script>
