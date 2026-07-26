@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.5.4 — Teams
+// Le Nid des Champions V0.5.5 — Teams
   // ========================================================================
   // V0.5.2 — Teams · formes/cadres/couleurs corrigés
   // ========================================================================
@@ -13,7 +13,12 @@
     ["wood","Bois"],["bronze","Bronze"],["silver","Argent"],["gold","Or"],["royal-gold","Or royal"],["steel","Acier"],
     ["leather","Cuir"],["obsidian","Obsidienne"],["neon","Néon"],["champions","Champions"],["royal","Royal bleu/or"],["night","Nuit européenne"]
   ];
-  const TEAM_BACKGROUNDS = [["solid","Uni"],["vertical","Dégradé vertical"],["horizontal","Dégradé horizontal"],["diagonal","Dégradé diagonal"],["radial","Radial"],["halo","Halo"]];
+  const TEAM_BACKGROUNDS = [
+    ["solid","Uni","single"],
+    ["vertical","Dégradé vertical","gradient"],["horizontal","Dégradé horizontal","gradient"],["diagonal","Dégradé diagonal","gradient"],["radial","Radial","gradient"],["halo","Halo","gradient"],
+    ["split-vertical","Moitié verticale","pattern"],["split-horizontal","Moitié horizontale","pattern"],["split-diagonal","Moitié diagonale","pattern"],
+    ["stripes-vertical","Bandes verticales","pattern"],["stripes-horizontal","Bandes horizontales","pattern"],["stripes-diagonal","Bandes diagonales","pattern"],["quarters","Quartiers","pattern"]
+  ];
   const TEAM_LOGOS = {
     owl:{label:"Hibou",glyph:"🦉"},star:{label:"Étoile",glyph:"✦"},shield:{label:"Garde",glyph:"⚜"},bolt:{label:"Éclair",glyph:"⚡"},
     crown:{label:"Couronne",glyph:"♛"},moon:{label:"Lune",glyph:"☾"},feather:{label:"Plume",glyph:"🪶"},torch:{label:"Flamme",glyph:"🔥"},
@@ -168,7 +173,7 @@
     root.innerHTML=`<article class="card team-home-card" style="${teamVisualVars(t)}">
       <div class="team-home-banner bg-${esc(t.background_style)}"><div class="team-home-identity">${teamBadgeHTML(t,true)}<div><span class="eyebrow">Ma Team</span><h2>${esc(t.name)}</h2>${t.slogan?`<p>« ${esc(t.slogan)} »</p>`:''}<div class="team-meta-pills"><span>👑 ${esc(t.captain_username||'Capitaine')}</span><span>${Number(t.member_count||state.teamMembers.length)} membre${Number(t.member_count||state.teamMembers.length)>1?'s':''}</span><span>${t.visibility==='private'?'🔒 Privée':'🌐 Publique'}</span></div></div></div>
       ${fav?`<div class="team-favorite">${crestHTML(fav)}<span>Équipe fétiche<strong>${esc(fav.name||t.favorite_club_name)}</strong></span></div>`:'<div class="team-favorite muted">Aucune équipe fétiche</div>'}</div>
-      <div class="team-tabs"><button class="${state.teamTab==='overview'?'active':''}" data-team-tab="overview">Vue d'ensemble</button><button class="${state.teamTab==='members'?'active':''}" data-team-tab="members">Membres</button><button class="${state.teamTab==='rankings'?'active':''}" data-team-tab="rankings">Classements</button><button class="${state.teamTab==='history'?'active':''}" data-team-tab="history">Historique</button></div>
+      <div class="team-tabs"><button class="${state.teamTab==='overview'?'active':''}" data-team-tab="overview">Vue d'ensemble</button><button class="${state.teamTab==='members'?'active':''}" data-team-tab="members">Membres</button><button class="${state.teamTab==='management'?'active':''}" data-team-tab="management">⚙ Gestion</button><button class="${state.teamTab==='rankings'?'active':''}" data-team-tab="rankings">Classements</button><button class="${state.teamTab==='history'?'active':''}" data-team-tab="history">Historique</button></div>
       <div id="myTeamTabBody" class="team-tab-body"></div>
     </article>`;
     $$('[data-team-tab]',root).forEach(b=>b.onclick=()=>{state.teamTab=b.dataset.teamTab;renderMyTeamPanel();});
@@ -177,24 +182,48 @@
 
   function renderMyTeamTabBody(lb){
     const root=$("#myTeamTabBody"),t=state.myTeam;if(!root||!t)return;
+    const members=state.teamMembers||[];
+
     if(state.teamTab==="members"){
-      const members=state.teamMembers||[];
-      const requests=t.is_captain?(state.teamRequests||[]):[];
-      root.innerHTML=`${t.is_captain?`<div class="captain-tools"><div><span class="eyebrow">Code d'invitation</span><strong>${esc(state.teamInvite||'Aucun code actif')}</strong></div><button class="btn secondary small" data-team-invite>${state.teamInvite?'Régénérer':'Générer un code'}</button><button class="btn small" data-team-edit>Personnaliser la Team</button></div>`:''}
-        ${requests.length?`<div class="team-requests"><h4>Demandes d'adhésion</h4>${requests.map(r=>`<div class="team-request-row">${avatarHTML(r)}<div><strong>${esc(r.username)}</strong><small>${esc(r.club_heart||'Aucun club de cœur')}</small></div><div class="actions"><button class="btn small" data-request-accept="${r.request_id}">Accepter</button><button class="btn secondary small" data-request-reject="${r.request_id}">Refuser</button></div></div>`).join('')}</div>`:''}
-        <div class="team-member-list">${members.map(m=>`<div class="team-member-row">${avatarHTML(m)}<div class="team-member-copy"><strong>${m.is_captain?'👑 ':''}${esc(m.username)}</strong><small>${esc(m.club_heart||'Aucun club de cœur')} · ${m.rank?`#${m.rank}`:'non classé'}</small></div><span><b>${Number(m.points||0).toFixed(0)}</b><small> pts</small></span>${t.is_captain&&!m.is_captain?`<div class="member-actions"><button class="text-action" data-transfer-captain="${m.user_id}">👑 Transférer</button><button class="text-action danger-text" data-kick-member="${m.user_id}">Exclure</button></div>`:''}</div>`).join('')}</div>
-        <div class="team-danger-zone">${t.is_captain?'<button class="btn danger small" data-dissolve-team>Dissoudre la Team</button>':'<button class="btn secondary small" data-leave-team>Quitter la Team</button>'}</div>`;
-      if(t.is_captain){const e=$("[data-team-edit]",root);if(e)e.onclick=()=>openTeamEditor(t);const i=$("[data-team-invite]",root);if(i)i.onclick=regenerateTeamInvite;$$('[data-request-accept]',root).forEach(b=>b.onclick=()=>processTeamRequest(b.dataset.requestAccept,true));$$('[data-request-reject]',root).forEach(b=>b.onclick=()=>processTeamRequest(b.dataset.requestReject,false));$$('[data-transfer-captain]',root).forEach(b=>b.onclick=()=>transferTeamCaptain(b.dataset.transferCaptain));$$('[data-kick-member]',root).forEach(b=>b.onclick=()=>kickTeamMember(b.dataset.kickMember));const d=$("[data-dissolve-team]",root);if(d)d.onclick=dissolveMyTeam;} else {const l=$("[data-leave-team]",root);if(l)l.onclick=leaveMyTeam;}
+      root.innerHTML=`<div class="team-members-head"><div><span class="eyebrow">Effectif</span><h4>${members.length} membre${members.length>1?'s':''}</h4></div><button class="btn secondary small" data-open-team-management>⚙ Gérer la Team</button></div>
+        <div class="team-member-list">${members.map(m=>`<div class="team-member-row">${avatarHTML(m)}<div class="team-member-copy"><strong>${m.is_captain?'👑 ':''}${esc(m.username)}</strong><small>${esc(m.club_heart||'Aucun club de cœur')} · ${m.rank?`#${m.rank}`:'non classé'}</small></div><span><b>${Number(m.points||0).toFixed(0)}</b><small> pts</small></span></div>`).join('')}</div>`;
+      const manage=$("[data-open-team-management]",root);if(manage)manage.onclick=()=>{state.teamTab="management";renderMyTeamPanel();};
       return;
     }
+
+    if(state.teamTab==="management"){
+      const requests=t.is_captain?(state.teamRequests||[]):[];
+      const otherMembers=members.filter(m=>!m.is_captain);
+      root.innerHTML=`<div class="team-management-grid">
+        <section class="team-management-card"><div class="team-management-card-head"><div><span class="eyebrow">Identité</span><h4>Apparence & informations</h4></div><span>🛡</span></div><p class="muted">Nom, slogan, visibilité, emblème, forme, cadre et couleurs de la Team.</p>${t.is_captain?'<button class="btn secondary small" data-team-edit-management>Personnaliser la Team</button>':'<small class="muted">Seul le capitaine peut modifier l’identité de la Team.</small>'}</section>
+        ${t.is_captain?`<section class="team-management-card"><div class="team-management-card-head"><div><span class="eyebrow">Invitations</span><h4>Code privé</h4></div><span>🔑</span></div><div class="team-invite-code">${esc(state.teamInvite||'Aucun code actif')}</div><button class="btn secondary small" data-team-invite-management>${state.teamInvite?'Régénérer le code':'Générer un code'}</button></section>`:''}
+      </div>
+      ${t.is_captain&&requests.length?`<section class="team-management-section"><div class="team-management-title"><div><span class="eyebrow">Demandes</span><h4>Adhésions en attente</h4></div><span class="chip">${requests.length}</span></div><div class="team-requests">${requests.map(r=>`<div class="team-request-row">${avatarHTML(r)}<div><strong>${esc(r.username)}</strong><small>${esc(r.club_heart||'Aucun club de cœur')}</small></div><div class="actions"><button class="btn small" data-request-accept="${r.request_id}">Accepter</button><button class="btn secondary small" data-request-reject="${r.request_id}">Refuser</button></div></div>`).join('')}</div></section>`:''}
+      ${t.is_captain?`<section class="team-management-section"><div class="team-management-title"><div><span class="eyebrow">Capitanat</span><h4>Donner le capitanat</h4></div></div>${otherMembers.length?`<p class="muted">Choisis un membre actif. Après le transfert, il devient immédiatement capitaine.</p><div class="team-management-members">${otherMembers.map(m=>`<div class="team-management-member">${avatarHTML(m)}<div><strong>${esc(m.username)}</strong><small>${esc(m.club_heart||'Membre de la Team')}</small></div><button class="btn secondary small" data-transfer-captain="${m.user_id}">Donner le capitanat</button></div>`).join('')}</div>`:'<p class="muted">Tu es actuellement le seul membre : aucun transfert de capitanat n’est possible.</p>'}</section>
+      <section class="team-management-section"><div class="team-management-title"><div><span class="eyebrow">Effectif</span><h4>Gérer les membres</h4></div></div>${otherMembers.length?`<div class="team-management-members">${otherMembers.map(m=>`<div class="team-management-member">${avatarHTML(m)}<div><strong>${esc(m.username)}</strong><small>${Number(m.points||0).toFixed(0)} pts · ${m.rank?`#${m.rank}`:'non classé'}</small></div><button class="text-action danger-text" data-kick-member="${m.user_id}">Exclure</button></div>`).join('')}</div>`:'<p class="muted">Aucun autre membre à gérer.</p>'}</section>`:''}
+      <section class="team-danger-panel"><div><span class="eyebrow">Zone sensible</span><h4>${t.is_captain?'Quitter ou dissoudre':'Quitter la Team'}</h4><p>${t.is_captain?(otherMembers.length?'Pour quitter, tu dois transmettre le capitanat. Le Nid peut enchaîner les deux actions pour toi.':'Tu es seul dans cette Team. Pour la quitter, il faut la dissoudre.'):'Tes points déjà gagnés resteront attachés à cette Team dans son historique.'}</p></div><div class="actions">${t.is_captain?(otherMembers.length?'<button class="btn secondary" data-captain-leave-team>Transférer puis quitter</button>':''):'<button class="btn secondary" data-leave-team>Quitter la Team</button>'}${t.is_captain?'<button class="btn danger" data-dissolve-team>Dissoudre la Team</button>':''}</div></section>`;
+
+      const edit=$("[data-team-edit-management]",root);if(edit)edit.onclick=()=>openTeamEditor(t);
+      const invite=$("[data-team-invite-management]",root);if(invite)invite.onclick=regenerateTeamInvite;
+      $$('[data-request-accept]',root).forEach(b=>b.onclick=()=>processTeamRequest(b.dataset.requestAccept,true));
+      $$('[data-request-reject]',root).forEach(b=>b.onclick=()=>processTeamRequest(b.dataset.requestReject,false));
+      $$('[data-transfer-captain]',root).forEach(b=>b.onclick=()=>transferTeamCaptain(b.dataset.transferCaptain));
+      $$('[data-kick-member]',root).forEach(b=>b.onclick=()=>kickTeamMember(b.dataset.kickMember));
+      const leave=$("[data-leave-team]",root);if(leave)leave.onclick=leaveMyTeam;
+      const captainLeave=$("[data-captain-leave-team]",root);if(captainLeave)captainLeave.onclick=openCaptainLeaveModal;
+      const dissolve=$("[data-dissolve-team]",root);if(dissolve)dissolve.onclick=dissolveMyTeam;
+      return;
+    }
+
     if(state.teamTab==="history"){
       root.innerHTML=`<div class="team-history">${(state.teamEvents||[]).length?(state.teamEvents||[]).map(teamEventHTML).join(''):'<div class="empty">L’histoire de la Team commence à peine.</div>'}</div>`;return;
     }
     if(state.teamTab==="rankings"){
       root.innerHTML=`<div class="team-stat-grid"><div><span>Rang moyenne</span><strong>${lb?`#${lb.rank_average}`:'—'}</strong></div><div><span>Moyenne</span><strong>${Number(lb?.average_points||0).toFixed(2)}</strong></div><div><span>Rang Top 3</span><strong>${lb?`#${lb.rank_top3}`:'—'}</strong></div><div><span>Top 3</span><strong>${Number(lb?.top3_points||0).toFixed(0)}</strong></div></div><p class="muted team-rule-note">Les points restent attribués à la Team dont le joueur faisait partie au coup d’envoi du match. Aucun transfert rétroactif.</p>`;return;
     }
-    root.innerHTML=`<div class="team-overview-grid"><div class="team-stat-grid"><div><span>Rang</span><strong>${lb?`#${lb.rank_average}`:'—'}</strong></div><div><span>Moyenne</span><strong>${Number(lb?.average_points||0).toFixed(2)}</strong></div><div><span>Top 3</span><strong>${Number(lb?.top3_points||0).toFixed(0)}</strong></div><div><span>Membres</span><strong>${Number(t.member_count||state.teamMembers.length)}</strong></div></div><div class="team-style-preview"><span class="eyebrow">Signature visuelle</span><div class="team-preview-avatars">${state.teamMembers.slice(0,4).map(m=>avatarHTML(m)).join('')||avatarHTML(state.profile)}</div><small>${TEAM_SHAPES.find(x=>x[0]===t.shape)?.[1]||t.shape} · ${TEAM_FRAMES.find(x=>x[0]===t.frame_style)?.[1]||t.frame_style}</small>${t.is_captain?'<button class="btn secondary small" data-team-edit-overview>Modifier l’apparence</button>':''}</div></div>${t.description?`<p class="team-description">${esc(t.description)}</p>`:''}`;
+    root.innerHTML=`<div class="team-overview-grid"><div class="team-stat-grid"><div><span>Rang</span><strong>${lb?`#${lb.rank_average}`:'—'}</strong></div><div><span>Moyenne</span><strong>${Number(lb?.average_points||0).toFixed(2)}</strong></div><div><span>Top 3</span><strong>${Number(lb?.top3_points||0).toFixed(0)}</strong></div><div><span>Membres</span><strong>${Number(t.member_count||members.length)}</strong></div></div><div class="team-style-preview"><span class="eyebrow">Signature visuelle</span><div class="team-preview-avatars">${members.slice(0,4).map(m=>avatarHTML(m)).join('')||avatarHTML(state.profile)}</div><small>${TEAM_SHAPES.find(x=>x[0]===t.shape)?.[1]||t.shape} · ${TEAM_FRAMES.find(x=>x[0]===t.frame_style)?.[1]||t.frame_style}</small>${t.is_captain?'<button class="btn secondary small" data-team-edit-overview>Modifier l’apparence</button>':''}<button class="text-action" data-open-team-management>⚙ Gérer la Team →</button></div></div>${t.description?`<p class="team-description">${esc(t.description)}</p>`:''}`;
     const e=$("[data-team-edit-overview]",root);if(e)e.onclick=()=>openTeamEditor(t);
+    const manage=$("[data-open-team-management]",root);if(manage)manage.onclick=()=>{state.teamTab="management";renderMyTeamPanel();};
   }
 
   function teamEventHTML(e){
@@ -259,7 +288,9 @@
       const demo={shape:selectedShape,frame_style:key,primary_color:selectedPrimary,secondary_color:selectedSecondary,background_style:colorMode==="single"?"solid":selectedBg};
       return `<button type="button" class="team-visual-option ${key===selectedFrame?'active':''}" data-frame-key="${key}"><span class="team-frame-preview-wrap">${teamChoiceMarkHTML(demo)}</span><small>${esc(label)}</small></button>`;
     }).join('');
-    const gradientButtons=TEAM_BACKGROUNDS.filter(([k])=>k!=="solid").map(([key,label])=>`<button type="button" class="team-segment ${key===selectedBg?'active':''}" data-background-key="${key}">${esc(label.replace("Dégradé ",""))}</button>`).join('');
+    const backgroundOption=(key,label)=>`<button type="button" class="team-background-option ${key===selectedBg?'active':''}" data-background-key="${key}"><i class="team-bg-demo bg-${key}" style="--c1:${selectedPrimary};--c2:${selectedSecondary}"></i><small>${esc(label)}</small></button>`;
+    const gradientButtons=TEAM_BACKGROUNDS.filter(([, ,group])=>group==="gradient").map(([key,label])=>backgroundOption(key,label)).join('');
+    const patternButtons=TEAM_BACKGROUNDS.filter(([, ,group])=>group==="pattern").map(([key,label])=>backgroundOption(key,label)).join('');
     const presets=Object.entries(TEAM_STYLE_PRESETS).map(([key,p])=>`<button type="button" class="team-preset" data-team-preset="${key}"><span class="team-preset-swatch ${teamClass(p)}" style="${teamVisualVars(p)}"></span><b>${esc(p.label)}</b></button>`).join('');
     return `<div class="team-editor-v051">
       <div class="team-editor-fields-v051">
@@ -290,18 +321,21 @@
         </section>
 
         <section class="team-editor-block">
-          <div class="team-editor-block-head"><div><span class="eyebrow">Couleurs</span><h4>Une ou deux couleurs</h4></div><small>Une couleur = fond uni. Deux couleurs = dégradé.</small></div>
+          <div class="team-editor-block-head"><div><span class="eyebrow">Couleurs</span><h4>Une ou deux couleurs</h4></div><small>Avec deux couleurs, choisis un dégradé ou un vrai motif de blason.</small></div>
           <input id="teamEditColorMode" type="hidden" value="${colorMode}">
           <input id="teamEditBackground" type="hidden" value="${esc(colorMode==="single"?"solid":selectedBg==="solid"?"diagonal":selectedBg)}">
           <div class="team-color-mode team-color-mode-cards">
             <button type="button" class="team-color-mode-card ${colorMode==="single"?'active':''}" data-color-mode="single"><b>1 couleur</b><span>Fond uni</span><i class="color-mode-demo one" style="--c1:${selectedPrimary}"></i></button>
-            <button type="button" class="team-color-mode-card ${colorMode==="two"?'active':''}" data-color-mode="two"><b>2 couleurs</b><span>Dégradé</span><i class="color-mode-demo two" style="--c1:${selectedPrimary};--c2:${selectedSecondary}"></i></button>
+            <button type="button" class="team-color-mode-card ${colorMode==="two"?'active':''}" data-color-mode="two"><b>2 couleurs</b><span>Dégradé ou motif</span><i class="color-mode-demo two" style="--c1:${selectedPrimary};--c2:${selectedSecondary}"></i></button>
           </div>
           <div class="team-color-pickers">
             <label class="team-color-picker"><span>Couleur principale</span><div><input id="teamEditPrimary" type="color" value="${selectedPrimary}"><code id="teamPrimaryHex">${selectedPrimary.toUpperCase()}</code></div></label>
             <label id="teamSecondaryWrap" class="team-color-picker ${colorMode==="single"?'hidden':''}"><span>Couleur secondaire</span><div><input id="teamEditSecondary" type="color" value="${selectedSecondary}"><code id="teamSecondaryHex">${selectedSecondary.toUpperCase()}</code></div></label>
           </div>
-          <div id="teamGradientWrap" class="team-gradient-wrap ${colorMode==="single"?'hidden':''}"><span class="field-mini-label">Style du dégradé</span><div class="team-segmented">${gradientButtons}</div></div>
+          <div id="teamGradientWrap" class="team-gradient-wrap ${colorMode==="single"?'hidden':''}">
+            <span class="field-mini-label">Dégradés</span><div class="team-background-grid">${gradientButtons}</div>
+            <span class="field-mini-label team-pattern-title">Motifs de blason</span><div class="team-background-grid">${patternButtons}</div>
+          </div>
           <div class="team-presets"><span class="field-mini-label">Presets rapides</span><div>${presets}</div></div>
         </section>
       </div>
@@ -355,6 +389,7 @@
       const oneDemo=$(".color-mode-demo.one",root),twoDemo=$(".color-mode-demo.two",root);
       if(oneDemo)oneDemo.style.setProperty("--c1",currentPrimary);
       if(twoDemo){twoDemo.style.setProperty("--c1",currentPrimary);twoDemo.style.setProperty("--c2",currentSecondary);}
+      $$(".team-bg-demo",root).forEach(d=>{d.style.setProperty("--c1",currentPrimary);d.style.setProperty("--c2",currentSecondary);});
       $$("[data-shape-key]",root).forEach(b=>b.classList.toggle("active",b.dataset.shapeKey===$("#teamEditShape",root).value));
       $$("[data-frame-key]",root).forEach(b=>b.classList.toggle("active",b.dataset.frameKey===$("#teamEditFrame",root).value));
       $$("[data-background-key]",root).forEach(b=>b.classList.toggle("active",b.dataset.backgroundKey===$("#teamEditBackground",root).value));
@@ -365,8 +400,8 @@
     function preview(){
       syncEditorUi();
       const draft=draftFromEditor();
-      const initial=(state.profile?.username||"J").slice(0,1).toUpperCase();
-      const draftAvatar=`<span class="team-avatar ${teamClass(draft)}" style="${teamVisualVars(draft)}"><span class="avatar avatar-fallback">${esc(initial)}</span><i>${teamLogoHTML(draft)}</i></span>`;
+      const playerCore=avatarCoreHTML(state.profile||{username:"Joueur",avatar_key:"avatar-hibou-or"},{allowPending:true});
+      const draftAvatar=`<span class="team-avatar ${teamClass(draft)}" style="${teamVisualVars(draft)}">${playerCore}<i>${teamLogoHTML(draft)}</i></span>`;
       const visibility=$("#teamEditVisibility",root).value==="private"?"Privée 🔒":"Publique";
       $("#teamLivePreview",root).innerHTML=`
         <div class="team-preview-emblem"><span>Blason Team</span>${teamBadgeHTML(draft,true)}<strong>${esc(draft.name)}</strong>${draft.slogan?`<small>« ${esc(draft.slogan)} »</small>`:""}</div>
@@ -453,6 +488,37 @@
   async function processTeamRequest(id,accept){try{if(demoMode){const req=JSON.parse(localStorage.getItem('nidc_demo_team_requests')||'[]'),r=req.find(x=>x.id===id);if(!r)throw new Error('Demande introuvable.');r.status=accept?'accepted':'rejected';if(accept){const {memberships}=ensureDemoTeams();if(memberships.some(m=>m.season_id===state.season.id&&m.user_id===r.user_id&&!m.left_at))throw new Error('Ce joueur appartient déjà à une Team.');memberships.push({id:`tm-${Date.now()}`,season_id:state.season.id,team_id:r.team_id,user_id:r.user_id,joined_at:new Date().toISOString(),left_at:null,join_type:'request'});localStorage.setItem('nidc_demo_team_memberships',JSON.stringify(memberships));demoLogTeam(r.team_id,'member_joined',state.user.id,r.user_id,{join_type:'request'});}else demoLogTeam(r.team_id,'join_rejected',state.user.id,r.user_id,{});localStorage.setItem('nidc_demo_team_requests',JSON.stringify(req));}else{const {error}=await sb.rpc('process_team_join_request_v050',{p_request_id:id,p_accept:accept});if(error)throw error;}await reloadTeamsAfterMutation();toast(accept?'Membre accepté.':'Demande refusée.');}catch(err){toast(friendlyError(err),'error');}}
 
   async function regenerateTeamInvite(){try{let code;if(demoMode){code=`NID-${Math.random().toString(36).slice(2,10).toUpperCase()}`;const inv=JSON.parse(localStorage.getItem('nidc_demo_team_invites')||'{}');inv[state.myTeam.id]=code;localStorage.setItem('nidc_demo_team_invites',JSON.stringify(inv));demoLogTeam(state.myTeam.id,'invite_regenerated',state.user.id,null,{});}else{const {data,error}=await sb.rpc('regenerate_team_invite_v050',{p_team_id:state.myTeam.team_id});if(error)throw error;code=data;}await loadTeamData();renderMyTeamPanel();toast(`Code actif : ${code}`);}catch(err){toast(friendlyError(err),'error');}}
+
+  function openCaptainLeaveModal(){
+    const candidates=(state.teamMembers||[]).filter(m=>!m.is_captain);
+    if(!candidates.length)return toast('Tu es seul dans la Team : dissous-la pour la quitter.','error');
+    const root=modal('Transférer puis quitter',`<p class="muted">Choisis le nouveau capitaine. Le capitanat lui sera transmis, puis tu quitteras immédiatement la Team.</p><div class="captain-leave-list">${candidates.map(m=>`<button class="captain-leave-choice" data-captain-leave-target="${m.user_id}">${avatarHTML(m)}<span><strong>${esc(m.username)}</strong><small>${esc(m.club_heart||'Membre actif')}</small></span><b>Choisir →</b></button>`).join('')}</div><div id="captainLeaveMsg" class="form-msg"></div>`);
+    $$('[data-captain-leave-target]',root).forEach(b=>b.onclick=()=>captainTransferAndLeave(b.dataset.captainLeaveTarget,root));
+  }
+
+  async function captainTransferAndLeave(userId,root){
+    const member=(state.teamMembers||[]).find(m=>String(m.user_id)===String(userId));
+    if(!member)return;
+    if(!confirm(`Donner le capitanat à ${member.username}, puis quitter la Team ?`))return;
+    setMsg('#captainLeaveMsg','Transfert du capitanat…');
+    try{
+      if(demoMode){
+        const {teams,memberships}=ensureDemoTeams();
+        const t=teams.find(x=>x.id===state.myTeam.id);if(!t)throw new Error('Team introuvable.');
+        t.captain_user_id=userId;
+        const mine=memberships.find(x=>x.team_id===t.id&&x.user_id===state.user.id&&!x.left_at);if(!mine)throw new Error('Adhésion introuvable.');
+        mine.left_at=new Date().toISOString();mine.leave_type='left';
+        localStorage.setItem('nidc_demo_teams',JSON.stringify(teams));localStorage.setItem('nidc_demo_team_memberships',JSON.stringify(memberships));
+        demoLogTeam(t.id,'captain_transferred',state.user.id,userId,{old_captain_user_id:state.user.id});
+        demoLogTeam(t.id,'member_left',state.user.id,state.user.id,{});
+      }else{
+        const transfer=await sb.rpc('transfer_team_captain_v050',{p_team_id:state.myTeam.team_id,p_new_captain_user_id:userId});if(transfer.error)throw transfer.error;
+        setMsg('#captainLeaveMsg','Capitanat transmis. Départ de la Team…');
+        const leave=await sb.rpc('leave_team_v050',{p_season_id:state.season.id});if(leave.error)throw leave.error;
+      }
+      $("#modalRoot").innerHTML='';await reloadTeamsAfterMutation();toast(`👑 ${member.username} est capitaine. Tu as quitté la Team.`);
+    }catch(err){setMsg('#captainLeaveMsg',friendlyError(err),'error');}
+  }
 
   async function leaveMyTeam(){if(!confirm('Quitter cette Team ? Les points déjà gagnés pour elle resteront dans son historique.'))return;try{if(demoMode){const {memberships}=ensureDemoTeams();const m=memberships.find(x=>x.season_id===state.season.id&&x.user_id===state.user.id&&!x.left_at);if(!m)throw new Error('Aucune Team.');m.left_at=new Date().toISOString();m.leave_type='left';localStorage.setItem('nidc_demo_team_memberships',JSON.stringify(memberships));demoLogTeam(m.team_id,'member_left',state.user.id,state.user.id,{});}else{const {error}=await sb.rpc('leave_team_v050',{p_season_id:state.season.id});if(error)throw error;}await reloadTeamsAfterMutation();toast('Tu as quitté la Team.');}catch(err){toast(friendlyError(err),'error');}}
   async function kickTeamMember(userId){const m=state.teamMembers.find(x=>String(x.user_id)===String(userId));if(!confirm(`Exclure ${m?.username||'ce membre'} ?`))return;try{if(demoMode){const {memberships}=ensureDemoTeams();const tm=memberships.find(x=>x.team_id===state.myTeam.id&&x.user_id===userId&&!x.left_at);if(!tm)throw new Error('Membre introuvable.');tm.left_at=new Date().toISOString();tm.leave_type='kicked';localStorage.setItem('nidc_demo_team_memberships',JSON.stringify(memberships));demoLogTeam(state.myTeam.id,'member_kicked',state.user.id,userId,{});}else{const {error}=await sb.rpc('kick_team_member_v050',{p_team_id:state.myTeam.team_id,p_user_id:userId});if(error)throw error;}await reloadTeamsAfterMutation();toast('Membre exclu.');}catch(err){toast(friendlyError(err),'error');}}

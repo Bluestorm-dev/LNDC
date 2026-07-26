@@ -1,0 +1,46 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.5.5
+===========================================
+
+OBJET
+-----
+V0.5.5 termine les finitions accueil + Teams avant la V0.6.0 :
+- avatar joueur en grand sur l'accueil ;
+- onglet Gestion de Team ;
+- quitter / transférer le capitanat / exclure / dissoudre ;
+- motifs deux couleurs type blason ;
+- vrai avatar dans la prévisualisation Team ;
+- cadre Team légèrement aminci.
+
+MISE À JOUR DEPUIS V0.5.4
+-------------------------
+1. Sauvegarder le projet et la base Supabase.
+2. Supabase > SQL Editor > rôle postgres/par défaut.
+3. Exécuter : sql/HOTFIX_V0.5.5_EXISTING_DB.sql
+4. Vérifier que app_settings.app_version vaut "0.5.5".
+5. Déployer tous les fichiers V0.5.5 sur GitHub Pages.
+6. Conserver les vraies valeurs de config.js.
+7. Faire Ctrl+F5 ou fermer/réouvrir la PWA.
+8. Exécuter : node tests/release-v0.5.5.mjs
+9. Suivre : docs/TEST_CHECKLIST_V0.5.5.md
+
+CE QUE CHANGE LE SQL
+--------------------
+Le HOTFIX ne modifie ni les membres ni les points des Teams.
+Il élargit uniquement teams.background_style pour accepter :
+- split-vertical
+- split-horizontal
+- split-diagonal
+- stripes-vertical
+- stripes-horizontal
+- stripes-diagonal
+- quarters
+
+Il met aussi à jour create_team_v050 afin qu'une nouvelle Team puisse utiliser ces motifs.
+
+INSTALLATION SUR UN SUPABASE NEUF
+---------------------------------
+Utiliser : sql/000_INSTALL_FRESH_V0.5.5.sql
+
+IMPORTANT
+---------
+Ne jamais remplacer config.js par config.example.js sur le site déjà configuré.

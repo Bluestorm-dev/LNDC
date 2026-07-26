@@ -1,9 +1,11 @@
 "use strict";
 
-// Le Nid des Champions V0.5.4 — accueil, matchs et pronostics
+// Le Nid des Champions V0.5.5 — accueil, matchs et pronostics
   function renderHome() {
     const welcome=$("#welcomeTitle");
     if(welcome) welcome.textContent=`Salut ${state.profile?.username||"Hibou"}, prêt pour l'Europe ?`;
+    const heroAvatar=$("#homeHeroAvatar");
+    if(heroAvatar) heroAvatar.innerHTML=avatarHTML(state.profile||{username:"Hibou",avatar_key:"avatar-hibou-or"},{allowPending:true});
 
     const now=Date.now();
     const live=state.allMatches.find(m=>m.status==="live");

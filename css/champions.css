@@ -1,4 +1,4 @@
-/* V0.5.4 — champions et phases finales */
+/* V0.5.5 — champions et phases finales */
 /* V0.4.0 — Champions & phases finales */
 .champions-hero,.knockout-hero{display:flex;align-items:center;justify-content:space-between;gap:24px;overflow:hidden;background:radial-gradient(circle at 90% 0,rgba(240,210,119,.15),transparent 32%),radial-gradient(circle at 15% 110%,rgba(111,73,255,.18),transparent 38%),rgba(7,12,38,.88)}
 .champions-hero h2,.knockout-hero h2{margin:.3rem 0 .45rem;font-size:clamp(1.55rem,3vw,2.45rem)}.champion-trophy,.ko-live-mark{font-size:clamp(3rem,8vw,6.5rem);filter:drop-shadow(0 15px 26px rgba(0,0,0,.35))}.champion-trophy{animation:trophyFloat 4.8s ease-in-out infinite}@keyframes trophyFloat{50%{transform:translateY(-7px) rotate(2deg)}}
