@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.5.5a — accueil, matchs et pronostics
+// Le Nid des Champions V0.6.0 — accueil, matchs et pronostics
   function renderHome() {
     const welcome=$("#welcomeTitle");
     if(welcome) welcome.textContent=`Salut ${state.profile?.username||"Hibou"}, prêt pour l'Europe ?`;

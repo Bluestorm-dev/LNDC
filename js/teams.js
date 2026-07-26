@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.5.5a — Teams
+// Le Nid des Champions V0.6.0 — Teams
   // ========================================================================
   // V0.5.2 — Teams · formes/cadres/couleurs corrigés
   // ========================================================================

@@ -1,8 +1,8 @@
 "use strict";
 
-// Le Nid des Champions V0.5.5a — administration
+// Le Nid des Champions V0.6.0 — administration
   function renderAdmin() {
-    renderAdminBuilder(); renderKnockoutBuilder(); renderAdminMatches(); renderClubPreview(); renderAdminKnockout(); renderPhaseMultipliers(); renderAdminTeams(); loadAvatarModeration();
+    renderAdminBuilder(); renderKnockoutBuilder(); renderAdminMatches(); renderClubPreview(); renderAdminKnockout(); renderPhaseMultipliers(); renderAdminTeams(); loadAvatarModeration(); renderAdminOwl(); renderAdminSupport(); renderAdminNotifications();
     const section=$("#registrationAdminSection");
     if(section){const allowed=state.profile?.role==="super_admin";section.classList.toggle("hidden",!allowed);if(allowed)loadRegistrationRequests();}
   }

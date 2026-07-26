@@ -1,0 +1,114 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.6.0
+==========================================
+
+OBJET
+-----
+V0.6.0 ajoute :
+- centre de notifications interne ;
+- notifications Web Push multi-appareils ;
+- rappels de pronostics et champion ;
+- quiet hours configurables ;
+- rival principal, rivalité mutuelle, duels et historique ;
+- messages ciblés du Hibou masqué ;
+- tickets privés au Hibou avec conversation et jusqu'à 3 captures ;
+- diagnostic technique automatique pour les tickets Bug ;
+- journal Push et Test Push Super Admin ;
+- messages système critiques.
+
+MISE À JOUR DEPUIS V0.5.5a
+---------------------------
+1. Sauvegarder la base Supabase.
+2. Supabase > SQL Editor > rôle postgres/par défaut.
+3. Exécuter : sql/HOTFIX_V0.6.0_EXISTING_DB.sql
+4. Vérifier :
+   select key,value from public.app_settings where key='app_version';
+   -> la valeur doit être "0.6.0".
+
+WEB PUSH — EDGE FUNCTION
+------------------------
+5. Générer une paire VAPID sur une machine sûre :
+
+   node tools/generate-vapid-keys.mjs
+
+   IMPORTANT : la clé privée VAPID ne doit JAMAIS être mise dans config.js,
+   le dépôt GitHub, README ou un fichier public.
+
+6. Générer également un secret Cron aléatoire, par exemple avec Node :
+
+   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+
+7. Déployer l'Edge Function :
+
+   supabase functions deploy push-dispatch
+
+   supabase/config.toml contient verify_jwt=false pour push-dispatch :
+   la fonction vérifie elle-même le JWT pour les tests Super Admin et le
+   secret x-cron-secret pour les exécutions planifiées.
+
+8. Créer les secrets Supabase :
+
+   supabase secrets set PUSH_VAPID_PUBLIC_KEY="VOTRE_CLE_PUBLIQUE"
+   supabase secrets set PUSH_VAPID_PRIVATE_KEY="VOTRE_CLE_PRIVEE"
+   supabase secrets set PUSH_VAPID_SUBJECT="https://VOTRE_SITE"
+   supabase secrets set PUSH_CRON_SECRET="VOTRE_SECRET_CRON"
+
+   PUSH_VAPID_SUBJECT peut aussi être une adresse mailto: valide.
+
+PLANIFICATION DES RAPPELS
+-------------------------
+9. Activer dans Supabase les modules Cron / pg_cron, pg_net et Vault si nécessaire.
+10. Copier sql/ENABLE_PUSH_CRON_V0.6.0_TEMPLATE.sql dans un fichier local NON COMMITÉ.
+11. Remplacer :
+    - PROJECT_REF par la référence réelle du projet ;
+    - REMPLACE_PAR_LE_MEME_PUSH_CRON_SECRET... par le même PUSH_CRON_SECRET.
+12. Exécuter ce SQL dans Supabase SQL Editor.
+
+Le moteur est appelé toutes les 15 minutes. Il fabrique notamment les rappels
+24 h / 3 h / 1 h / 30 min, les notifications de duel, les résumés de journée,
+les changements de classement significatifs, puis distribue les Push.
+
+DÉPLOIEMENT FRONT
+-----------------
+13. Conserver les vraies valeurs SUPABASE_URL et SUPABASE_ANON_KEY de config.js.
+14. Déployer tous les fichiers V0.6.0 sur GitHub Pages.
+15. Supprimer les fichiers obsolètes du dépôt seulement s'ils n'existent plus dans le ZIP.
+16. Faire Ctrl+F5 ou fermer/réouvrir la PWA afin d'activer le cache nid-champions-v0.6.0.
+
+La demande d'autorisation Push n'est PAS lancée automatiquement au premier écran.
+Le joueur doit cliquer lui-même sur « Activer les notifications ».
+Le Push nécessite HTTPS ; GitHub Pages fournit HTTPS.
+
+TEST PUSH SUPER ADMIN
+---------------------
+17. Se connecter en Super Admin.
+18. Profil > activer les notifications Push sur l'appareil de test.
+19. Admin > Notifications & Web Push.
+20. Envoyer « Test du Nid » vers Moi.
+21. Vérifier :
+    - notification reçue quand l'application est fermée/arrière-plan ;
+    - clic -> retour vers la destination choisie ;
+    - ligne de livraison dans le journal Admin.
+22. Tester ensuite vers UN joueur volontaire.
+
+Le Test Push V0.6.0 ne propose volontairement pas d'envoi global.
+
+BASE NEUVE
+----------
+Pour un projet Supabase vierge :
+  sql/000_INSTALL_FRESH_V0.6.0.sql
+Puis déployer toutes les Edge Functions nécessaires à l'application, dont push-dispatch.
+
+SÉCURITÉ
+--------
+- ne jamais exposer SUPABASE_SERVICE_ROLE_KEY ;
+- ne jamais exposer PUSH_VAPID_PRIVATE_KEY ;
+- ne jamais exposer PUSH_CRON_SECRET ;
+- le bucket support-captures est privé ;
+- tickets et captures sont visibles uniquement par leur auteur et le Super Admin ;
+- un Admin classique n'a pas accès aux tickets au Hibou ;
+- les opérations sensibles sont protégées par RLS/RPC.
+
+RECETTE
+-------
+- node tests/release-v0.6.0.mjs
+- suivre docs/TEST_CHECKLIST_V0.6.0.md

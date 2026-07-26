@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.5.5a — authentification et accès
+// Le Nid des Champions V0.6.0 — authentification et accès
   function toggleAuthTab(which) {
     const loginTab = which === "login";
     $("#loginForm").classList.toggle("hidden", !loginTab);
@@ -123,4 +123,5 @@
     renderAll();
     setView("home");
     setupRealtime();
+    if(typeof consumePendingDeepLink==="function") consumePendingDeepLink();
   }

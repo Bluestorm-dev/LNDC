@@ -1,10 +1,10 @@
 "use strict";
 
-// Le Nid des Champions V0.5.5a — Realtime et pronostics révélés
+// Le Nid des Champions V0.6.0 — Realtime et pronostics révélés
   function setupRealtime() {
     if(demoMode||!sb||!state.season)return;
     if(state.channel)sb.removeChannel(state.channel);
-    state.channel=sb.channel("nidc-live-v053")
+    state.channel=sb.channel("nidc-live-v060")
       .on("postgres_changes",{event:"*",schema:"public",table:"matches",filter:`season_id=eq.${state.season.id}`},()=>queueRealtimeRefresh("matches"))
       .on("postgres_changes",{event:"*",schema:"public",table:"matchdays",filter:`season_id=eq.${state.season.id}`},()=>queueRealtimeRefresh("matches"))
       .on("postgres_changes",{event:"*",schema:"public",table:"predictions",filter:`season_id=eq.${state.season.id}`},()=>queueRealtimeRefresh("predictions"))
@@ -15,6 +15,9 @@
       .on("postgres_changes",{event:"*",schema:"public",table:"team_memberships",filter:`season_id=eq.${state.season.id}`},()=>queueRealtimeRefresh("teams"))
       .on("postgres_changes",{event:"*",schema:"public",table:"team_join_requests",filter:`season_id=eq.${state.season.id}`},()=>queueRealtimeRefresh("teams"))
       .on("postgres_changes",{event:"*",schema:"public",table:"team_events",filter:`season_id=eq.${state.season.id}`},()=>queueRealtimeRefresh("teams"))
+      .on("postgres_changes",{event:"*",schema:"public",table:"notifications",filter:`user_id=eq.${state.user.id}`},()=>queueRealtimeRefresh("notifications"))
+      .on("postgres_changes",{event:"*",schema:"public",table:"rival_duels",filter:`season_id=eq.${state.season.id}`},()=>queueRealtimeRefresh("rivals"))
+      .on("postgres_changes",{event:"*",schema:"public",table:"player_rivals",filter:`season_id=eq.${state.season.id}`},()=>queueRealtimeRefresh("rivals"))
       .subscribe(status=>{const label=$("#backendStatus span:last-child");if(label)label.textContent=status==="SUBSCRIBED"?"Supabase · LIVE":"Supabase";});
   }
 
@@ -23,9 +26,13 @@
     state.realtimeTimer=setTimeout(async()=>{
       try{
         if(kind==="predictions"){
-          await loadRankingData(state.rankingScope,false);await loadTeamData();renderRanking();renderCollectiveStats();renderTeams();updateKpis();
+          await loadRankingData(state.rankingScope,false);await Promise.all([loadTeamData(),loadRivalData()]);renderRanking();renderCollectiveStats();renderTeams();renderHomeRival();renderRivalView();updateKpis();
         }else if(kind==="teams"){
           await loadTeamData();renderTeams();renderProfile();renderRanking();renderAdminTeams();
+        }else if(kind==="notifications"){
+          await loadNotificationData();renderNotificationBell();if(!$("#notificationDrawer")?.classList.contains("hidden"))renderNotificationCenter();
+        }else if(kind==="rivals"){
+          await loadRivalData();renderHomeRival();renderRivalView();
         }else{
           await loadData();renderAll();
         }

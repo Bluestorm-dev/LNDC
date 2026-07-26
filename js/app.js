@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.5.5a — orchestration et démarrage
+// Le Nid des Champions V0.6.0 — orchestration et démarrage
   async function boot() {
     bindStaticEvents();
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(()=>{});
@@ -10,7 +10,7 @@
       $("#configWarning").innerHTML = "<b>Mode démonstration.</b> Configure <code>config.js</code> et Supabase pour passer en réel.";
       $("#backendStatus span:last-child").textContent = "Démo locale";
       $("#demoBanner").classList.remove("hidden");
-      $("#demoBanner").innerHTML = "🛠️ <b>V0.5.5a en mode démo :</b> phase de ligue, champions, phases finales et LIVE sont simulés localement quand les données sont disponibles.";
+      $("#demoBanner").innerHTML = "🛠️ <b>V0.6.0 en mode démo :</b> phase de ligue, champions, phases finales et LIVE sont simulés localement quand les données sont disponibles.";
       demoInit();
       const demoSession = JSON.parse(localStorage.getItem("nidc_demo_session") || "null");
       if (demoSession) {
@@ -47,6 +47,7 @@
     $("#forgotBtn").onclick = forgotPassword;
     $("#helpPasswordBtn").onclick = passwordHelp;
     $("#logoutBtn").onclick = logout;
+    if($("#notificationBell")) $("#notificationBell").onclick = () => openNotificationCenter();
     $$('[data-view]').forEach(b => b.addEventListener("click", () => setView(b.dataset.view)));
     $$('[data-jump]').forEach(b => b.addEventListener("click", () => setView(b.dataset.jump)));
     $("#saveProfileBtn").onclick = saveProfile;
@@ -79,7 +80,7 @@
     const isAdmin=["admin","super_admin"].includes(state.profile?.role);
     $("#adminNav").classList.toggle("hidden",!isAdmin);
     $("#profileAdminBtn").classList.toggle("hidden",!isAdmin);
-    renderProfile(); renderChampions(); renderKnockout(); renderMatchdayTabs(); renderMatchPanels(); renderHistory(); renderRanking(); renderCollectiveStats(); renderLiveTicker(); renderSeason(); renderTeams(); renderHome(); if(isAdmin) renderAdmin(); updateKpis();
+    renderProfile(); renderChampions(); renderKnockout(); renderMatchdayTabs(); renderMatchPanels(); renderHistory(); renderRanking(); renderCollectiveStats(); renderLiveTicker(); renderSeason(); renderTeams(); renderHome(); renderNotificationBell(); renderNotificationPreferences(); renderHomePushPrompt(); renderOwlHome(); renderHomeRival(); renderRivalView(); if(isAdmin) renderAdmin(); updateKpis();
   }
 
   boot().catch(err=>{console.error(err);toast(friendlyError(err),"error");showAuth();});

@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.5.5a — chargement des données et classements serveur
+// Le Nid des Champions V0.6.0 — chargement des données et classements serveur
   function chooseDefaultMatchday() {
     if (state.selectedMatchdayId && state.matchdays.some(md=>md.id===state.selectedMatchdayId)) return;
     const upcoming = state.matchdays.find(md => state.allMatches.some(m => m.matchday_id===md.id && !isLocked(m)));
@@ -18,6 +18,7 @@
       await loadProfileDirectory();
       await loadRankingData(state.rankingScope,false);
       await loadTeamData();
+      await Promise.all([loadNotificationData(),loadRivalData(),loadOwlData(),loadSupportData()]);
       return;
     }
 
@@ -58,6 +59,7 @@
     state.history=hErr ? [] : (history||[]);
     await loadRankingData(state.rankingScope,false);
     await loadTeamData();
+    await Promise.all([loadNotificationData(),loadRivalData(),loadOwlData(),loadSupportData()]);
   }
 
 
