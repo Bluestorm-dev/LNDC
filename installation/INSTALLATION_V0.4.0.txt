@@ -1,0 +1,38 @@
+LE NID DES CHAMPIONS — MISE À JOUR V0.4.0
+==========================================
+
+Depuis V0.3.4 :
+
+1. Sauvegarde la base Supabase.
+2. Supabase > SQL Editor : exécute
+   sql/HOTFIX_V0.4.0_EXISTING_DB.sql
+3. Remplace le front par les fichiers V0.4.0.
+4. Redéploie les Edge Functions déjà utilisées par ton projet si ton hébergement les versionne avec la release.
+5. Fais Ctrl+F5 (le cache PWA passe en nid-champions-v0.4.0).
+6. Admin > Champions & phases finales :
+   - règle les multiplicateurs souhaités ;
+   - pour la recette, clique « Générer tableau TEST » ;
+   - pour la vraie compétition, utilise « Créer une confrontation réelle » à chaque tirage officiel.
+
+Installation neuve :
+- exécute sql/000_INSTALL_FRESH_V0.4.0.sql ;
+- puis BOOTSTRAP_PARKAF_SUPER_ADMIN.sql si nécessaire ;
+- configure config.js et les secrets Edge Functions comme dans les versions précédentes.
+
+RÈGLES V0.4.0
+-------------
+- Champion 1 : +100 pts, verrouillé au premier coup d'envoi de la saison.
+- Oubli Champion 1 : Olympique de Marseille attribué automatiquement au passage du premier match en LIVE/Terminé.
+- Champion 2 : +50 pts, ouverture après la fin de la phase de ligue, fermeture au début des phases finales.
+- Les deux choix sont cachés aux autres joueurs avant leur verrouillage.
+- Le même club peut être choisi deux fois : maximum +150 pts.
+- Aller-retour : cumul calculé automatiquement.
+- Égalité au cumul : prolongation au retour, score saisi/pronostiqué à 120 minutes, puis tirs au but si nécessaire.
+- Finale : match unique ; même règle 120 min + tirs au but en cas d'égalité.
+- Qualifié : +3 si choisi avant l'aller, +1 si le choix est réellement changé après l'aller et avant le retour.
+- Multiplicateurs de scores : x1/x2/x3/x4 par phase, avec surcharge possible par match.
+- Le gagnant d'une confrontation est injecté automatiquement dans le tour suivant.
+
+IMPORTANT
+---------
+Le générateur TEST utilise 24 clubs de la bibliothèque Champions League. Lance d'abord « Clubs C1 + logos » si nécessaire.

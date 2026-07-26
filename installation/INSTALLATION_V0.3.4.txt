@@ -1,0 +1,10 @@
+LE NID DES CHAMPIONS — MISE À JOUR V0.3.4
+
+Depuis V0.3.3 :
+1. Redéployer supabase/functions/sync-football-data/index.ts.
+2. Exécuter sql/HOTFIX_V0.3.4_EXISTING_DB.sql (version + diagnostic uniquement).
+3. Remplacer le front par la V0.3.4 puis Ctrl+F5.
+4. Dans Admin, cliquer une fois sur « Bibliothèque Top 5 + logos ».
+
+Cette resynchronisation est nécessaire pour réparer les données déjà fusionnées en V0.3.3 (notamment Brest/Brentford).
+Après synchro, le total attendu des 5 championnats est 96 appartenances. Le nombre de clubs uniques peut être inférieur uniquement si un MÊME club participe réellement à plusieurs championnats nationaux, ce qui ne doit normalement pas arriver.

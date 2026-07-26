@@ -1,0 +1,46 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.3.0
+================================================
+
+MISE À JOUR DEPUIS V0.2.0
+--------------------------
+1. Sauvegarder la base Supabase.
+2. Exécuter : sql/005_patch_v0.3.0_classements_live.sql
+3. Redéployer : supabase/functions/sync-football-data/index.ts
+4. Vérifier le secret FOOTBALL_DATA_API_KEY.
+5. Déployer les fichiers web V0.3.0.
+6. Vérifier que config.js contient APP_VERSION: "0.3.0".
+7. Recharger la PWA pour renouveler le cache nid-champions-v0.3.0.
+8. Exécuter docs/TEST_CHECKLIST_V0.3.0.md.
+
+IMPORTANT : les correctifs prévus pour V0.2.2 sont intégrés directement
+dans cette V0.3.0. Aucun ZIP V0.2.2 intermédiaire n'est nécessaire.
+
+INSTALLATION SUR UN SUPABASE NEUF
+---------------------------------
+1. Exécuter : sql/000_INSTALL_FRESH_V0.3.0.sql
+2. Exécuter : sql/BOOTSTRAP_PARKAF_SUPER_ADMIN.sql
+3. Déployer login-by-username avec verify_jwt=false.
+4. Déployer sync-football-data avec vérification JWT active.
+5. Ajouter FOOTBALL_DATA_API_KEY dans les secrets de l'Edge Function.
+6. Renseigner config.js.
+7. Déployer le site.
+8. Exécuter la checklist V0.3.0.
+
+SYNCHRONISATION DE TEST
+-----------------------
+- Source imposée : Champions League 2025/26.
+- Destination : saison test 2026/27.
+- 36 clubs strictement.
+- 144 matchs strictement.
+- 8 journées de 18 matchs.
+- Aucun résultat historique.
+- Les anciens matchs Football-Data hors périmètre sont supprimés.
+
+REALTIME
+--------
+La migration ajoute matches et predictions à la publication supabase_realtime
+si nécessaire. Le client écoute aussi matchdays.
+
+VERSION
+-------
+0.3.0

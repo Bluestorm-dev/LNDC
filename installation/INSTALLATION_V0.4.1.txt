@@ -1,0 +1,24 @@
+LE NID DES CHAMPIONS — MISE À JOUR V0.4.1
+================================================
+
+V0.4.1 est une refonte UX/UI front-only.
+
+Pré-requis : la base Supabase doit déjà être en V0.4.0.
+
+MISE À JOUR DEPUIS V0.4.0
+1. Sauvegarder le déploiement actuel.
+2. Remplacer les fichiers du front par ceux de la V0.4.1.
+3. Conserver votre config.js réel (URL Supabase / clé anon / éventuelles options API).
+4. Redéployer le site.
+5. Faire Ctrl+F5 une fois pour forcer le nouveau cache PWA.
+
+AUCUN SQL V0.4.1 À EXÉCUTER.
+Les RPC champion et phases finales restent celles de sql/010_patch_v0.4.0_champions_phases_finales.sql.
+
+VÉRIFICATION RAPIDE
+- sidebar visible sur desktop ;
+- aucun fond à petits points ;
+- Accueil sans liste complète de matchs ;
+- Profil > Mes champions affiche Champion n°1 et Champion n°2 ;
+- enregistrer un champion fonctionne ;
+- Pronostics / Classements / Phases finales / Admin restent fonctionnels.

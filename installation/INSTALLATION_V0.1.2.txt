@@ -1,0 +1,29 @@
+LE NID DES CHAMPIONS — V0.1.2
+CORRECTIF : ADMIN / SUPER ADMIN PEUVENT PRONOSTIQUER
+
+CAUSE
+-----
+Les cartes de matchs affichées sur l'accueil étaient générées volontairement
+avec editable=false. Elles ressemblaient aux cartes de l'onglet Matchs mais les
+boutons +/- étaient désactivés.
+
+CORRECTION
+----------
+- Accueil : pronostics éditables.
+- Matchs : pronostics éditables.
+- Player / Admin / Super Admin : mêmes droits de jeu si le compte est ACTIVE.
+- Les droits d'administration restent indépendants des droits de pronostic.
+
+INSTALLATION
+------------
+1. Remplacer les fichiers du site par ceux de la V0.1.2 (ou appliquer le correctif).
+2. Exécuter dans Supabase SQL Editor :
+   sql/003_patch_v0.1.2_admins_peuvent_pronostiquer.sql
+3. Faire Ctrl+F5.
+4. Sur mobile/PWA, fermer complètement l'application puis la rouvrir si l'ancien
+   service worker reste affiché.
+
+IMPORTANT
+---------
+Le patch SQL ne donne aucun droit de modification de rôle aux joueurs.
+Il ne concerne que public.predictions, toujours protégé par RLS et auth.uid().

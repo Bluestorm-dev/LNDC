@@ -1,0 +1,10 @@
+LE NID DES CHAMPIONS — V0.4.2
+
+Mise à jour depuis V0.4.1 :
+1. Remplacer les fichiers du front par ceux de la V0.4.2.
+2. Conserver votre config.js réel.
+3. Aucun SQL supplémentaire n’est nécessaire.
+4. Redéployer le site.
+5. Faire Ctrl + F5 afin de vider le cache de la PWA.
+
+Nouveauté : le pays sportif est affiché sous le nom des clubs. AS Monaco est affiché France.

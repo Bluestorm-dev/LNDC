@@ -1,0 +1,26 @@
+LE NID DES CHAMPIONS — V0.1.0
+===============================
+
+1. Créer un NOUVEAU projet Supabase.
+2. Dans SQL Editor, exécuter : sql/001_install_v0.1.0.sql
+3. Dans config.js, remplacer SUPABASE_URL et SUPABASE_ANON_KEY.
+4. Déployer la fonction :
+      supabase functions deploy login-by-username
+5. Dans Supabase Authentication > URL Configuration, déclarer l'URL du site.
+6. Déployer le dossier de la PWA sur ton hébergement.
+7. Créer le compte Parkaf dans l'application et confirmer l'e-mail.
+8. Dans SQL Editor, exécuter :
+      update public.profiles
+      set role='super_admin'
+      where lower(username::text)=lower('Parkaf');
+9. Se déconnecter/reconnecter.
+
+MODE DEMO
+---------
+Tant que config.js contient YOUR_PROJECT, l'application fonctionne localement
+sans Supabase grâce à localStorage.
+Pseudo Admin démo : Parkaf
+Mot de passe : n'importe quelle valeur non vide.
+
+Cette V0.1.0 contient la Journée TEST et quatre matchs fictifs.
+Voir README.md pour tous les détails.

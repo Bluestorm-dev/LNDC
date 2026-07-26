@@ -1,0 +1,68 @@
+LE NID DES CHAMPIONS — CORRECTIF V0.1.1
+========================================
+
+CE CORRECTIF RÈGLE DEUX POINTS :
+1. connexion par pseudo / Edge Function bloquée par CORS-JWT ;
+2. nouvelles inscriptions validées par le Super Admin, et non plus par un clic e-mail.
+
+A — SUPABASE AUTH
+-----------------
+Dans Authentication > Providers > Email :
+- laisser Email activé ;
+- DÉSACTIVER "Confirm email".
+
+Supabase créera alors automatiquement le compte Auth.
+Le Nid créera le profil avec status = pending.
+Le joueur n'entrera pas dans l'application tant que le Super Admin ne l'aura pas autorisé.
+
+B — SQL
+-------
+Dans SQL Editor, avec le rôle POSTGRES / rôle par défaut, exécuter :
+
+  sql/002_patch_v0.1.1_inscriptions_super_admin.sql
+
+Puis, une fois seulement pour ton compte :
+
+  sql/BOOTSTRAP_PARKAF_SUPER_ADMIN.sql
+
+IMPORTANT :
+Ne PAS faire "GRANT UPDATE ON public.profiles TO authenticated".
+
+C — EDGE FUNCTION
+-----------------
+La fonction login-by-username est un endpoint public car elle est appelée AVANT connexion.
+Elle doit donc être déployée avec verify_jwt = false.
+
+Méthode CLI depuis le dossier du projet :
+
+  supabase link --project-ref nwmewsenpaxvxzbjsair
+  supabase functions deploy login-by-username --no-verify-jwt
+
+Le fichier supabase/config.toml contient aussi :
+
+  [functions.login-by-username]
+  verify_jwt = false
+
+Méthode Dashboard :
+- Supabase > Edge Functions
+- créer / ouvrir login-by-username
+- remplacer le code par supabase/functions/login-by-username/index.ts
+- désactiver la vérification JWT pour cette fonction si l'option est affichée
+- Deploy / Deploy updates
+
+D — GITHUB PAGES
+----------------
+Déployer les fichiers V0.1.1 puis faire Ctrl+F5.
+Le service worker utilise un nouveau cache v0.1.1.
+
+NOUVEAU FLUX
+-------------
+Inscription
+  -> compte Auth Supabase créé automatiquement
+  -> profil Nid = pending
+  -> aucun mail de confirmation nécessaire
+  -> Super Admin > Administration > Demandes d'inscription
+  -> Autoriser / Refuser
+  -> si Autoriser : connexion par pseudo + mot de passe possible
+
+Un compte pending/rejected ne peut pas écrire de pronostics même s'il obtient directement une session Auth Supabase.

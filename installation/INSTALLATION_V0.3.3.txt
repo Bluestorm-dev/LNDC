@@ -1,0 +1,54 @@
+LE NID DES CHAMPIONS — INSTALLATION / MISE À JOUR V0.3.3
+============================================================
+
+MISE À JOUR DEPUIS V0.3.2
+-------------------------
+1. Dans Supabase SQL Editor, exécuter :
+   sql/008_patch_v0.3.3_navigation_catalogue_clubs.sql
+   (ou sql/HOTFIX_V0.3.3_EXISTING_DB.sql)
+
+2. Redéployer :
+   supabase/functions/sync-football-data/index.ts
+
+3. Vérifier que le secret FOOTBALL_DATA_API_KEY existe toujours.
+
+4. Déployer le front V0.3.3.
+
+5. Faire Ctrl+F5 pour renouveler le cache PWA.
+   Cache attendu : nid-champions-v0.3.3
+
+6. Admin > Clubs C1 + logos : relancer une fois la synchro C1.
+
+7. Admin > Bibliothèque Top 5 + logos : lancer l'import des clubs courants de :
+   - Ligue 1 (FL1)
+   - Premier League (PL)
+   - Liga (PD)
+   - Serie A (SA)
+   - Bundesliga (BL1)
+
+8. Vérifier les filtres de bibliothèque puis Mon profil > Club de cœur.
+
+9. Exécuter docs/TEST_CHECKLIST_V0.3.3.md.
+
+IMPORTANT
+---------
+- Le catalogue Top 5 ne modifie pas les 144 matchs C1.
+- Un club présent dans plusieurs compétitions n'est stocké qu'une fois dans public.clubs.
+- Les appartenances sont stockées dans public.club_catalog_memberships.
+- La synchro C1 reste comptée séparément à 36 clubs.
+- Les cotes V0.3.2 et sync-odds restent inchangées.
+
+INSTALLATION SUR PROJET SUPABASE NEUF
+-------------------------------------
+1. Exécuter sql/000_INSTALL_FRESH_V0.3.3.sql
+2. Exécuter sql/BOOTSTRAP_PARKAF_SUPER_ADMIN.sql après création du compte initial.
+3. Déployer login-by-username.
+4. Déployer sync-football-data.
+5. Déployer sync-odds uniquement si la source externe de cotes est utilisée.
+6. Configurer config.js.
+7. Déployer le front.
+8. Faire la recette V0.3.3.
+
+VERSION
+-------
+0.3.3

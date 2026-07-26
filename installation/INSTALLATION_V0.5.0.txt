@@ -1,0 +1,32 @@
+LE NID DES CHAMPIONS — V0.5.0 TEAMS
+====================================
+
+MISE À JOUR DEPUIS V0.4.2
+-------------------------
+1. Sauvegarder la base Supabase.
+2. Dans Supabase > SQL Editor, avec le rôle postgres, exécuter :
+   sql/HOTFIX_V0.5.0_EXISTING_DB.sql
+3. Vérifier que la migration termine sans erreur et que app_version vaut 0.5.0.
+4. Déployer les fichiers du front V0.5.0 en conservant les vraies valeurs de config.js.
+5. Faire Ctrl + F5.
+6. Ouvrir Teams, créer une Team de test et suivre docs/TEST_CHECKLIST_V0.5.0.md.
+
+INSTALLATION FRAÎCHE
+-------------------
+Exécuter : sql/000_INSTALL_FRESH_V0.5.0.sql
+puis déployer le front.
+
+STORAGE
+-------
+La migration crée le bucket public team-logos (3 Mo max ; PNG/JPEG/WebP/SVG).
+Les uploads sont rangés dans un dossier portant l'UUID du joueur.
+
+EDGE FUNCTIONS
+--------------
+Aucune nouvelle Edge Function n'est nécessaire pour V0.5.0.
+Les fonctions existantes de V0.4.2 restent inchangées.
+
+IMPORTANT
+---------
+Le ZIP ne peut pas tester votre instance Supabase réelle. Exécuter la checklist multi-utilisateurs
+avant une mise en production publique.

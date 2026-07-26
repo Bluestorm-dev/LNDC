@@ -1,0 +1,56 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.2.0
+==========================================
+
+MISE À JOUR DEPUIS V0.1.2
+--------------------------
+1. Supabase > SQL Editor > rôle postgres/par défaut.
+2. Exécuter : sql/004_patch_v0.2.0_phase_ligue_pronostics.sql
+3. Déployer les fichiers web V0.2.0 sur GitHub Pages.
+4. Déployer l'Edge Function sync-football-data.
+5. Ajouter le secret FOOTBALL_DATA_API_KEY dans Supabase.
+6. Vérifier que login-by-username reste verify_jwt=false.
+7. Faire Ctrl+F5 ou fermer/réouvrir la PWA.
+
+EDGE FUNCTION CLUBS / CALENDRIER
+--------------------------------
+Depuis le CLI Supabase :
+
+  supabase functions deploy sync-football-data
+
+La configuration supabase/config.toml conserve verify_jwt=true pour cette fonction.
+
+Secret à créer :
+
+  supabase secrets set FOOTBALL_DATA_API_KEY=VOTRE_CLE
+
+La fonction est appelée uniquement par un Admin/Super Admin connecté.
+
+DANS L'APPLICATION
+------------------
+Admin > Clubs & calendrier automatique
+
+- Clubs + logos : synchronise les clubs et leurs blasons.
+- Calendrier CL : importe les journées 1 à 8 et les matchs.
+
+Le calendrier importé ne remplace pas un match déjà marqué FINISHED manuellement.
+Les scores restent MANUELS dans cette version.
+
+MODE MANUEL
+-----------
+Sans API, l'Admin peut :
+- créer une journée ;
+- créer un match ;
+- saisir un résultat ;
+- passer un match LIVE ;
+- le reporter avec une nouvelle date ;
+- l'annuler ;
+- le réouvrir.
+
+INSTALLATION SUR PROJET SUPABASE NEUF
+--------------------------------------
+Exécuter : sql/000_INSTALL_FRESH_V0.2.0.sql
+Puis déployer les deux Edge Functions et promouvoir le premier Super Admin.
+
+IMPORTANT
+---------
+Ne jamais mettre FOOTBALL_DATA_API_KEY ou SUPABASE_SERVICE_ROLE_KEY dans config.js.

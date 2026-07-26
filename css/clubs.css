@@ -1,0 +1,8 @@
+/* V0.5.4 — clubs, cotes et pays */
+/* V0.3.3 — Bibliothèque clubs Top 5 & club de cœur */
+.club-library-toolbar{display:flex;align-items:end;justify-content:space-between;gap:14px;margin:15px 0 10px;padding-top:12px;border-top:1px solid rgba(168,185,255,.11)}
+.club-library-toolbar>div{display:grid;gap:3px}.club-library-toolbar small{color:var(--muted);font-size:.72rem}
+.club-library-toolbar select{min-width:190px;border:1px solid var(--line);border-radius:11px;background:rgba(7,12,35,.92);color:#eef3ff;padding:9px 11px;font-weight:800}
+.club-heart-badge,.badge-role:has(.crest){display:inline-flex;align-items:center;gap:7px}.badge-role .crest{width:24px;height:24px;border-radius:7px}.badge-role .crest b{font-size:.48rem}
+.field-help{display:block;margin-top:6px;color:var(--muted);font-size:.68rem;line-height:1.35}
+@media(max-width:620px){.club-library-toolbar{align-items:stretch;display:grid}.club-library-toolbar select{width:100%;min-width:0}}

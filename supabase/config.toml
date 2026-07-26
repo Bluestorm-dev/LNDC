@@ -1,0 +1,12 @@
+# Le Nid des Champions — Supabase Edge Functions
+[functions.login-by-username]
+verify_jwt = false
+
+# Synchronisation football-data.org : réservée aux admins connectés.
+[functions.sync-football-data]
+verify_jwt = true
+
+
+# Complément de cotes 1N2 : réservée aux admins connectés.
+[functions.sync-odds]
+verify_jwt = true

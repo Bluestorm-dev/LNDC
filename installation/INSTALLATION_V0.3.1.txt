@@ -1,0 +1,57 @@
+LE NID DES CHAMPIONS — INSTALLATION / MISE À JOUR V0.3.1
+
+MISE À JOUR DEPUIS V0.3.0
+==========================
+1. Supabase > SQL Editor :
+   exécuter sql/006_patch_v0.3.1_logos_navigation.sql
+
+2. Redéployer l'Edge Function :
+   supabase/functions/sync-football-data/index.ts
+
+3. Vérifier que le secret FOOTBALL_DATA_API_KEY existe toujours.
+
+4. Déployer les fichiers web V0.3.1.
+
+5. Recharger l'application avec Ctrl + F5.
+   Le nouveau cache doit être : nid-champions-v0.3.1
+
+6. Admin > Synchronisation football-data.org :
+   lancer "Clubs + logos" une fois.
+   Attendu : 36 clubs · 36 logos · 8 journées · 144 matchs
+   si le calendrier avait déjà été importé.
+
+7. Ouvrir Journée TEST :
+   les matchs doivent utiliser les mêmes clubs / logos que la liste Football-Data.
+
+8. Tester la saisie :
+   score A -> focus B -> score B -> focus A du match suivant.
+   Les boutons + / - ne doivent pas déplacer le focus.
+
+9. Exécuter docs/TEST_CHECKLIST_V0.3.1.md
+
+
+MISE À JOUR DEPUIS V0.2.0
+=========================
+1. Exécuter sql/005_patch_v0.3.0_classements_live.sql
+2. Exécuter sql/006_patch_v0.3.1_logos_navigation.sql
+3. Redéployer sync-football-data
+4. Déployer les fichiers web V0.3.1
+5. Lancer Clubs + logos puis Calendrier CL
+6. Exécuter les checklists V0.3.0 puis V0.3.1
+
+
+INSTALLATION SUR PROJET SUPABASE NEUF
+=====================================
+1. Exécuter sql/000_INSTALL_FRESH_V0.3.1.sql
+2. Exécuter sql/BOOTSTRAP_PARKAF_SUPER_ADMIN.sql si nécessaire
+3. Déployer login-by-username
+4. Déployer sync-football-data
+5. Configurer FOOTBALL_DATA_API_KEY
+6. Déployer le front
+7. Lancer Clubs + logos
+8. Lancer Calendrier CL
+9. Vérifier 36 clubs / 36 logos / 8 journées / 144 matchs
+
+VERSION
+=======
+0.3.1

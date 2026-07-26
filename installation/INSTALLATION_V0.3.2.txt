@@ -1,0 +1,46 @@
+LE NID DES CHAMPIONS — INSTALLATION / MISE À JOUR V0.3.2
+
+OBJECTIF
+Afficher les cotes pré-match décimales 1 / N / 2 sur les cartes de matchs, sans modifier le barème ni les pronostics.
+
+MISE À JOUR DEPUIS V0.3.1
+1. Dans Supabase > SQL Editor, exécuter :
+   sql/007_patch_v0.3.2_cotes_1n2.sql
+2. Redéployer l'Edge Function :
+   supabase/functions/sync-football-data/index.ts
+3. Optionnel mais recommandé si Football-Data ne fournit pas les cotes :
+   - déployer supabase/functions/sync-odds/index.ts
+   - ajouter le secret Supabase ODDS_API_KEY
+   - mettre ODDS_EXTERNAL_ENABLED: true dans config.js
+   - facultatif : ODDS_API_BOOKMAKERS=Bet365,Unibet
+4. Déployer les fichiers web V0.3.2.
+5. Forcer le renouvellement du cache PWA (Ctrl+F5 ou suppression des données du site).
+6. Dans Admin, lancer « Cotes 1N2 ».
+7. Exécuter docs/TEST_CHECKLIST_V0.3.2.md.
+
+SOURCES DE COTES
+A. FOOTBALL-DATA — PRIORITAIRE
+La réponse Match peut contenir odds.homeWin / odds.draw / odds.awayWin.
+La saison TEST du Nid est construite à partir des vraies rencontres CL 2025/26 puis décalée d'un an ; Football-Data est donc la source la plus cohérente pour ces rencontres TEST.
+Selon l'abonnement Football-Data, l'objet odds peut être absent ou null. Le Nid n'invente alors aucune cote.
+
+B. ODDS-API.IO — COMPLÉMENT OPTIONNEL
+La fonction sync-odds recherche les rencontres Champions League réellement à venir, rapproche les équipes et l'heure de coup d'envoi, puis récupère le marché Match Result / ML.
+Cette source est surtout utile pour une saison réelle. Elle peut ne rien retrouver sur le calendrier TEST 2025/26 transposé artificiellement en 2026/27.
+La clé reste uniquement dans les secrets Supabase ; elle n'est jamais présente dans config.js.
+
+IMPORTANT — ORDRE DE DÉPLOIEMENT
+Le SQL 007 doit être exécuté AVANT de redéployer les fonctions V0.3.2, car celles-ci lisent/écrivent les nouvelles colonnes odds_* de public.matches.
+
+INSTALLATION FRAÎCHE
+1. Exécuter sql/000_INSTALL_FRESH_V0.3.2.sql
+2. Exécuter sql/BOOTSTRAP_PARKAF_SUPER_ADMIN.sql pour promouvoir le premier Super Admin.
+3. Déployer login-by-username et sync-football-data.
+4. Déployer sync-odds si la source externe est utilisée.
+5. Configurer FOOTBALL_DATA_API_KEY.
+6. Optionnel : configurer ODDS_API_KEY et ODDS_API_BOOKMAKERS, puis ODDS_EXTERNAL_ENABLED: true dans config.js.
+7. Déployer le front V0.3.2.
+8. Exécuter docs/TEST_CHECKLIST_V0.3.2.md.
+
+VERSION ATTENDUE
+0.3.2

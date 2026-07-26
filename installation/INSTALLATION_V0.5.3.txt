@@ -1,0 +1,37 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.5.3
+==========================================
+
+MISE À JOUR DEPUIS V0.5.2
+--------------------------
+1. Sauvegarder la base Supabase.
+2. Supabase > SQL Editor > rôle postgres/par défaut.
+3. Exécuter : sql/HOTFIX_V0.5.3_EXISTING_DB.sql
+4. Vérifier la création du bucket Storage : player-avatars.
+5. Déployer les fichiers web V0.5.3 en conservant les vraies clés de config.js.
+6. Faire Ctrl+F5 ou fermer/réouvrir la PWA.
+7. Exécuter la checklist : docs/TEST_CHECKLIST_V0.5.3.md
+
+BASE SUPABASE NEUVE
+-------------------
+Exécuter : sql/000_INSTALL_FRESH_V0.5.3.sql
+Puis déployer les Edge Functions déjà requises par les versions précédentes.
+
+AVATARS
+-------
+- 90 avatars officiels : assets/avatars/nid/
+- Uploads : PNG / JPG / WebP, 3 Mo max.
+- Bucket : player-avatars
+- Chemin d'un upload : <user_uuid>/<timestamp>-<token>.<ext>
+- Un upload devient pending jusqu'à validation Admin.
+- Avant validation, les vues publiques continuent d'afficher l'avatar officiel du joueur.
+
+RLS / MODÉRATION
+----------------
+Le joueur ne peut écrire que dans son propre dossier Storage.
+Les colonnes de modération du profil ne sont pas modifiables directement par le joueur ; elles passent par les RPC V0.5.3.
+Admin et Super Admin disposent du panneau « Modération des avatars ».
+Les décisions approve/reject sont journalisées dans audit_logs.
+
+AUCUNE NOUVELLE EDGE FUNCTION
+-----------------------------
+La V0.5.3 n'ajoute aucune Edge Function.

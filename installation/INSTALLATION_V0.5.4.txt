@@ -1,0 +1,70 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.5.4
+==========================================
+
+OBJET DE LA VERSION
+-------------------
+V0.5.4 est une réorganisation FRONT-ONLY du projet.
+Aucune table, colonne, politique RLS, RPC ou Edge Function n'est ajoutée.
+La base Supabase reste celle de la V0.5.3.
+
+MISE À JOUR DEPUIS V0.5.3
+--------------------------
+1. Conserver la base Supabase V0.5.3 telle quelle.
+2. Conserver les vraies valeurs de config.js.
+3. Remplacer le front par les fichiers V0.5.4.
+4. Vérifier que les anciens dossiers assets/js et assets/css n'existent plus.
+5. Vérifier que les nouveaux dossiers js/ et css/ sont bien publiés.
+6. Faire Ctrl+F5 ou fermer/réouvrir la PWA afin de vider l'ancien cache V0.5.3.
+7. Exécuter : node tests/release-v0.5.4.mjs
+8. Suivre : docs/TEST_CHECKLIST_V0.5.4.md
+
+NOUVELLE ORGANISATION
+---------------------
+Racine :
+- index.html
+- config.js / config.example.js
+- manifest.webmanifest
+- sw.js
+- README.md / CHANGELOG.md / VERSION
+
+js/ :
+- core.js          état partagé, utilitaires et composants génériques
+- avatars.js       catalogue et rendu des avatars
+- teams.js         logique et interface Teams
+- auth.js          connexion, inscription et contrôles d'accès
+- data.js          chargement Supabase/démo et données de classement
+- champions.js     champions et phases finales
+- profile.js       profil et éditeur d'avatar
+- predictions.js   accueil, matchs et pronostics
+- ranking.js       historique, classements et live
+- admin.js         administration
+- realtime.js      synchronisation Realtime et pronostics révélés
+- app.js           orchestration, événements globaux et démarrage
+
+css/ :
+- base.css
+- predictions.css
+- ranking.css
+- clubs.css
+- champions.css
+- layout.css
+- teams.css
+- avatars.css
+
+installation/ :
+- toutes les notices INSTALLATION_V*.txt, anciennes et actuelle
+
+assets/ :
+- uniquement les ressources statiques : avatars, icônes, branding et manifest assets.
+
+BASE NEUVE
+----------
+La V0.5.4 ne change pas le schéma.
+Pour un nouveau projet Supabase, utiliser toujours :
+  sql/000_INSTALL_FRESH_V0.5.3.sql
+puis déployer le front V0.5.4.
+
+GITHUB
+------
+Cette structure permet d'envoyer le dépôt dossier par dossier depuis l'interface web GitHub.
+Le dossier assets/avatars/nid contient 90 PNG et peut être envoyé séparément des autres dossiers.

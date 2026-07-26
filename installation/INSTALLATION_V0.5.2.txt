@@ -1,0 +1,37 @@
+LE NID DES CHAMPIONS — V0.5.2
+===================================
+
+OBJET
+-----
+V0.5.2 est une mise à jour UX/UI du module Teams V0.5.0.
+
+PRÉREQUIS
+---------
+La base doit déjà contenir la migration V0.5.0 Teams :
+  sql/HOTFIX_V0.5.0_EXISTING_DB.sql
+ou avoir été créée avec :
+  sql/000_INSTALL_FRESH_V0.5.0.sql
+
+MISE À JOUR DEPUIS V0.5.0
+-------------------------
+1. Sauvegarder le front actuel.
+2. Remplacer index.html, assets/css/app.css, assets/js/app.js, sw.js et les autres fichiers du front.
+3. Conserver vos vraies valeurs Supabase dans config.js.
+4. Aucun nouveau SQL n'est nécessaire.
+5. Aucun redéploiement d'Edge Function n'est nécessaire.
+6. Faire Ctrl + F5.
+
+CORRECTIONS PRINCIPALES
+-----------------------
+- atelier Team large, options non compressées ;
+- aperçu séparé sur desktop ;
+- cadres/matières qui épousent la forme ;
+- logos de bibliothèque transparents ;
+- mode 1 couleur / 2 couleurs ;
+- presets rapides ;
+- aperçu blason / avatar / classement / carte Team ;
+- responsive amélioré.
+
+RECETTE
+-------
+Utiliser docs/TEST_CHECKLIST_V0.5.2.md.
