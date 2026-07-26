@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#060a24" />
+  <meta name="description" content="Le Nid des Champions — PWA de pronostics européens." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/icons/icon-192.png" />
+    <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/predictions.css" />
+  <link rel="stylesheet" href="css/ranking.css" />
+  <link rel="stylesheet" href="css/clubs.css" />
+  <link rel="stylesheet" href="css/champions.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/teams.css" />
+  <link rel="stylesheet" href="css/avatars.css" />
+  <title>Le Nid des Champions</title>
+</head>
+<body>
+  <div id="authScreen" class="auth-wrap">
+    <section class="card auth-card">
+      <div class="auth-logo">
+        <img src="assets/icons/icon-192.png" alt="Le Nid des Champions" />
+        <h1>Le Nid des Champions</h1>
+        <p>Classements, soirées européennes et LIVE dans le même Nid. 🦉🏆</p>
+      </div>
+      <div id="configWarning" class="demo-banner hidden"></div>
+      <div class="tabs">
+        <button id="tabLogin" class="active" type="button">Connexion</button>
+        <button id="tabRegister" type="button">Créer un compte</button>
+      </div>
+
+      <form id="loginForm">
+        <div class="field"><label for="loginUsername">Pseudo</label><input id="loginUsername" autocomplete="username" required placeholder="Parkaf" /></div>
+        <div class="field"><label for="loginPassword">Mot de passe</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="••••••••" /></div>
+        <button class="btn" style="width:100%" type="submit">Entrer dans le Nid</button>
+        <div id="loginMsg" class="form-msg"></div>
+        <div class="actions">
+          <button id="forgotBtn" class="btn secondary small" type="button">Mot de passe oublié</button>
+          <button id="helpPasswordBtn" class="btn secondary small" type="button">Demander au Hibou</button>
+        </div>
+      </form>
+
+      <form id="registerForm" class="hidden">
+        <div class="field"><label for="regUsername">Pseudo public</label><input id="regUsername" maxlength="24" required placeholder="Ton pseudo" /></div>
+        <div class="field"><label for="regFirstName">Prénom <span class="muted">(visible seulement par les admins)</span></label><input id="regFirstName" maxlength="60" placeholder="Facultatif" /></div>
+        <div class="field"><label for="regEmail">Adresse e-mail réelle</label><input id="regEmail" type="email" autocomplete="email" required placeholder="toi@exemple.fr" /></div>
+        <div class="field"><label for="regPassword">Mot de passe</label><input id="regPassword" type="password" minlength="8" autocomplete="new-password" required /></div>
+        <button class="btn" style="width:100%" type="submit">Créer mon compte</button>
+        <div id="registerMsg" class="form-msg"></div>
+      </form>
+    </section>
+  </div>
+
+  <main id="appScreen" class="app-shell hidden">
+    <aside class="sidebar" aria-label="Navigation principale">
+      <div class="sidebar-brand">
+        <img src="assets/icons/icon-192.png" alt="" />
+        <div><strong>Le Nid des Champions</strong><span id="seasonLabel">Champions League 2026–27</span></div>
+      </div>
+
+      <nav class="side-nav">
+        <button data-view="home" class="active"><span class="nav-icon">⌂</span><span>Accueil</span></button>
+        <button data-view="matches"><span class="nav-icon">⚽</span><span>Pronostics</span></button>
+        <button data-view="knockout"><span class="nav-icon">⚔</span><span>Phases finales</span></button>
+        <button data-view="ranking"><span class="nav-icon">#</span><span>Classements</span></button>
+        <button data-view="season"><span class="nav-icon">◇</span><span>Saison</span></button>
+        <button data-view="teams"><span class="nav-icon">🛡</span><span>Teams</span></button>
+        <button data-view="profile"><span class="nav-icon">♙</span><span>Profil</span></button>
+        <button data-view="admin" id="adminNav" class="hidden"><span class="nav-icon">⚙</span><span>Admin</span></button>
+      </nav>
+
+      <div class="sidebar-spacer"></div>
+      <button class="sidebar-profile" type="button" data-view="profile">
+        <span id="sidebarUserAvatar" class="sidebar-avatar">P</span>
+        <span class="sidebar-profile-copy"><strong id="sidebarUserName">—</strong><small id="sidebarUserClub">Club de cœur : —</small></span>
+        <span class="sidebar-chevron">›</span>
+      </button>
+      <div class="sidebar-foot"><span class="status-dot"></span><span>Le Nid est connecté</span><small>V0.5.4</small></div>
+    </aside>
+
+    <section class="workspace">
+      <header class="topbar">
+        <div class="mobile-brand"><img src="assets/icons/icon-192.png" alt="" /><strong>Le Nid des Champions</strong></div>
+        <div class="page-heading"><span class="eyebrow">Champions League</span><h1 id="pageTitle">Accueil</h1></div>
+        <div class="actions desktop-actions">
+          <span id="backendStatus" class="status-chip"><i class="status-dot"></i><span>Supabase</span></span>
+          <button id="logoutBtn" class="btn secondary small">Déconnexion</button>
+        </div>
+      </header>
+
+      <div id="demoBanner" class="demo-banner hidden"></div>
+      <div id="liveTicker" class="live-ticker hidden" aria-live="polite"></div>
+
+    <section id="view-home" class="view">
+      <article class="home-hero card">
+        <div class="home-hero-copy">
+          <span class="eyebrow gold">Soirées européennes · V0.5.4</span>
+          <h2 id="welcomeTitle">Bienvenue dans le Nid européen.</h2>
+          <p id="welcomeText">Tout ce qui compte maintenant, sans dérouler tout le calendrier sous ton bec.</p>
+          <div class="home-actions"><button class="btn" data-jump="matches">Faire mes pronostics</button><button class="btn secondary" data-jump="profile">Mon profil & mes champions</button></div>
+        </div>
+        <div class="home-orbit" aria-hidden="true"><i></i><i></i><i></i><span>★</span></div>
+      </article>
+
+      <div class="home-kpi-strip">
+        <article class="home-kpi"><span>Rang</span><strong id="kpiRank">—</strong><small>classement général</small></article>
+        <article class="home-kpi"><span>Points</span><strong id="kpiPoints">0</strong><small>total actuel</small></article>
+        <article class="home-kpi"><span>Journée</span><strong id="kpiProgress">0/0</strong><small>pronostics saisis</small></article>
+      </div>
+
+      <div class="home-dashboard">
+        <article class="card home-next-card">
+          <div class="home-card-head"><div><span class="eyebrow">Prochain rendez-vous</span><h3>À jouer</h3></div><button id="homeNextAction" class="text-action" type="button">Voir les pronostics →</button></div>
+          <div id="homeNextMatch" class="home-next-body"><div class="empty">Le calendrier se prépare.</div></div>
+        </article>
+
+        <article class="card home-progress-card">
+          <div class="home-card-head"><div><span class="eyebrow">Ma journée</span><h3 id="homeProgressTitle">Progression</h3></div><span id="homeProgressBadge" class="chip">0/0</span></div>
+          <div class="home-progress-ring"><div id="homeProgressRing" class="progress-ring" style="--progress:0"><strong id="homeProgressPct">0%</strong><span>complété</span></div><div><p id="homeProgressText" class="muted">Aucun pronostic à compléter.</p><button class="btn small" data-jump="matches">Continuer</button></div></div>
+        </article>
+
+        <article class="card home-champion-card">
+          <div class="home-card-head"><div><span class="eyebrow gold">Mes champions</span><h3>La grande intuition</h3></div><button class="text-action gold" data-jump="profile">Gérer →</button></div>
+          <div id="homeChampionSummary" class="home-champion-summary"><div class="empty">Chargement…</div></div>
+        </article>
+
+        <article class="card home-owl-card hibou">
+          <img class="home-owl-mark home-owl-image" src="assets/branding/owl/owl-masked-main.png" alt="Hibou masqué" /><div><span class="eyebrow gold">Le Hibou masqué</span><blockquote id="hibouMessage">« Les casseroles ont déjà réservé leur soirée. »</blockquote></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="view-matches" class="view hidden">
+      <div class="section-title"><div><h3>Phase de ligue & pronostics</h3><p>Les scores sont modifiables jusqu'au coup d'envoi. Les journées UEFA restent indépendantes des jours calendaires.</p></div><span id="matchdayProgressChip" class="chip">0/0</span></div>
+      <div id="matchdayTabs" class="matchday-tabs" aria-label="Journées UEFA"></div>
+      <article id="matchesPanel" class="card"></article>
+      <div class="section-title"><div><h3>Mon historique</h3><p>Pronostics déjà joués, résultats et points obtenus.</p></div><span id="historyCount" class="chip">0</span></div>
+      <article id="historyPanel" class="card history-list"></article>
+    </section>
+
+
+    <section id="view-knockout" class="view hidden">
+      <div class="knockout-hero card card-pad"><div><span class="eyebrow">Phases finales · V0.5.4</span><h2>Du barrage à la coupe.</h2><p class="muted">Aller-retour, cumul, score à 120 minutes, tirs au but et qualifié. Le tableau se propage automatiquement quand une confrontation est terminée.</p></div><span class="ko-live-mark">⚔️</span></div>
+      <div id="knockoutPhaseTabs" class="knockout-phase-tabs"></div>
+      <div id="knockoutSummary" class="knockout-summary"></div>
+      <div id="knockoutPanel" class="knockout-grid"><article class="card card-pad"><div class="empty">Le tableau des phases finales n'est pas encore installé.</div></article></div>
+    </section>
+
+    <section id="view-ranking" class="view hidden">
+      <div class="ranking-hero card card-pad">
+        <div>
+          <span class="eyebrow">Classements & Live</span>
+          <h2>La table européenne du Nid</h2>
+          <p id="rankingSubtitle" class="muted">Classement général, départages complets et mouvements en direct.</p>
+        </div>
+        <div id="rankingLiveBadge" class="ranking-live-badge"><span class="pulse-dot"></span><b>HORS LIVE</b><small>Aucun match en cours</small></div>
+      </div>
+
+      <div class="leaderboard-toolbar" id="rankingTabs" aria-label="Type de classement">
+        <button type="button" class="active" data-ranking-scope="general">Général</button>
+        <button type="button" data-ranking-scope="matchday">Journée</button>
+        <button type="button" data-ranking-scope="evening">Soirée</button>
+        <button type="button" data-ranking-scope="precision">Précision</button>
+        <button type="button" data-ranking-scope="exacts">Exacts</button>
+      </div>
+
+      <div id="rankingContext" class="ranking-context"></div>
+      <div id="myRankingSticky" class="my-ranking-sticky hidden" aria-live="polite"></div>
+      <article class="card table-wrap premium-ranking-wrap">
+        <table class="ranking premium-ranking">
+          <thead><tr><th>#</th><th>Δ</th><th>Joueur</th><th>Pts</th><th>Exacts</th><th>Préc.</th><th>Moy.</th><th>Écart</th><th>Joués</th></tr></thead>
+          <tbody id="rankingBody"></tbody>
+        </table>
+      </article>
+
+      <div class="section-title"><div><h3>Le pouls du Nid</h3><p>Tendances collectives calculées uniquement sur les pronostics déjà verrouillés.</p></div><span id="collectiveScopeChip" class="chip">Général</span></div>
+      <div class="collective-grid">
+        <article class="card collective-card"><span class="eyebrow">Issue pronostiquée</span><div class="outcome-bars"><div><span>1</span><i><b id="pickHomeBar"></b></i><strong id="pickHomePct">0%</strong></div><div><span>N</span><i><b id="pickDrawBar"></b></i><strong id="pickDrawPct">0%</strong></div><div><span>2</span><i><b id="pickAwayBar"></b></i><strong id="pickAwayPct">0%</strong></div></div></article>
+        <article class="card collective-card"><span class="eyebrow">Scores les plus joués</span><div id="topScores" class="top-scores"><span class="muted">Aucune donnée verrouillée.</span></div></article>
+        <article class="card collective-card reliability"><span class="eyebrow">Fiabilité du Nid</span><b id="reliabilityPct">0%</b><p id="reliabilityText">Les résultats vont bientôt tester les plumes.</p></article>
+      </div>
+    </section>
+
+    <section id="view-season" class="view hidden">
+      <div class="section-title"><div><h3>Saison</h3><p>Phase de ligue, éliminations et chemin complet jusqu’à la finale.</p></div></div>
+      <div class="grid grid-2">
+        <article class="card card-pad"><span class="eyebrow">Saison active</span><h3 id="seasonName">Champions League 2026–27</h3><p class="muted">Statut : <strong id="seasonStatus">préparation</strong></p><p>Barème : <b>0 / 3 / 5 / 7</b></p></article>
+        <article class="card card-pad"><span class="eyebrow">Progression</span><h3 id="seasonProgressTitle">0 journée</h3><p id="seasonProgressText" class="muted">Le calendrier attend ses premières rencontres.</p></article>
+      </div>
+      <div class="section-title"><div><h3>Calendrier</h3><p>Journées UEFA, dates françaises et état des rencontres.</p></div></div>
+      <article id="seasonCalendar" class="card card-pad"></article>
+    </section>
+
+
+    <section id="view-teams" class="view hidden">
+      <div class="teams-hero card card-pad">
+        <div>
+          <span class="eyebrow gold">V0.5.4 · Communautés</span>
+          <h2>Les Teams du Nid</h2>
+          <p class="muted">Une seule Team par saison. Une identité commune, des cadres reconnaissables et trois classements dédiés.</p>
+        </div>
+        <img class="teams-hero-owl" src="assets/branding/owl/owl-masked-main.png" alt="Hibou masqué" />
+      </div>
+
+      <div id="myTeamPanel"></div>
+
+      <div class="section-title"><div><span class="eyebrow">Classements Teams</span><h3>Qui domine le Nid ?</h3><p>Moyenne générale, Top 3 et performance de la journée UEFA sélectionnée.</p></div><span id="teamRankingScopeChip" class="chip">Moyenne</span></div>
+      <div class="leaderboard-toolbar team-ranking-tabs" id="teamRankingTabs">
+        <button type="button" class="active" data-team-ranking="average">Moyenne</button>
+        <button type="button" data-team-ranking="top3">Top 3</button>
+        <button type="button" data-team-ranking="matchday">Journée</button>
+      </div>
+      <div id="teamLeaderboard" class="team-leaderboard"></div>
+
+      <div class="section-title"><div><span class="eyebrow">Annuaire</span><h3>Trouve ton Nid</h3><p>Les Teams privées restent visibles mais leur entrée est contrôlée par le capitaine ou un code d'invitation.</p></div><div class="actions"><button id="createTeamBtn" class="btn gold small">Créer une Team</button><button id="joinByCodeBtn" class="btn secondary small">J'ai un code</button></div></div>
+      <div class="team-directory-toolbar"><input id="teamSearchInput" type="search" placeholder="Rechercher une Team…"><select id="teamVisibilityFilter"><option value="all">Toutes</option><option value="public">Publiques</option><option value="private">Privées</option></select></div>
+      <div id="teamDirectory" class="team-directory"></div>
+    </section>
+
+    <section id="view-profile" class="view hidden">
+      <div class="section-title profile-title"><div><span class="eyebrow">Mon espace</span><h3>Profil & champions</h3><p>Ton identité dans le Nid et tes deux paris les plus importants de la saison.</p></div></div>
+
+      <article class="card profile-card card-pad">
+        <div class="profile-head"><div id="profileAvatar" class="profile-avatar-host">🦉</div><div><h2 id="profileUsername" style="margin:0">—</h2><div class="actions" style="margin-top:6px"><span id="profileRole" class="badge-role">joueur</span><span id="profileClub" class="badge-role">Club de cœur : —</span></div></div></div>
+        <div class="grid grid-2 profile-fields" style="margin-top:18px">
+          <div class="field"><label for="profileUsernameInput">Pseudo</label><input id="profileUsernameInput" maxlength="24" /></div>
+          <div class="field"><label for="profileClubInput">Club de cœur</label><input id="profileClubInput" list="clubHeartOptions" maxlength="80" placeholder="Commence à taper le nom du club…" /><datalist id="clubHeartOptions"></datalist><small class="field-help">Champions League + Ligue 1, Premier League, Liga, Serie A et Bundesliga après synchronisation Admin.</small></div>
+        </div>
+        <div class="actions"><button id="saveProfileBtn" class="btn">Enregistrer le profil</button><button id="profileAdminBtn" class="btn secondary hidden" type="button">Ouvrir l’administration</button></div>
+        <div id="profileMsg" class="form-msg"></div>
+      </article>
+
+      <div class="section-title avatar-profile-title"><div><span class="eyebrow">Identité visuelle</span><h3>Mon avatar</h3><p>Choisis un Hibou officiel ou envoie ton propre PNG/JPG/WebP. Les uploads personnels passent par la modération Admin.</p></div><span class="chip">V0.5.4</span></div>
+      <article id="avatarEditor" class="card card-pad avatar-editor-card-v053"><div class="empty">Chargement de la bibliothèque…</div></article>
+
+      <div class="section-title profile-team-title"><div><span class="eyebrow">Communauté</span><h3>Ma Team</h3><p>Ton appartenance actuelle et son identité visuelle.</p></div></div>
+      <article id="profileTeamCard" class="card card-pad profile-team-card"><div class="empty">Chargement…</div></article>
+
+      <div class="section-title champions-profile-title"><div><span class="eyebrow gold">Pronostic saison</span><h3>Mes champions</h3><p>Le choix n°1 vaut 100 points. Le choix n°2 vaut 50 points lorsqu'il s'ouvre après la phase de ligue.</p></div><span class="chip">CHOIX CACHÉS</span></div>
+      <div class="champion-grid profile-champion-grid">
+        <article class="card champion-card" id="championFirstCard"><div class="champion-card-head"><span class="champion-number">1</span><div><span class="eyebrow">Champion initial</span><h3>+100 points</h3></div><span id="championFirstLock" class="chip">—</span></div><div id="championFirstBody"></div></article>
+        <article class="card champion-card" id="championSecondCard"><div class="champion-card-head"><span class="champion-number second">2</span><div><span class="eyebrow">Deuxième champion</span><h3>+50 points</h3></div><span id="championSecondLock" class="chip">—</span></div><div id="championSecondBody"></div></article>
+      </div>
+      <div class="champion-profile-note"><span>🔒</span><p><b>Secret jusqu'au verrouillage.</b> Les autres joueurs ne voient pas tes choix tant que la fenêtre correspondante reste ouverte. Si le premier choix est oublié, l'OM est attribué automatiquement.</p></div>
+      <details class="card champion-board-details"><summary>Voir les choix du Nid après verrouillage</summary><article id="championBoard" class="card-pad champion-board"><div class="empty">Les plumes sont encore rabattues sur les parchemins.</div></article></details>
+    </section>
+
+    <section id="view-admin" class="view hidden">
+      <div class="section-title"><div><h3>Administration</h3><p>Saisie des scores LIVE, résultats finaux et pilotage du calendrier européen.</p></div><span class="chip">V0.5.4</span></div>
+      <div class="grid grid-2">
+        <article class="card card-pad"><span class="eyebrow">Saison</span><h3>Compétition complète</h3><p class="muted">Phase de ligue, barrages, huitièmes, quarts, demies et finale.</p></article>
+        <article class="card card-pad"><span class="eyebrow">Résultats</span><h3>LIVE MANUAL</h3><p class="muted">L'Admin saisit les scores en direct. Le classement provisoire est recalculé immédiatement côté serveur.</p></article>
+      </div>
+      <div class="section-title"><div><h3>Clubs, calendrier & cotes</h3><p>Football-Data synchronise la Champions League et une bibliothèque indépendante de clubs/logos pour Ligue 1, Premier League, Liga, Serie A et Bundesliga ; les cotes pré-match 1N2 restent gérées séparément.</p></div><span class="chip">ADMIN</span></div>
+      <article class="card card-pad">
+        <div class="admin-sync-row">
+          <div><strong>Synchronisation football-data.org · saison test 2025/26</strong><p class="muted">La source C1 de test reste forcée sur 2025/26 puis décalée en 2026/27. La bibliothèque Top 5, elle, récupère les équipes courantes des cinq championnats et ne modifie jamais le calendrier C1. Aucun résultat historique n’est importé. Les cotes n’influencent jamais le barème des pronostics.</p></div>
+          <div class="actions"><button id="syncClubsBtn" class="btn small">Clubs C1 + logos</button><button id="syncClubCatalogBtn" class="btn gold small">Bibliothèque Top 5 + logos</button><button id="syncCalendarBtn" class="btn secondary small">Calendrier CL</button><button id="syncOddsBtn" class="btn secondary small">Cotes 1N2</button></div>
+        </div>
+        <div id="syncStatus" class="form-msg"></div>
+        <div class="club-library-toolbar">
+          <div><strong>Bibliothèque de clubs</strong><small id="clubLibrarySummary">Champions League</small></div>
+          <select id="clubPreviewFilter" aria-label="Championnat affiché">
+            <option value="CL">Champions League</option>
+            <option value="FL1">Ligue 1</option>
+            <option value="PL">Premier League</option>
+            <option value="PD">Liga</option>
+            <option value="SA">Serie A</option>
+            <option value="BL1">Bundesliga</option>
+            <option value="ALL">Tous les clubs</option>
+          </select>
+        </div>
+        <div id="clubPreview" class="club-preview"></div>
+      </article>
+
+      <div class="section-title"><div><h3>Champions & phases finales</h3><p>Prépare le tableau, règle les multiplicateurs et teste toute la compétition jusqu'à la finale.</p></div><span class="chip">V0.5.4</span></div>
+      <article class="card card-pad knockout-admin-card">
+        <div class="admin-sync-row"><div><strong>Moteur phases finales</strong><p class="muted">Le générateur TEST crée 8 barrages, 8 huitièmes, 4 quarts, 2 demies et 1 finale. Les gagnants sont reportés automatiquement dans le tour suivant.</p></div><div class="actions"><button id="seedKnockoutBtn" class="btn gold small">Générer tableau TEST</button><button id="assignDefaultChampionBtn" class="btn secondary small">Attribuer OM aux oublis</button></div></div>
+        <div id="knockoutAdminStatus" class="form-msg"></div>
+        <div class="section-title compact"><div><h4>Multiplicateurs par phase</h4><p>x1 / x2 / x3 / x4, appliqués aux matchs à venir.</p></div></div>
+        <div id="adminPhaseMultipliers" class="phase-multiplier-grid"></div>
+        <div class="section-title compact"><div><h4>Créer une confrontation réelle</h4><p>Pour saisir le tirage officiel d'un tour sans utiliser le générateur TEST.</p></div></div>
+        <div class="ko-builder-grid">
+          <div class="field"><label>Phase</label><select id="adminKoPhase"></select></div>
+          <div class="field"><label>Code</label><input id="adminKoCode" placeholder="ex. R16-1"></div>
+          <div class="field"><label>Libellé</label><input id="adminKoLabel" placeholder="Huitième 1"></div>
+          <div class="field"><label>Club A</label><select id="adminKoTeamA"></select></div>
+          <div class="field"><label>Club B</label><select id="adminKoTeamB"></select></div>
+          <div class="field"><label>Aller / match unique</label><input id="adminKoLeg1" type="datetime-local"></div>
+          <div class="field" id="adminKoLeg2Field"><label>Retour</label><input id="adminKoLeg2" type="datetime-local"></div>
+          <label class="ko-single-toggle"><input id="adminKoSingle" type="checkbox"> Match unique (finale)</label>
+        </div>
+        <button id="createKnockoutTieBtn" class="btn small">Créer / mettre à jour la confrontation</button>
+      </article>
+      <div class="section-title"><div><h3>Gestion phases finales</h3><p>Score final du match = score à 120 minutes lorsqu'il y a prolongation. Les tirs au but sont saisis à part.</p></div></div>
+      <article id="adminKnockoutMatches" class="card card-pad"><div class="empty">Aucune confrontation.</div></article>
+
+
+      <div class="section-title"><div><h3>Modération des avatars</h3><p>Valide ou refuse les images personnelles avant leur affichage public dans le Nid.</p></div><span class="chip">ADMIN</span></div>
+      <article id="avatarModerationPanel" class="card card-pad avatar-moderation-panel"><div class="empty">Chargement…</div></article>
+
+      <div class="section-title"><div><h3>Gestion des Teams</h3><p>Annuaire, membres, capitaine, identité et historique. Les interventions administratives restent journalisées.</p></div><span class="chip">V0.5.4</span></div>
+      <article class="card card-pad">
+        <div class="admin-sync-row"><div><strong>Communautés du Nid</strong><p class="muted">Recherche une Team et ouvre sa fiche. Les capitaines gèrent normalement leur propre communauté ; l'Admin intervient uniquement en correction ou modération.</p></div><input id="adminTeamSearch" class="admin-team-search" type="search" placeholder="Nom ou capitaine…"></div>
+        <div id="adminTeamsPanel" class="admin-teams-panel"><div class="empty">Chargement…</div></div>
+      </article>
+
+      <div class="section-title"><div><h3>Créer manuellement</h3><p>Le mode manuel reste toujours disponible, même sans API.</p></div></div>
+      <article class="card card-pad admin-builder">
+        <div class="grid grid-2">
+          <div><h4>Nouvelle journée</h4><div class="field"><label>Numéro</label><input id="adminMdNumber" type="number" min="1" max="99" value="1"></div><div class="field"><label>Nom</label><input id="adminMdName" value="Journée 1"></div><button id="createMatchdayBtn" class="btn small">Créer la journée</button></div>
+          <div><h4>Nouveau match</h4><div class="field"><label>Journée</label><select id="adminMatchdaySelect"></select></div><div class="grid grid-2"><div class="field"><label>Domicile</label><select id="adminHomeClub"></select></div><div class="field"><label>Extérieur</label><select id="adminAwayClub"></select></div></div><div class="field"><label>Coup d'envoi (heure française)</label><input id="adminKickoff" type="datetime-local"></div><div class="field"><label>Stade</label><input id="adminStadium" placeholder="Facultatif"></div><button id="createMatchBtn" class="btn small">Ajouter le match</button></div>
+        </div>
+      </article>
+      <section id="registrationAdminSection" class="hidden">
+        <div class="section-title"><div><h3>Demandes d'inscription</h3><p>Supabase crée le compte, mais seul le Super Admin ouvre la porte du Nid.</p></div><span class="chip">SUPER ADMIN</span></div>
+        <article id="registrationRequests" class="card card-pad"><div class="empty">Chargement…</div></article>
+      </section>
+      <div class="section-title"><div><h3>Gestion des rencontres</h3><p>Passe un match LIVE, saisis son score, mets-le à jour autant de fois que nécessaire puis termine-le. Les classements suivent en temps réel.</p></div></div>
+      <div id="adminMatchdayTabs" class="matchday-tabs"></div>
+      <article id="adminMatches" class="card card-pad"></article>
+    </section>
+    </section>
+
+    <nav class="bottom-nav" aria-label="Navigation mobile">
+      <button data-view="home" class="active"><span>⌂</span>Accueil</button>
+      <button data-view="matches"><span>⚽</span>Matchs</button>
+      <button data-view="knockout"><span>⚔️</span>Phases</button>
+      <button data-view="ranking"><span>🏆</span>Classement</button>
+      <button data-view="season"><span>✦</span>Saison</button>
+      <button data-view="teams"><span>🛡</span>Teams</button>
+      <button data-view="profile"><span>🦉</span>Profil</button>
+    </nav>
+  </main>
+
+  <div id="modalRoot"></div>
+  <div id="toastStack" class="toast-stack"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/avatars.js"></script>
+  <script src="js/teams.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/champions.js"></script>
+  <script src="js/profile.js"></script>
+  <script src="js/predictions.js"></script>
+  <script src="js/ranking.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/realtime.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
