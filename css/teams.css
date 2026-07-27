@@ -366,3 +366,130 @@
   .team-home-banner:before{opacity:.13;inset:-36%;transform:scale(1.25)}
   .team-home-banner:after{background:linear-gradient(90deg,rgba(3,9,25,.82),rgba(4,10,27,.70),rgba(3,8,22,.82))}
 }
+
+/* ========================================================================== 
+   V0.6.3 — Team = couleur d'abord, bleu du Nid ensuite
+   ========================================================================== */
+/* Le cadre Team doit être identifiable avant même de lire le nom. */
+.team-avatar.unified-player-avatar,
+.team-avatar{
+  width:52px;height:52px;flex-basis:52px;
+}
+.team-avatar>.avatar{
+  width:35px!important;height:35px!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.team-avatar:before{inset:3px}
+.team-avatar>i.team-avatar-mark,
+.team-avatar>i{
+  width:20px;height:20px;right:-2px;bottom:-2px;
+  border-radius:50%;
+  background:rgba(3,8,20,.88);
+  border:1px solid rgba(255,255,255,.32);
+  box-shadow:0 3px 8px rgba(0,0,0,.42);
+  backdrop-filter:blur(3px);
+}
+.team-avatar .team-logo{width:18px;height:18px;font-size:.72rem}
+
+/* Accueil : beaucoup plus de badge Team autour du hibou. */
+.home-hero-avatar>.team-avatar{width:180px;height:180px;flex-basis:180px}
+.home-hero-avatar>.team-avatar>.avatar{width:124px!important;height:124px!important}
+.home-hero-avatar>.team-avatar:before{inset:7px}
+.home-hero-avatar>.team-avatar>i{width:38px;height:38px;right:0;bottom:0}
+.home-hero-avatar>.team-avatar .team-logo{width:34px;height:34px;font-size:1.22rem}
+
+/* Rang / listes : le composant conserve les mêmes proportions. */
+.player-cell>.team-avatar{width:46px;height:46px;flex-basis:46px}
+.player-cell>.team-avatar>.avatar{width:31px!important;height:31px!important}
+.my-ranking-sticky .sticky-name>.team-avatar{width:42px;height:42px;flex-basis:42px}
+.my-ranking-sticky .sticky-name>.team-avatar>.avatar{width:28px!important;height:28px!important}
+.team-member-row .team-avatar,.team-request-row .team-avatar{width:46px;height:46px;flex-basis:46px}
+.team-member-row .team-avatar>.avatar,.team-request-row .team-avatar>.avatar{width:31px!important;height:31px!important}
+.nid-prediction-row .team-avatar{width:40px;height:40px;flex-basis:40px}
+.nid-prediction-row .team-avatar>.avatar{width:27px!important;height:27px!important}
+
+/* Bandeau principal : inspiré de l'ancienne appli, teinté par la Team. */
+.team-home-banner{
+  background:
+    linear-gradient(118deg,
+      color-mix(in srgb,var(--team-primary) 82%,#050813),
+      color-mix(in srgb,var(--team-primary) 60%,var(--team-secondary)) 48%,
+      color-mix(in srgb,var(--team-secondary) 66%,#050813))!important;
+  box-shadow:inset 5px 0 0 color-mix(in srgb,var(--team-primary) 88%,white),inset 0 -1px 0 rgba(255,255,255,.08);
+}
+.team-home-banner:before{
+  opacity:.27!important;
+  filter:saturate(.92) brightness(.82)!important;
+  inset:-38%!important;
+  transform:scale(1.3)!important;
+}
+.team-home-banner:after{
+  background:
+    linear-gradient(90deg,rgba(3,7,18,.46),rgba(3,7,18,.22) 58%,rgba(3,7,18,.34)),
+    radial-gradient(circle at 82% 12%,rgba(255,255,255,.12),transparent 34%)!important;
+}
+.team-home-identity h2{color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.72)}
+.team-home-identity p{color:rgba(255,255,255,.88)}
+.team-home-identity .eyebrow{color:color-mix(in srgb,var(--team-secondary) 28%,#f3e7ff)}
+.team-meta-pills span{
+  background:rgba(3,7,18,.52)!important;
+  border-color:rgba(255,255,255,.2)!important;
+  color:#fff;
+}
+.team-favorite{background:rgba(3,7,18,.52)!important;backdrop-filter:blur(7px)}
+
+/* Annuaire : une Team ne doit plus ressembler à une carte bleue générique. */
+.team-directory-card{
+  overflow:hidden;
+  background:
+    linear-gradient(112deg,
+      color-mix(in srgb,var(--team-primary) 38%,#081126),
+      color-mix(in srgb,var(--team-secondary) 22%,#071022) 62%,
+      rgba(6,13,31,.94))!important;
+}
+.team-directory-card:after{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.035),transparent);
+}
+.team-directory-card>*{position:relative;z-index:1}
+.team-directory-card:before{height:4px;background:linear-gradient(90deg,var(--team-primary),var(--team-secondary))!important}
+
+/* Classement Team : même philosophie que le bandeau vert de l'ancienne appli. */
+.team-rank-card.team-color-card{
+  position:relative;overflow:hidden;
+  background:
+    linear-gradient(100deg,
+      color-mix(in srgb,var(--team-primary) 48%,#071126),
+      color-mix(in srgb,var(--team-secondary) 22%,#071126) 67%,
+      rgba(5,12,29,.94))!important;
+  border-color:color-mix(in srgb,var(--team-primary) 46%,rgba(126,149,204,.28))!important;
+}
+.team-rank-card.team-color-card:before{
+  content:"";position:absolute;inset:0 auto 0 0;width:4px;
+  background:linear-gradient(180deg,var(--team-primary),var(--team-secondary));
+}
+.team-rank-card.team-color-card.my-team{
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--team-primary) 45%,rgba(232,200,110,.28));
+}
+.team-rank-card.team-color-card .team-rank-copy small{color:rgba(231,237,250,.76)}
+
+/* Aperçus du configurateur : mêmes couleurs, motif seulement en signature. */
+.team-preview-mini-card{
+  background:
+    linear-gradient(110deg,
+      color-mix(in srgb,var(--team-primary) 60%,#060b18),
+      color-mix(in srgb,var(--team-secondary) 40%,#060b18))!important;
+}
+.team-preview-mini-card:before{opacity:.24!important;filter:saturate(.9) brightness(.82)!important}
+.team-preview-mini-card:after{background:linear-gradient(90deg,rgba(3,7,18,.48),rgba(3,7,18,.22) 60%,rgba(3,7,18,.38))!important}
+
+@media(max-width:680px){
+  .home-hero-avatar>.team-avatar{width:136px;height:136px;flex-basis:136px}
+  .home-hero-avatar>.team-avatar>.avatar{width:91px!important;height:91px!important}
+  .home-hero-avatar>.team-avatar>i{width:30px;height:30px}
+  .home-hero-avatar>.team-avatar .team-logo{width:27px;height:27px;font-size:1rem}
+  .team-home-banner:before{opacity:.23!important}
+  .team-home-banner:after{background:linear-gradient(90deg,rgba(3,7,18,.52),rgba(3,7,18,.25),rgba(3,7,18,.42))!important}
+}

@@ -23,3 +23,52 @@
 .sidebar-avatar.uses-unified-avatar>.avatar{width:38px;height:38px;border-radius:12px}
 /* Cadre standard légèrement aminci : l'image joueur garde la priorité visuelle. */
 .team-avatar>.avatar{width:39px!important;height:39px!important}
+
+/* ========================================================================== 
+   V0.6.3 — Identité joueur unifiée
+   L'image du joueur reste détourée et entière. Aucun écran n'ajoute de fond
+   bleu derrière les PNG officiels et aucun contexte ne recadre en "cover".
+   ========================================================================== */
+.player-avatar-core,
+.player-avatar-core.player-avatar-transparent{
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none;
+  overflow:visible!important;
+}
+.player-avatar-core .player-avatar-image,
+.player-avatar-core>img{
+  width:100%;height:100%;
+  object-fit:contain!important;
+  object-position:center!important;
+  border-radius:0!important;
+  background:transparent!important;
+  filter:drop-shadow(0 3px 5px rgba(0,0,0,.24));
+}
+.player-avatar-core.avatar-broken{
+  overflow:hidden!important;
+  border-radius:50%!important;
+  background:rgba(7,16,38,.82)!important;
+}
+.player-avatar-core.avatar-broken>b{color:var(--gold)}
+
+/* Le même composant, seules ses dimensions changent selon le contexte. */
+.sidebar-avatar.uses-unified-avatar>.team-avatar{width:44px;height:44px;flex-basis:44px}
+.sidebar-avatar.uses-unified-avatar>.team-avatar>.avatar{width:29px!important;height:29px!important}
+.sidebar-avatar.uses-unified-avatar>.team-avatar>i{width:18px;height:18px;right:-2px;bottom:-2px}
+.sidebar-avatar.uses-unified-avatar>.team-avatar .team-logo{width:18px;height:18px;font-size:.64rem}
+.sidebar-avatar.uses-unified-avatar>.avatar{width:39px;height:39px;border-radius:0!important}
+
+.profile-avatar-host>.team-avatar{width:80px;height:80px;flex-basis:80px}
+.profile-avatar-host>.team-avatar>.avatar{width:52px!important;height:52px!important}
+.profile-avatar-host>.avatar{background:transparent!important;border-radius:0!important}
+
+.avatar-preview-stage>.team-avatar>.avatar{width:82px!important;height:82px!important}
+.avatar-preview-stage>.avatar{background:transparent!important;border-radius:0!important}
+.avatar-option img{object-fit:contain!important;background:transparent!important;border-radius:0!important}
+
+@media(max-width:680px){
+  .profile-avatar-host>.team-avatar{width:70px;height:70px;flex-basis:70px}
+  .profile-avatar-host>.team-avatar>.avatar{width:46px!important;height:46px!important}
+  .avatar-preview-stage>.team-avatar>.avatar{width:72px!important;height:72px!important}
+}
