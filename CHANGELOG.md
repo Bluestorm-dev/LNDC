@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## V0.6.4 — Web Push immédiat & Test Cron
+
+- correction de l'activation Push sur un compte non Super Admin quand le navigateur possède déjà un endpoint enregistré sous un autre compte ;
+- ajout de `register_my_push_subscription_v064`, qui ne réattribue un endpoint que si ses clés `p256dh/auth` correspondent ;
+- RLS `push_subscriptions` découpée en politiques explicites SELECT / INSERT / UPDATE / DELETE ;
+- déclencheur PostgreSQL central `dispatch_immediate_push_v064` : tout Push non programmé appelle immédiatement `push-dispatch` via `pg_net` ;
+- action Edge `dispatch-one` protégée par `PUSH_CRON_SECRET` ;
+- envois immédiats manuels qui ne dépendent plus du passage du Cron ;
+- Test Push personnalisé corrigé : le titre et le corps saisis sont ceux réellement envoyés ;
+- Test Cron Super Admin avec heure réglable et message dédié ;
+- Cron ramené de 15 minutes à **1 minute** pour les rappels et tests programmés ;
+- Test Cron autorisé à traverser les quiet hours afin de valider réellement le réveil ;
+- nouveau patch `017_patch_v0.6.4_push_immediate_cron_rls.sql`, HOTFIX et fresh install V0.6.4 ;
+- cache PWA `nid-champions-v0.6.4`.
+
 ## V0.6.3 — Correctif identité visuelle
 
 - avatar public unifié dans sidebar, accueil, profil, classement, Teams, Live, rivalités et pronostics révélés ;

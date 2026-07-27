@@ -61,7 +61,7 @@ async function logDelivery(notificationId: string | null, userId: string, subscr
   });
 }
 
-async function deliverNotification(n: any, kind = "notification") {
+async function deliverNotification(n: any, kind = "notification", options: { bypassQuiet?: boolean } = {}) {
   if (!VAPID_PUBLIC || !VAPID_PRIVATE) return { sent: 0, failed: 0, skipped: 1, reason: "VAPID non configuré" };
   const { data: pref } = await admin.from("notification_preferences").select("*").eq("user_id", n.user_id).maybeSingle();
   const key = categoryPrefKey(n.category);
@@ -71,7 +71,7 @@ async function deliverNotification(n: any, kind = "notification") {
     await logDelivery(n.id,n.user_id,null,"skipped",undefined,"Préférence utilisateur",kind);
     return { sent:0,failed:0,skipped:1 };
   }
-  const bypass = n.importance === "urgent" || (n.payload?.urgent === true && pref?.urgent_bypass_quiet !== false);
+  const bypass = options.bypassQuiet === true || n.payload?.cron_test === true || n.importance === "urgent" || (n.payload?.urgent === true && pref?.urgent_bypass_quiet !== false);
   if (pref && insideQuiet(pref) && !bypass) return { sent:0,failed:0,skipped:1, quiet:true };
 
   const { data: subs, error } = await admin.from("push_subscriptions").select("*").eq("user_id",n.user_id).eq("active",true);
@@ -123,7 +123,7 @@ async function createReminderNotifications() {
   for (const [matchdayId, fixtures] of byMd) {
     const first = new Date(fixtures[0].kickoff_at).getTime(); const deltaMin=(first-now)/60000;
     const windows = [[1440,"reminder_24h"],[180,"reminder_3h"],[60,"reminder_1h"],[30,"reminder_30m"]] as const;
-    const activeWindow = windows.find(([min])=>deltaMin<=min && deltaMin>min-16); if(!activeWindow) continue;
+    const activeWindow = windows.find(([min])=>deltaMin<=min && deltaMin>min-2); if(!activeWindow) continue;
     const [minutes,prefKey]=activeWindow;
     const ids=fixtures.map(x=>x.id);
     const { data: preds } = await admin.from("predictions").select("user_id,match_id").in("match_id",ids);
@@ -132,7 +132,7 @@ async function createReminderNotifications() {
       const pref=prefMap.get(u.id); if(pref && (pref.notifications_enabled===false || pref.category_matches===false || pref[prefKey]===false)) continue;
       const missing=ids.filter(id=>!done.get(u.id)?.has(id)).length; if(!missing) continue;
       const urgent=minutes<=30;
-      const row={user_id:u.id,season_id:season.id,category:"matches",title:`⏰ ${missing} pronostic${missing>1?"s":""} t’attend${missing>1?"ent":""}`,body:`La soirée commence dans ${minutes===1440?"24 h":minutes+" min"}.`,importance:urgent?"important":"info",deep_link:`matches:${matchdayId}`,payload:{matchday_id:matchdayId,missing,minutes,urgent},source_key:`reminder:${matchdayId}:${minutes}`,push_requested:true,expires_at:new Date(first+3600000).toISOString()};
+      const row={user_id:u.id,season_id:season.id,category:"matches",title:`⏰ ${missing} pronostic${missing>1?"s":""} t’attend${missing>1?"ent":""}`,body:`La soirée commence dans ${minutes===1440?"24 h":minutes+" min"}.`,importance:urgent?"important":"info",deep_link:`matches:${matchdayId}`,payload:{matchday_id:matchdayId,missing,minutes,urgent},source_key:`reminder:${matchdayId}:${minutes}`,push_requested:true,push_not_before:new Date().toISOString(),expires_at:new Date(first+3600000).toISOString()};
       const { error }=await admin.from("notifications").insert(row); if(!error) created++;
     }
   }
@@ -149,12 +149,12 @@ async function createChampionReminders() {
     const fn=pick===1?"champion_first_close_at_v040":"champion_second_close_at_v040";
     const {data:close}=await admin.rpc(fn,{p_season_id:season.id}); if(!close)continue;
     const delta=(new Date(close).getTime()-Date.now())/60000;if(delta<=0||delta>1456)continue;
-    const w=windows.find(([m])=>delta<=m&&delta>m-16);if(!w)continue;const [minutes,prefKey]=w;
+    const w=windows.find(([m])=>delta<=m&&delta>m-2);if(!w)continue;const [minutes,prefKey]=w;
     const [{data:users},{data:prefs},{data:picks}]=await Promise.all([
       admin.from("profiles").select("id").eq("status","active"),admin.from("notification_preferences").select("*"),admin.from("champion_predictions").select("user_id").eq("season_id",season.id).eq("pick_number",pick)
     ]);
     const has=new Set((picks||[]).map((x:any)=>x.user_id));const prefMap=new Map((prefs||[]).map((x:any)=>[x.user_id,x]));
-    for(const u of users||[]){const pref=prefMap.get(u.id);if(has.has(u.id)||pref?.category_champion===false||pref?.notifications_enabled===false||pref?.[prefKey]===false)continue;const urgent=minutes<=30;const {error}=await admin.from("notifications").insert({user_id:u.id,season_id:season.id,category:"champion",title:"🏆 Ton champion n’est toujours pas choisi",body:`Le choix n°${pick} se verrouille dans ${minutes===1440?"24 h":minutes+" min"}.`,importance:urgent?"important":"info",deep_link:"profile",payload:{pick_number:pick,minutes,urgent},source_key:`champion-reminder:${season.id}:${pick}:${minutes}`,push_requested:true,expires_at:close});if(!error)created++;}
+    for(const u of users||[]){const pref=prefMap.get(u.id);if(has.has(u.id)||pref?.category_champion===false||pref?.notifications_enabled===false||pref?.[prefKey]===false)continue;const urgent=minutes<=30;const {error}=await admin.from("notifications").insert({user_id:u.id,season_id:season.id,category:"champion",title:"🏆 Ton champion n’est toujours pas choisi",body:`Le choix n°${pick} se verrouille dans ${minutes===1440?"24 h":minutes+" min"}.`,importance:urgent?"important":"info",deep_link:"profile",payload:{pick_number:pick,minutes,urgent},source_key:`champion-reminder:${season.id}:${pick}:${minutes}`,push_requested:true,push_not_before:new Date().toISOString(),expires_at:close});if(!error)created++;}
   }
   return {created};
 }
@@ -168,7 +168,7 @@ async function createCompletedMatchdaySummaries(){
     const {data:matches}=await admin.from("matches").select("id,status").eq("matchday_id",md.id);if(!matches?.length||matches.some((m:any)=>!["finished","cancelled"].includes(m.status)))continue;
     const ids=matches.filter((m:any)=>m.status==="finished").map((m:any)=>m.id);if(!ids.length)continue;
     const {data:preds}=await admin.from("predictions").select("user_id,points").in("match_id",ids);const totals=new Map<string,number>();for(const pr of preds||[])totals.set(pr.user_id,(totals.get(pr.user_id)||0)+Number(pr.points||0));
-    for(const u of users||[]){const points=totals.get(u.id)||0;const rid=rivalMap.get(u.id);const rpoints=rid?(totals.get(rid)||0):null;const extra=rpoints==null?"":` Ton rival en marque ${rpoints}.`;const {error}=await admin.from("notifications").insert({user_id:u.id,season_id:season.id,category:"results",title:"⚽ La journée est terminée",body:`Tu marques ${points} point${points>1?"s":""}.${extra}`,importance:"info",deep_link:"ranking",payload:{matchday_id:md.id,points,rival_points:rpoints},source_key:`result-summary:${md.id}`,push_requested:true});if(!error)created++;}
+    for(const u of users||[]){const points=totals.get(u.id)||0;const rid=rivalMap.get(u.id);const rpoints=rid?(totals.get(rid)||0):null;const extra=rpoints==null?"":` Ton rival en marque ${rpoints}.`;const {error}=await admin.from("notifications").insert({user_id:u.id,season_id:season.id,category:"results",title:"⚽ La journée est terminée",body:`Tu marques ${points} point${points>1?"s":""}.${extra}`,importance:"info",deep_link:"ranking",payload:{matchday_id:md.id,points,rival_points:rpoints},source_key:`result-summary:${md.id}`,push_requested:true,push_not_before:new Date().toISOString()});if(!error)created++;}
   }
   return {created};
 }
@@ -182,7 +182,7 @@ async function updateRankingNotifications(){
       const from=Number(prev.rank),to=Number(r.rank);let title="📈 Le classement bouge",body=`Tu passes #${from} → #${to}.`,push=false;
       if(from>3&&to<=3){title="🏆 Entrée sur le podium";push=true;}else if(from<=3&&to>3){title="Le podium s’éloigne";push=true;}else if(from!==1&&to===1){title="👑 Tu prends la tête du Nid";push=true;}else if(from===1&&to!==1){title="La première place vient de changer de bec";push=true;}
       const rivalId=rivalMap.get(r.user_id),oldR=old.get(rivalId),newR=nowMap.get(rivalId);if(oldR&&newR){const wasAhead=from<Number(oldR.rank),isAhead=to<Number(newR.rank);if(wasAhead!==isAhead){title=isAhead?"⚔️ Tu dépasses ton rival":"⚔️ Ton rival vient de te dépasser";body=isAhead?`Tu passes devant ton rival : #${to} contre #${newR.rank}.`:`Ton rival est #${newR.rank}, toi #${to}.`;push=true;}}
-      const {error:nErr}=await admin.from("notifications").insert({user_id:r.user_id,season_id:season.id,category:push&&title.includes("rival")?"rival":"ranking",title,body,importance:push?"important":"normal",deep_link:push&&title.includes("rival")?"rival":"ranking",payload:{from_rank:from,to_rank:to},source_key:`rank-change:${r.user_id}:${Date.now()}`,push_requested:push});if(!nErr)created++;
+      const {error:nErr}=await admin.from("notifications").insert({user_id:r.user_id,season_id:season.id,category:push&&title.includes("rival")?"rival":"ranking",title,body,importance:push?"important":"normal",deep_link:push&&title.includes("rival")?"rival":"ranking",payload:{from_rank:from,to_rank:to},source_key:`rank-change:${r.user_id}:${Date.now()}`,push_requested:push,push_not_before:push?new Date().toISOString():null});if(!nErr)created++;
     }
     await admin.from("ranking_notification_state").upsert({season_id:season.id,user_id:r.user_id,rank:Number(r.rank),points:Number(r.points||0),updated_at:new Date().toISOString()},{onConflict:"season_id,user_id"});
   }
@@ -201,14 +201,14 @@ async function createRivalPreMatchNotifications() {
     admin.from("notification_preferences").select("user_id,category_rival,notifications_enabled")
   ]);
   const names=new Map((profiles||[]).map((p:any)=>[p.id,p.username]));const prefMap=new Map((prefs||[]).map((p:any)=>[p.user_id,p]));let created=0;
-  for(const [matchdayId,first] of firstByMd){const delta=(first-now)/60000;if(delta>180||delta<=165)continue;
+  for(const [matchdayId,first] of firstByMd){const delta=(first-now)/60000;if(delta>180||delta<=178)continue;
     for(const r of rivals||[]){const pref=prefMap.get(r.user_id);if(pref?.notifications_enabled===false||pref?.category_rival===false)continue;
       const {data:duels}=await admin.from("rival_duels").select("result").eq("season_id",season.id).eq("user_id",r.user_id).eq("rival_user_id",r.rival_user_id).not("finalized_at","is",null);
       const wins=(duels||[]).filter((d:any)=>d.result==="win").length,draws=(duels||[]).filter((d:any)=>d.result==="draw").length,losses=(duels||[]).filter((d:any)=>d.result==="loss").length;
       const mutual=(rivals||[]).some((x:any)=>x.user_id===r.rival_user_id&&x.rival_user_id===r.user_id);
       const rivalName=names.get(r.rival_user_id)||"ton rival";const title=mutual?"⚔️ Rivalité mutuelle ce soir":"⚔️ Le duel reprend ce soir";
       const body=`Tu affrontes ${rivalName}. Bilan : ${wins} V · ${draws} N · ${losses} D. Le Hibou a déjà sorti le carnet.`;
-      const {error}=await admin.from("notifications").insert({user_id:r.user_id,season_id:season.id,category:"rival",title,body,importance:"info",deep_link:"rival",payload:{matchday_id:matchdayId,rival_user_id:r.rival_user_id,mutual},source_key:`rival-pre:${matchdayId}`,push_requested:true,expires_at:new Date(first+60*60*1000).toISOString()});if(!error)created++;
+      const {error}=await admin.from("notifications").insert({user_id:r.user_id,season_id:season.id,category:"rival",title,body,importance:"info",deep_link:"rival",payload:{matchday_id:matchdayId,rival_user_id:r.rival_user_id,mutual},source_key:`rival-pre:${matchdayId}`,push_requested:true,push_not_before:new Date().toISOString(),expires_at:new Date(first+60*60*1000).toISOString()});if(!error)created++;
     }
   }
   return {created};
@@ -228,13 +228,37 @@ async function deliverPending(limit=100) {
   const expired=(rows||[]).filter((n:any)=>n.expires_at&&new Date(n.expires_at).getTime()<=Date.now());
   if(expired.length) await admin.from("notifications").update({deleted_at:nowIso}).in("id",expired.map((n:any)=>n.id));
   let sent=0,failed=0,skipped=0;
-  for(const n of valid){const r=await deliverNotification(n);sent+=r.sent||0;failed+=r.failed||0;skipped+=r.skipped||0;}
+  for(const n of valid){const r=await deliverNotification(n,n.payload?.cron_test===true?"cron-test":"notification",{bypassQuiet:n.payload?.cron_test===true});sent+=r.sent||0;failed+=r.failed||0;skipped+=r.skipped||0;}
   return {notifications:valid.length,expired:expired.length,sent,failed,skipped};
 }
 
 async function authenticatedUser(req:Request) {
   const auth=req.headers.get("Authorization")||""; const token=auth.replace(/^Bearer\s+/i,""); if(!token)return null;
   const { data, error }=await admin.auth.getUser(token); if(error||!data.user)return null; return data.user;
+}
+
+async function requireSuperAdmin(req:Request) {
+  const user=await authenticatedUser(req); if(!user)return {user:null,error:json({error:"Connexion requise"},401)};
+  const { data:profile }=await admin.from("profiles").select("role,status").eq("id",user.id).maybeSingle();
+  if(profile?.role!=="super_admin"||profile?.status!=="active")return {user:null,error:json({error:"Réservé au Super Admin"},403)};
+  return {user,error:null};
+}
+
+async function dispatchNow(body:any) {
+  let q=admin.from("notifications").select("*").eq("push_requested",true).is("push_sent_at",null).is("deleted_at",null);
+  const sourceKey=String(body.source_key||"").trim();
+  const category=String(body.category||"").trim();
+  if(sourceKey) q=q.eq("source_key",sourceKey);
+  else {
+    if(!["owl","system"].includes(category)) throw new Error("Catégorie de dispatch immédiat invalide.");
+    q=q.eq("category",category);
+    const since=String(body.created_after||new Date(Date.now()-120000).toISOString());
+    q=q.gte("created_at",since);
+  }
+  const {data:rows,error}=await q.order("created_at").limit(500); if(error)throw error;
+  let sent=0,failed=0,skipped=0,quiet=0;
+  for(const n of rows||[]){const r=await deliverNotification(n,"admin-immediate",{bypassQuiet:true});sent+=r.sent||0;failed+=r.failed||0;skipped+=r.skipped||0;if(r.quiet)quiet++;}
+  return {notifications:(rows||[]).length,sent,failed,skipped,quiet};
 }
 
 Deno.serve(async (req) => {
@@ -245,14 +269,28 @@ Deno.serve(async (req) => {
     if(action==="public-key") return json({publicKey:VAPID_PUBLIC,configured:Boolean(VAPID_PUBLIC&&VAPID_PRIVATE)});
 
     if(action==="test"){
-      const user=await authenticatedUser(req); if(!user)return json({error:"Connexion requise"},401);
-      const { data:profile }=await admin.from("profiles").select("role,status").eq("id",user.id).maybeSingle();
-      if(profile?.role!=="super_admin"||profile?.status!=="active")return json({error:"Réservé au Super Admin"},403);
+      const gate=await requireSuperAdmin(req); if(gate.error)return gate.error; const user=gate.user!;
       const target=body.target_user_id||user.id;
       const title=String(body.title||"🔔 Test du Nid").slice(0,160);
       const message=String(body.body||"Si tu lis ceci, les plumes sont correctement raccordées.").slice(0,2000);
-      const { data:n,error }=await admin.from("notifications").insert({user_id:target,category:"system",title,body:message,importance:"important",deep_link:String(body.deep_link||"home"),payload:{test:true},source_key:`push-test:${Date.now()}:${target}`,push_requested:true,created_by:user.id}).select("*").single();
-      if(error)throw error; const result=await deliverNotification(n,"test"); return json({ok:true,notification_id:n.id,...result});
+      const { data:n,error }=await admin.from("notifications").insert({user_id:target,category:"system",title,body:message,importance:"important",deep_link:String(body.deep_link||"home"),payload:{test:true},source_key:`push-test:${Date.now()}:${target}`,push_requested:true,push_not_before:new Date().toISOString(),created_by:user.id}).select("*").single();
+      if(error)throw error; const result=await deliverNotification(n,"test",{bypassQuiet:true}); return json({ok:true,notification_id:n.id,...result});
+    }
+
+    if(action==="dispatch-now"){
+      const gate=await requireSuperAdmin(req); if(gate.error)return gate.error;
+      const result=await dispatchNow(body); return json({ok:true,...result});
+    }
+
+    if(action==="dispatch-one"){
+      const secret=req.headers.get("x-cron-secret")||String(body.cron_secret||"");
+      if(!CRON_SECRET || secret!==CRON_SECRET)return json({error:"Secret cron invalide"},403);
+      const notificationId=String(body.notification_id||"").trim();
+      if(!notificationId)return json({error:"notification_id requis"},400);
+      const {data:n,error}=await admin.from("notifications").select("*").eq("id",notificationId).eq("push_requested",true).is("push_sent_at",null).is("deleted_at",null).maybeSingle();
+      if(error)throw error;if(!n)return json({ok:true,notification_id:notificationId,already_processed:true,sent:0,failed:0,skipped:0});
+      const result=await deliverNotification(n,"immediate",{bypassQuiet:true});
+      return json({ok:true,notification_id:notificationId,...result});
     }
 
     const secret=req.headers.get("x-cron-secret")||String(body.cron_secret||"");

@@ -1,21 +1,22 @@
-# Le Nid des Champions — V0.6.3
+# Le Nid des Champions — V0.6.4
 
-## Correctif identité visuelle
+## Correctif Web Push immédiat & Test Cron
 
-V0.6.3 part de V0.6.2 et harmonise l'identité joueur / Team sur tout le Nid :
+V0.6.4 part de V0.6.3 et fiabilise toute la chaîne Web Push :
 
-- un même avatar public est utilisé partout ;
-- les PNG officiels restent détourés : aucun fond bleu ajouté derrière l'image ;
-- l'image est affichée en `contain` au lieu d'être recadrée en `cover` ;
-- le blason/cadre Team occupe davantage d'espace autour du joueur ;
-- le bandeau d'une Team prend réellement les nuances de ses couleurs, le bleu global du Nid devient secondaire ;
-- les cartes de classement Team reprennent elles aussi les couleurs de la Team ;
-- les motifs restent perceptibles mais servent d'ambiance et ne passent plus devant les textes.
+- un compte joueur peut enregistrer son propre appareil même si le même navigateur avait auparavant été utilisé par un autre compte ;
+- la RLS reste stricte : le transfert d'un endpoint existant n'est accepté que si les clés cryptographiques de l'abonnement correspondent ;
+- toute notification créée avec `push_requested=true` et sans heure programmée déclenche désormais immédiatement `push-dispatch` via `pg_net` ;
+- le Cron ne sert plus à attendre les actions humaines : il traite uniquement les événements programmés et joue le rôle de filet de secours ;
+- le Cron passe à une vérification **chaque minute** ;
+- le Super Admin dispose d'un **Test Cron** à heure réglable ;
+- le test Push immédiat envoie exactement le titre et le texte présents dans les champs ;
+- les messages Hibou / système / Team / rivalité / réaction utilisent le même mécanisme immédiat central ;
+- les clés VAPID existantes ne doivent pas être régénérées.
 
-Cette version est **front-only** : aucune migration SQL supplémentaire n'est nécessaire après V0.6.2.
+Mise à jour : exécuter `sql/HOTFIX_V0.6.4_EXISTING_DB.sql`, redéployer `push-dispatch`, puis déployer le front V0.6.4.
 
 ---
-
 
 # Historique fonctionnel — V0.6.0
 
