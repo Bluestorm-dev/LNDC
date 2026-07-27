@@ -1,6 +1,14 @@
-# Le Nid des Champions — V0.6.4
+# Le Nid des Champions — V0.6.6
+
+## Drapeaux identiques sur tous les appareils
+
+V0.6.6 reprend V0.6.5 et remplace les emojis de pays par des drapeaux SVG servis par FlagCDN. Les codes de pays restent déterminés localement par le Nid ; seul le visuel du drapeau est chargé depuis le CDN. Un fallback texte est prévu si le CDN est indisponible. Angleterre, Écosse, Pays de Galles et Irlande du Nord utilisent leurs drapeaux propres. Aucun SQL n'est nécessaire.
+
+---
 
 ## Correctif Web Push immédiat & Test Cron
+
+V0.6.5 reprend V0.6.4 et ajoute la déconnexion dans Profil.
 
 V0.6.4 part de V0.6.3 et fiabilise toute la chaîne Web Push :
 

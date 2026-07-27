@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## V0.6.6 — Drapeaux FlagCDN
+
+- remplacement des emojis de drapeaux par des SVG FlagCDN afin d'obtenir le même rendu sur Chrome Windows, Android, iOS et PWA ;
+- codes dédiés pour Angleterre (`gb-eng`), Écosse (`gb-sct`), Pays de Galles (`gb-wls`) et Irlande du Nord (`gb-nir`) ;
+- fallback texte automatique si le CDN ne répond pas ;
+- aucune modification SQL / Supabase ;
+- cache PWA `nid-champions-v0.6.6`.
+
+## V0.6.5 — Déconnexion mobile
+
+- ajout d'une zone **Compte** dans Profil ;
+- bouton **Se déconnecter** disponible sur mobile et desktop ;
+- le bouton desktop du header reste présent ;
+- aucun changement SQL / Supabase ;
+- cache PWA `nid-champions-v0.6.5`.
+
 ## V0.6.4 — Web Push immédiat & Test Cron
 
 - correction de l'activation Push sur un compte non Super Admin quand le navigateur possède déjà un endpoint enregistré sous un autre compte ;
