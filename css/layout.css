@@ -160,7 +160,15 @@ body:after{
   letter-spacing:.015em;
   line-height:1.2;
 }
-.club-country>span[aria-hidden="true"]{font-size:.78rem;line-height:1;filter:saturate(.9)}
+.country-flag-wrap{display:inline-grid;place-items:center;width:18px;height:13px;flex:0 0 18px;border-radius:2px;overflow:hidden;background:rgba(255,255,255,.08);box-shadow:0 0 0 1px rgba(255,255,255,.08)}
+.country-flag{display:block;width:18px;height:13px;object-fit:cover}
+.country-flag-fallback{display:grid;place-items:center;width:18px;height:13px;color:#c9d4f5;font-size:.48rem;font-weight:900;letter-spacing:-.02em;background:rgba(28,43,79,.9)}
 .team .club-country,.home-next-team .club-country,.tie-teams .club-country{white-space:nowrap}
 .champion-current .club-country{justify-content:flex-start;margin:2px 0 1px;color:#91a5d4!important}
-@media(max-width:620px){.club-country{font-size:.61rem!important;gap:4px}.club-country>span[aria-hidden="true"]{font-size:.7rem}}
+@media(max-width:620px){.club-country{font-size:.61rem!important;gap:4px}.country-flag-wrap,.country-flag,.country-flag-fallback{width:16px;height:12px}.country-flag-wrap{flex-basis:16px}.country-flag-fallback{font-size:.44rem}}
+
+/* V0.6.5 — session accessible depuis Profil, notamment sur mobile */
+.profile-account-title{margin-top:28px}.profile-account-card{display:flex;align-items:center;justify-content:space-between;gap:18px;border-color:rgba(255,105,123,.16);background:linear-gradient(145deg,rgba(83,24,42,.14),rgba(6,15,37,.9))}.profile-account-copy{display:flex;align-items:center;gap:13px;min-width:0}.profile-account-copy>div{display:grid;gap:4px}.profile-account-copy strong{color:#f4f6ff}.profile-account-copy small{color:#8999bd;font-size:.7rem;line-height:1.4}.profile-account-icon{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;border-radius:13px;border:1px solid rgba(255,105,123,.18);background:rgba(255,105,123,.07);color:#ff8797;font-size:1.25rem;font-weight:900}
+@media(max-width:680px){.profile-account-card{display:grid;gap:14px}.profile-account-card .btn{width:100%}.profile-account-title{margin-top:22px}}
+
+.country-flag-fallback[hidden]{display:none!important}
