@@ -190,43 +190,56 @@
     return `<span class="crest ${large ? "large" : ""}">${url ? `<img src="${esc(url)}" alt="" loading="lazy" onerror="this.remove();this.parentElement.classList.add('crest-fallback')">` : ""}<b>${short}</b></span>`;
   }
 
+  // V0.6.6 — drapeaux via FlagCDN : rendu identique sur Windows, Android et iOS.
+  // Le second champ est le code attendu par FlagCDN (ISO 3166-1, ou subdivision GB).
   const COUNTRY_DISPLAY = {
-    France:["France","🇫🇷"],
-    Germany:["Allemagne","🇩🇪"], Allemagne:["Allemagne","🇩🇪"],
-    Spain:["Espagne","🇪🇸"], Espagne:["Espagne","🇪🇸"],
-    England:["Angleterre","🏴"], Angleterre:["Angleterre","🏴"],
-    Italy:["Italie","🇮🇹"], Italie:["Italie","🇮🇹"],
-    Portugal:["Portugal","🇵🇹"],
-    Netherlands:["Pays-Bas","🇳🇱"], "Pays-Bas":["Pays-Bas","🇳🇱"],
-    Belgium:["Belgique","🇧🇪"], Belgique:["Belgique","🇧🇪"],
-    Denmark:["Danemark","🇩🇰"], Danemark:["Danemark","🇩🇰"],
-    Norway:["Norvège","🇳🇴"], Norvège:["Norvège","🇳🇴"],
-    Greece:["Grèce","🇬🇷"], Grèce:["Grèce","🇬🇷"],
-    Turkey:["Turquie","🇹🇷"], Türkiye:["Turquie","🇹🇷"], Turquie:["Turquie","🇹🇷"],
-    Czechia:["Tchéquie","🇨🇿"], "Czech Republic":["Tchéquie","🇨🇿"], Tchéquie:["Tchéquie","🇨🇿"],
-    Austria:["Autriche","🇦🇹"], Autriche:["Autriche","🇦🇹"],
-    Switzerland:["Suisse","🇨🇭"], Suisse:["Suisse","🇨🇭"],
-    Scotland:["Écosse","🏴"], Écosse:["Écosse","🏴"],
-    Cyprus:["Chypre","🇨🇾"], Chypre:["Chypre","🇨🇾"],
-    Azerbaijan:["Azerbaïdjan","🇦🇿"], Azerbaïdjan:["Azerbaïdjan","🇦🇿"],
-    Kazakhstan:["Kazakhstan","🇰🇿"]
+    France:["France","fr"],
+    Germany:["Allemagne","de"], Allemagne:["Allemagne","de"],
+    Spain:["Espagne","es"], Espagne:["Espagne","es"],
+    England:["Angleterre","gb-eng"], Angleterre:["Angleterre","gb-eng"],
+    Italy:["Italie","it"], Italie:["Italie","it"],
+    Portugal:["Portugal","pt"],
+    Netherlands:["Pays-Bas","nl"], "Pays-Bas":["Pays-Bas","nl"],
+    Belgium:["Belgique","be"], Belgique:["Belgique","be"],
+    Denmark:["Danemark","dk"], Danemark:["Danemark","dk"],
+    Norway:["Norvège","no"], Norvège:["Norvège","no"],
+    Greece:["Grèce","gr"], Grèce:["Grèce","gr"],
+    Turkey:["Turquie","tr"], Türkiye:["Turquie","tr"], Turquie:["Turquie","tr"],
+    Czechia:["Tchéquie","cz"], "Czech Republic":["Tchéquie","cz"], Tchéquie:["Tchéquie","cz"],
+    Austria:["Autriche","at"], Autriche:["Autriche","at"],
+    Switzerland:["Suisse","ch"], Suisse:["Suisse","ch"],
+    Scotland:["Écosse","gb-sct"], Écosse:["Écosse","gb-sct"],
+    Wales:["Pays de Galles","gb-wls"], "Pays de Galles":["Pays de Galles","gb-wls"],
+    "Northern Ireland":["Irlande du Nord","gb-nir"], "Irlande du Nord":["Irlande du Nord","gb-nir"],
+    "United Kingdom":["Royaume-Uni","gb"], "Royaume-Uni":["Royaume-Uni","gb"],
+    Cyprus:["Chypre","cy"], Chypre:["Chypre","cy"],
+    Azerbaijan:["Azerbaïdjan","az"], Azerbaïdjan:["Azerbaïdjan","az"],
+    Kazakhstan:["Kazakhstan","kz"]
   };
 
   function clubCountry(club) {
-    if (!club) return {name:"",flag:""};
+    if (!club) return {name:"",code:""};
     // Monaco évolue dans le système français : pour le Nid, son pays sportif affiché est la France.
     const identity = `${club.name||""} ${club.short_name||""} ${club.tla||""}`.toLocaleLowerCase("fr");
-    if (identity.includes("monaco")) return {name:"France",flag:"🇫🇷"};
+    if (identity.includes("monaco")) return {name:"France",code:"fr"};
     const raw = String(club.country || "").trim();
-    if (!raw) return {name:"",flag:""};
+    if (!raw) return {name:"",code:""};
     const mapped = COUNTRY_DISPLAY[raw];
-    return mapped ? {name:mapped[0],flag:mapped[1]} : {name:raw,flag:""};
+    return mapped ? {name:mapped[0],code:mapped[1]} : {name:raw,code:""};
+  }
+
+  function flagCdnUrl(code) {
+    const safe = String(code || "").toLowerCase().replace(/[^a-z0-9-]/g, "");
+    return safe ? `https://flagcdn.com/${safe}.svg` : "";
   }
 
   function clubCountryHTML(club) {
     const country = clubCountry(club);
     if (!country.name) return "";
-    return `<small class="club-country">${country.flag ? `<span aria-hidden="true">${country.flag}</span>` : ""}<span>${esc(country.name)}</span></small>`;
+    const url = flagCdnUrl(country.code);
+    const fallback = country.code ? String(country.code).replace(/^gb-/, "").slice(0,3).toUpperCase() : "";
+    const flag = url ? `<span class="country-flag-wrap" aria-hidden="true"><img class="country-flag" src="${esc(url)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span class="country-flag-fallback" hidden>${esc(fallback)}</span></span>` : "";
+    return `<small class="club-country">${flag}<span>${esc(country.name)}</span></small>`;
   }
 
   function debounce(fn,ms){let t;return(...args)=>{clearTimeout(t);t=setTimeout(()=>fn(...args),ms);};}
