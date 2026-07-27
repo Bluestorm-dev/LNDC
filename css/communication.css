@@ -29,3 +29,6 @@
 .rival-inline-chip{border:1px solid rgba(216,174,72,.35);background:rgba(216,174,72,.10);color:#f2d985;border-radius:999px;padding:2px 7px;font-size:.64rem;font-weight:900;vertical-align:1px;cursor:pointer}
 .player-profile-link{border:0;background:none;padding:0;color:inherit;font:inherit;font-weight:900;cursor:pointer;text-align:left}.player-profile-link:hover{text-decoration:underline;color:#f2d985}
 .public-player-profile{display:grid;gap:18px}.public-player-head{display:flex;align-items:center;gap:16px}.public-player-head h2,.public-player-head p{margin:2px 0}.rival-stats-grid.compact{margin:0}.rival-stats-grid.compact>div{padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.035)}
+
+/* V0.6.4 — diagnostic Cron */
+.cron-test-state{margin-top:10px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.035);display:flex;flex-direction:column;gap:4px}.cron-test-state strong{color:var(--text)}.cron-test-state small{color:var(--muted)}.empty.compact{padding:10px 0}
