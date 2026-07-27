@@ -36,6 +36,8 @@
     selectedMatchdayId: null,
     matches: [],
     allMatches: [],
+    adminAllMatches: [],
+    adminAllMatchdays: [],
     clubs: [],
     clubMemberships: [],
     clubPreviewFilter: "CL",

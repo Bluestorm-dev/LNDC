@@ -126,8 +126,8 @@
       <span class="odds-pill"><b>N</b>${fmtOdds(m.odds_draw)}</span>
       <span class="odds-pill"><b>2</b>${fmtOdds(m.odds_away)}</span>
     </div>`:"";
-    return `<article class="match ${statusClass(m.status)}" data-match="${m.id}">
-      <div class="match-top"><span>${esc(fmtTime(m.kickoff_at))}${m.stadium?` · ${esc(m.stadium)}`:""}${m.tie_id?` · ${m.leg_number===2?'retour':'aller'}`:""}</span><span class="match-top-right">${Number(m.points_multiplier||1)>1?`<b class="multiplier-badge">×${Number(m.points_multiplier)}</b>`:""}<span class="status-label ${statusClass(m.status)}">${esc(statusLabel(m.status))}${result?` · ${esc(result)}`:""}${m.penalties_home!=null&&m.penalties_away!=null?` · TAB ${m.penalties_home}–${m.penalties_away}`:""}</span></span></div>
+    return `<article class="match ${statusClass(m.status)} ${m.is_test?'match-test':''}" data-match="${m.id}">
+      <div class="match-top"><span>${m.is_test?'<b class="test-pill">TEST</b> · ':''}${esc(fmtTime(m.kickoff_at))}${m.stadium?` · ${esc(m.stadium)}`:""}${m.venue_country?` · ${esc(m.venue_country)}`:""}${m.tie_id?` · ${m.leg_number===2?'retour':'aller'}`:""}</span><span class="match-top-right">${Number(m.points_multiplier||1)>1?`<b class="multiplier-badge">×${Number(m.points_multiplier)}</b>`:""}<span class="status-label ${statusClass(m.status)}">${esc(statusLabel(m.status))}${result?` · ${esc(result)}`:""}${m.penalties_home!=null&&m.penalties_away!=null?` · TAB ${m.penalties_home}–${m.penalties_away}`:""}</span></span></div>
       <div class="teams">
         <div class="team">${crestHTML(m.home_club)}<strong>${esc(m.home_club.name)}</strong>${clubCountryHTML(m.home_club)}</div>
         <div class="prediction-center">

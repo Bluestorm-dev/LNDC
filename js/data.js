@@ -32,12 +32,12 @@
     const [{data:matchdays,error:mdErr},{data:clubs,error:clubErr},{data:matches,error:matErr},{data:phases,error:phaseErr},{data:ties,error:tieErr}] = await Promise.all([
       sb.from("matchdays").select("*").eq("season_id",state.season.id).order("number"),
       sb.from("clubs").select("id,name,short_name,tla,country,venue,logo_url,logo_source_url,logo_storage_path,external_provider,external_id,is_active").eq("is_active",true).order("name"),
-      sb.from("matches").select("id,season_id,phase_id,matchday_id,kickoff_at,stadium,status,data_source,home_score,away_score,points_multiplier,external_provider,external_match_id,external_stage,odds_home,odds_draw,odds_away,odds_provider,odds_bookmaker,odds_source_season,odds_is_test_shifted,odds_updated_at,tie_id,leg_number,went_to_extra_time,penalties_home,penalties_away,winner_club_id,home_club:clubs!matches_home_club_id_fkey(id,name,short_name,tla,country,venue,logo_url,logo_source_url,logo_storage_path),away_club:clubs!matches_away_club_id_fkey(id,name,short_name,tla,country,venue,logo_url,logo_source_url,logo_storage_path)").eq("season_id",state.season.id).order("kickoff_at"),
+      sb.from("matches").select("id,season_id,phase_id,matchday_id,kickoff_at,stadium,venue_country,status,data_source,is_test,test_enabled,home_score,away_score,points_multiplier,external_provider,external_match_id,external_stage,odds_home,odds_draw,odds_away,odds_provider,odds_bookmaker,odds_source_season,odds_is_test_shifted,odds_updated_at,tie_id,leg_number,went_to_extra_time,penalties_home,penalties_away,winner_club_id,home_club:clubs!matches_home_club_id_fkey(id,name,short_name,tla,country,venue,logo_url,logo_source_url,logo_storage_path),away_club:clubs!matches_away_club_id_fkey(id,name,short_name,tla,country,venue,logo_url,logo_source_url,logo_storage_path)").eq("season_id",state.season.id).order("kickoff_at"),
       sb.from("competition_phases").select("id,season_id,code,name,sort_order,default_multiplier").eq("season_id",state.season.id).order("sort_order"),
       sb.from("knockout_ties").select("*").eq("season_id",state.season.id).order("sort_order")
     ]);
     if(mdErr) throw mdErr; if(clubErr) throw clubErr; if(matErr) throw matErr; if(phaseErr) throw phaseErr; if(tieErr) throw new Error("Patch V0.4.0 absent : exécute sql/HOTFIX_V0.4.0_EXISTING_DB.sql.");
-    state.matchdays=matchdays||[]; state.clubs=clubs||[]; state.allMatches=matches||[]; state.phases=phases||[]; state.knockoutTies=ties||[];
+    state.adminAllMatchdays=matchdays||[]; state.adminAllMatches=matches||[]; state.matchdays=(matchdays||[]).filter(md=>!md.is_test||md.test_enabled!==false); state.clubs=clubs||[]; state.allMatches=(matches||[]).filter(m=>!m.is_test||m.test_enabled!==false); state.phases=phases||[]; state.knockoutTies=ties||[];
     const {data:memberships,error:membershipErr}=await sb.from("club_catalog_memberships").select("club_id,competition_code,competition_name,country,season_year,updated_at");
     state.clubMemberships=membershipErr?[]:(memberships||[]);
     chooseDefaultMatchday();
@@ -56,7 +56,7 @@
     await loadProfileDirectory();
 
     const {data:history,error:hErr}=await sb.rpc("get_my_prediction_history",{p_season_id:state.season.id});
-    state.history=hErr ? [] : (history||[]);
+    state.history=hErr ? [] : (history||[]).filter(h=>{const m=(state.adminAllMatches||[]).find(x=>String(x.id)===String(h.match_id));return !m?.is_test||m.test_enabled!==false;});
     await loadRankingData(state.rankingScope,false);
     await loadTeamData();
     await Promise.all([loadNotificationData(),loadRivalData(),loadOwlData(),loadSupportData()]);

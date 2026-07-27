@@ -1,7 +1,7 @@
 "use strict";
 
 // Le Nid des Champions V0.6.4 — administration modulaire
-  const ADMIN_SECTIONS = new Set(["dashboard","matches","competition","players","teams","communication","application"]);
+  const ADMIN_SECTIONS = new Set(["dashboard","matches","test","competition","players","teams","communication","application"]);
 
   function currentAdminSection(){
     const saved=localStorage.getItem("nidc_admin_section")||"dashboard";
@@ -9,11 +9,13 @@
   }
 
   function setAdminSection(name,{scroll=true}={}){
-    const section=ADMIN_SECTIONS.has(name)?name:"dashboard";
+    let section=ADMIN_SECTIONS.has(name)?name:"dashboard";
+    if(section==="test"&&state.profile?.role!=="super_admin")section="dashboard";
     localStorage.setItem("nidc_admin_section",section);
     $$('[data-admin-panel]').forEach(p=>p.classList.toggle("active",p.dataset.adminPanel===section));
     $$('[data-admin-section]').forEach(b=>b.classList.toggle("active",b.dataset.adminSection===section));
     if(section==="players")renderAdminPlayers();
+    if(section==="test"&&typeof renderAdminTest==="function")renderAdminTest();
     if(section==="application")renderAdminAppState();
     if(section==="dashboard")renderAdminDashboard();
     if(scroll){const view=$("#view-admin");if(view)window.scrollTo({top:Math.max(0,view.offsetTop-72),behavior:"smooth"});}
@@ -73,7 +75,9 @@
     renderAdminBuilder(); renderKnockoutBuilder(); renderAdminMatches(); renderClubPreview(); renderAdminKnockout(); renderPhaseMultipliers(); renderAdminTeams(); renderAdminPlayers(); loadAvatarModeration(); renderAdminOwl(); renderAdminSupport(); renderAdminNotifications();
     const section=$("#registrationAdminSection");
     if(section){const allowed=state.profile?.role==="super_admin";section.classList.toggle("hidden",!allowed);if(allowed)loadRegistrationRequests();}
-    renderAdminDashboard();renderAdminAppState();bindAdminNavigation();
+    renderAdminDashboard();renderAdminAppState();
+    const testNav=$("#adminTestNav");if(testNav)testNav.classList.toggle("hidden",state.profile?.role!=="super_admin");
+    if(typeof renderAdminTest==="function")renderAdminTest();bindAdminNavigation();
   }
 
   function renderAdminBuilder() {
@@ -198,7 +202,7 @@
   function renderAdminMatches() {
     const box=$("#adminMatches"); if(!box)return;
     box.innerHTML=state.matches.map(m=>`<div class="admin-match-v2 ${m.status==="live"?'live-admin':''}" data-admin-match="${m.id}">
-      <div class="admin-match-title">${crestHTML(m.home_club)}<strong>${esc(m.home_club.short_name)} – ${esc(m.away_club.short_name)}</strong>${crestHTML(m.away_club)}<span class="chip ${statusClass(m.status)}">${esc(statusLabel(m.status))}</span></div>
+      <div class="admin-match-title">${crestHTML(m.home_club)}<strong>${esc(m.home_club.short_name)} – ${esc(m.away_club.short_name)}</strong>${crestHTML(m.away_club)}${m.is_test?'<span class="chip">TEST</span>':''}<span class="chip ${statusClass(m.status)}">${esc(statusLabel(m.status))}</span></div>
       ${[m.odds_home,m.odds_draw,m.odds_away].every(v=>v!=null)?`<div class="admin-odds">1 ${fmtOdds(m.odds_home)} · N ${fmtOdds(m.odds_draw)} · 2 ${fmtOdds(m.odds_away)} <span>${esc(m.odds_bookmaker||m.odds_provider||"")}</span></div>`:""}
       <div class="admin-score"><input data-admin-home inputmode="numeric" type="number" min="0" max="99" value="${m.home_score??0}"><span>–</span><input data-admin-away inputmode="numeric" type="number" min="0" max="99" value="${m.away_score??0}"></div>
       <div class="admin-match-actions"><button class="btn small live-update" data-admin-action="live">${m.status==="live"?'Actualiser LIVE':'Passer LIVE'}</button><button class="btn small" data-admin-action="finish">Terminer</button><button class="btn secondary small" data-admin-action="postpone">Reporter</button><button class="btn secondary small" data-admin-action="cancel">Annuler</button><button class="btn secondary small" data-admin-action="reopen">Réouvrir</button></div>

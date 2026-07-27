@@ -1,0 +1,21 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.6.7
+
+1. Sauvegarder la base Supabase avant toute opération destructive.
+2. Dans Supabase > SQL Editor, exécuter : sql/HOTFIX_V0.6.7_EXISTING_DB.sql
+3. Vérifier que la requête finale affiche app_version = 0.6.7.
+4. Déployer les fichiers front V0.6.7 sur GitHub Pages.
+5. Aucun redéploiement de push-dispatch n'est nécessaire pour cette version.
+6. Nettoyer le cache PWA / Ctrl+F5.
+7. Super Admin > Test :
+   - créer/remplacer les 2 journées TEST ;
+   - configurer domicile, extérieur, stade, pays, date et heure ;
+   - désactiver/réactiver les matchs TEST ;
+   - supprimer uniquement les matchs TEST ;
+   - « Vider tous les matchs » exige la confirmation VIDER et supprime tous les matchs + journées de la saison.
+
+IMPORTANT
+- Les matchs TEST actifs sont visibles et pronostiquables pour tester les rappels Cron.
+- Ils sont exclus des classements officiels et du classement Teams.
+- Ils ne ferment pas les choix Champion.
+- Une désactivation les masque, les met hors Cron et annule leurs Push encore en attente.
+- Le bouton « Vider tous les matchs » supprime aussi les 4 anciens matchs TEST initiaux et les pronostics associés.
