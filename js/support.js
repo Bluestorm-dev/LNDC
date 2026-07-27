@@ -1,13 +1,13 @@
 "use strict";
 
-// Le Nid des Champions V0.6.2 — tickets privés au Hibou
+// Le Nid des Champions V0.6.3 — tickets privés au Hibou
 window.__nidcErrors = window.__nidcErrors || [];
 window.addEventListener("error",e=>{window.__nidcErrors.push({at:new Date().toISOString(),message:String(e.message||"Erreur JS"),source:e.filename||null,line:e.lineno||null});window.__nidcErrors=window.__nidcErrors.slice(-10);});
 window.addEventListener("unhandledrejection",e=>{window.__nidcErrors.push({at:new Date().toISOString(),message:String(e.reason?.message||e.reason||"Promise rejetée")});window.__nidcErrors=window.__nidcErrors.slice(-10);});
 
 function technicalTicketContext(){
   const visible=$$(".view").find(v=>!v.classList.contains("hidden"));
-  return {app_version:CFG.APP_VERSION||"0.6.2",user_agent:navigator.userAgent,platform:navigator.userAgentData?.platform||navigator.platform||null,mobile:/Mobi|Android/i.test(navigator.userAgent),screen:`${window.innerWidth}x${window.innerHeight}`,view:visible?.id?.replace("view-","")||"unknown",timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||null,at:new Date().toISOString(),recent_errors:(window.__nidcErrors||[]).slice(-5)};
+  return {app_version:CFG.APP_VERSION||"0.6.3",user_agent:navigator.userAgent,platform:navigator.userAgentData?.platform||navigator.platform||null,mobile:/Mobi|Android/i.test(navigator.userAgent),screen:`${window.innerWidth}x${window.innerHeight}`,view:visible?.id?.replace("view-","")||"unknown",timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||null,at:new Date().toISOString(),recent_errors:(window.__nidcErrors||[]).slice(-5)};
 }
 
 function demoTickets(){return JSON.parse(localStorage.getItem("nidc_demo_support_tickets")||"[]");}

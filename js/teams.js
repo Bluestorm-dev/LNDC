@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.2 — Teams
+// Le Nid des Champions V0.6.3 — Teams
   // ========================================================================
   // V0.5.2 — Teams · formes/cadres/couleurs corrigés
   // ========================================================================
@@ -271,7 +271,7 @@
     const mode=state.teamRankingMode||"average";const rows=[...(state.teamLeaderboardRows||[])];
     rows.sort((a,b)=>mode==="top3"?Number(a.rank_top3)-Number(b.rank_top3):Number(a.rank_average)-Number(b.rank_average));
     if($("#teamRankingScopeChip"))$("#teamRankingScopeChip").textContent=mode==="top3"?"Top 3":mode==="matchday"?selectedMatchday()?.name||"Journée":"Moyenne";
-    root.innerHTML=rows.length?rows.map((r,i)=>`<article class="card team-rank-card ${String(r.team_id)===String(state.myTeam?.team_id)?'my-team':''}"><span class="team-rank-number">#${i+1}</span>${teamBadgeHTML(r)}<div class="team-rank-copy"><strong>${esc(r.team_name||r.name)}</strong><small>${Number(r.current_members||0)} membre${Number(r.current_members||0)>1?'s':''} · ${Number(r.contributors||0)} contributeur${Number(r.contributors||0)>1?'s':''}</small></div><b>${teamMetricLabel(r,mode)}</b></article>`).join(''):'<div class="empty">Aucune Team classée pour le moment.</div>';
+    root.innerHTML=rows.length?rows.map((r,i)=>`<article class="card team-rank-card team-color-card ${String(r.team_id)===String(state.myTeam?.team_id)?'my-team':''}" style="${teamVisualVars(r)}"><span class="team-rank-number">#${i+1}</span>${teamBadgeHTML(r)}<div class="team-rank-copy"><strong>${esc(r.team_name||r.name)}</strong><small>${Number(r.current_members||0)} membre${Number(r.current_members||0)>1?'s':''} · ${Number(r.contributors||0)} contributeur${Number(r.contributors||0)>1?'s':''}</small></div><b>${teamMetricLabel(r,mode)}</b></article>`).join(''):'<div class="empty">Aucune Team classée pour le moment.</div>';
   }
 
   async function setTeamRankingMode(mode){state.teamRankingMode=mode;$$('[data-team-ranking]').forEach(b=>b.classList.toggle('active',b.dataset.teamRanking===mode));if(demoMode){refreshDemoTeamState();renderTeamLeaderboard();renderMyTeamPanel();return;}try{const {data,error}=await sb.rpc('get_team_leaderboard_v050',{p_season_id:state.season.id,p_matchday_id:mode==='matchday'?state.selectedMatchdayId:null});if(error)throw error;state.teamLeaderboardRows=data||[];renderTeamLeaderboard();renderMyTeamPanel();}catch(err){toast(friendlyError(err),'error');}}

@@ -1,0 +1,29 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.6.3
+===========================================
+
+TYPE DE VERSION
+---------------
+V0.6.3 est un correctif visuel FRONT-ONLY construit sur V0.6.2.
+AUCUN SQL supplémentaire n'est nécessaire si HOTFIX_V0.6.2_EXISTING_DB.sql a déjà été exécuté.
+
+MISE À JOUR
+-----------
+1. Sauvegarder le config.js réel du site.
+2. Déployer les fichiers V0.6.3 sur GitHub Pages.
+3. Conserver/remettre les vraies valeurs Supabase dans config.js.
+4. Vérifier APP_VERSION: "0.6.3".
+5. Faire un Ctrl+F5 sur PC.
+6. Sur la PWA mobile, fermer/réouvrir l'application. Si l'ancien rendu persiste : Admin > Application > Nettoyer le cache PWA.
+
+CONTROLES VISUELS
+-----------------
+- Le même avatar doit apparaître dans l'accueil, la sidebar, le classement et les Teams.
+- Les PNG officiels ne doivent plus avoir de fond bleu artificiel.
+- Le cadre Team doit être plus visible autour de l'avatar.
+- Le bandeau Team doit reprendre franchement les couleurs choisies par la Team.
+- Le motif doit rester perceptible sans rendre les textes illisibles.
+- Le classement Team doit être teinté selon les couleurs de chaque Team.
+
+BASE SUPABASE
+-------------
+La base peut rester en schéma V0.6.2. V0.6.3 n'ajoute aucune table, RPC, policy ou bucket.

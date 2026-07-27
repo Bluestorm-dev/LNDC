@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.2 — profil et éditeur avatar
+// Le Nid des Champions V0.6.3 — profil et éditeur avatar
   function renderProfile() {
     const heartName=state.profile?.club_heart||"";
     const heartClub=findClubByHeart(heartName);

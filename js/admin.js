@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.2 — administration modulaire
+// Le Nid des Champions V0.6.3 — administration modulaire
   const ADMIN_SECTIONS = new Set(["dashboard","matches","competition","players","teams","communication","application"]);
 
   function currentAdminSection(){
@@ -52,7 +52,7 @@
   }
 
   function renderAdminAppState(){
-    if($("#adminAppVersion"))$("#adminAppVersion").textContent=CFG.APP_VERSION||"0.6.2";
+    if($("#adminAppVersion"))$("#adminAppVersion").textContent=CFG.APP_VERSION||"0.6.3";
     if($("#adminAppSeason"))$("#adminAppSeason").textContent=state.season?.name||"—";
     if($("#adminAppBackend"))$("#adminAppBackend").textContent=demoMode?"Démo locale":"Supabase";
     if($("#adminAppRole"))$("#adminAppRole").textContent=adminRoleLabel(state.profile?.role);

@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.2 — rival principal, duels et historique
+// Le Nid des Champions V0.6.3 — rival principal, duels et historique
 function nextRivalChoiceMatchday(){
   const candidates=(state.matchdays||[]).map(md=>({md,first:Math.min(...state.allMatches.filter(m=>m.matchday_id===md.id&&m.status!=="cancelled").map(m=>new Date(m.kickoff_at).getTime()))})).filter(x=>Number.isFinite(x.first)&&x.first>Date.now()).sort((a,b)=>a.first-b.first);
   return candidates[0]?.md||null;

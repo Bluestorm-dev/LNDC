@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.2 — centre de notifications, préférences et Web Push
+// Le Nid des Champions V0.6.3 — centre de notifications, préférences et Web Push
 const NIDC_NOTIFICATION_FILTERS = [
   ["all","Toutes"],["matches","Matchs"],["social","Réactions"],["rival","Rival"],["team","Team"],["owl","Hibou"],["system","Système"]
 ];
@@ -20,7 +20,7 @@ function notificationDemoSeed(){
   let rows=JSON.parse(localStorage.getItem(key)||"null");
   if(!Array.isArray(rows)){
     rows=[
-      {id:"demo-n-1",user_id:state.user?.id,category:"owl",title:"🦉 Le Hibou surveille",body:"La V0.6.2 est réveillée. Les plumes sont branchées.",importance:"info",deep_link:"home",created_at:new Date().toISOString(),read_at:null,deleted_at:null},
+      {id:"demo-n-1",user_id:state.user?.id,category:"owl",title:"🦉 Le Hibou surveille",body:"La V0.6.3 est réveillée. Les plumes sont branchées.",importance:"info",deep_link:"home",created_at:new Date().toISOString(),read_at:null,deleted_at:null},
       {id:"demo-n-2",user_id:state.user?.id,category:"matches",title:"⏰ Pronostics",body:"Pense à vérifier la prochaine journée UEFA.",importance:"normal",deep_link:"matches",created_at:new Date(Date.now()-3600000).toISOString(),read_at:null,deleted_at:null}
     ];localStorage.setItem(key,JSON.stringify(rows));
   }

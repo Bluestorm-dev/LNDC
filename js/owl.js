@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.2 — messages du Hibou masqué
+// Le Nid des Champions V0.6.3 — messages du Hibou masqué
 function demoOwlMessages(){
   let rows=JSON.parse(localStorage.getItem("nidc_demo_owl_messages")||"null");
   if(!Array.isArray(rows)){rows=[{id:"owl-demo-1",season_id:state.season?.id,title:"Le Nid ouvre l’œil",body:"Les rivalités sont prêtes. Choisis bien ta Némésis : le Hibou, lui, prendra des notes.",importance:"info",target_scope:"all",target_id:null,push_enabled:false,automated:false,show_in_history:true,starts_at:new Date(Date.now()-3600000).toISOString(),expires_at:null,created_at:new Date(Date.now()-3600000).toISOString()}];localStorage.setItem("nidc_demo_owl_messages",JSON.stringify(rows));}return rows;
