@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.3 — champions et phases finales
+// Le Nid des Champions V0.6.4 — champions et phases finales
   function findClubByHeart(value) {
     const normalize=v=>String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim().toLocaleLowerCase("fr");
     const needle=normalize(value);

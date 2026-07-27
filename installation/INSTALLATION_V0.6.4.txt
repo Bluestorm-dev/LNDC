@@ -1,0 +1,69 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.6.4
+===========================================
+
+OBJET
+-----
+Correctif Web Push immédiat, activation Push multi-comptes et Test Cron Super Admin.
+
+MISE À JOUR DEPUIS V0.6.3 / SCHÉMA V0.6.2
+------------------------------------------
+1. Sauvegarder Supabase.
+2. Dans Supabase > SQL Editor, rôle postgres, exécuter :
+
+   sql/HOTFIX_V0.6.4_EXISTING_DB.sql
+
+   Le résultat final doit afficher : app_version = 0.6.4
+   et le job nid-champions-push-v060 avec la fréquence : * * * * *
+
+3. Depuis la racine du projet V0.6.4, redéployer l'Edge Function :
+
+   npx.cmd supabase functions deploy push-dispatch
+
+4. NE PAS régénérer les clés VAPID.
+5. NE PAS modifier PUSH_VAPID_PUBLIC_KEY, PUSH_VAPID_PRIVATE_KEY, PUSH_VAPID_SUBJECT ou PUSH_CRON_SECRET si le Test Push actuel fonctionne.
+6. Déployer les fichiers front V0.6.4 sur GitHub Pages en conservant ton vrai config.js.
+7. Faire Ctrl+F5 sur PC ; sur mobile fermer/réouvrir la PWA ou nettoyer son cache.
+
+CE QUE CHANGE LE SQL
+--------------------
+- ajoute register_my_push_subscription_v064 ;
+- conserve une RLS stricte sur push_subscriptions ;
+- permet à un navigateur réutilisé par un autre compte de transférer son endpoint uniquement si les clés cryptographiques correspondent ;
+- ajoute le déclencheur d'envoi Push immédiat ;
+- ajoute admin_schedule_cron_test_v064 ;
+- remplace le Cron */15 par un Cron chaque minute.
+
+RÈGLE PUSH V0.6.4
+-----------------
+- Push demandé sans heure programmée : envoi immédiat.
+- Push programmé : traité par le Cron à l'heure prévue.
+- Le Cron reste aussi un filet de secours pour une notification immédiate qui n'aurait pas pu être transportée par pg_net.
+
+TESTS PRIORITAIRES
+------------------
+A. Compte joueur NON Super Admin
+   - Profil > Notifications > Activer les notifications Push ;
+   - vérifier qu'aucune erreur RLS push_subscriptions n'apparaît ;
+   - vérifier que l'appareil apparaît dans « Mes appareils ».
+
+B. Admin > Communication > Notifications & Web Push
+   - modifier titre + message du Test Push ;
+   - cliquer « Envoyer maintenant » ;
+   - vérifier que le Push reçu reprend exactement les champs.
+
+C. Message du Hibou avec Push
+   - publier ;
+   - vérifier la cloche ET le Push dans les secondes qui suivent.
+
+D. Test Cron
+   - choisir une heure 2 à 3 minutes dans le futur ;
+   - programmer ;
+   - ne plus toucher au navigateur ;
+   - vérifier la réception du message « Test Cron du Nid » à l'heure choisie.
+
+E. Vérification Cron SQL
+   select jobid,jobname,schedule,active
+   from cron.job
+   where jobname='nid-champions-push-v060';
+
+   schedule doit valoir : * * * * *

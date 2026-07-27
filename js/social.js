@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.3 — réactions rapides entre joueurs
+// Le Nid des Champions V0.6.4 — réactions rapides entre joueurs
 const PLAYER_REACTION_EMOJIS = [
   ["👏","Bien joué"],
   ["🔥","En feu"],

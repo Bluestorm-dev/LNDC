@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.3 — Realtime et pronostics révélés
+// Le Nid des Champions V0.6.4 — Realtime et pronostics révélés
   function setupRealtime() {
     if(demoMode||!sb||!state.season)return;
     if(state.channel)sb.removeChannel(state.channel);

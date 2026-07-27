@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.3 — centre de notifications, préférences et Web Push
+// Le Nid des Champions V0.6.4 — centre de notifications, préférences et Web Push
 const NIDC_NOTIFICATION_FILTERS = [
   ["all","Toutes"],["matches","Matchs"],["social","Réactions"],["rival","Rival"],["team","Team"],["owl","Hibou"],["system","Système"]
 ];
@@ -20,7 +20,7 @@ function notificationDemoSeed(){
   let rows=JSON.parse(localStorage.getItem(key)||"null");
   if(!Array.isArray(rows)){
     rows=[
-      {id:"demo-n-1",user_id:state.user?.id,category:"owl",title:"🦉 Le Hibou surveille",body:"La V0.6.3 est réveillée. Les plumes sont branchées.",importance:"info",deep_link:"home",created_at:new Date().toISOString(),read_at:null,deleted_at:null},
+      {id:"demo-n-1",user_id:state.user?.id,category:"owl",title:"🦉 Le Hibou surveille",body:"La V0.6.4 est réveillée. Les plumes sont branchées.",importance:"info",deep_link:"home",created_at:new Date().toISOString(),read_at:null,deleted_at:null},
       {id:"demo-n-2",user_id:state.user?.id,category:"matches",title:"⏰ Pronostics",body:"Pense à vérifier la prochaine journée UEFA.",importance:"normal",deep_link:"matches",created_at:new Date(Date.now()-3600000).toISOString(),read_at:null,deleted_at:null}
     ];localStorage.setItem(key,JSON.stringify(rows));
   }
@@ -180,8 +180,17 @@ async function enablePushNotifications(){
     const {data:keyRes,error:keyErr}=await sb.functions.invoke("push-dispatch",{body:{action:"public-key"}});if(keyErr)throw keyErr;if(!keyRes?.configured||!keyRes?.publicKey)throw new Error("Les clés VAPID ne sont pas encore configurées côté Supabase.");
     const registration=await navigator.serviceWorker.ready;let subscription=await registration.pushManager.getSubscription();
     if(!subscription)subscription=await registration.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:base64UrlToUint8Array(keyRes.publicKey)});
-    const j=subscription.toJSON();const row={user_id:state.user.id,endpoint:subscription.endpoint,p256dh:j.keys?.p256dh,auth_key:j.keys?.auth,device_name:pushDeviceName(),user_agent:navigator.userAgent,platform:navigator.userAgentData?.platform||navigator.platform||null,active:true,disabled_at:null};
-    const {error}=await sb.from("push_subscriptions").upsert(row,{onConflict:"endpoint"});if(error)throw error;await loadNotificationData();renderNotificationPreferences();renderHomePushPrompt();toast("🔔 Cet appareil recevra les push du Nid.");
+    const j=subscription.toJSON();
+    if(!j.keys?.p256dh||!j.keys?.auth)throw new Error("Le navigateur n’a pas fourni les clés de l’abonnement Push.");
+    const {error}=await sb.rpc("register_my_push_subscription_v064",{
+      p_endpoint:subscription.endpoint,
+      p_p256dh:j.keys.p256dh,
+      p_auth_key:j.keys.auth,
+      p_device_name:pushDeviceName(),
+      p_user_agent:navigator.userAgent,
+      p_platform:navigator.userAgentData?.platform||navigator.platform||null
+    });
+    if(error)throw error;await loadNotificationData();renderNotificationPreferences();renderHomePushPrompt();toast("🔔 Cet appareil recevra les push du Nid.");
   }catch(err){toast(friendlyError(err),"error");}
 }
 
@@ -197,16 +206,29 @@ async function disablePushDevice(id){
 
 async function loadAdminPushData(){
   if(state.profile?.role!=="super_admin")return;
-  if(demoMode){state.pushDeliveryLogs=[{id:1,created_at:new Date().toISOString(),delivery_kind:"test",status:"sent",response_code:201,user_id:state.user.id,subscription_id:"demo-device"}];state.adminPushSubscriptions=state.pushSubscriptions||[];return;}
-  const [{data,error},{data:subs,error:sErr}]=await Promise.all([sb.from("push_delivery_logs").select("*").order("created_at",{ascending:false}).limit(100),sb.from("push_subscriptions").select("id,user_id,device_name,platform,active").order("created_at",{ascending:false})]);if(error||sErr)throw error||sErr;state.pushDeliveryLogs=data||[];state.adminPushSubscriptions=subs||[];
+  if(demoMode){state.pushDeliveryLogs=[{id:1,created_at:new Date().toISOString(),delivery_kind:"test",status:"sent",response_code:201,user_id:state.user.id,subscription_id:"demo-device"}];state.adminPushSubscriptions=state.pushSubscriptions||[];state.adminCronTests=[];return;}
+  const [{data,error},{data:subs,error:sErr},{data:cronTests,error:cErr}]=await Promise.all([
+    sb.from("push_delivery_logs").select("*").order("created_at",{ascending:false}).limit(100),
+    sb.from("push_subscriptions").select("id,user_id,device_name,platform,active").order("created_at",{ascending:false}),
+    sb.from("notifications").select("id,title,body,push_not_before,push_sent_at,created_at,payload").eq("user_id",state.user.id).contains("payload",{cron_test:true}).order("created_at",{ascending:false}).limit(5)
+  ]);
+  if(error||sErr||cErr)throw error||sErr||cErr;state.pushDeliveryLogs=data||[];state.adminPushSubscriptions=subs||[];state.adminCronTests=cronTests||[];
 }
+
+function defaultCronTestTime(){const d=new Date(Date.now()+2*60000);return `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;}
+function nextCronTestDate(timeValue){const [h,m]=String(timeValue||"").split(":").map(Number);if(!Number.isInteger(h)||!Number.isInteger(m))return null;const d=new Date();d.setHours(h,m,0,0);if(d.getTime()<=Date.now())d.setDate(d.getDate()+1);return d;}
 
 function renderAdminNotifications(){
   const root=$("#adminNotificationsPanel");if(!root)return;
   if(state.profile?.role!=="super_admin"){root.innerHTML='<div class="empty">Réservé au Super Admin.</div>';return;}
   const players=[...state.profileDirectory.values()].sort((a,b)=>String(a.username).localeCompare(String(b.username),"fr"));
-  root.innerHTML=`<div class="grid grid-2"><section><span class="eyebrow gold">Test Push</span><h4>Vérifier un appareil</h4><div class="field"><label>Destinataire</label><select id="pushTestTarget"><option value="${state.user.id}">Moi (${esc(state.profile.username)})</option>${players.filter(p=>p.id!==state.user.id).map(p=>`<option value="${p.id}">${esc(p.username)}</option>`).join('')}</select></div><div class="field"><label>Titre</label><input id="pushTestTitle" value="🔔 Test du Nid"></div><div class="field"><label>Message</label><textarea id="pushTestBody" rows="3">Si tu lis ceci, les plumes sont correctement raccordées.</textarea></div><div class="field"><label>Destination au clic</label><select id="pushTestLink"><option value="home">Accueil</option><option value="matches">Pronostics</option><option value="teams">Team</option><option value="rival">Rival</option><option value="profile">Profil</option></select></div><div class="actions"><button id="pushQuickTestBtn" class="btn gold small">🔔 Envoyer le test</button><button id="pushCustomTestBtn" class="btn secondary small">Envoyer personnalisé</button></div><div id="pushTestStatus" class="form-msg"></div><hr class="soft-separator"><span class="eyebrow danger">Message système critique</span><h4>Prévenir tout le Nid</h4><p class="muted">Pour maintenance ou incident majeur. Toujours visible dans le centre interne ; le push nécessite l’autorisation du navigateur.</p><div class="field"><label>Titre</label><input id="criticalSystemTitle" maxlength="120" placeholder="Maintenance du Nid"></div><div class="field"><label>Message</label><textarea id="criticalSystemBody" rows="3" maxlength="2000"></textarea></div><label class="notification-toggle"><span>Envoyer aussi en push</span><input id="criticalSystemPush" type="checkbox" checked></label><button id="criticalSystemSendBtn" class="btn danger small" type="button">🚨 Envoyer le message critique</button><div id="criticalSystemMsg" class="form-msg"></div></section><section><span class="eyebrow">Diagnostic</span><h4>Livraisons récentes</h4><div id="pushLogList" class="push-log-list"></div></section></div>`;
-  $("#pushQuickTestBtn").onclick=()=>sendAdminPushTest(true);$("#pushCustomTestBtn").onclick=()=>sendAdminPushTest(false);$("#criticalSystemSendBtn").onclick=sendCriticalSystemMessage;renderPushLogList();
+  const lastCron=(state.adminCronTests||[])[0];
+  const cronState=lastCron?`<div class="cron-test-state"><strong>${lastCron.push_sent_at?"✅ Dernier test Cron envoyé":"⏳ Test Cron en attente"}</strong><small>${esc(fmtDate(lastCron.push_not_before||lastCron.created_at))}${lastCron.push_sent_at?` · envoyé ${esc(fmtDate(lastCron.push_sent_at))}`:""}</small></div>`:'<div class="empty compact">Aucun test Cron programmé.</div>';
+  root.innerHTML=`<div class="grid grid-2"><section><span class="eyebrow gold">Test Push immédiat</span><h4>Vérifier un appareil</h4><div class="field"><label>Destinataire</label><select id="pushTestTarget"><option value="${state.user.id}">Moi (${esc(state.profile.username)})</option>${players.filter(p=>p.id!==state.user.id).map(p=>`<option value="${p.id}">${esc(p.username)}</option>`).join('')}</select></div><div class="field"><label>Titre</label><input id="pushTestTitle" value="🔔 Test du Nid"></div><div class="field"><label>Message</label><textarea id="pushTestBody" rows="3">Si tu lis ceci, les plumes sont correctement raccordées.</textarea></div><div class="field"><label>Destination au clic</label><select id="pushTestLink"><option value="home">Accueil</option><option value="matches">Pronostics</option><option value="teams">Team</option><option value="rival">Rival</option><option value="profile">Profil</option></select></div><div class="actions"><button id="pushSendTestBtn" class="btn gold small" type="button">🔔 Envoyer maintenant</button><button id="pushResetTestBtn" class="btn secondary small" type="button">Réinitialiser le message</button></div><div id="pushTestStatus" class="form-msg"></div><hr class="soft-separator"><span class="eyebrow">Test Cron</span><h4>Tester le réveil automatique</h4><p class="muted">Choisis une heure. Le navigateur n’enverra rien lui-même : le Cron Supabase doit se réveiller et déclencher le Push.</p><div class="field"><label>Heure du test</label><input id="cronTestTime" type="time" value="${defaultCronTestTime()}"></div><button id="cronScheduleTestBtn" class="btn secondary small" type="button">⏰ Programmer le test Cron</button><div id="cronTestStatus" class="form-msg"></div>${cronState}<hr class="soft-separator"><span class="eyebrow danger">Message système critique</span><h4>Prévenir tout le Nid</h4><p class="muted">Pour maintenance ou incident majeur. Toujours visible dans le centre interne ; si Push est coché, l’envoi part immédiatement.</p><div class="field"><label>Titre</label><input id="criticalSystemTitle" maxlength="120" placeholder="Maintenance du Nid"></div><div class="field"><label>Message</label><textarea id="criticalSystemBody" rows="3" maxlength="2000"></textarea></div><label class="notification-toggle"><span>Envoyer aussi en push</span><input id="criticalSystemPush" type="checkbox" checked></label><button id="criticalSystemSendBtn" class="btn danger small" type="button">🚨 Envoyer le message critique</button><div id="criticalSystemMsg" class="form-msg"></div></section><section><span class="eyebrow">Diagnostic</span><h4>Livraisons récentes</h4><div id="pushLogList" class="push-log-list"></div></section></div>`;
+  $("#pushSendTestBtn").onclick=sendAdminPushTest;
+  $("#pushResetTestBtn").onclick=()=>{const t=$("#pushTestTitle"),b=$("#pushTestBody"),l=$("#pushTestLink");if(t)t.value="🔔 Test du Nid";if(b)b.value="Si tu lis ceci, les plumes sont correctement raccordées.";if(l)l.value="home";setMsg("#pushTestStatus","Message de test réinitialisé.");};
+  $("#cronScheduleTestBtn").onclick=scheduleAdminCronTest;
+  $("#criticalSystemSendBtn").onclick=sendCriticalSystemMessage;renderPushLogList();
 }
 
 function renderPushLogList(){
@@ -214,13 +236,43 @@ function renderPushLogList(){
   root.innerHTML=rows.length?rows.slice(0,30).map(l=>{const p=state.profileDirectory.get(String(l.user_id));const dev=(state.adminPushSubscriptions||[]).find(s=>String(s.id)===String(l.subscription_id));return `<div class="push-log-row"><span class="push-log-status ${esc(l.status)}">${l.status==='sent'?'✓':l.status==='failed'?'⚠':l.status==='expired'?'×':'·'}</span><div><strong>${esc(l.delivery_kind||'notification')} · ${esc(p?.username||'Joueur')}</strong><small>${esc(fmtDate(l.created_at))} · ${esc(dev?.device_name||dev?.platform||'appareil non identifié')} · ${esc(l.status)}${l.response_code?` · HTTP ${l.response_code}`:''}</small>${l.error_message?`<p>${esc(l.error_message)}</p>`:''}</div></div>`;}).join(""):'<div class="empty">Aucun push journalisé.</div>';
 }
 
-async function sendAdminPushTest(quick=false){
-  const target=$("#pushTestTarget")?.value||state.user.id,title=quick?"🔔 Test du Nid":$("#pushTestTitle")?.value,body=quick?"Si tu lis ceci, les plumes sont correctement raccordées.":$("#pushTestBody")?.value,deep_link=$("#pushTestLink")?.value||"home";
+async function sendAdminPushTest(){
+  const target=$("#pushTestTarget")?.value||state.user.id;
+  const title=$("#pushTestTitle")?.value?.trim();
+  const body=$("#pushTestBody")?.value?.trim();
+  const deep_link=$("#pushTestLink")?.value||"home";
+  if(!title||!body)return setMsg("#pushTestStatus","Titre et message obligatoires.","error");
   setMsg("#pushTestStatus","Envoi en cours…");
   try{
-    if(demoMode){setMsg("#pushTestStatus","✓ Test simulé : 1/1 appareil.","ok");return;}
-    const {data,error}=await sb.functions.invoke("push-dispatch",{body:{action:"test",target_user_id:target,title,body,deep_link}});if(error)throw error;if(data?.error)throw new Error(data.error);setMsg("#pushTestStatus",`✓ ${data.sent||0} envoyé(s) · ${data.failed||0} échec(s).`,"ok");await Promise.all([loadAdminPushData(),loadNotificationData()]);renderAdminNotifications();renderNotificationBell();
+    if(demoMode){setMsg("#pushTestStatus",`✓ Test simulé : « ${title} » — ${body}`,"ok");return;}
+    const {data,error}=await sb.functions.invoke("push-dispatch",{body:{action:"test",target_user_id:target,title,body,deep_link}});
+    if(error)throw error;if(data?.error)throw new Error(data.error);
+    setMsg("#pushTestStatus",`✓ ${data.sent||0} envoyé(s) · ${data.failed||0} échec(s) · « ${title} »`,"ok");
+    await Promise.all([loadAdminPushData(),loadNotificationData()]);renderAdminNotifications();renderNotificationBell();
   }catch(err){setMsg("#pushTestStatus",friendlyError(err),"error");}
+}
+
+async function scheduleAdminCronTest(){
+  const raw=$("#cronTestTime")?.value;const when=nextCronTestDate(raw);
+  if(!when)return setMsg("#cronTestStatus","Choisis une heure valide.","error");
+  setMsg("#cronTestStatus","Programmation…");
+  try{
+    if(demoMode){setMsg("#cronTestStatus",`✓ Test Cron simulé pour ${when.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})}.`,"ok");return;}
+    const {data,error}=await sb.rpc("admin_schedule_cron_test_v064",{p_scheduled_at:when.toISOString(),p_title:"🦉 Test Cron du Nid",p_body:"Le réveil du Hibou fonctionne correctement."});
+    if(error)throw error;
+    setMsg("#cronTestStatus",`✓ Programmé pour ${when.toLocaleString("fr-FR",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit"})}. Le Cron doit l’envoyer tout seul.`,"ok");
+    await loadAdminPushData();renderAdminNotifications();
+  }catch(err){setMsg("#cronTestStatus",friendlyError(err),"error");}
+}
+
+async function dispatchAdminPushNow(options={}){
+  if(demoMode)return {sent:1,failed:0,skipped:0,notifications:1};
+  const payload={action:"dispatch-now"};
+  if(options.source_key)payload.source_key=options.source_key;
+  if(options.category)payload.category=options.category;
+  if(options.created_after)payload.created_after=options.created_after;
+  const {data,error}=await sb.functions.invoke("push-dispatch",{body:payload});
+  if(error)throw error;if(data?.error)throw new Error(data.error);return data||{};
 }
 
 async function sendCriticalSystemMessage(){
@@ -231,7 +283,10 @@ async function sendCriticalSystemMessage(){
   try{
     if(demoMode){setMsg("#criticalSystemMsg","✓ Message critique simulé.","ok");return;}
     const {data,error}=await sb.rpc("admin_send_system_message_v060",{p_season_id:state.season?.id||null,p_title:title,p_body:body,p_push:push});
-    if(error)throw error;setMsg("#criticalSystemMsg",`✓ Message envoyé à ${Number(data||0)} joueur(s).`,"ok");await loadNotificationData();renderNotificationBell();
+    if(error)throw error;
+    const pushInfo=push?" · Push immédiat déclenché":"";
+    setMsg("#criticalSystemMsg",`✓ Message envoyé à ${Number(data||0)} joueur(s)${pushInfo}.`,"ok");
+    await Promise.all([loadAdminPushData(),loadNotificationData()]);renderNotificationBell();renderPushLogList();
   }catch(err){setMsg("#criticalSystemMsg",friendlyError(err),"error");}
 }
 
