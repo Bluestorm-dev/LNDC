@@ -317,3 +317,52 @@
 /* V0.5.5a — Teams vacantes / récupération / modération */
 .team-directory-card.vacant{border-style:dashed}.team-directory-card.vacant:before{opacity:.55}.team-recover-card{margin-top:12px}.team-recover-card h3{margin:4px 0}.team-recover-list{display:grid;gap:8px;margin-top:12px}.team-recover-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:10px;border:1px solid var(--line-soft);border-radius:14px;background:rgba(255,255,255,.018)}.team-recover-row>div{display:grid}.team-recover-row small{color:#8294b8;font-size:.62rem}.admin-hard-delete-note{margin-top:10px;font-size:.64rem}.super-admin-delete{border-color:rgba(255,70,91,.6)!important;box-shadow:0 0 0 1px rgba(255,70,91,.08)}
 @media(max-width:650px){.team-recover-row{grid-template-columns:auto 1fr}.team-recover-row>.btn{grid-column:2;justify-self:start}}
+
+/* ========================================================================== 
+   V0.6.2 — Cartes Team lisibles
+   Le motif complet reste sur le blason/cadre. Sur les grandes cartes, il ne
+   sert plus que d'ambiance : agrandi, atténué et couvert par un voile sombre.
+   ========================================================================== */
+.team-home-banner{
+  isolation:isolate;
+  overflow:hidden;
+  background:linear-gradient(135deg,
+    color-mix(in srgb,var(--team-primary) 18%,#07142e),
+    color-mix(in srgb,var(--team-secondary) 14%,#040918))!important;
+}
+.team-home-banner:before{
+  content:"";position:absolute;inset:-30%;z-index:0;pointer-events:none;
+  opacity:.16;filter:saturate(.72) brightness(.82);transform:scale(1.18) rotate(0.001deg);
+  background:var(--team-ambient-pattern,linear-gradient(135deg,var(--team-primary),var(--team-secondary)));
+}
+.team-home-banner:after{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(3,9,25,.76),rgba(5,12,31,.62) 58%,rgba(4,9,23,.74)),radial-gradient(circle at 82% 16%,rgba(255,255,255,.07),transparent 32%);
+}
+.team-home-banner>*{position:relative;z-index:1}
+.team-home-banner.bg-solid{--team-ambient-pattern:var(--team-primary)}
+.team-home-banner.bg-vertical{--team-ambient-pattern:linear-gradient(180deg,var(--team-primary),var(--team-secondary))}
+.team-home-banner.bg-horizontal{--team-ambient-pattern:linear-gradient(90deg,var(--team-primary),var(--team-secondary))}
+.team-home-banner.bg-diagonal{--team-ambient-pattern:linear-gradient(135deg,var(--team-primary),var(--team-secondary))}
+.team-home-banner.bg-radial{--team-ambient-pattern:radial-gradient(circle at 28% 22%,var(--team-secondary),var(--team-primary) 72%)}
+.team-home-banner.bg-halo{--team-ambient-pattern:radial-gradient(circle at 30% 25%,color-mix(in srgb,var(--team-secondary) 82%,white),var(--team-primary) 62%,#050817 115%)}
+.team-home-banner.bg-split-vertical{--team-ambient-pattern:linear-gradient(90deg,var(--team-primary) 0 50%,var(--team-secondary) 50%)}
+.team-home-banner.bg-split-horizontal{--team-ambient-pattern:linear-gradient(180deg,var(--team-primary) 0 50%,var(--team-secondary) 50%)}
+.team-home-banner.bg-split-diagonal{--team-ambient-pattern:linear-gradient(135deg,var(--team-primary) 0 49%,var(--team-secondary) 51%)}
+.team-home-banner.bg-stripes-vertical{--team-ambient-pattern:repeating-linear-gradient(90deg,var(--team-primary) 0 7%,var(--team-secondary) 7% 14%)}
+.team-home-banner.bg-stripes-horizontal{--team-ambient-pattern:repeating-linear-gradient(180deg,var(--team-primary) 0 7%,var(--team-secondary) 7% 14%)}
+.team-home-banner.bg-stripes-diagonal{--team-ambient-pattern:repeating-linear-gradient(135deg,var(--team-primary) 0 7%,var(--team-secondary) 7% 14%)}
+.team-home-banner.bg-quarters{--team-ambient-pattern:conic-gradient(from 90deg at 50% 50%,var(--team-primary) 0 25%,var(--team-secondary) 25% 50%,var(--team-primary) 50% 75%,var(--team-secondary) 75%)}
+.team-home-identity h2,.team-home-identity p,.team-home-identity .eyebrow{position:relative;text-shadow:0 2px 10px rgba(0,0,0,.75)}
+.team-home-identity p{color:#d9e1f4}
+.team-meta-pills span{background:rgba(2,7,20,.68);border-color:rgba(255,255,255,.16);backdrop-filter:blur(7px)}
+
+/* Même principe dans l'aperçu du configurateur : signature, jamais papier peint. */
+.team-preview-mini-card:before{opacity:.14!important;inset:-28%!important;transform:scale(1.22)!important;filter:saturate(.7) brightness(.78)!important}
+.team-preview-mini-card:after{background:linear-gradient(90deg,rgba(3,9,25,.87),rgba(4,10,27,.74) 58%,rgba(3,8,22,.82))!important}
+.team-preview-mini-card>*{text-shadow:0 2px 5px rgba(0,0,0,.9)!important}
+
+@media(max-width:680px){
+  .team-home-banner:before{opacity:.13;inset:-36%;transform:scale(1.25)}
+  .team-home-banner:after{background:linear-gradient(90deg,rgba(3,9,25,.82),rgba(4,10,27,.70),rgba(3,8,22,.82))}
+}

@@ -58,3 +58,11 @@ body:after{
 .odds-pill b{display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:rgba(238,205,109,.12);color:var(--gold);font-size:.66rem}
 .admin-odds{grid-column:1/-1;color:#d5dcf5;font-size:.72rem;padding:3px 0 1px}.admin-odds span{color:var(--muted);margin-left:6px}
 @media(max-width:620px){.match-odds{margin:8px 8px 10px;gap:5px}.odds-caption{width:100%;text-align:center;margin:0 0 1px}.odds-pill{min-width:61px;padding:5px 8px}}
+
+/* V0.6.2 — l'avatar sticky reste le vrai avatar + habillage Team, même sur mobile */
+.my-ranking-sticky .sticky-name>.team-avatar{width:40px;height:40px;flex-basis:40px}
+.my-ranking-sticky .sticky-name>.team-avatar>.avatar{width:31px!important;height:31px!important}
+.my-ranking-sticky .sticky-name>.team-avatar>i{width:14px;height:14px;right:-1px;bottom:-1px}
+.my-ranking-sticky .sticky-name>.team-avatar .team-logo{width:14px;height:14px;font-size:.52rem}
+.my-ranking-sticky .sticky-player-copy{display:grid;min-width:0}.my-ranking-sticky .sticky-player-copy b,.my-ranking-sticky .sticky-player-copy small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.my-ranking-sticky .sticky-player-copy small{color:#c2cae8;font-size:.55rem;margin-top:1px}
+@media(max-width:760px){.my-ranking-sticky .sticky-name .avatar{display:grid!important}.my-ranking-sticky .sticky-name>.team-avatar{display:inline-grid!important;width:38px;height:38px;flex-basis:38px}.my-ranking-sticky .sticky-name>.team-avatar>.avatar{width:29px!important;height:29px!important}.my-ranking-sticky .sticky-player-copy small{display:block!important;max-width:120px}}
