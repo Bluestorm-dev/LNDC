@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.0 — Realtime et pronostics révélés
+// Le Nid des Champions V0.6.2 — Realtime et pronostics révélés
   function setupRealtime() {
     if(demoMode||!sb||!state.season)return;
     if(state.channel)sb.removeChannel(state.channel);
@@ -50,7 +50,8 @@
         const {data,error}=await sb.rpc("get_match_predictions_v030",{p_match_id:matchId});if(error)throw error;rows=data||[];
       }
       const m=state.allMatches.find(x=>x.id===matchId);
-      const root=modal(`Pronos du Nid · ${m?.home_club?.short_name||"?"} – ${m?.away_club?.short_name||"?"}`,rows.length?`<div class="nid-predictions">${rows.map(r=>`<div class="nid-prediction-row">${avatarHTML(r)}<strong>${r.is_me?'★ ':''}${esc(r.username)}</strong><span class="nid-prediction-score">${r.prediction_home}–${r.prediction_away}</span><span class="nid-prediction-points">${Number(r.current_points||0)} pt${Number(r.current_points||0)>1?'s':''}</span></div>`).join("")}</div>`:'<div class="empty">Aucun prono enregistré pour ce match.</div>');
+      const root=modal(`Pronos du Nid · ${m?.home_club?.short_name||"?"} – ${m?.away_club?.short_name||"?"}`,rows.length?`<div class="nid-predictions">${rows.map(r=>`<div class="nid-prediction-row">${avatarHTML(r)}<strong>${r.is_me?'★ ':''}${esc(r.username)}${reactionButtonHTML(r.user_id,true)}</strong><span class="nid-prediction-score">${r.prediction_home}–${r.prediction_away}</span><span class="nid-prediction-points">${Number(r.current_points||0)} pt${Number(r.current_points||0)>1?'s':''}</span></div>`).join("")}</div>`:'<div class="empty">Aucun prono enregistré pour ce match.</div>');
+      bindPlayerReactionButtons(root);
       return root;
     } catch(err) { toast(friendlyError(err),"error"); }
   }

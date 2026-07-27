@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.0 — rival principal, duels et historique
+// Le Nid des Champions V0.6.2 — rival principal, duels et historique
 function nextRivalChoiceMatchday(){
   const candidates=(state.matchdays||[]).map(md=>({md,first:Math.min(...state.allMatches.filter(m=>m.matchday_id===md.id&&m.status!=="cancelled").map(m=>new Date(m.kickoff_at).getTime()))})).filter(x=>Number.isFinite(x.first)&&x.first>Date.now()).sort((a,b)=>a.first-b.first);
   return candidates[0]?.md||null;
@@ -25,7 +25,7 @@ async function loadRivalData(){
     sb.from("rival_changes").select("*").eq("season_id",state.season.id).eq("user_id",state.user.id).order("changed_at",{ascending:false}),
     sb.rpc("get_rival_summary_v060",{p_season_id:state.season.id,p_user_id:state.user.id})
   ]);
-  if(rErr||dErr||cErr||sErr)throw new Error("Migration rivalités V0.6.0 absente.");
+  if(rErr||dErr||cErr||sErr)throw new Error("Migration rivalités V0.6.2 absente : exécute sql/HOTFIX_V0.6.2_EXISTING_DB.sql.");
   state.currentRival=r||null;state.rivalDuels=duels||[];state.rivalChanges=changes||[];state.rivalSummary=summary?.[0]||null;
 }
 

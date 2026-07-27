@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.0 — messages du Hibou masqué
+// Le Nid des Champions V0.6.2 — messages du Hibou masqué
 function demoOwlMessages(){
   let rows=JSON.parse(localStorage.getItem("nidc_demo_owl_messages")||"null");
   if(!Array.isArray(rows)){rows=[{id:"owl-demo-1",season_id:state.season?.id,title:"Le Nid ouvre l’œil",body:"Les rivalités sont prêtes. Choisis bien ta Némésis : le Hibou, lui, prendra des notes.",importance:"info",target_scope:"all",target_id:null,push_enabled:false,automated:false,show_in_history:true,starts_at:new Date(Date.now()-3600000).toISOString(),expires_at:null,created_at:new Date(Date.now()-3600000).toISOString()}];localStorage.setItem("nidc_demo_owl_messages",JSON.stringify(rows));}return rows;
@@ -9,7 +9,7 @@ function demoOwlMessages(){
 async function loadOwlData(){
   if(!state.user)return;
   if(demoMode){state.owlMessages=demoOwlMessages();return;}
-  const {data,error}=await sb.from("owl_messages").select("*").order("starts_at",{ascending:false}).limit(100);if(error)throw new Error("Migration Hibou V0.6.0 absente.");state.owlMessages=data||[];
+  const {data,error}=await sb.from("owl_messages").select("*").order("starts_at",{ascending:false}).limit(100);if(error)throw new Error("Migration Hibou V0.6.2 absente : exécute sql/HOTFIX_V0.6.2_EXISTING_DB.sql.");state.owlMessages=data||[];
 }
 
 function activeOwlMessage(){const now=Date.now();return (state.owlMessages||[]).find(m=>new Date(m.starts_at||m.created_at).getTime()<=now&&(!m.expires_at||new Date(m.expires_at).getTime()>now))||null;}

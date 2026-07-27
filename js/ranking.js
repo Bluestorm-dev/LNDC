@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.0 — historique, classements et live
+// Le Nid des Champions V0.6.2 — historique, classements et live
   function renderHistory() {
     const panel=$("#historyPanel"); if(!panel)return;
     const rows=state.history.filter(r=>["finished","cancelled"].includes(r.match_status));
@@ -29,11 +29,12 @@
       const gapAbove=r.display_above==null?"—":`↑ <b>${gapText(r.display_above)}</b>`;
       const gapBelow=r.display_below==null?"—":`↓ <b>${gapText(r.display_below)}</b>`;
       const isRival=String(r.user_id)===String(state.currentRival?.rival_user_id||"");
-      return `<tr class="${r.user_id===state.user?.id?'me ':''}${isRival?'current-rival-row ':''}${rank<=3?`podium-${rank}`:''}"><td><span class="rank-medal">${rank}</span></td><td>${varHtml}</td><td><div class="player-cell">${avatarHTML(r)}<span class="player-name-stack"><span><button class="player-profile-link" data-player-profile="${r.user_id}" type="button">${esc(r.username)}</button>${isRival?` <button class="rival-inline-chip" data-current-rival type="button">⚔ Rival</button>`:''}</span>${teamForUser(r.user_id)?`<small>${esc(teamForUser(r.user_id).team_name||'')}</small>`:''}</span></div></td><td><b>${Number(r.points||0).toFixed(0)}</b>${Number(r.points||0)!==Number(r.official_points||0)?`<small class="muted"> · ${Number(r.official_points||0).toFixed(0)} off.</small>`:''}</td><td>${Number(r.exact_scores||0)}</td><td><span class="precision-pill">${Number(r.precision_pct||0).toFixed(1)}%</span></td><td>${Number(r.average||0).toFixed(2)}</td><td><div class="gap-cell">${gapAbove}<br>${gapBelow}</div></td><td>${Number(r.played||0)}</td></tr>`;
+      return `<tr class="${r.user_id===state.user?.id?'me ':''}${isRival?'current-rival-row ':''}${rank<=3?`podium-${rank}`:''}"><td><span class="rank-medal">${rank}</span></td><td>${varHtml}</td><td><div class="player-cell">${avatarHTML(r)}<span class="player-name-stack"><span><button class="player-profile-link" data-player-profile="${r.user_id}" type="button">${esc(r.username)}</button>${reactionButtonHTML(r.user_id,true)}${isRival?` <button class="rival-inline-chip" data-current-rival type="button">⚔ Rival</button>`:''}</span>${teamForUser(r.user_id)?`<small>${esc(teamForUser(r.user_id).team_name||'')}</small>`:''}</span></div></td><td><b>${Number(r.points||0).toFixed(0)}</b>${Number(r.points||0)!==Number(r.official_points||0)?`<small class="muted"> · ${Number(r.official_points||0).toFixed(0)} off.</small>`:''}</td><td>${Number(r.exact_scores||0)}</td><td><span class="precision-pill">${Number(r.precision_pct||0).toFixed(1)}%</span></td><td>${Number(r.average||0).toFixed(2)}</td><td><div class="gap-cell">${gapAbove}<br>${gapBelow}</div></td><td>${Number(r.played||0)}</td></tr>`;
     };
     body.innerHTML=rows.map(rowHTML).join("")||'<tr><td colspan="9" class="empty">Aucun classement.</td></tr>';
     $$('[data-current-rival]',body).forEach(b=>b.onclick=e=>{e.stopPropagation();if(typeof openRivalQuickCompare==="function")openRivalQuickCompare();});
     $$('[data-player-profile]',body).forEach(b=>b.onclick=e=>{e.stopPropagation();if(typeof openPlayerQuickProfile==="function")openPlayerQuickProfile(b.dataset.playerProfile);});
+    bindPlayerReactionButtons(body);
 
     const mine=rows.find(r=>r.user_id===state.user?.id), sticky=$("#myRankingSticky");
     if(sticky){
@@ -41,7 +42,8 @@
       if(mine){
         const variation=state.rankingScope==="general"?Number(mine.variation||0):0;
         const varHtml=variation>0?`<span class="rank-var up">▲ ${variation}</span>`:variation<0?`<span class="rank-var down">▼ ${Math.abs(variation)}</span>`:`<span class="rank-var same">—</span>`;
-        sticky.innerHTML=`<span class="sticky-rank">#${mine.display_rank}</span>${varHtml}<span class="sticky-name">${avatarHTML(mine)}<b>${esc(mine.username)}</b></span><span><b>${Number(mine.points||0).toFixed(0)}</b><small> pts</small></span><span><b>${Number(mine.exact_scores||0)}</b><small> exacts</small></span><span><b>${Number(mine.precision_pct||0).toFixed(1)}%</b><small> précision</small></span>`;
+        const mineTeam=teamForUser(mine.user_id);
+        sticky.innerHTML=`<span class="sticky-rank">#${mine.display_rank}</span>${varHtml}<span class="sticky-name">${avatarHTML(mine)}<span class="sticky-player-copy"><b>${esc(mine.username)}</b>${mineTeam?`<small>${esc(mineTeam.team_name||mineTeam.name||'')}</small>`:''}</span></span><span><b>${Number(mine.points||0).toFixed(0)}</b><small> pts</small></span><span><b>${Number(mine.exact_scores||0)}</b><small> exacts</small></span><span><b>${Number(mine.precision_pct||0).toFixed(1)}%</b><small> précision</small></span>`;
       }
     }
     updateKpis();

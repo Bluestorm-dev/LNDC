@@ -1,10 +1,79 @@
 "use strict";
 
-// Le Nid des Champions V0.6.0 — administration
+// Le Nid des Champions V0.6.2 — administration modulaire
+  const ADMIN_SECTIONS = new Set(["dashboard","matches","competition","players","teams","communication","application"]);
+
+  function currentAdminSection(){
+    const saved=localStorage.getItem("nidc_admin_section")||"dashboard";
+    return ADMIN_SECTIONS.has(saved)?saved:"dashboard";
+  }
+
+  function setAdminSection(name,{scroll=true}={}){
+    const section=ADMIN_SECTIONS.has(name)?name:"dashboard";
+    localStorage.setItem("nidc_admin_section",section);
+    $$('[data-admin-panel]').forEach(p=>p.classList.toggle("active",p.dataset.adminPanel===section));
+    $$('[data-admin-section]').forEach(b=>b.classList.toggle("active",b.dataset.adminSection===section));
+    if(section==="players")renderAdminPlayers();
+    if(section==="application")renderAdminAppState();
+    if(section==="dashboard")renderAdminDashboard();
+    if(scroll){const view=$("#view-admin");if(view)window.scrollTo({top:Math.max(0,view.offsetTop-72),behavior:"smooth"});}
+  }
+
+  function bindAdminNavigation(){
+    $$('[data-admin-section]').forEach(b=>b.onclick=()=>setAdminSection(b.dataset.adminSection));
+    $$('[data-admin-go]').forEach(b=>b.onclick=()=>setAdminSection(b.dataset.adminGo));
+    const search=$("#adminPlayerSearch");if(search)search.oninput=renderAdminPlayers;
+    const reload=$("#adminReloadDataBtn");if(reload)reload.onclick=reloadAdminData;
+    const refresh=$("#adminRefreshPwaBtn");if(refresh)refresh.onclick=refreshAdminPwa;
+    setAdminSection(currentAdminSection(),{scroll:false});
+  }
+
+  function renderAdminDashboard(){
+    const matches=(state.allMatches||[]).length;
+    const players=[...state.profileDirectory.values()].filter(p=>p.status==="active").length;
+    const teams=(state.teamDirectory||[]).filter(t=>t.status==="active").length;
+    const tickets=state.profile?.role==="super_admin"?(state.adminSupportTickets||[]).filter(t=>!["closed","rejected","resolved"].includes(t.status)).length:"—";
+    if($("#adminDashMatches"))$("#adminDashMatches").textContent=String(matches);
+    if($("#adminDashPlayers"))$("#adminDashPlayers").textContent=String(players);
+    if($("#adminDashTeams"))$("#adminDashTeams").textContent=String(teams);
+    if($("#adminDashTickets"))$("#adminDashTickets").textContent=String(tickets);
+    if($("#adminDashSeason"))$("#adminDashSeason").textContent=state.season?.name||"Saison";
+  }
+
+  function adminRoleLabel(role){return ({super_admin:"Super Admin",admin:"Admin",captain:"Capitaine",player:"Joueur"}[role]||role||"Joueur");}
+
+  function renderAdminPlayers(){
+    const root=$("#adminPlayersPanel");if(!root)return;
+    const q=String($("#adminPlayerSearch")?.value||"").trim().toLocaleLowerCase("fr");
+    const players=[...state.profileDirectory.values()].filter(p=>{const hay=[p.username,p.first_name,p.role,p.status].filter(Boolean).join(" ").toLocaleLowerCase("fr");return !q||hay.includes(q);}).sort((a,b)=>String(a.username||"").localeCompare(String(b.username||""),"fr"));
+    const summary=$("#adminPlayersSummary");if(summary)summary.textContent=`${players.length} joueur${players.length>1?"s":""} affiché${players.length>1?"s":""}`;
+    root.innerHTML=players.length?players.map(p=>`<div class="admin-player-row" data-admin-player="${p.id||p.user_id}">${avatarHTML(p)}<div class="admin-player-copy"><strong>${esc(p.username||"Joueur")}</strong><div class="admin-player-meta"><span class="chip admin-role-${esc(p.role||"player")}">${esc(adminRoleLabel(p.role))}</span><span>${esc(p.status||"active")}</span>${p.first_name?`<span>· ${esc(p.first_name)}</span>`:""}</div></div><div class="admin-player-actions"><button class="btn secondary small" type="button" data-admin-player-open>Voir le profil</button></div></div>`).join(""):'<div class="empty">Aucun joueur correspondant.</div>';
+    $$('[data-admin-player]',root).forEach(row=>{const open=$('[data-admin-player-open]',row);if(open)open.onclick=()=>openPlayerQuickProfile(row.dataset.adminPlayer);});
+  }
+
+  function renderAdminAppState(){
+    if($("#adminAppVersion"))$("#adminAppVersion").textContent=CFG.APP_VERSION||"0.6.2";
+    if($("#adminAppSeason"))$("#adminAppSeason").textContent=state.season?.name||"—";
+    if($("#adminAppBackend"))$("#adminAppBackend").textContent=demoMode?"Démo locale":"Supabase";
+    if($("#adminAppRole"))$("#adminAppRole").textContent=adminRoleLabel(state.profile?.role);
+  }
+
+  async function reloadAdminData(){
+    setMsg("#adminMaintenanceMsg","Rechargement des données…");
+    try{await loadData();renderAll();setAdminSection("application",{scroll:false});setMsg("#adminMaintenanceMsg","Données rechargées.","ok");toast("↻ Données du Nid rechargées.");}catch(err){setMsg("#adminMaintenanceMsg",friendlyError(err),"error");}
+  }
+
+  async function refreshAdminPwa(){
+    if(!confirm("Nettoyer le cache PWA du Nid puis recharger la page ? Aucune donnée Supabase ne sera supprimée."))return;
+    setMsg("#adminMaintenanceMsg","Nettoyage du cache…");
+    try{if("caches" in window){const keys=await caches.keys();await Promise.all(keys.filter(k=>k.startsWith("nid-champions-")).map(k=>caches.delete(k)));}if("serviceWorker" in navigator){const reg=await navigator.serviceWorker.getRegistration();if(reg)await reg.update();}setMsg("#adminMaintenanceMsg","Cache nettoyé. Rechargement…","ok");setTimeout(()=>location.reload(),450);}catch(err){setMsg("#adminMaintenanceMsg",friendlyError(err),"error");}
+  }
+
   function renderAdmin() {
-    renderAdminBuilder(); renderKnockoutBuilder(); renderAdminMatches(); renderClubPreview(); renderAdminKnockout(); renderPhaseMultipliers(); renderAdminTeams(); loadAvatarModeration(); renderAdminOwl(); renderAdminSupport(); renderAdminNotifications();
+    renderAdminBuilder(); renderKnockoutBuilder(); renderAdminMatches(); renderClubPreview(); renderAdminKnockout(); renderPhaseMultipliers(); renderAdminTeams(); renderAdminPlayers(); loadAvatarModeration(); renderAdminOwl(); renderAdminSupport(); renderAdminNotifications();
     const section=$("#registrationAdminSection");
     if(section){const allowed=state.profile?.role==="super_admin";section.classList.toggle("hidden",!allowed);if(allowed)loadRegistrationRequests();}
+    renderAdminDashboard();renderAdminAppState();bindAdminNavigation();
   }
 
   function renderAdminBuilder() {

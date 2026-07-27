@@ -1,13 +1,13 @@
 "use strict";
 
-// Le Nid des Champions V0.6.0 — tickets privés au Hibou
+// Le Nid des Champions V0.6.2 — tickets privés au Hibou
 window.__nidcErrors = window.__nidcErrors || [];
 window.addEventListener("error",e=>{window.__nidcErrors.push({at:new Date().toISOString(),message:String(e.message||"Erreur JS"),source:e.filename||null,line:e.lineno||null});window.__nidcErrors=window.__nidcErrors.slice(-10);});
 window.addEventListener("unhandledrejection",e=>{window.__nidcErrors.push({at:new Date().toISOString(),message:String(e.reason?.message||e.reason||"Promise rejetée")});window.__nidcErrors=window.__nidcErrors.slice(-10);});
 
 function technicalTicketContext(){
   const visible=$$(".view").find(v=>!v.classList.contains("hidden"));
-  return {app_version:CFG.APP_VERSION||"0.6.0",user_agent:navigator.userAgent,platform:navigator.userAgentData?.platform||navigator.platform||null,mobile:/Mobi|Android/i.test(navigator.userAgent),screen:`${window.innerWidth}x${window.innerHeight}`,view:visible?.id?.replace("view-","")||"unknown",timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||null,at:new Date().toISOString(),recent_errors:(window.__nidcErrors||[]).slice(-5)};
+  return {app_version:CFG.APP_VERSION||"0.6.2",user_agent:navigator.userAgent,platform:navigator.userAgentData?.platform||navigator.platform||null,mobile:/Mobi|Android/i.test(navigator.userAgent),screen:`${window.innerWidth}x${window.innerHeight}`,view:visible?.id?.replace("view-","")||"unknown",timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||null,at:new Date().toISOString(),recent_errors:(window.__nidcErrors||[]).slice(-5)};
 }
 
 function demoTickets(){return JSON.parse(localStorage.getItem("nidc_demo_support_tickets")||"[]");}
@@ -16,7 +16,7 @@ function demoTicketMessages(){return JSON.parse(localStorage.getItem("nidc_demo_
 async function loadSupportData(){
   if(!state.user)return;
   if(demoMode){state.supportTickets=demoTickets().filter(t=>t.user_id===state.user.id);if(state.profile?.role==="super_admin")state.adminSupportTickets=demoTickets();return;}
-  const {data,error}=await sb.from("support_tickets").select("*").eq("user_id",state.user.id).order("created_at",{ascending:false});if(error)throw new Error("Migration tickets V0.6.0 absente.");state.supportTickets=data||[];
+  const {data,error}=await sb.from("support_tickets").select("*").eq("user_id",state.user.id).order("created_at",{ascending:false});if(error)throw new Error("Migration tickets V0.6.2 absente : exécute sql/HOTFIX_V0.6.2_EXISTING_DB.sql.");state.supportTickets=data||[];
   if(state.profile?.role==="super_admin"){const {data:all,error:aErr}=await sb.from("support_tickets").select("*").order("created_at",{ascending:false}).limit(300);if(aErr)throw aErr;state.adminSupportTickets=all||[];}
 }
 

@@ -1,14 +1,14 @@
 "use strict";
 
-// Le Nid des Champions V0.6.0 — centre de notifications, préférences et Web Push
+// Le Nid des Champions V0.6.2 — centre de notifications, préférences et Web Push
 const NIDC_NOTIFICATION_FILTERS = [
-  ["all","Toutes"],["matches","Matchs"],["rival","Rival"],["team","Team"],["owl","Hibou"],["system","Système"]
+  ["all","Toutes"],["matches","Matchs"],["social","Réactions"],["rival","Rival"],["team","Team"],["owl","Hibou"],["system","Système"]
 ];
 
 function defaultNotificationPreferences(){
   return {
     notifications_enabled:true,push_enabled:true,category_matches:true,category_champion:true,category_results:true,
-    category_rival:true,category_team:true,category_owl:true,category_support:true,category_system:true,category_ranking:true,
+    category_rival:true,category_team:true,category_owl:true,category_support:true,category_system:true,category_ranking:true,category_social:true,
     reminder_24h:false,reminder_3h:true,reminder_1h:false,reminder_30m:true,
     quiet_hours_enabled:true,quiet_start:"23:00",quiet_end:"08:00",urgent_bypass_quiet:true,
     owl_tone:"automatic",timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||"Europe/Paris"
@@ -20,7 +20,7 @@ function notificationDemoSeed(){
   let rows=JSON.parse(localStorage.getItem(key)||"null");
   if(!Array.isArray(rows)){
     rows=[
-      {id:"demo-n-1",user_id:state.user?.id,category:"owl",title:"🦉 Le Hibou surveille",body:"La V0.6.0 est réveillée. Les plumes sont branchées.",importance:"info",deep_link:"home",created_at:new Date().toISOString(),read_at:null,deleted_at:null},
+      {id:"demo-n-1",user_id:state.user?.id,category:"owl",title:"🦉 Le Hibou surveille",body:"La V0.6.2 est réveillée. Les plumes sont branchées.",importance:"info",deep_link:"home",created_at:new Date().toISOString(),read_at:null,deleted_at:null},
       {id:"demo-n-2",user_id:state.user?.id,category:"matches",title:"⏰ Pronostics",body:"Pense à vérifier la prochaine journée UEFA.",importance:"normal",deep_link:"matches",created_at:new Date(Date.now()-3600000).toISOString(),read_at:null,deleted_at:null}
     ];localStorage.setItem(key,JSON.stringify(rows));
   }
@@ -42,7 +42,7 @@ async function loadNotificationData(){
     sb.from("notifications").select("*").eq("user_id",state.user.id).is("deleted_at",null).order("created_at",{ascending:false}).limit(200),
     sb.from("push_subscriptions").select("id,device_name,user_agent,platform,active,last_success_at,last_failure_at,disabled_at,created_at").eq("user_id",state.user.id).order("created_at",{ascending:false})
   ]);
-  if(pErr||nErr||sErr) throw new Error("Migration V0.6.0 absente : exécute sql/HOTFIX_V0.6.0_EXISTING_DB.sql.");
+  if(pErr||nErr||sErr) throw new Error("Migration V0.6.2 absente : exécute sql/HOTFIX_V0.6.2_EXISTING_DB.sql.");
   state.notificationPreferences={...defaultNotificationPreferences(),...(pref||{})};
   state.notifications=notifs||[];state.pushSubscriptions=subs||[];
   if(state.profile?.role==="super_admin") await loadAdminPushData();
@@ -51,12 +51,12 @@ async function loadNotificationData(){
 function notificationAllowedByPreferences(n){
   if(n?.category==="system")return true;
   const p=state.notificationPreferences||defaultNotificationPreferences();if(p.notifications_enabled===false)return false;
-  const key=({matches:"category_matches",champion:"category_champion",results:"category_results",rival:"category_rival",team:"category_team",owl:"category_owl",support:"category_support",ranking:"category_ranking"})[n?.category];
+  const key=({matches:"category_matches",champion:"category_champion",results:"category_results",rival:"category_rival",team:"category_team",owl:"category_owl",support:"category_support",ranking:"category_ranking",social:"category_social"})[n?.category];
   return !key||p[key]!==false;
 }
 function unreadNotificationCount(){return (state.notifications||[]).filter(n=>!n.read_at&&!n.deleted_at&&notificationAllowedByPreferences(n)).length;}
 
-function notificationCategoryLabel(cat){return ({matches:"Matchs",champion:"Champion",results:"Résultats",rival:"Rival",team:"Team",owl:"Hibou",system:"Système",ranking:"Classement",support:"Hibou"}[cat]||cat);}
+function notificationCategoryLabel(cat){return ({matches:"Matchs",champion:"Champion",results:"Résultats",rival:"Rival",team:"Team",owl:"Hibou",system:"Système",ranking:"Classement",support:"Hibou",social:"Réactions"}[cat]||cat);}
 
 function renderNotificationBell(){
   const btn=$("#notificationBell"),badge=$("#notificationBellCount");if(!btn||!badge)return;
@@ -121,6 +121,7 @@ async function deleteNotification(id){
 function openNotificationDeepLink(link,payload={}){
   const value=String(link||"home");
   if(value.startsWith("support:")){openSupportTicket(value.split(":")[1]);return;}
+  if(value.startsWith("player:")){openPlayerQuickProfile(value.split(":")[1]);return;}
   if(value==="rival"||value.startsWith("rival:")){setView("rival");renderRivalView();return;}
   if(value==="team"||value==="teams"||value.startsWith("team:")||value.startsWith("teams:")){const tab=value.split(":")[1]||payload?.tab;if(tab)state.teamTab=tab;setView("teams");if(typeof renderTeams==="function")renderTeams();return;}
   if(value==="matches"||value.startsWith("matches:")){const matchdayId=value.split(":")[1]||payload?.matchday_id;if(matchdayId&&state.matchdays.some(md=>String(md.id)===String(matchdayId)))selectMatchday(matchdayId);setView("matches");return;}
@@ -132,14 +133,14 @@ function hhmm(v){return String(v||"").slice(0,5)||"00:00";}
 
 function renderNotificationPreferences(){
   const root=$("#notificationPreferencesPanel");if(!root)return;const p=state.notificationPreferences||defaultNotificationPreferences();
-  root.innerHTML=`<div class="notification-settings-grid"><section><span class="eyebrow">Le Hibou</span><h4>Caractère</h4><div class="field"><label>Ton préféré</label><select id="owlToneSelect"><option value="sage">🙂 Sage</option><option value="piquant">😏 Piquant</option><option value="sans_pitie">🔥 Sans pitié</option><option value="automatic">🎭 Automatique</option></select></div><small class="muted">Automatique adapte les piques à la situation.</small></section><section><span class="eyebrow">Catégories</span><h4>Ce qui peut me prévenir</h4>${notificationCheckbox("prefMatches","Matchs & pronostics",p.category_matches)}${notificationCheckbox("prefChampion","Champion",p.category_champion)}${notificationCheckbox("prefResults","Résultats",p.category_results)}${notificationCheckbox("prefRival","Rivalités",p.category_rival)}${notificationCheckbox("prefTeam","Teams",p.category_team)}${notificationCheckbox("prefOwl","Hibou masqué",p.category_owl)}${notificationCheckbox("prefSupport","Réponses du Hibou",p.category_support)}${notificationCheckbox("prefRanking","Classement",p.category_ranking)}</section><section><span class="eyebrow">Rappels</span><h4>Avant le verrouillage</h4>${notificationCheckbox("pref24h","24 h",p.reminder_24h)}${notificationCheckbox("pref3h","3 h",p.reminder_3h)}${notificationCheckbox("pref1h","1 h",p.reminder_1h)}${notificationCheckbox("pref30m","30 min",p.reminder_30m)}</section><section><span class="eyebrow">Nuit</span><h4>Quiet hours</h4>${notificationCheckbox("prefQuiet","Activer",p.quiet_hours_enabled)}<div class="quiet-time-row"><div class="field"><label>De</label><input id="prefQuietStart" type="time" value="${hhmm(p.quiet_start)}"></div><div class="field"><label>À</label><input id="prefQuietEnd" type="time" value="${hhmm(p.quiet_end)}"></div></div>${notificationCheckbox("prefUrgentBypass","Urgence prono autorisée",p.urgent_bypass_quiet)}<small class="muted">Fuseau détecté : ${esc(p.timezone||"Europe/Paris")}</small></section></div><div class="actions"><button id="saveNotificationPreferencesBtn" class="btn small" type="button">Enregistrer mes préférences</button><button id="enablePushBtn" class="btn gold small" type="button">🔔 Activer les notifications push</button></div><div id="pushPermissionStatus" class="form-msg"></div><div id="pushDevices" class="push-devices"></div>`;
+  root.innerHTML=`<div class="notification-settings-grid"><section><span class="eyebrow">Le Hibou</span><h4>Caractère</h4><div class="field"><label>Ton préféré</label><select id="owlToneSelect"><option value="sage">🙂 Sage</option><option value="piquant">😏 Piquant</option><option value="sans_pitie">🔥 Sans pitié</option><option value="automatic">🎭 Automatique</option></select></div><small class="muted">Automatique adapte les piques à la situation.</small></section><section><span class="eyebrow">Catégories</span><h4>Ce qui peut me prévenir</h4>${notificationCheckbox("prefMatches","Matchs & pronostics",p.category_matches)}${notificationCheckbox("prefChampion","Champion",p.category_champion)}${notificationCheckbox("prefResults","Résultats",p.category_results)}${notificationCheckbox("prefRival","Rivalités",p.category_rival)}${notificationCheckbox("prefTeam","Teams",p.category_team)}${notificationCheckbox("prefOwl","Hibou masqué",p.category_owl)}${notificationCheckbox("prefSupport","Réponses du Hibou",p.category_support)}${notificationCheckbox("prefRanking","Classement",p.category_ranking)}${notificationCheckbox("prefSocial","Réactions joueurs",p.category_social)}</section><section><span class="eyebrow">Rappels</span><h4>Avant le verrouillage</h4>${notificationCheckbox("pref24h","24 h",p.reminder_24h)}${notificationCheckbox("pref3h","3 h",p.reminder_3h)}${notificationCheckbox("pref1h","1 h",p.reminder_1h)}${notificationCheckbox("pref30m","30 min",p.reminder_30m)}</section><section><span class="eyebrow">Nuit</span><h4>Quiet hours</h4>${notificationCheckbox("prefQuiet","Activer",p.quiet_hours_enabled)}<div class="quiet-time-row"><div class="field"><label>De</label><input id="prefQuietStart" type="time" value="${hhmm(p.quiet_start)}"></div><div class="field"><label>À</label><input id="prefQuietEnd" type="time" value="${hhmm(p.quiet_end)}"></div></div>${notificationCheckbox("prefUrgentBypass","Urgence prono autorisée",p.urgent_bypass_quiet)}<small class="muted">Fuseau détecté : ${esc(p.timezone||"Europe/Paris")}</small></section></div><div class="actions"><button id="saveNotificationPreferencesBtn" class="btn small" type="button">Enregistrer mes préférences</button><button id="enablePushBtn" class="btn gold small" type="button">🔔 Activer les notifications push</button></div><div id="pushPermissionStatus" class="form-msg"></div><div id="pushDevices" class="push-devices"></div>`;
   $("#owlToneSelect").value=p.owl_tone||"automatic";$("#saveNotificationPreferencesBtn").onclick=saveNotificationPreferences;$("#enablePushBtn").onclick=enablePushNotifications;renderPushDevices();
   updatePushPermissionStatus();
 }
 
 function collectNotificationPreferences(){
   const base={...(state.notificationPreferences||defaultNotificationPreferences())};
-  return {...base,user_id:state.user.id,owl_tone:$("#owlToneSelect").value,category_matches:$("#prefMatches").checked,category_champion:$("#prefChampion").checked,category_results:$("#prefResults").checked,category_rival:$("#prefRival").checked,category_team:$("#prefTeam").checked,category_owl:$("#prefOwl").checked,category_support:$("#prefSupport").checked,category_ranking:$("#prefRanking").checked,reminder_24h:$("#pref24h").checked,reminder_3h:$("#pref3h").checked,reminder_1h:$("#pref1h").checked,reminder_30m:$("#pref30m").checked,quiet_hours_enabled:$("#prefQuiet").checked,quiet_start:$("#prefQuietStart").value,quiet_end:$("#prefQuietEnd").value,urgent_bypass_quiet:$("#prefUrgentBypass").checked,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||"Europe/Paris"};
+  return {...base,user_id:state.user.id,owl_tone:$("#owlToneSelect").value,category_matches:$("#prefMatches").checked,category_champion:$("#prefChampion").checked,category_results:$("#prefResults").checked,category_rival:$("#prefRival").checked,category_team:$("#prefTeam").checked,category_owl:$("#prefOwl").checked,category_support:$("#prefSupport").checked,category_ranking:$("#prefRanking").checked,category_social:$("#prefSocial").checked,reminder_24h:$("#pref24h").checked,reminder_3h:$("#pref3h").checked,reminder_1h:$("#pref1h").checked,reminder_30m:$("#pref30m").checked,quiet_hours_enabled:$("#prefQuiet").checked,quiet_start:$("#prefQuietStart").value,quiet_end:$("#prefQuietEnd").value,urgent_bypass_quiet:$("#prefUrgentBypass").checked,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||"Europe/Paris"};
 }
 
 async function saveNotificationPreferences(){

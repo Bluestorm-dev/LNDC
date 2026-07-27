@@ -1,0 +1,40 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.6.0a
+============================================
+
+OBJET
+-----
+V0.6.0a est un correctif FRONT-ONLY de la V0.6.0 consacré à l'ergonomie de l'administration.
+Aucune table, fonction RPC, règle RLS ou Edge Function Supabase n'est modifiée.
+
+MISE À JOUR DEPUIS V0.6.0
+-------------------------
+1. Conserver ton config.js réel (URL Supabase + clé anon/publishable).
+2. Remplacer les fichiers du front par ceux de la V0.6.0a.
+3. Dans ton config.js conservé, changer uniquement APP_VERSION en "0.6.0a".
+4. Aucun SQL supplémentaire à exécuter.
+5. Aucune Edge Function à redéployer pour ce correctif.
+6. Faire Ctrl+F5 ou, sur la PWA, utiliser Admin > Application > Nettoyer le cache PWA.
+
+NOUVELLE ADMINISTRATION
+-----------------------
+L'Admin n'est plus une page verticale unique. Sept rubriques sont disponibles :
+- Vue d'ensemble
+- Matchs & LIVE
+- Compétition
+- Joueurs
+- Teams
+- Communication
+- Application
+
+La dernière rubrique ouverte est mémorisée localement sur l'appareil.
+
+APPLICATION / MAINTENANCE
+-------------------------
+Deux actions locales sont ajoutées :
+- Recharger les données : recharge les données du Nid sans modifier Supabase.
+- Nettoyer le cache PWA : supprime uniquement les caches nid-champions-* et recharge la PWA.
+
+IMPORTANT
+---------
+Le HOTFIX SQL V0.6.0 reste celui à installer pour les fonctions Hibou / rivalités / notifications / Push.
+V0.6.0a n'ajoute aucun HOTFIX SQL.

@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.0 — Teams
+// Le Nid des Champions V0.6.2 — Teams
   // ========================================================================
   // V0.5.2 — Teams · formes/cadres/couleurs corrigés
   // ========================================================================
@@ -52,7 +52,24 @@
   function profileForUser(profile) {
     const userId=profile?.user_id||profile?.id;
     const base=userId?state.profileDirectory?.get(String(userId)):null;
-    return {...(base||{}),...(profile||{}),id:profile?.id||base?.id||userId,user_id:profile?.user_id||base?.user_id||userId};
+    // V0.6.2 : l'identité publique vient d'une seule source (profileDirectory).
+    // Les lignes de classement/live apportent les stats mais ne doivent plus pouvoir
+    // écraser l'avatar officiel ou uploadé du joueur avec une valeur ancienne.
+    const merged={...(profile||{}),...(base||{})};
+    // L'éditeur d'avatar reste prioritaire uniquement pour son aperçu local.
+    if(profile?.avatar_preview_url){
+      Object.assign(merged,{
+        avatar_preview_url:profile.avatar_preview_url,
+        avatar_source:profile.avatar_source,
+        avatar_key:profile.avatar_key,
+        avatar_storage_path:profile.avatar_storage_path,
+        avatar_moderation_status:profile.avatar_moderation_status,
+        avatar_file:profile.avatar_file
+      });
+    }
+    merged.id=base?.id||profile?.id||userId;
+    merged.user_id=base?.user_id||profile?.user_id||userId;
+    return merged;
   }
   function teamBadgeHTML(team,large=false) {
     if(!team) return "";
@@ -187,8 +204,9 @@
 
     if(state.teamTab==="members"){
       root.innerHTML=`<div class="team-members-head"><div><span class="eyebrow">Effectif</span><h4>${members.length} membre${members.length>1?'s':''}</h4></div><button class="btn secondary small" data-open-team-management>⚙ Gérer la Team</button></div>
-        <div class="team-member-list">${members.map(m=>`<div class="team-member-row">${avatarHTML(m)}<div class="team-member-copy"><strong>${m.is_captain?'👑 ':''}${esc(m.username)}</strong><small>${esc(m.club_heart||'Aucun club de cœur')} · ${m.rank?`#${m.rank}`:'non classé'}</small></div><span><b>${Number(m.points||0).toFixed(0)}</b><small> pts</small></span></div>`).join('')}</div>`;
+        <div class="team-member-list">${members.map(m=>`<div class="team-member-row">${avatarHTML(m)}<div class="team-member-copy"><strong>${m.is_captain?'👑 ':''}${esc(m.username)}${reactionButtonHTML(m.user_id,true)}</strong><small>${esc(m.club_heart||'Aucun club de cœur')} · ${m.rank?`#${m.rank}`:'non classé'}</small></div><span><b>${Number(m.points||0).toFixed(0)}</b><small> pts</small></span></div>`).join('')}</div>`;
       const manage=$("[data-open-team-management]",root);if(manage)manage.onclick=()=>{state.teamTab="management";renderMyTeamPanel();};
+      bindPlayerReactionButtons(root);
       return;
     }
 

@@ -1,0 +1,43 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.6.2
+==========================================
+
+OBJET
+-----
+Correctif social + lisibilité Teams + avatar unifié.
+
+MISE À JOUR DEPUIS V0.6.0 / V0.6.0a
+------------------------------------
+1. Sauvegarder la base Supabase.
+2. Supabase > SQL Editor > rôle postgres/par défaut.
+3. Exécuter : sql/HOTFIX_V0.6.2_EXISTING_DB.sql
+4. Si l'Edge Function push-dispatch est déjà déployée :
+     npx supabase functions deploy push-dispatch
+   La redéployer permet aux réactions sociales de respecter la préférence Push dédiée.
+5. Garder le config.js réel du site et définir : APP_VERSION: "0.6.2".
+6. Déployer les fichiers front.
+7. Admin > Application > Nettoyer le cache PWA, ou fermer/réouvrir la PWA.
+
+BASE ENCORE EN V0.5.5a
+----------------------
+Le fichier HOTFIX_V0.6.2_EXISTING_DB.sql contient d'abord la migration V0.6.0,
+puis le patch V0.6.2. Il peut donc servir de mise à jour unique depuis V0.5.5a.
+
+REACTIONS JOUEURS
+-----------------
+Emojis disponibles : 👏 🔥 😂 😱 🦉 🏆 💀 ❤️
+- pas de message texte entre joueurs ;
+- notification interne dédiée ;
+- Push si le Web Push est configuré et si la catégorie Réactions joueurs est activée ;
+- anti-spam serveur : 8 secondes minimum entre deux réactions, 30 maximum par heure.
+
+CORRECTIFS VISUELS
+------------------
+- Le motif de Team reste net sur le blason/cadre.
+- Sur les grandes cartes Team, il devient un fond d'ambiance sombre et discret.
+- L'avatar public est unifié : même image + même habillage Team partout.
+- Le bandeau sticky du classement mobile n'efface plus l'image centrale.
+
+INSTALLATION FRAICHE
+--------------------
+Utiliser : sql/000_INSTALL_FRESH_V0.6.2.sql
+Puis poursuivre l'installation Push décrite dans INSTALLATION_V0.6.0.txt si nécessaire.

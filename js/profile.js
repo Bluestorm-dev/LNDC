@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.0 — profil et éditeur avatar
+// Le Nid des Champions V0.6.2 — profil et éditeur avatar
   function renderProfile() {
     const heartName=state.profile?.club_heart||"";
     const heartClub=findClubByHeart(heartName);
@@ -18,10 +18,10 @@
     if(sideName)sideName.textContent=username;
     if(sideClub)sideClub.textContent=`Club de cœur : ${heartClub?.short_name||heartClub?.name||heartName||"—"}`;
     if(sideAvatar){
-      sideAvatar.innerHTML=avatarCoreHTML({...state.profile,user_id:state.user?.id});
+      sideAvatar.innerHTML=avatarHTML({...state.profile,user_id:state.user?.id});
       const team=teamForUser(state.user?.id);
       sideAvatar.classList.toggle("has-team",Boolean(team));
-      if(team){sideAvatar.style.setProperty("--team-primary",safeTeamColor(team.primary_color));sideAvatar.style.setProperty("--team-secondary",safeTeamColor(team.secondary_color,"#7454ff"));}
+      sideAvatar.classList.toggle("uses-unified-avatar",true);
     }
     renderAvatarEditor();
     renderProfileTeam();
@@ -89,7 +89,9 @@ function openPlayerQuickProfile(userId){
   const p=state.profileDirectory.get(String(userId));if(!p)return toast("Joueur introuvable.","error");
   const lb=(state.standings||state.rankingRows||[]).find(r=>String(r.user_id)===String(userId))||{};const team=teamForUser(userId);
   const superAction=state.profile?.role==="super_admin"?`<button id="superOwlFromPlayerProfile" class="btn gold small" type="button">🦉 Envoyer un message du Hibou</button>`:"";
-  const root=modal(`Profil · ${p.username}`,`<div class="public-player-profile"><div class="public-player-head">${avatarHTML({...p,user_id:p.id||userId})}<div><span class="eyebrow">Joueur du Nid</span><h2>${esc(p.username)}</h2><p>${esc(p.club_heart||"Aucun club de cœur")}${team?` · 🛡 ${esc(team.team_name||team.name||"")}`:""}</p></div></div><div class="rival-stats-grid compact"><div><span>Rang</span><strong>#${lb.rank||"—"}</strong></div><div><span>Points</span><strong>${Number(lb.points||0).toFixed(0)}</strong></div><div><span>Exacts</span><strong>${Number(lb.exact_scores||0)}</strong></div><div><span>Moyenne</span><strong>${Number(lb.average||0).toFixed(2)}</strong></div></div><div class="actions">${superAction}${String(userId)===String(state.currentRival?.rival_user_id||"")?'<button id="openProfileRivalCompare" class="btn secondary small" type="button">⚔ Comparer au rival</button>':''}</div></div>`);
+  const reactAction=String(userId)!==String(state.user?.id)?`<button id="reactFromPlayerProfile" class="btn secondary small" type="button">😊 Envoyer une réaction</button>`:"";
+  const root=modal(`Profil · ${p.username}`,`<div class="public-player-profile"><div class="public-player-head">${avatarHTML({...p,user_id:p.id||userId})}<div><span class="eyebrow">Joueur du Nid</span><h2>${esc(p.username)}</h2><p>${esc(p.club_heart||"Aucun club de cœur")}${team?` · 🛡 ${esc(team.team_name||team.name||"")}`:""}</p></div></div><div class="rival-stats-grid compact"><div><span>Rang</span><strong>#${lb.rank||"—"}</strong></div><div><span>Points</span><strong>${Number(lb.points||0).toFixed(0)}</strong></div><div><span>Exacts</span><strong>${Number(lb.exact_scores||0)}</strong></div><div><span>Moyenne</span><strong>${Number(lb.average||0).toFixed(2)}</strong></div></div><div class="actions">${reactAction}${superAction}${String(userId)===String(state.currentRival?.rival_user_id||"")?'<button id="openProfileRivalCompare" class="btn secondary small" type="button">⚔ Comparer au rival</button>':''}</div></div>`);
+  if($("#reactFromPlayerProfile",root))$("#reactFromPlayerProfile",root).onclick=()=>openPlayerReactionPicker(userId);
   if($("#superOwlFromPlayerProfile",root))$("#superOwlFromPlayerProfile",root).onclick=()=>openAdminOwlMessageForPlayer(userId);
   if($("#openProfileRivalCompare",root))$("#openProfileRivalCompare",root).onclick=openRivalQuickCompare;
 }
