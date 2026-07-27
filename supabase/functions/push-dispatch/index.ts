@@ -30,7 +30,7 @@ function categoryPrefKey(category: string) {
   return ({
     matches: "category_matches", champion: "category_champion", results: "category_results",
     rival: "category_rival", team: "category_team", owl: "category_owl", system: "category_system",
-    ranking: "category_ranking", support: "category_support",
+    ranking: "category_ranking", support: "category_support", social: "category_social",
   } as Record<string,string>)[category] || "notifications_enabled";
 }
 

@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="css/teams.css" />
   <link rel="stylesheet" href="css/avatars.css" />
   <link rel="stylesheet" href="css/communication.css" />
+  <link rel="stylesheet" href="css/social.css" />
+  <link rel="stylesheet" href="css/admin.css" />
   <title>Le Nid des Champions</title>
 </head>
 <body>
@@ -78,7 +80,7 @@
         <span class="sidebar-profile-copy"><strong id="sidebarUserName">—</strong><small id="sidebarUserClub">Club de cœur : —</small></span>
         <span class="sidebar-chevron">›</span>
       </button>
-      <div class="sidebar-foot"><span class="status-dot"></span><span>Le Nid est connecté</span><small>V0.6.0</small></div>
+      <div class="sidebar-foot"><span class="status-dot"></span><span>Le Nid est connecté</span><small>V0.6.2</small></div>
     </aside>
 
     <section class="workspace">
@@ -98,7 +100,7 @@
     <section id="view-home" class="view">
       <article class="home-hero card">
         <div class="home-hero-copy">
-          <span class="eyebrow gold">Soirées européennes · V0.6.0</span>
+          <span class="eyebrow gold">Soirées européennes · V0.6.2</span>
           <h2 id="welcomeTitle">Bienvenue dans le Nid européen.</h2>
           <p id="welcomeText">Tout ce qui compte maintenant, sans dérouler tout le calendrier sous ton bec.</p>
           <div class="home-actions"><button class="btn" data-jump="matches">Faire mes pronostics</button><button class="btn secondary" data-jump="profile">Mon profil & mes champions</button></div>
@@ -148,7 +150,7 @@
 
 
     <section id="view-knockout" class="view hidden">
-      <div class="knockout-hero card card-pad"><div><span class="eyebrow">Phases finales · V0.6.0</span><h2>Du barrage à la coupe.</h2><p class="muted">Aller-retour, cumul, score à 120 minutes, tirs au but et qualifié. Le tableau se propage automatiquement quand une confrontation est terminée.</p></div><span class="ko-live-mark">⚔️</span></div>
+      <div class="knockout-hero card card-pad"><div><span class="eyebrow">Phases finales · V0.6.2</span><h2>Du barrage à la coupe.</h2><p class="muted">Aller-retour, cumul, score à 120 minutes, tirs au but et qualifié. Le tableau se propage automatiquement quand une confrontation est terminée.</p></div><span class="ko-live-mark">⚔️</span></div>
       <div id="knockoutPhaseTabs" class="knockout-phase-tabs"></div>
       <div id="knockoutSummary" class="knockout-summary"></div>
       <div id="knockoutPanel" class="knockout-grid"><article class="card card-pad"><div class="empty">Le tableau des phases finales n'est pas encore installé.</div></article></div>
@@ -203,7 +205,7 @@
     <section id="view-teams" class="view hidden">
       <div class="teams-hero card card-pad">
         <div>
-          <span class="eyebrow gold">V0.6.0 · Communautés</span>
+          <span class="eyebrow gold">V0.6.2 · Communautés</span>
           <h2>Les Teams du Nid</h2>
           <p class="muted">Une seule Team par saison. Une identité commune, des cadres reconnaissables et trois classements dédiés.</p>
         </div>
@@ -226,7 +228,7 @@
     </section>
 
     <section id="view-rival" class="view hidden">
-      <div class="section-title"><div><span class="eyebrow gold">V0.6.0 · Rivalités</span><h3>Ma Némésis</h3><p>Un duel par journée UEFA. Aucun point bonus : seulement l’honneur, les statistiques et les piques du Hibou.</p></div><span class="chip">⚔️ DUELS</span></div>
+      <div class="section-title"><div><span class="eyebrow gold">V0.6.2 · Rivalités</span><h3>Ma Némésis</h3><p>Un duel par journée UEFA. Aucun point bonus : seulement l’honneur, les statistiques et les piques du Hibou.</p></div><span class="chip">⚔️ DUELS</span></div>
       <div id="rivalPagePanel"><article class="card card-pad"><div class="empty">Chargement de la rivalité…</div></article></div>
     </section>
 
@@ -243,13 +245,13 @@
         <div id="profileMsg" class="form-msg"></div>
       </article>
 
-      <div class="section-title avatar-profile-title"><div><span class="eyebrow">Identité visuelle</span><h3>Mon avatar</h3><p>Choisis un Hibou officiel ou envoie ton propre PNG/JPG/WebP. Les uploads personnels passent par la modération Admin.</p></div><span class="chip">V0.6.0</span></div>
+      <div class="section-title avatar-profile-title"><div><span class="eyebrow">Identité visuelle</span><h3>Mon avatar</h3><p>Choisis un Hibou officiel ou envoie ton propre PNG/JPG/WebP. Les uploads personnels passent par la modération Admin.</p></div><span class="chip">V0.6.2</span></div>
       <article id="avatarEditor" class="card card-pad avatar-editor-card-v053"><div class="empty">Chargement de la bibliothèque…</div></article>
 
       <div class="section-title profile-team-title"><div><span class="eyebrow">Communauté</span><h3>Ma Team</h3><p>Ton appartenance actuelle et son identité visuelle.</p></div></div>
       <article id="profileTeamCard" class="card card-pad profile-team-card"><div class="empty">Chargement…</div></article>
 
-      <div class="section-title"><div><span class="eyebrow">Communication</span><h3>Hibou & notifications</h3><p>Choisis ce qui peut te prévenir, le niveau de piquant du Hibou et les heures où le Nid doit se taire.</p></div><span class="chip">🔔 V0.6.0</span></div>
+      <div class="section-title"><div><span class="eyebrow">Communication</span><h3>Hibou & notifications</h3><p>Choisis ce qui peut te prévenir, le niveau de piquant du Hibou et les heures où le Nid doit se taire.</p></div><span class="chip">🔔 V0.6.2</span></div>
       <article id="notificationPreferencesPanel" class="card card-pad"><div class="empty">Chargement des préférences…</div></article>
 
       <div class="section-title champions-profile-title"><div><span class="eyebrow gold">Pronostic saison</span><h3>Mes champions</h3><p>Le choix n°1 vaut 100 points. Le choix n°2 vaut 50 points lorsqu'il s'ouvre après la phase de ligue.</p></div><span class="chip">CHOIX CACHÉS</span></div>
@@ -261,91 +263,125 @@
       <details class="card champion-board-details"><summary>Voir les choix du Nid après verrouillage</summary><article id="championBoard" class="card-pad champion-board"><div class="empty">Les plumes sont encore rabattues sur les parchemins.</div></article></details>
     </section>
 
-    <section id="view-admin" class="view hidden">
-      <div class="section-title"><div><h3>Administration</h3><p>Saisie des scores LIVE, résultats finaux et pilotage du calendrier européen.</p></div><span class="chip">V0.6.0</span></div>
-      <div class="grid grid-2">
-        <article class="card card-pad"><span class="eyebrow">Saison</span><h3>Compétition complète</h3><p class="muted">Phase de ligue, barrages, huitièmes, quarts, demies et finale.</p></article>
-        <article class="card card-pad"><span class="eyebrow">Résultats</span><h3>LIVE MANUAL</h3><p class="muted">L'Admin saisit les scores en direct. Le classement provisoire est recalculé immédiatement côté serveur.</p></article>
+    <section id="view-admin" class="view hidden admin-view">
+      <div class="admin-page-head">
+        <div>
+          <span class="eyebrow gold">Centre de contrôle</span>
+          <h2>Administration</h2>
+          <p>Un espace par métier, sans dérouler toute l'administration sur une seule page.</p>
+        </div>
+        <span class="chip">V0.6.2</span>
       </div>
-      <div class="section-title"><div><h3>Clubs, calendrier & cotes</h3><p>Football-Data synchronise la Champions League et une bibliothèque indépendante de clubs/logos pour Ligue 1, Premier League, Liga, Serie A et Bundesliga ; les cotes pré-match 1N2 restent gérées séparément.</p></div><span class="chip">ADMIN</span></div>
-      <article class="card card-pad">
-        <div class="admin-sync-row">
-          <div><strong>Synchronisation football-data.org · saison test 2025/26</strong><p class="muted">La source C1 de test reste forcée sur 2025/26 puis décalée en 2026/27. La bibliothèque Top 5, elle, récupère les équipes courantes des cinq championnats et ne modifie jamais le calendrier C1. Aucun résultat historique n’est importé. Les cotes n’influencent jamais le barème des pronostics.</p></div>
-          <div class="actions"><button id="syncClubsBtn" class="btn small">Clubs C1 + logos</button><button id="syncClubCatalogBtn" class="btn gold small">Bibliothèque Top 5 + logos</button><button id="syncCalendarBtn" class="btn secondary small">Calendrier CL</button><button id="syncOddsBtn" class="btn secondary small">Cotes 1N2</button></div>
+
+      <div class="admin-shell">
+        <aside class="admin-nav" aria-label="Rubriques d'administration">
+          <button class="active" type="button" data-admin-section="dashboard"><span>⌂</span><b>Vue d’ensemble</b><small>État du Nid</small></button>
+          <button type="button" data-admin-section="matches"><span>⚽</span><b>Matchs & LIVE</b><small>Scores et journées</small></button>
+          <button type="button" data-admin-section="competition"><span>🏆</span><b>Compétition</b><small>Clubs, API, phases</small></button>
+          <button type="button" data-admin-section="players"><span>♟</span><b>Joueurs</b><small>Comptes et avatars</small></button>
+          <button type="button" data-admin-section="teams"><span>🛡</span><b>Teams</b><small>Communautés</small></button>
+          <button type="button" data-admin-section="communication"><span>🦉</span><b>Communication</b><small>Hibou, tickets, push</small></button>
+          <button type="button" data-admin-section="application"><span>⚙</span><b>Application</b><small>État et maintenance</small></button>
+        </aside>
+
+        <div class="admin-content">
+          <section class="admin-panel active" data-admin-panel="dashboard">
+            <div class="admin-panel-head"><div><span class="eyebrow">Vue d’ensemble</span><h3>Le Nid en un coup d’œil</h3><p>Les accès rapides vers les zones que tu utilises vraiment.</p></div></div>
+            <div class="admin-dashboard-grid">
+              <button class="admin-dashboard-card card" type="button" data-admin-go="matches"><span class="admin-dash-icon">⚽</span><span><small>Matchs</small><strong id="adminDashMatches">—</strong><em>rencontres</em></span><i>›</i></button>
+              <button class="admin-dashboard-card card" type="button" data-admin-go="players"><span class="admin-dash-icon">♟</span><span><small>Joueurs</small><strong id="adminDashPlayers">—</strong><em>comptes actifs</em></span><i>›</i></button>
+              <button class="admin-dashboard-card card" type="button" data-admin-go="teams"><span class="admin-dash-icon">🛡</span><span><small>Teams</small><strong id="adminDashTeams">—</strong><em>communautés actives</em></span><i>›</i></button>
+              <button class="admin-dashboard-card card" type="button" data-admin-go="communication"><span class="admin-dash-icon">🔔</span><span><small>Communication</small><strong id="adminDashTickets">—</strong><em>tickets ouverts</em></span><i>›</i></button>
+            </div>
+            <div class="grid grid-2 admin-overview-row">
+              <article class="card card-pad admin-status-card"><span class="eyebrow gold">Saison</span><h3 id="adminDashSeason">—</h3><p class="muted">Phase de ligue, phases finales et finale dans le même espace de pilotage.</p><button class="text-action gold" type="button" data-admin-go="competition">Gérer la compétition →</button></article>
+              <article class="card card-pad admin-status-card"><span class="eyebrow">Résultats</span><h3>LIVE MANUAL</h3><p class="muted">Les scores restent sous contrôle Admin et le classement provisoire suit immédiatement.</p><button class="text-action" type="button" data-admin-go="matches">Ouvrir les matchs →</button></article>
+            </div>
+          </section>
+
+          <section class="admin-panel" data-admin-panel="matches">
+            <div class="admin-panel-head"><div><span class="eyebrow">Opérations courantes</span><h3>Matchs & LIVE</h3><p>Créer une journée, ajouter une rencontre, passer LIVE et saisir les résultats sans chercher dans la page.</p></div><span class="chip">ADMIN</span></div>
+            <article class="card card-pad admin-builder">
+              <div class="grid grid-2">
+                <div><h4>Nouvelle journée</h4><div class="field"><label>Numéro</label><input id="adminMdNumber" type="number" min="1" max="99" value="1"></div><div class="field"><label>Nom</label><input id="adminMdName" value="Journée 1"></div><button id="createMatchdayBtn" class="btn small">Créer la journée</button></div>
+                <div><h4>Nouveau match</h4><div class="field"><label>Journée</label><select id="adminMatchdaySelect"></select></div><div class="grid grid-2"><div class="field"><label>Domicile</label><select id="adminHomeClub"></select></div><div class="field"><label>Extérieur</label><select id="adminAwayClub"></select></div></div><div class="field"><label>Coup d'envoi (heure française)</label><input id="adminKickoff" type="datetime-local"></div><div class="field"><label>Stade</label><input id="adminStadium" placeholder="Facultatif"></div><button id="createMatchBtn" class="btn small">Ajouter le match</button></div>
+              </div>
+            </article>
+            <div class="admin-subhead"><div><h4>Gestion des rencontres</h4><p>Passe un match LIVE, modifie son score autant de fois que nécessaire puis termine-le.</p></div></div>
+            <div id="adminMatchdayTabs" class="matchday-tabs"></div>
+            <article id="adminMatches" class="card card-pad"></article>
+          </section>
+
+          <section class="admin-panel" data-admin-panel="competition">
+            <div class="admin-panel-head"><div><span class="eyebrow">Données & tournoi</span><h3>Compétition</h3><p>Synchronisation, bibliothèque des clubs, cotes et préparation des phases finales.</p></div><span class="chip">ADMIN</span></div>
+            <article class="card card-pad">
+              <div class="admin-sync-row">
+                <div><strong>Clubs, calendrier & cotes</strong><p class="muted">Football-Data synchronise la Champions League et la bibliothèque Top 5. Aucun résultat historique n’est importé et les cotes n’influencent jamais le barème.</p></div>
+                <div class="actions"><button id="syncClubsBtn" class="btn small">Clubs C1 + logos</button><button id="syncClubCatalogBtn" class="btn gold small">Bibliothèque Top 5</button><button id="syncCalendarBtn" class="btn secondary small">Calendrier CL</button><button id="syncOddsBtn" class="btn secondary small">Cotes 1N2</button></div>
+              </div>
+              <div id="syncStatus" class="form-msg"></div>
+              <div class="club-library-toolbar">
+                <div><strong>Bibliothèque de clubs</strong><small id="clubLibrarySummary">Champions League</small></div>
+                <select id="clubPreviewFilter" aria-label="Championnat affiché"><option value="CL">Champions League</option><option value="FL1">Ligue 1</option><option value="PL">Premier League</option><option value="PD">Liga</option><option value="SA">Serie A</option><option value="BL1">Bundesliga</option><option value="ALL">Tous les clubs</option></select>
+              </div>
+              <div id="clubPreview" class="club-preview"></div>
+            </article>
+            <div class="admin-subhead"><div><h4>Champions & phases finales</h4><p>Prépare le tableau, règle les multiplicateurs et saisis le tirage officiel.</p></div></div>
+            <article class="card card-pad knockout-admin-card">
+              <div class="admin-sync-row"><div><strong>Moteur phases finales</strong><p class="muted">Le générateur TEST crée l'ensemble du tableau et reporte automatiquement les gagnants.</p></div><div class="actions"><button id="seedKnockoutBtn" class="btn gold small">Générer tableau TEST</button><button id="assignDefaultChampionBtn" class="btn secondary small">Attribuer OM aux oublis</button></div></div>
+              <div id="knockoutAdminStatus" class="form-msg"></div>
+              <div class="section-title compact"><div><h4>Multiplicateurs par phase</h4><p>x1 / x2 / x3 / x4, appliqués aux matchs à venir.</p></div></div>
+              <div id="adminPhaseMultipliers" class="phase-multiplier-grid"></div>
+              <div class="section-title compact"><div><h4>Créer une confrontation réelle</h4><p>Pour saisir le tirage officiel d'un tour sans utiliser le générateur TEST.</p></div></div>
+              <div class="ko-builder-grid"><div class="field"><label>Phase</label><select id="adminKoPhase"></select></div><div class="field"><label>Code</label><input id="adminKoCode" placeholder="ex. R16-1"></div><div class="field"><label>Libellé</label><input id="adminKoLabel" placeholder="Huitième 1"></div><div class="field"><label>Club A</label><select id="adminKoTeamA"></select></div><div class="field"><label>Club B</label><select id="adminKoTeamB"></select></div><div class="field"><label>Aller / match unique</label><input id="adminKoLeg1" type="datetime-local"></div><div class="field" id="adminKoLeg2Field"><label>Retour</label><input id="adminKoLeg2" type="datetime-local"></div><label class="ko-single-toggle"><input id="adminKoSingle" type="checkbox"> Match unique (finale)</label></div>
+              <button id="createKnockoutTieBtn" class="btn small">Créer / mettre à jour la confrontation</button>
+            </article>
+            <div class="admin-subhead"><div><h4>Gestion des phases finales</h4><p>Score final à 120 minutes si prolongation ; tirs au but saisis séparément.</p></div></div>
+            <article id="adminKnockoutMatches" class="card card-pad"><div class="empty">Aucune confrontation.</div></article>
+          </section>
+
+          <section class="admin-panel" data-admin-panel="players">
+            <div class="admin-panel-head"><div><span class="eyebrow">Comptes & identité</span><h3>Joueurs</h3><p>Retrouve rapidement un compte, ouvre son profil et traite les demandes ou avatars.</p></div><span class="chip">ADMIN</span></div>
+            <article class="card card-pad">
+              <div class="admin-list-toolbar"><div><strong>Annuaire des joueurs</strong><small id="adminPlayersSummary">—</small></div><input id="adminPlayerSearch" type="search" placeholder="Pseudo, prénom ou rôle…"></div>
+              <div id="adminPlayersPanel" class="admin-players-panel"><div class="empty">Chargement…</div></div>
+            </article>
+            <section id="registrationAdminSection" class="hidden">
+              <div class="admin-subhead"><div><h4>Demandes d'inscription</h4><p>Supabase crée le compte, mais seul le Super Admin ouvre la porte du Nid.</p></div><span class="chip">SUPER ADMIN</span></div>
+              <article id="registrationRequests" class="card card-pad"><div class="empty">Chargement…</div></article>
+            </section>
+            <div class="admin-subhead"><div><h4>Modération des avatars</h4><p>Valide ou refuse les images personnelles avant leur affichage public.</p></div></div>
+            <article id="avatarModerationPanel" class="card card-pad avatar-moderation-panel"><div class="empty">Chargement…</div></article>
+          </section>
+
+          <section class="admin-panel" data-admin-panel="teams">
+            <div class="admin-panel-head"><div><span class="eyebrow">Communautés</span><h3>Teams</h3><p>Annuaire, membres, capitaine, identité et historique au même endroit.</p></div><span class="chip">ADMIN</span></div>
+            <article class="card card-pad">
+              <div class="admin-sync-row"><div><strong>Communautés du Nid</strong><p class="muted">Les capitaines gèrent leur Team ; l'Admin intervient en correction ou modération.</p></div><input id="adminTeamSearch" class="admin-team-search" type="search" placeholder="Nom ou capitaine…"></div>
+              <div id="adminTeamsPanel" class="admin-teams-panel"><div class="empty">Chargement…</div></div>
+            </article>
+          </section>
+
+          <section class="admin-panel" data-admin-panel="communication" id="communicationAdminSection">
+            <div class="admin-panel-head"><div><span class="eyebrow">Le Nid parle</span><h3>Communication</h3><p>Hibou masqué, tickets privés et Web Push regroupés dans un seul espace.</p></div><span class="chip">SUPER ADMIN</span></div>
+            <div class="admin-subhead"><div><h4>Hibou masqué</h4><p>Messages globaux, Team ou individuels.</p></div></div>
+            <article id="adminOwlPanel" class="card card-pad"><div class="empty">Chargement…</div></article>
+            <div class="admin-subhead"><div><h4>Tickets au Hibou</h4><p>Conversations privées, captures et diagnostic technique.</p></div><span class="chip">PRIVÉ</span></div>
+            <article id="adminSupportPanel" class="card card-pad"><div class="empty">Chargement…</div></article>
+            <div class="admin-subhead"><div><h4>Notifications & Web Push</h4><p>Journal de livraison, appareils et test Push vers toi ou un joueur précis.</p></div><span class="chip">PUSH</span></div>
+            <article id="adminNotificationsPanel" class="card card-pad"><div class="empty">Chargement…</div></article>
+          </section>
+
+          <section class="admin-panel" data-admin-panel="application">
+            <div class="admin-panel-head"><div><span class="eyebrow">Technique</span><h3>Application</h3><p>L'état du Nid et les opérations de maintenance locale. Les futurs réglages globaux arriveront ici.</p></div><span class="chip">V0.6.2</span></div>
+            <div class="grid grid-2">
+              <article class="card card-pad admin-app-state"><span class="eyebrow gold">État</span><h3>Le Nid des Champions</h3><dl><div><dt>Version front</dt><dd id="adminAppVersion">0.6.2</dd></div><div><dt>Saison</dt><dd id="adminAppSeason">—</dd></div><div><dt>Backend</dt><dd id="adminAppBackend">—</dd></div><div><dt>Mon rôle</dt><dd id="adminAppRole">—</dd></div></dl></article>
+              <article class="card card-pad"><span class="eyebrow">Maintenance</span><h3>Actualiser le Nid</h3><p class="muted">Ces actions ne modifient aucune donnée métier dans Supabase.</p><div class="admin-maintenance-actions"><button id="adminReloadDataBtn" class="btn small" type="button">↻ Recharger les données</button><button id="adminRefreshPwaBtn" class="btn secondary small" type="button">Nettoyer le cache PWA</button></div><div id="adminMaintenanceMsg" class="form-msg"></div></article>
+            </div>
+            <article class="card card-pad admin-future-card"><span class="eyebrow">À venir ici</span><h3>Paramètres généraux</h3><div class="admin-future-chips"><span>Feature flags</span><span>Saisons</span><span>Sauvegardes</span><span>Exports</span><span>Maintenance</span><span>Sécurité</span></div><p class="muted">L'architecture est déjà prête à accueillir les prochains modules sans rallonger la page.</p></article>
+          </section>
         </div>
-        <div id="syncStatus" class="form-msg"></div>
-        <div class="club-library-toolbar">
-          <div><strong>Bibliothèque de clubs</strong><small id="clubLibrarySummary">Champions League</small></div>
-          <select id="clubPreviewFilter" aria-label="Championnat affiché">
-            <option value="CL">Champions League</option>
-            <option value="FL1">Ligue 1</option>
-            <option value="PL">Premier League</option>
-            <option value="PD">Liga</option>
-            <option value="SA">Serie A</option>
-            <option value="BL1">Bundesliga</option>
-            <option value="ALL">Tous les clubs</option>
-          </select>
-        </div>
-        <div id="clubPreview" class="club-preview"></div>
-      </article>
-
-      <div class="section-title"><div><h3>Champions & phases finales</h3><p>Prépare le tableau, règle les multiplicateurs et teste toute la compétition jusqu'à la finale.</p></div><span class="chip">V0.6.0</span></div>
-      <article class="card card-pad knockout-admin-card">
-        <div class="admin-sync-row"><div><strong>Moteur phases finales</strong><p class="muted">Le générateur TEST crée 8 barrages, 8 huitièmes, 4 quarts, 2 demies et 1 finale. Les gagnants sont reportés automatiquement dans le tour suivant.</p></div><div class="actions"><button id="seedKnockoutBtn" class="btn gold small">Générer tableau TEST</button><button id="assignDefaultChampionBtn" class="btn secondary small">Attribuer OM aux oublis</button></div></div>
-        <div id="knockoutAdminStatus" class="form-msg"></div>
-        <div class="section-title compact"><div><h4>Multiplicateurs par phase</h4><p>x1 / x2 / x3 / x4, appliqués aux matchs à venir.</p></div></div>
-        <div id="adminPhaseMultipliers" class="phase-multiplier-grid"></div>
-        <div class="section-title compact"><div><h4>Créer une confrontation réelle</h4><p>Pour saisir le tirage officiel d'un tour sans utiliser le générateur TEST.</p></div></div>
-        <div class="ko-builder-grid">
-          <div class="field"><label>Phase</label><select id="adminKoPhase"></select></div>
-          <div class="field"><label>Code</label><input id="adminKoCode" placeholder="ex. R16-1"></div>
-          <div class="field"><label>Libellé</label><input id="adminKoLabel" placeholder="Huitième 1"></div>
-          <div class="field"><label>Club A</label><select id="adminKoTeamA"></select></div>
-          <div class="field"><label>Club B</label><select id="adminKoTeamB"></select></div>
-          <div class="field"><label>Aller / match unique</label><input id="adminKoLeg1" type="datetime-local"></div>
-          <div class="field" id="adminKoLeg2Field"><label>Retour</label><input id="adminKoLeg2" type="datetime-local"></div>
-          <label class="ko-single-toggle"><input id="adminKoSingle" type="checkbox"> Match unique (finale)</label>
-        </div>
-        <button id="createKnockoutTieBtn" class="btn small">Créer / mettre à jour la confrontation</button>
-      </article>
-      <div class="section-title"><div><h3>Gestion phases finales</h3><p>Score final du match = score à 120 minutes lorsqu'il y a prolongation. Les tirs au but sont saisis à part.</p></div></div>
-      <article id="adminKnockoutMatches" class="card card-pad"><div class="empty">Aucune confrontation.</div></article>
-
-
-      <div class="section-title"><div><h3>Modération des avatars</h3><p>Valide ou refuse les images personnelles avant leur affichage public dans le Nid.</p></div><span class="chip">ADMIN</span></div>
-      <article id="avatarModerationPanel" class="card card-pad avatar-moderation-panel"><div class="empty">Chargement…</div></article>
-
-      <div class="section-title"><div><h3>Gestion des Teams</h3><p>Annuaire, membres, capitaine, identité et historique. Les interventions administratives restent journalisées.</p></div><span class="chip">V0.6.0</span></div>
-      <article class="card card-pad">
-        <div class="admin-sync-row"><div><strong>Communautés du Nid</strong><p class="muted">Recherche une Team et ouvre sa fiche. Les capitaines gèrent normalement leur propre communauté ; l'Admin intervient uniquement en correction ou modération.</p></div><input id="adminTeamSearch" class="admin-team-search" type="search" placeholder="Nom ou capitaine…"></div>
-        <div id="adminTeamsPanel" class="admin-teams-panel"><div class="empty">Chargement…</div></div>
-      </article>
-
-      <section id="communicationAdminSection">
-        <div class="section-title"><div><h3>Hibou masqué</h3><p>Messages globaux, Team ou individuels. Les messages urgents restent distincts des animations ordinaires.</p></div><span class="chip">SUPER ADMIN</span></div>
-        <article id="adminOwlPanel" class="card card-pad"><div class="empty">Chargement…</div></article>
-
-        <div class="section-title"><div><h3>Tickets au Hibou</h3><p>Conversations privées, captures et diagnostic technique. Les Admin classiques n’y ont pas accès.</p></div><span class="chip">PRIVÉ</span></div>
-        <article id="adminSupportPanel" class="card card-pad"><div class="empty">Chargement…</div></article>
-
-        <div class="section-title"><div><h3>Notifications & Web Push</h3><p>Journal de livraison, appareils et test Push vers toi ou un joueur précis.</p></div><span class="chip">PUSH</span></div>
-        <article id="adminNotificationsPanel" class="card card-pad"><div class="empty">Chargement…</div></article>
-      </section>
-
-      <div class="section-title"><div><h3>Créer manuellement</h3><p>Le mode manuel reste toujours disponible, même sans API.</p></div></div>
-      <article class="card card-pad admin-builder">
-        <div class="grid grid-2">
-          <div><h4>Nouvelle journée</h4><div class="field"><label>Numéro</label><input id="adminMdNumber" type="number" min="1" max="99" value="1"></div><div class="field"><label>Nom</label><input id="adminMdName" value="Journée 1"></div><button id="createMatchdayBtn" class="btn small">Créer la journée</button></div>
-          <div><h4>Nouveau match</h4><div class="field"><label>Journée</label><select id="adminMatchdaySelect"></select></div><div class="grid grid-2"><div class="field"><label>Domicile</label><select id="adminHomeClub"></select></div><div class="field"><label>Extérieur</label><select id="adminAwayClub"></select></div></div><div class="field"><label>Coup d'envoi (heure française)</label><input id="adminKickoff" type="datetime-local"></div><div class="field"><label>Stade</label><input id="adminStadium" placeholder="Facultatif"></div><button id="createMatchBtn" class="btn small">Ajouter le match</button></div>
-        </div>
-      </article>
-      <section id="registrationAdminSection" class="hidden">
-        <div class="section-title"><div><h3>Demandes d'inscription</h3><p>Supabase crée le compte, mais seul le Super Admin ouvre la porte du Nid.</p></div><span class="chip">SUPER ADMIN</span></div>
-        <article id="registrationRequests" class="card card-pad"><div class="empty">Chargement…</div></article>
-      </section>
-      <div class="section-title"><div><h3>Gestion des rencontres</h3><p>Passe un match LIVE, saisis son score, mets-le à jour autant de fois que nécessaire puis termine-le. Les classements suivent en temps réel.</p></div></div>
-      <div id="adminMatchdayTabs" class="matchday-tabs"></div>
-      <article id="adminMatches" class="card card-pad"></article>
+      </div>
     </section>
     </section>
 
@@ -369,6 +405,7 @@
   <script src="js/avatars.js"></script>
   <script src="js/teams.js"></script>
   <script src="js/notifications.js"></script>
+  <script src="js/social.js"></script>
   <script src="js/rivals.js"></script>
   <script src="js/support.js"></script>
   <script src="js/owl.js"></script>

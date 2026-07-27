@@ -1,5 +1,37 @@
 # Changelog
 
+## V0.6.2 — Correctif social, Teams & avatars
+
+- réactions rapides entre joueurs : `👏 🔥 😂 😱 🦉 🏆 💀 ❤️` ;
+- envoi depuis le classement, la Team, les pronostics révélés et le profil public ;
+- notification `social` dédiée et préférence « Réactions joueurs » ;
+- anti-spam serveur : délai entre deux réactions et plafond horaire ;
+- deep link d’une réaction vers le profil de son expéditeur ;
+- grandes cartes Team : motifs fortement atténués, agrandis et recouverts d’un voile sombre ;
+- aperçu Team du configurateur adouci de la même manière ;
+- avatar public canonique pris depuis `profileDirectory` pour éviter les valeurs périmées des RPC de classement/live ;
+- sidebar convertie au composant avatar commun ;
+- bandeau sticky du classement mobile conserve maintenant le vrai avatar Team et affiche le nom de la Team ;
+- cache PWA et manifest de release passés en V0.6.2.
+
+---
+
+## V0.6.0a — Administration UX
+
+- refonte de l’administration en centre de contrôle modulaire ;
+- navigation interne : Vue d’ensemble / Matchs & LIVE / Compétition / Joueurs / Teams / Communication / Application ;
+- une seule rubrique visible à la fois, fin de la page Admin interminable ;
+- navigation verticale sticky sur desktop et horizontale sur mobile ;
+- tableau de bord avec compteurs et raccourcis ;
+- nouvel annuaire Admin des joueurs avec recherche et profil rapide ;
+- séparation des opérations quotidiennes Matchs/LIVE et des réglages de compétition ;
+- regroupement Hibou / tickets / Push dans Communication ;
+- espace Application prêt pour feature flags, saisons, sauvegardes et maintenance ;
+- actions locales « Recharger les données » et « Nettoyer le cache PWA » ;
+- aucune migration SQL : correctif front-only.
+
+---
+
 ## V0.6.0 — Hibou, rivalités & notifications
 
 - centre de notifications interne avec compteur, filtres, lu/non lu, suppression et deep links ;

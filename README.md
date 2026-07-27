@@ -1,4 +1,29 @@
-# Le Nid des Champions — V0.6.0
+# Le Nid des Champions — V0.6.2
+
+## Correctif social, Teams & avatars
+
+V0.6.2 part de la V0.6.0a et corrige trois points visibles sur mobile :
+
+- réactions rapides entre joueurs avec 8 émoticônes, depuis le classement, les membres de Team, les pronostics révélés et le profil public ;
+- cartes Team rendues lisibles : le motif complet reste sur le blason, mais l’arrière-plan des grandes cartes ne fait plus qu’en suggérer les couleurs et la géométrie ;
+- identité joueur unifiée : le même avatar public et le même habillage Team sont utilisés partout, y compris dans le bandeau sticky du classement et dans la sidebar.
+
+### Mise à jour
+
+1. Sauvegarder Supabase.
+2. Exécuter `sql/HOTFIX_V0.6.2_EXISTING_DB.sql`. Ce script peut être utilisé même si la base est encore en V0.5.5a : il rejoue la migration V0.6.0 de façon idempotente puis ajoute V0.6.2.
+3. Si `push-dispatch` a déjà été déployée, la redéployer pour que la catégorie `social` respecte les préférences Push.
+4. Conserver le `config.js` réel du site et mettre `APP_VERSION: "0.6.2"`.
+5. Déployer le front puis nettoyer le cache PWA.
+
+Les réactions sont volontairement courtes et sans messagerie : `👏 🔥 😂 😱 🦉 🏆 💀 ❤️`. Un anti-spam limite les envois en rafale.
+
+Notice : `installation/INSTALLATION_V0.6.2.txt`.
+
+---
+
+
+# Historique fonctionnel — V0.6.0
 
 ## Hibou, rivalités & notifications
 
