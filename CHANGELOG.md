@@ -1,12 +1,22 @@
+# Changelog
+
+## 0.6.7
+- Nouvel onglet Super Admin « Test ».
+- Générateur de 2 journées TEST avec clubs réels, stade, pays, date et heure.
+- Activation/désactivation complète des matchs TEST sans suppression.
+- Suppression ciblée des matchs TEST et remise à zéro complète du calendrier.
+- Matchs TEST identifiés visuellement et ignorés quand ils sont désactivés.
+- Conservation du config.js de production fourni par Parkaf.
+
 # CHANGELOG
 
-## V0.6.6 — Drapeaux FlagCDN
+## V0.6.7 — Drapeaux FlagCDN
 
 - remplacement des emojis de drapeaux par des SVG FlagCDN afin d'obtenir le même rendu sur Chrome Windows, Android, iOS et PWA ;
 - codes dédiés pour Angleterre (`gb-eng`), Écosse (`gb-sct`), Pays de Galles (`gb-wls`) et Irlande du Nord (`gb-nir`) ;
 - fallback texte automatique si le CDN ne répond pas ;
 - aucune modification SQL / Supabase ;
-- cache PWA `nid-champions-v0.6.6`.
+- cache PWA `nid-champions-v0.6.7`.
 
 ## V0.6.5 — Déconnexion mobile
 
