@@ -1,4 +1,16 @@
-# Changelog
+# CHANGELOG
+
+## V0.6.3 — Correctif identité visuelle
+
+- avatar public unifié dans sidebar, accueil, profil, classement, Teams, Live, rivalités et pronostics révélés ;
+- PNG d'avatar affichés sur fond transparent avec `object-fit: contain` ;
+- cadre/blason Team plus visible autour du joueur et mini-marque Team renforcée ;
+- proportions harmonisées sur les tailles XS/SM/MD/LG ;
+- bandeau Team désormais fortement teinté par les couleurs de la Team et beaucoup moins par le bleu global du Nid ;
+- motifs de Team conservés en ambiance, avec voile de lisibilité plus léger ;
+- annuaire et classement Teams teintés selon l'identité de chaque Team ;
+- cache PWA et manifeste passés en V0.6.3 ;
+- aucune migration SQL supplémentaire.
 
 ## V0.6.2 — Correctif social, Teams & avatars
 

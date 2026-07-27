@@ -1,24 +1,18 @@
-# Le Nid des Champions — V0.6.2
+# Le Nid des Champions — V0.6.3
 
-## Correctif social, Teams & avatars
+## Correctif identité visuelle
 
-V0.6.2 part de la V0.6.0a et corrige trois points visibles sur mobile :
+V0.6.3 part de V0.6.2 et harmonise l'identité joueur / Team sur tout le Nid :
 
-- réactions rapides entre joueurs avec 8 émoticônes, depuis le classement, les membres de Team, les pronostics révélés et le profil public ;
-- cartes Team rendues lisibles : le motif complet reste sur le blason, mais l’arrière-plan des grandes cartes ne fait plus qu’en suggérer les couleurs et la géométrie ;
-- identité joueur unifiée : le même avatar public et le même habillage Team sont utilisés partout, y compris dans le bandeau sticky du classement et dans la sidebar.
+- un même avatar public est utilisé partout ;
+- les PNG officiels restent détourés : aucun fond bleu ajouté derrière l'image ;
+- l'image est affichée en `contain` au lieu d'être recadrée en `cover` ;
+- le blason/cadre Team occupe davantage d'espace autour du joueur ;
+- le bandeau d'une Team prend réellement les nuances de ses couleurs, le bleu global du Nid devient secondaire ;
+- les cartes de classement Team reprennent elles aussi les couleurs de la Team ;
+- les motifs restent perceptibles mais servent d'ambiance et ne passent plus devant les textes.
 
-### Mise à jour
-
-1. Sauvegarder Supabase.
-2. Exécuter `sql/HOTFIX_V0.6.2_EXISTING_DB.sql`. Ce script peut être utilisé même si la base est encore en V0.5.5a : il rejoue la migration V0.6.0 de façon idempotente puis ajoute V0.6.2.
-3. Si `push-dispatch` a déjà été déployée, la redéployer pour que la catégorie `social` respecte les préférences Push.
-4. Conserver le `config.js` réel du site et mettre `APP_VERSION: "0.6.2"`.
-5. Déployer le front puis nettoyer le cache PWA.
-
-Les réactions sont volontairement courtes et sans messagerie : `👏 🔥 😂 😱 🦉 🏆 💀 ❤️`. Un anti-spam limite les envois en rafale.
-
-Notice : `installation/INSTALLATION_V0.6.2.txt`.
+Cette version est **front-only** : aucune migration SQL supplémentaire n'est nécessaire après V0.6.2.
 
 ---
 
