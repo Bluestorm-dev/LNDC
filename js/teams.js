@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.4 — Teams
+// Le Nid des Champions V0.7.1 — Teams
   // ========================================================================
   // V0.5.2 — Teams · formes/cadres/couleurs corrigés
   // ========================================================================
@@ -42,8 +42,9 @@
     const bg=TEAM_BACKGROUNDS.some(x=>x[0]===team?.background_style)?team.background_style:"diagonal";
     return `${prefix} shape-${shape} frame-${frame} bg-${bg}`;
   }
-  function teamLogoHTML(team,large=false) {
-    return `<span class="team-logo team-logo-color-only ${large?'large':''}" aria-hidden="true"></span>`;
+  function teamLogoHTML() {
+    // V0.7.1 : aucun conteneur/logo interne. Le blason porte déjà l'identité Team.
+    return "";
   }
   function teamForUser(userId) { return state.teamDirectoryMap?.get(String(userId))||null; }
   function profileForUser(profile) {

@@ -1,11 +1,11 @@
 "use strict";
 
-// Le Nid des Champions V0.7.0 — Realtime robuste, LIVE sans F5 et filet de sécurité
+// Le Nid des Champions V0.7.1 — Realtime robuste, LIVE sans F5 et filet de sécurité
   function setupRealtime() {
     if(demoMode||!sb||!state.season)return;
     if(state.channel)sb.removeChannel(state.channel);
-    state.channel=sb.channel(`nidc-live-v070-${state.season.id}`)
-      .on("postgres_changes",{event:"*",schema:"public",table:"matches",filter:`season_id=eq.${state.season.id}`},()=>queueRealtimeRefresh("matches"))
+    state.channel=sb.channel(`nidc-live-v071-${state.season.id}`)
+      .on("postgres_changes",{event:"*",schema:"public",table:"matches",filter:`season_id=eq.${state.season.id}`},payload=>queueRealtimeRefresh("matches",payload))
       .on("postgres_changes",{event:"*",schema:"public",table:"matchdays",filter:`season_id=eq.${state.season.id}`},()=>queueRealtimeRefresh("matches"))
       .on("postgres_changes",{event:"*",schema:"public",table:"predictions",filter:`season_id=eq.${state.season.id}`},()=>queueRealtimeRefresh("predictions"))
       .on("postgres_changes",{event:"*",schema:"public",table:"knockout_ties",filter:`season_id=eq.${state.season.id}`},()=>queueRealtimeRefresh("matches"))
@@ -50,6 +50,7 @@
       const next=rows||[],key=liveSnapshotKey(next),prev=state.liveSnapshotKey||liveSnapshotKey(state.adminAllMatches||state.allMatches);
       if(force||key!==prev){
         state.liveSnapshotKey=key;state.adminAllMatches=next;state.allMatches=next.filter(m=>!m.is_test||m.test_enabled!==false);state.matches=state.allMatches.filter(m=>m.matchday_id===state.selectedMatchdayId);
+        if(typeof maybeAutoSelectLiveRankingScope==="function")maybeAutoSelectLiveRankingScope();
         const promises=[refreshMyPredictionSnapshot(),loadRankingData(state.rankingScope,false)];
         if(typeof loadGamificationData==="function")promises.push(loadGamificationData());
         await Promise.all(promises);
@@ -62,14 +63,22 @@
     if(state.livePollTimer)clearInterval(state.livePollTimer);
     // Realtime reste prioritaire. Ce filet de sécurité évite tout F5 si un événement
     // websocket est perdu par le navigateur, le réseau ou la publication Supabase.
-    state.livePollTimer=setInterval(()=>refreshLiveSnapshot(false),10000);
+    state.livePollTimer=setInterval(()=>refreshLiveSnapshot(false),4000);
+    if(!state.liveFallbackEventsBound){
+      state.liveFallbackEventsBound=true;
+      document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshLiveSnapshot(true);});
+      window.addEventListener("focus",()=>refreshLiveSnapshot(true));
+      window.addEventListener("online",()=>refreshLiveSnapshot(true));
+    }
   }
 
-  function queueRealtimeRefresh(kind) {
+  function queueRealtimeRefresh(kind,payload=null) {
     clearTimeout(state.realtimeTimer);
     state.realtimeTimer=setTimeout(async()=>{
       try{
         if(kind==="matches"){
+          // Le payload réveille immédiatement le front ; la lecture serveur reste la source de vérité.
+          if(payload?.new?.id){state.liveSnapshotKey="";}
           await refreshLiveSnapshot(true);
         }else if(kind==="predictions"){
           await loadRankingData(state.rankingScope,false);await Promise.all([loadTeamData(),loadRivalData()]);renderRanking();renderCollectiveStats();renderTeams();renderHomeRival();renderRivalView();updateKpis();

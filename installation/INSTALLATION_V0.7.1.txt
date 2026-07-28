@@ -1,0 +1,33 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.7.1
+===============================================
+
+Cette version corrige :
+- le carré/plaque parasite à l'intérieur des blasons Team ;
+- la mise à jour LIVE côté joueur sans F5 ;
+- le classement LIVE TEST, désormais recalculé et sélectionné automatiquement lorsque seuls des matchs TEST sont LIVE.
+
+MISE À JOUR DEPUIS V0.7.0
+--------------------------
+1. Dans Supabase > SQL Editor, exécuter :
+   sql/HOTFIX_V0.7.1_EXISTING_DB.sql
+
+2. Déployer tout le frontend V0.7.1 sur GitHub Pages.
+
+3. Aucun redéploiement de push-dispatch n'est nécessaire.
+   Ne pas régénérer les clés VAPID.
+
+4. Sur navigateur : Ctrl+F5.
+   Sur la PWA mobile : fermer complètement l'application puis la rouvrir.
+   Si l'ancien carré persiste, vider une fois le cache/site de la PWA.
+
+TEST LIVE CONSEILLÉ
+-------------------
+1. Créer/activer un match TEST avec des pronostics déjà enregistrés.
+2. Ouvrir un compte joueur sur un autre appareil.
+3. Passer le match TEST en LIVE puis modifier le score.
+4. Le score doit apparaître sans F5 (Realtime, secours toutes les 4 secondes).
+5. En l'absence de match officiel LIVE, le classement bascule automatiquement sur « 🧪 TEST ».
+6. Les points provisoires TEST changent sans toucher au classement officiel.
+
+AUCUNE MODIFICATION DE CONFIG.JS À FAIRE.
+La configuration de production est déjà incluse ; APP_VERSION vaut 0.7.1.

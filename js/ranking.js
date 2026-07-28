@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.7.0 — historique, classements, narration et live
+// Le Nid des Champions V0.7.1 — historique, classements, narration et live
   function renderHistory() {
     const panel=$("#historyPanel"); if(!panel)return;
     const rows=state.history.filter(r=>["finished","cancelled"].includes(r.match_status));
@@ -15,6 +15,7 @@
 
   function renderRanking() {
     const body=$("#rankingBody"); if(!body)return;
+    $$('[data-ranking-scope]').forEach(btn=>btn.classList.toggle("active",btn.dataset.rankingScope===state.rankingScope));
     let rows=[...(state.rankingRows||[])];
     if(state.rankingScope==="precision") rows.sort((a,b)=>Number(b.precision_pct||0)-Number(a.precision_pct||0)||Number(b.exact_scores||0)-Number(a.exact_scores||0)||Number(b.points||0)-Number(a.points||0)||String(a.username).localeCompare(String(b.username)));
     if(state.rankingScope==="exacts") rows.sort((a,b)=>Number(b.exact_scores||0)-Number(a.exact_scores||0)||Number(b.points||0)-Number(a.points||0)||Number(b.precision_pct||0)-Number(a.precision_pct||0)||String(a.username).localeCompare(String(b.username)));
@@ -69,8 +70,13 @@
     const officialLive=state.allMatches.filter(m=>m.status==="live"&&!m.is_test);
     const testLive=state.allMatches.filter(m=>m.status==="live"&&m.is_test);
     const live=state.rankingScope==="test"?testLive:officialLive;
-    const ticker=$("#liveTicker"), badge=$("#rankingLiveBadge"),testTab=$("#rankingTestTab");
-    if(testTab)testTab.classList.toggle("hidden",!(state.adminAllMatches||state.allMatches||[]).some(m=>m.is_test&&m.test_enabled!==false));
+    const ticker=$("#liveTicker"), badge=$("#rankingLiveBadge"),testTab=$("#rankingTestTab"),testButton=$("#openTestLiveRanking");
+    const hasEnabledTests=(state.adminAllMatches||state.allMatches||[]).some(m=>m.is_test&&m.test_enabled!==false);
+    if(testTab)testTab.classList.toggle("hidden",!hasEnabledTests);
+    if(testButton){
+      testButton.classList.toggle("hidden",!testLive.length||state.rankingScope==="test");
+      testButton.onclick=async()=>{await setRankingScope("test");if(typeof setView==="function")setView("ranking");};
+    }
     if(ticker){ticker.classList.toggle("hidden",!live.length);ticker.innerHTML=live.length?`<span class="live-word">${state.rankingScope==="test"?'TEST LIVE':'LIVE'}</span>${live.map(m=>`<b>${esc(m.home_club?.short_name||"?")} ${m.home_score??0}–${m.away_score??0} ${esc(m.away_club?.short_name||"?")}</b>`).join(" · ")}`:"";}
     if(badge){badge.classList.toggle("live",!!live.length);badge.innerHTML=live.length?`<span class="pulse-dot"></span><b>${state.rankingScope==="test"?'🧪 CLASSEMENT LIVE TEST':'CLASSEMENT LIVE'}</b><small>${live.length} match${live.length>1?'s':''} en cours</small>`:`<span class="pulse-dot"></span><b>${state.rankingScope==="test"?'🧪 TEST':'HORS LIVE'}</b><small>${state.rankingScope==="test"?'Laboratoire séparé':'Aucun match officiel en cours'}</small>`;}
   }

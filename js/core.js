@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.4 — noyau, état et utilitaires
+// Le Nid des Champions V0.7.1 — noyau, état et utilitaires
   const CFG = window.NIDC_CONFIG || {};
   const configured = Boolean(
     CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY &&
@@ -52,6 +52,8 @@
     standings: [],
     rankingRows: [],
     rankingScope: "general",
+    rankingScopeManuallyChosen: false,
+    rankingAutoTestActive: false,
     collectiveStats: null,
     selectedEveningDate: null,
     teamDirectory: [],
@@ -85,6 +87,7 @@
     realtimeTimer: null,
     livePollTimer: null,
     livePollBusy: false,
+    liveFallbackEventsBound: false,
     museumSummary: null,
     gamificationEvents: [],
     gamificationRecords: [],

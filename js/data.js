@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.4 — chargement des données et classements serveur
+// Le Nid des Champions V0.7.1 — chargement des données et classements serveur
   function chooseDefaultMatchday() {
     if (state.selectedMatchdayId && state.matchdays.some(md=>md.id===state.selectedMatchdayId)) return;
     const upcoming = state.matchdays.find(md => state.allMatches.some(m => m.matchday_id===md.id && !isLocked(m)));
@@ -38,6 +38,7 @@
     ]);
     if(mdErr) throw mdErr; if(clubErr) throw clubErr; if(matErr) throw matErr; if(phaseErr) throw phaseErr; if(tieErr) throw new Error("Patch V0.4.0 absent : exécute sql/HOTFIX_V0.4.0_EXISTING_DB.sql.");
     state.adminAllMatchdays=matchdays||[]; state.adminAllMatches=matches||[]; state.matchdays=(matchdays||[]).filter(md=>!md.is_test||md.test_enabled!==false); state.clubs=clubs||[]; state.allMatches=(matches||[]).filter(m=>!m.is_test||m.test_enabled!==false); state.phases=phases||[]; state.knockoutTies=ties||[];
+    maybeAutoSelectLiveRankingScope();
     const {data:memberships,error:membershipErr}=await sb.from("club_catalog_memberships").select("club_id,competition_code,competition_name,country,season_year,updated_at");
     state.clubMemberships=membershipErr?[]:(memberships||[]);
     chooseDefaultMatchday();
@@ -112,6 +113,26 @@
     return ["precision","exacts"].includes(scope) ? "general" : scope;
   }
 
+  function liveRankingContext(){
+    const matches=state.allMatches||[];
+    return {
+      officialLive:matches.filter(m=>m.status==="live"&&!m.is_test),
+      testLive:matches.filter(m=>m.status==="live"&&m.is_test&&m.test_enabled!==false)
+    };
+  }
+
+  function maybeAutoSelectLiveRankingScope(){
+    const {officialLive,testLive}=liveRankingContext();
+    if(!state.rankingScopeManuallyChosen && testLive.length && !officialLive.length){
+      state.rankingScope="test";
+      state.rankingAutoTestActive=true;
+    }else if(state.rankingAutoTestActive && !testLive.length){
+      state.rankingScope="general";
+      state.rankingAutoTestActive=false;
+    }
+    return state.rankingScope;
+  }
+
   async function loadRankingData(scope=state.rankingScope, shouldRender=true) {
     state.rankingScope=scope||"general";
     const dbScope=serverRankingScope(state.rankingScope);
@@ -130,7 +151,11 @@
         p_include_live:true
       };
       if(dbScope==="test"){
-        const {data:rows,error:rErr}=await sb.rpc("get_test_leaderboard_v070",{p_season_id:state.season.id,p_include_live:true});
+        let {data:rows,error:rErr}=await sb.rpc("get_test_leaderboard_v071",{p_season_id:state.season.id,p_include_live:true});
+        // Compatibilité pendant le déploiement du HOTFIX : l'ancien RPC reste un secours.
+        if(rErr && /get_test_leaderboard_v071|function/i.test(String(rErr.message||rErr.details||""))){
+          ({data:rows,error:rErr}=await sb.rpc("get_test_leaderboard_v070",{p_season_id:state.season.id,p_include_live:true}));
+        }
         if(rErr) throw rErr;
         state.rankingRows=rows||[];
         state.collectiveStats=null;
@@ -153,8 +178,12 @@
     if(shouldRender){renderRanking();renderCollectiveStats();updateKpis();renderLiveTicker();}
   }
 
-  async function setRankingScope(scope) {
+  async function setRankingScope(scope,options={}) {
     try {
+      if(!options.automatic){
+        state.rankingScopeManuallyChosen=true;
+        state.rankingAutoTestActive=false;
+      }
       $$('[data-ranking-scope]').forEach(btn=>btn.classList.toggle("active",btn.dataset.rankingScope===scope));
       await loadRankingData(scope,true);
     } catch(err) { toast(friendlyError(err),"error"); }

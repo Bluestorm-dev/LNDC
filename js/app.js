@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.7.0 — orchestration et démarrage
+// Le Nid des Champions V0.7.1 — orchestration et démarrage
   async function boot() {
     bindStaticEvents();
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(()=>{});
@@ -10,7 +10,7 @@
       $("#configWarning").innerHTML = "<b>Mode démonstration.</b> Configure <code>config.js</code> et Supabase pour passer en réel.";
       $("#backendStatus span:last-child").textContent = "Démo locale";
       $("#demoBanner").classList.remove("hidden");
-      $("#demoBanner").innerHTML = "🛠️ <b>V0.7.0 en mode démo :</b> phase de ligue, champions, phases finales et LIVE sont simulés localement quand les données sont disponibles.";
+      $("#demoBanner").innerHTML = "🛠️ <b>V0.7.1 en mode démo :</b> phase de ligue, champions, phases finales et LIVE sont simulés localement quand les données sont disponibles.";
       demoInit();
       const demoSession = JSON.parse(localStorage.getItem("nidc_demo_session") || "null");
       if (demoSession) {
