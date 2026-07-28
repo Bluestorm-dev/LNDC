@@ -1,0 +1,19 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.7.4
+
+CORRECTIONS
+- Tailles cohérentes dans l’aperçu mobile de création/édition Team.
+- Calendrier CL strictement limité à la saison sélectionnée.
+- Refus explicite si Football-Data renvoie 2025/26 ou des dates hors 2026/27.
+
+INSTALLATION
+1. Déployer le contenu du frontend V0.7.4 sur GitHub Pages.
+2. Redéployer la fonction Edge :
+   npx.cmd supabase functions deploy sync-football-data
+3. Aucun SQL supplémentaire n’est requis pour cette version.
+4. Faire Ctrl+F5 sur ordinateur.
+5. Fermer complètement puis rouvrir la PWA sur mobile.
+
+TEST CALENDRIER
+- Admin > Compétition > Calendrier CL.
+- Si la saison 2026/27 n’est pas disponible, un message clair doit apparaître et aucun match ne doit être inséré.
+- Vérifier ensuite dans la base qu’aucun match 2025/26 n’a été ajouté.

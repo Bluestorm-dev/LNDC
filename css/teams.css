@@ -512,3 +512,24 @@
 .team-badge-visual.color-only::after,.team-badge-visual.color-only::before{pointer-events:none}
 .team-badge-visual.color-only::after{content:none!important;display:none!important;background:none!important;box-shadow:none!important}
 .team-badge-visual.color-only>.team-logo,.team-badge-visual .team-logo-color-only{display:none!important}
+
+
+/* ==========================================================================
+   V0.7.4 — Aperçu de création Team fidèle aux tailles réelles
+   Les aperçus mobiles réutilisent l'échelle des cartes finales au lieu des
+   anciennes dimensions surdimensionnées de l'éditeur.
+   ========================================================================== */
+.team-preview-emblem .team-badge-visual.large{width:78px!important;height:78px!important;flex:0 0 78px!important;padding:9px!important}
+.team-preview-member .team-avatar{width:42px!important;height:42px!important;flex:0 0 42px!important}
+.team-preview-member .team-avatar>.avatar{width:28px!important;height:28px!important}
+.team-rank-preview .team-avatar{width:35px!important;height:35px!important;flex:0 0 35px!important}
+.team-rank-preview .team-avatar>.avatar{width:23px!important;height:23px!important}
+.team-preview-mini-card .team-badge-visual{width:48px!important;height:48px!important;flex:0 0 48px!important;padding:5px!important}
+@media(max-width:560px){
+  .team-preview-emblem{min-height:145px!important;padding:13px!important}
+  .team-preview-emblem .team-badge-visual.large{width:68px!important;height:68px!important;flex-basis:68px!important}
+  .team-preview-member{padding:10px!important}
+  .team-preview-member .team-avatar{width:38px!important;height:38px!important;flex-basis:38px!important}
+  .team-preview-member .team-avatar>.avatar{width:25px!important;height:25px!important}
+  .team-preview-mini-card .team-badge-visual{width:42px!important;height:42px!important;flex-basis:42px!important}
+}

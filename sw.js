@@ -1,4 +1,4 @@
-const CACHE = "nid-champions-v0.7.3";
+const CACHE = "nid-champions-v0.7.4";
 const CORE = [
   "./","./index.html","./manifest.webmanifest","./config.js",
   "./css/base.css","./css/predictions.css","./css/ranking.css","./css/clubs.css","./css/champions.css","./css/layout.css","./css/teams.css","./css/avatars.css","./css/communication.css","./css/social.css","./css/admin.css","./css/gamification.css",

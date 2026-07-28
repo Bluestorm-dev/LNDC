@@ -1,21 +1,21 @@
-# Le Nid des Champions — V0.7.3
+# Le Nid des Champions — V0.7.4
 
 ## Calendrier réel 2026/27 & nettoyage complet
 
-La V0.7.3 conserve les corrections LIVE de la V0.7.1 et règle deux problèmes de calendrier :
+La V0.7.4 conserve les corrections LIVE de la V0.7.1 et règle deux problèmes de calendrier :
 
 - la synchronisation Football-Data utilise désormais strictement la saison réelle **2026/27** (`season=2026`), sans reprendre ni décaler les rencontres 2025/26 ;
 - le bouton **Vider tous les matchs** supprime également le tableau de phase finale (`knockout_ties`) et les pronostics de qualifiés associés.
 
 ### Mise à jour
 
-1. Exécuter `sql/HOTFIX_V0.7.3_EXISTING_DB.sql`.
+1. Exécuter `sql/HOTFIX_V0.7.4_EXISTING_DB.sql`.
 2. Redéployer `sync-football-data` :
    `npx.cmd supabase functions deploy sync-football-data`
-3. Déployer le frontend V0.7.3.
+3. Déployer le frontend V0.7.4.
 4. Faire un `Ctrl+F5` ou fermer/réouvrir complètement la PWA.
 
-Pour supprimer immédiatement les confrontations finales encore visibles, relancer **Admin → Test → Vider tous les matchs** après le HOTFIX, ou exécuter `sql/CLEANUP_CALENDAR_2026_27_V0.7.3.sql`.
+Pour supprimer immédiatement les confrontations finales encore visibles, relancer **Admin → Test → Vider tous les matchs** après le HOTFIX, ou exécuter `sql/CLEANUP_CALENDAR_2026_27_V0.7.4.sql`.
 
 Tant que le fournisseur ne dispose pas des 144 vraies rencontres de phase de ligue 2026/27, l'import est refusé proprement et aucune ancienne saison n'est chargée.
 

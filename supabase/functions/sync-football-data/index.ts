@@ -50,7 +50,7 @@ function safeSlug(input: string): string {
     .slice(0, 80) || "club";
 }
 
-// V0.7.2 : la synchronisation utilise strictement la saison demandée par le Nid.
+// V0.7.4 : la synchronisation vérifie strictement la saison demandée et les dates reçues.
 // Aucun calendrier d'une ancienne saison n'est transposé. Pour ucl-2026-27,
 // football-data.org est donc interrogé avec season=2026 et les dates restent réelles.
 const DEFAULT_SOURCE_SEASON_YEAR = 2026;
@@ -411,7 +411,23 @@ Deno.serve(async (req: Request) => {
       if (seasonError || !season) throw new Error(`Saison ${seasonSlug} introuvable.`);
 
       const matchesPayload = await fdFetch(`/competitions/${encodeURIComponent(competitionCode)}/matches?season=${sourceSeasonYear}`);
+      const providerSeason = Number(matchesPayload?.filters?.season);
+      if (Number.isInteger(providerSeason) && providerSeason !== sourceSeasonYear) {
+        throw new Error(`Le fournisseur a renvoyé la saison ${seasonLabel(providerSeason)} au lieu de ${sourceSeasonLabel}. Aucun match n’a été importé.`);
+      }
+
       const matches = (matchesPayload?.matches || []) as FDMatch[];
+      const seasonWindowStart = Date.UTC(sourceSeasonYear, 6, 1); // 1er juillet
+      const seasonWindowEnd = Date.UTC(sourceSeasonYear + 1, 6, 1); // 1er juillet suivant
+      const outOfSeason = matches.filter(match => {
+        const kickoff = new Date(match.utcDate).getTime();
+        return !Number.isFinite(kickoff) || kickoff < seasonWindowStart || kickoff >= seasonWindowEnd;
+      });
+      if (outOfSeason.length) {
+        const sample = outOfSeason.slice(0, 3).map(match => String(match.utcDate || "date inconnue")).join(", ");
+        throw new Error(`Le calendrier reçu ne correspond pas à la saison ${sourceSeasonLabel} (${outOfSeason.length} date(s) hors saison, ex. ${sample}). Aucun ancien calendrier n’a été importé.`);
+      }
+
       const numbered = matches.filter(m => Number.isInteger(m.matchday) && Number(m.matchday) >= 1 && Number(m.matchday) <= EXPECTED_MATCHDAYS);
       // Ne jamais confondre les tours qualificatifs avec la phase de ligue.
       const sourcePool = numbered.filter(m => /LEAGUE|REGULAR_SEASON/i.test(String(m.stage || "")));

@@ -1,6 +1,6 @@
 {
   "app": "Le Nid des Champions",
-  "version": "0.5.4",
+  "version": "0.7.4",
   "schema": 1,
   "branding": {
     "owl_main": "assets/branding/owl/owl-masked-main.png"
@@ -571,8 +571,9 @@
     }
   },
   "teams": {
-    "logo_bucket": "team-logos",
-    "avatar_wrapper": "CSS Team shape/frame/colors + personal avatar core"
+    "identity": "CSS blason shape + colors/pattern only; no Team logo",
+    "avatar_wrapper": "CSS Team shape/frame/colors + smaller personal avatar core",
+    "corner_marker": false
   },
   "front": {
     "css_directory": "css",
@@ -584,13 +585,22 @@
       "champions.css",
       "layout.css",
       "teams.css",
-      "avatars.css"
+      "avatars.css",
+      "communication.css",
+      "social.css",
+      "admin.css",
+      "gamification.css"
     ],
     "js_directory": "js",
     "js_files": [
       "core.js",
       "avatars.js",
       "teams.js",
+      "notifications.js",
+      "social.js",
+      "rivals.js",
+      "support.js",
+      "owl.js",
       "auth.js",
       "data.js",
       "champions.js",
@@ -598,9 +608,26 @@
       "predictions.js",
       "ranking.js",
       "admin.js",
+      "admin-test.js",
       "realtime.js",
+      "gamification.js",
       "app.js"
     ],
     "entrypoint": "index.html"
+  },
+  "gamification": {
+    "initial_badges": 100,
+    "badge_limit": null,
+    "badge_visual_fallback": "CSS generic emblem by rarity until an uploaded image exists",
+    "media_bucket": "gamification-media",
+    "media_max_bytes": 5242880,
+    "media_mime_types": [
+      "image/png",
+      "image/jpeg",
+      "image/webp"
+    ],
+    "narrative_subjects": 34,
+    "narrative_templates_per_subject": 40,
+    "narrative_seed_total": 1360
   }
 }

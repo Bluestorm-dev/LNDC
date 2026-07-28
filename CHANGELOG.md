@@ -1,5 +1,11 @@
+# V0.7.4
 
-## 0.7.3
+- Aperçu mobile de création/édition Team remis aux dimensions réelles des composants finaux.
+- Import Calendrier CL strict : refus si le fournisseur renvoie une autre saison ou des dates hors 2026/27.
+- Aucun calendrier 2025/26 ne peut désormais être accepté pour la saison `ucl-2026-27`.
+
+
+## 0.7.4
 - Correction de la création de Team pour les comptes `player`.
 - Séparation explicite entre rôle applicatif et rôle Team.
 - Le créateur reste joueur et devient capitaine uniquement dans sa Team.
@@ -7,7 +13,7 @@
 - Ajout du diagnostic `get_my_roles_v073`.
 # CHANGELOG
 
-## V0.7.3 — Calendrier réel 2026/27 & nettoyage complet
+## V0.7.4 — Calendrier réel 2026/27 & nettoyage complet
 
 - Import strict de la vraie saison Champions League 2026/27 (`season=2026`).
 - Suppression du décalage artificiel des rencontres 2025/26.

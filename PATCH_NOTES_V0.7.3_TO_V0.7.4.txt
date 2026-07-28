@@ -1,0 +1,30 @@
+PATCH LE NID DES CHAMPIONS — V0.7.3 → V0.7.4
+
+FICHIERS MODIFIÉS
+- css/teams.css
+- supabase/functions/sync-football-data/index.ts
+- config.js
+- config.example.js
+- index.html
+- sw.js
+- assets/assets-manifest.json
+- VERSION
+- README.md
+- CHANGELOG.md
+- js/app.js
+- css/admin.css
+- js/admin-test.js
+
+FICHIERS AJOUTÉS
+- installation/INSTALLATION_V0.7.4.txt
+- PATCH_NOTES_V0.7.3_TO_V0.7.4.txt
+
+FICHIERS À SUPPRIMER
+- Aucun.
+
+INSTALLATION
+1. Copier le contenu de ce patch à la racine du dépôt en remplaçant les fichiers existants.
+2. Déployer sync-football-data :
+   npx.cmd supabase functions deploy sync-football-data
+3. Aucun SQL n’est requis.
+4. Vider le cache / relancer la PWA.
