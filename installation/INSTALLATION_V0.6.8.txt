@@ -1,0 +1,6 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.6.8
+
+1. Correctif FRONT uniquement.
+2. Aucun SQL supplémentaire n'est nécessaire si tu es déjà en V0.6.7.
+3. Déploie les fichiers front V0.6.8 sur GitHub Pages.
+4. Vide le cache PWA / recharge l'application si l'ancien blason persiste.

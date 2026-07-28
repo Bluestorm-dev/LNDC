@@ -24,7 +24,7 @@
 .frame-wood{box-shadow:inset 0 0 0 4px #7b4b25,inset 0 0 0 7px #3c2011,0 6px 16px #0007;background-image:repeating-linear-gradient(110deg,rgba(255,255,255,.08) 0 2px,transparent 2px 8px),linear-gradient(135deg,var(--team-primary),var(--team-secondary))}
 .frame-bronze{box-shadow:inset 0 0 0 4px #b97837,inset 0 0 0 6px #5e321c,0 0 13px #8e572d55}.frame-silver{box-shadow:inset 0 0 0 4px #e3e9f4,inset 0 0 0 6px #71809d,0 0 13px #b8c8e655}.frame-gold{box-shadow:inset 0 0 0 4px #f6db78,inset 0 0 0 6px #9d7020,0 0 16px #eac34f55}.frame-royal-gold{box-shadow:inset 0 0 0 3px #fff0a8,inset 0 0 0 6px #c38e24,inset 0 0 0 8px #4c3210,0 0 20px #f0ca5b66}.frame-steel{box-shadow:inset 0 0 0 4px #8c9bad,inset 0 0 0 6px #303a48,0 4px 14px #0008}.frame-leather{box-shadow:inset 0 0 0 5px #7a4528,inset 0 0 0 7px #2b1711;filter:drop-shadow(0 5px 8px #0006) saturate(.9)}.frame-obsidian{box-shadow:inset 0 0 0 4px #15182a,inset 0 0 0 6px #000,0 0 15px #7f63ff33}.frame-neon{box-shadow:inset 0 0 0 3px #59d7ff,inset 0 0 0 5px #7258ff,0 0 8px #55c8ff,0 0 22px #7454ff77}.frame-champions{box-shadow:inset 0 0 0 3px #b8c8ff,inset 0 0 0 5px #314fbc,0 0 17px #315cff55}.frame-royal{box-shadow:inset 0 0 0 4px #e8c86e,inset 0 0 0 7px #162c72,0 0 18px #e8c86e44}.frame-night{box-shadow:inset 0 0 0 3px #556990,inset 0 0 0 6px #080d1d,0 0 20px #102a6655}
 
-.team-logo{width:44px;height:44px;display:grid;place-items:center;border-radius:15px;background:rgba(4,10,25,.73);border:2px solid rgba(255,255,255,.22);font-size:1.5rem;overflow:hidden;color:#fff}.team-logo.large{width:72px;height:72px;border-radius:22px;font-size:2.3rem}.team-logo img{width:100%;height:100%;object-fit:cover}.team-badge-visual{width:58px;height:58px;display:grid;place-items:center;flex:0 0 58px;padding:7px}.team-badge-visual.large{width:104px;height:104px;flex-basis:104px;padding:13px}.team-badge-visual>.team-logo{width:100%;height:100%;border:0;background:rgba(5,12,30,.72);font-size:1.55rem}.team-badge-visual.large>.team-logo{font-size:2.5rem}
+.team-logo{width:44px;height:44px;display:grid;place-items:center;border-radius:15px;background:rgba(4,10,25,.73);border:2px solid rgba(255,255,255,.22);font-size:1.5rem;overflow:hidden;color:#fff}.team-logo.large{width:72px;height:72px;border-radius:22px;font-size:2.3rem}.team-logo img{width:100%;height:100%;object-fit:cover}.team-logo.team-logo-color-only{background:transparent;border:0;box-shadow:none}.team-badge-visual{width:58px;height:58px;display:grid;place-items:center;flex:0 0 58px;padding:7px}.team-badge-visual.large{width:104px;height:104px;flex-basis:104px;padding:13px}.team-badge-visual.color-only>.team-logo{width:100%;height:100%;border:0;background:transparent;font-size:0}.team-badge-visual.color-only:after{content:"";position:absolute;inset:18% 17%;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,0) 38%,rgba(3,9,23,.16) 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
 
 .sidebar-avatar.has-team{background:linear-gradient(135deg,var(--team-primary),var(--team-secondary));border-color:rgba(255,255,255,.35);box-shadow:0 0 0 2px rgba(232,200,110,.25),0 8px 18px rgba(0,0,0,.25)}
 
@@ -373,10 +373,10 @@
 /* Le cadre Team doit être identifiable avant même de lire le nom. */
 .team-avatar.unified-player-avatar,
 .team-avatar{
-  width:52px;height:52px;flex-basis:52px;
+  width:50px;height:50px;flex-basis:50px;
 }
 .team-avatar>.avatar{
-  width:35px!important;height:35px!important;
+  width:33px!important;height:33px!important;
   border:0!important;
   background:transparent!important;
   box-shadow:none!important;
@@ -384,31 +384,32 @@
 .team-avatar:before{inset:3px}
 .team-avatar>i.team-avatar-mark,
 .team-avatar>i{
-  width:20px;height:20px;right:-2px;bottom:-2px;
-  border-radius:50%;
-  background:rgba(3,8,20,.88);
-  border:1px solid rgba(255,255,255,.32);
-  box-shadow:0 3px 8px rgba(0,0,0,.42);
-  backdrop-filter:blur(3px);
+  width:18px;height:18px;right:-2px;bottom:-2px;
+  border-radius:8px;
+  background:linear-gradient(135deg,var(--team-primary),var(--team-secondary));
+  border:1px solid rgba(255,255,255,.38);
+  box-shadow:0 3px 8px rgba(0,0,0,.34), inset 0 0 0 1px rgba(255,255,255,.12);
 }
+.team-avatar>i.team-color-mark:after,
+.team-avatar>i:after{content:"";position:absolute;inset:22%;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.25),rgba(255,255,255,0) 45%,rgba(3,8,20,.18) 100%)}
 .team-avatar .team-logo{width:18px;height:18px;font-size:.72rem}
 
 /* Accueil : beaucoup plus de badge Team autour du hibou. */
-.home-hero-avatar>.team-avatar{width:180px;height:180px;flex-basis:180px}
-.home-hero-avatar>.team-avatar>.avatar{width:124px!important;height:124px!important}
-.home-hero-avatar>.team-avatar:before{inset:7px}
-.home-hero-avatar>.team-avatar>i{width:38px;height:38px;right:0;bottom:0}
-.home-hero-avatar>.team-avatar .team-logo{width:34px;height:34px;font-size:1.22rem}
+.home-hero-avatar>.team-avatar{width:160px;height:160px;flex-basis:160px}
+.home-hero-avatar>.team-avatar>.avatar{width:112px!important;height:112px!important}
+.home-hero-avatar>.team-avatar:before{inset:6px}
+.home-hero-avatar>.team-avatar>i{width:32px;height:32px;right:1px;bottom:1px}
+.home-hero-avatar>.team-avatar .team-logo{width:30px;height:30px;font-size:1rem}
 
 /* Rang / listes : le composant conserve les mêmes proportions. */
-.player-cell>.team-avatar{width:46px;height:46px;flex-basis:46px}
-.player-cell>.team-avatar>.avatar{width:31px!important;height:31px!important}
-.my-ranking-sticky .sticky-name>.team-avatar{width:42px;height:42px;flex-basis:42px}
-.my-ranking-sticky .sticky-name>.team-avatar>.avatar{width:28px!important;height:28px!important}
-.team-member-row .team-avatar,.team-request-row .team-avatar{width:46px;height:46px;flex-basis:46px}
-.team-member-row .team-avatar>.avatar,.team-request-row .team-avatar>.avatar{width:31px!important;height:31px!important}
-.nid-prediction-row .team-avatar{width:40px;height:40px;flex-basis:40px}
-.nid-prediction-row .team-avatar>.avatar{width:27px!important;height:27px!important}
+.player-cell>.team-avatar{width:44px;height:44px;flex-basis:44px}
+.player-cell>.team-avatar>.avatar{width:29px!important;height:29px!important}
+.my-ranking-sticky .sticky-name>.team-avatar{width:40px;height:40px;flex-basis:40px}
+.my-ranking-sticky .sticky-name>.team-avatar>.avatar{width:26px!important;height:26px!important}
+.team-member-row .team-avatar,.team-request-row .team-avatar{width:44px;height:44px;flex-basis:44px}
+.team-member-row .team-avatar>.avatar,.team-request-row .team-avatar>.avatar{width:29px!important;height:29px!important}
+.nid-prediction-row .team-avatar{width:38px;height:38px;flex-basis:38px}
+.nid-prediction-row .team-avatar>.avatar{width:25px!important;height:25px!important}
 
 /* Bandeau principal : inspiré de l'ancienne appli, teinté par la Team. */
 .team-home-banner{
@@ -486,10 +487,10 @@
 .team-preview-mini-card:after{background:linear-gradient(90deg,rgba(3,7,18,.48),rgba(3,7,18,.22) 60%,rgba(3,7,18,.38))!important}
 
 @media(max-width:680px){
-  .home-hero-avatar>.team-avatar{width:136px;height:136px;flex-basis:136px}
-  .home-hero-avatar>.team-avatar>.avatar{width:91px!important;height:91px!important}
-  .home-hero-avatar>.team-avatar>i{width:30px;height:30px}
-  .home-hero-avatar>.team-avatar .team-logo{width:27px;height:27px;font-size:1rem}
+  .home-hero-avatar>.team-avatar{width:112px;height:112px;flex-basis:112px}
+  .home-hero-avatar>.team-avatar>.avatar{width:78px!important;height:78px!important}
+  .home-hero-avatar>.team-avatar>i{width:26px;height:26px}
+  .home-hero-avatar>.team-avatar .team-logo{width:24px;height:24px;font-size:.9rem}
   .team-home-banner:before{opacity:.23!important}
   .team-home-banner:after{background:linear-gradient(90deg,rgba(3,7,18,.52),rgba(3,7,18,.25),rgba(3,7,18,.42))!important}
 }

@@ -53,22 +53,22 @@
 .player-avatar-core.avatar-broken>b{color:var(--gold)}
 
 /* Le même composant, seules ses dimensions changent selon le contexte. */
-.sidebar-avatar.uses-unified-avatar>.team-avatar{width:44px;height:44px;flex-basis:44px}
-.sidebar-avatar.uses-unified-avatar>.team-avatar>.avatar{width:29px!important;height:29px!important}
-.sidebar-avatar.uses-unified-avatar>.team-avatar>i{width:18px;height:18px;right:-2px;bottom:-2px}
+.sidebar-avatar.uses-unified-avatar>.team-avatar{width:42px;height:42px;flex-basis:42px}
+.sidebar-avatar.uses-unified-avatar>.team-avatar>.avatar{width:27px!important;height:27px!important}
+.sidebar-avatar.uses-unified-avatar>.team-avatar>i{width:16px;height:16px;right:-2px;bottom:-2px}
 .sidebar-avatar.uses-unified-avatar>.team-avatar .team-logo{width:18px;height:18px;font-size:.64rem}
 .sidebar-avatar.uses-unified-avatar>.avatar{width:39px;height:39px;border-radius:0!important}
 
-.profile-avatar-host>.team-avatar{width:80px;height:80px;flex-basis:80px}
-.profile-avatar-host>.team-avatar>.avatar{width:52px!important;height:52px!important}
+.profile-avatar-host>.team-avatar{width:76px;height:76px;flex-basis:76px}
+.profile-avatar-host>.team-avatar>.avatar{width:48px!important;height:48px!important}
 .profile-avatar-host>.avatar{background:transparent!important;border-radius:0!important}
 
-.avatar-preview-stage>.team-avatar>.avatar{width:82px!important;height:82px!important}
+.avatar-preview-stage>.team-avatar>.avatar{width:78px!important;height:78px!important}
 .avatar-preview-stage>.avatar{background:transparent!important;border-radius:0!important}
 .avatar-option img{object-fit:contain!important;background:transparent!important;border-radius:0!important}
 
 @media(max-width:680px){
-  .profile-avatar-host>.team-avatar{width:70px;height:70px;flex-basis:70px}
-  .profile-avatar-host>.team-avatar>.avatar{width:46px!important;height:46px!important}
-  .avatar-preview-stage>.team-avatar>.avatar{width:72px!important;height:72px!important}
+  .profile-avatar-host>.team-avatar{width:66px;height:66px;flex-basis:66px}
+  .profile-avatar-host>.team-avatar>.avatar{width:42px!important;height:42px!important}
+  .avatar-preview-stage>.team-avatar>.avatar{width:68px!important;height:68px!important}
 }
