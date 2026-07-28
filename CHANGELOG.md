@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## V0.7.1 — Blasons propres & LIVE TEST fiable
+
+- suppression définitive du rectangle/plaque interne des blasons Team ;
+- suppression du conteneur HTML vide hérité de l'ancien logo Team ;
+- classement LIVE TEST recalculé par `get_test_leaderboard_v071` ;
+- bascule automatique vers le classement TEST lorsque seuls des matchs TEST sont LIVE ;
+- bouton explicite « Voir le classement LIVE TEST » ;
+- Realtime renforcé : écoute immédiate des changements, resynchronisation au focus/retour réseau et secours toutes les 4 secondes ;
+- `REPLICA IDENTITY FULL` sur `matches` et `predictions` pour fiabiliser les événements UPDATE ;
+- aucun changement VAPID ni redéploiement de l'Edge Function Push.
+
 ## V0.7.0 — Musée, Gamification & LIVE robuste
 
 - nouveau Musée : Badges, Records, Casseroles et Génie ;

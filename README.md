@@ -1,4 +1,20 @@
-# Le Nid des Champions — V0.7.0
+# Le Nid des Champions — V0.7.1
+
+## Correctif blasons Team & classement LIVE TEST
+
+La V0.7.1 conserve toute la gamification V0.7.0 et corrige deux défauts visibles : la plaque rectangulaire restée dans les blasons sans logo et le classement LIVE qui ne suivait pas correctement les matchs TEST côté joueur.
+
+### Mise à jour
+
+1. Exécuter `sql/HOTFIX_V0.7.1_EXISTING_DB.sql`.
+2. Déployer le frontend V0.7.1.
+3. Faire un `Ctrl+F5` ou fermer/réouvrir complètement la PWA.
+
+Aucun redéploiement Push et aucune nouvelle clé VAPID ne sont nécessaires. Le classement officiel reste isolé ; les matchs TEST alimentent uniquement le classement `🧪 TEST`.
+
+---
+
+## Historique — V0.7.0
 
 ## 🏛️ Badges, records, Casseroles & Génie
 
