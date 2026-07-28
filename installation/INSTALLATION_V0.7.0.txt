@@ -1,0 +1,67 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.7.0
+===========================================
+
+Cette version ajoute le Musée, les badges extensibles, Casseroles, Génie,
+records, laboratoire Gamification, narration du Hibou et le correctif LIVE
+sans F5 sur les comptes joueurs.
+
+MISE À JOUR DEPUIS V0.6.7 / FRONT V0.6.8
+----------------------------------------
+1) Ouvrir Supabase > SQL Editor.
+2) Exécuter en entier :
+      sql/HOTFIX_V0.7.0_EXISTING_DB.sql
+
+   Ce HOTFIX installe le moteur Gamification puis la banque de textes.
+
+3) Redéployer l'Edge Function Push depuis le dossier du projet :
+      npx.cmd supabase functions deploy push-dispatch
+
+   IMPORTANT : ne PAS régénérer les clés VAPID.
+
+4) Déployer tous les fichiers du frontend V0.7.0 sur GitHub Pages.
+
+5) Sur navigateur : Ctrl+F5 une fois.
+   Sur la PWA : fermer complètement puis rouvrir l'application une fois afin
+   que le Service Worker remplace le cache V0.6.x.
+
+6) Vérifier dans Admin > Application que le front affiche V0.7.0.
+
+TESTS PRIORITAIRES
+------------------
+A. LIVE réel
+   - ouvrir un compte Admin et un compte Joueur sur deux navigateurs/appareils ;
+   - passer un match officiel en LIVE puis modifier son score ;
+   - le compte Joueur doit voir le score et le classement LIVE évoluer sans F5.
+   - le front possède en plus un filet de sécurité de resynchronisation.
+
+B. Matchs TEST
+   - les matchs TEST ne doivent jamais contaminer le classement officiel ;
+   - dans Classement, utiliser l'onglet "🧪 TEST" pour le classement LIVE TEST.
+
+C. Gamification
+   - ouvrir Admin > Gamification avec un Super Admin ;
+   - activer le laboratoire TEST ;
+   - générer de faux pronostics ;
+   - simuler un score final ;
+   - contrôler badges/Casseroles/Génie/records TEST ;
+   - nettoyer le laboratoire TEST.
+
+D. Blasons Team
+   - plus aucun marqueur/pastille en bas à droite ;
+   - l'avatar du joueur est plus petit dans le blason, notamment sur l'accueil mobile.
+
+INSTALLATION SUR UNE BASE NEUVE
+-------------------------------
+Exécuter :
+      sql/000_INSTALL_FRESH_V0.7.0.sql
+
+Puis déployer l'Edge Function et le frontend comme ci-dessus.
+
+NOTES
+-----
+- Les 100 badges fournis sont le catalogue initial, PAS une limite technique.
+- Certains badges prévus pour des fonctions V0.8/V0.9 restent manuels/dormants
+  tant que leur source métier (ex. Hibou solitaire avancé) n'existe pas encore.
+- Les points Casserole et Génie sont parallèles et ne modifient jamais le
+  classement principal des pronostics.
+- Toute la gestion Gamification est réservée au Super Admin.

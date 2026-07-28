@@ -494,3 +494,15 @@
   .team-home-banner:before{opacity:.23!important}
   .team-home-banner:after{background:linear-gradient(90deg,rgba(3,7,18,.52),rgba(3,7,18,.25),rgba(3,7,18,.42))!important}
 }
+
+/* V0.7.0 — le blason suffit à identifier la Team : aucun rappel en coin. */
+.team-avatar>i.team-avatar-mark,.team-avatar>i.team-color-mark{display:none!important}
+.team-avatar>.avatar{width:28px!important;height:28px!important}
+.home-hero-avatar>.team-avatar>.avatar{width:90px!important;height:90px!important}
+.player-cell>.team-avatar>.avatar{width:25px!important;height:25px!important}
+.my-ranking-sticky .sticky-name>.team-avatar>.avatar{width:23px!important;height:23px!important}
+.team-member-row .team-avatar>.avatar,.team-request-row .team-avatar>.avatar{width:25px!important;height:25px!important}
+.nid-prediction-row .team-avatar>.avatar{width:22px!important;height:22px!important}
+@media(max-width:680px){
+  .home-hero-avatar>.team-avatar>.avatar{width:62px!important;height:62px!important}
+}

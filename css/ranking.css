@@ -66,3 +66,6 @@ body:after{
 .my-ranking-sticky .sticky-name>.team-avatar .team-logo{width:14px;height:14px;font-size:.52rem}
 .my-ranking-sticky .sticky-player-copy{display:grid;min-width:0}.my-ranking-sticky .sticky-player-copy b,.my-ranking-sticky .sticky-player-copy small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.my-ranking-sticky .sticky-player-copy small{color:#c2cae8;font-size:.55rem;margin-top:1px}
 @media(max-width:760px){.my-ranking-sticky .sticky-name .avatar{display:grid!important}.my-ranking-sticky .sticky-name>.team-avatar{display:inline-grid!important;width:38px;height:38px;flex-basis:38px}.my-ranking-sticky .sticky-name>.team-avatar>.avatar{width:29px!important;height:29px!important}.my-ranking-sticky .sticky-player-copy small{display:block!important;max-width:120px}}
+
+/* V0.7.0 — narration vivante des résultats */
+.history-narrative{display:block;margin-top:.28rem;max-width:48rem;font-size:.78rem;line-height:1.35;color:var(--muted,#aab6d6);font-weight:500}

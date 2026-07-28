@@ -72,3 +72,12 @@
   .profile-avatar-host>.team-avatar>.avatar{width:42px!important;height:42px!important}
   .avatar-preview-stage>.team-avatar>.avatar{width:68px!important;height:68px!important}
 }
+
+/* V0.7.0 — avatar joueur plus petit dans tous les blasons Team. */
+.sidebar-avatar.uses-unified-avatar>.team-avatar>.avatar{width:23px!important;height:23px!important}
+.profile-avatar-host>.team-avatar>.avatar{width:40px!important;height:40px!important}
+.avatar-preview-stage>.team-avatar>.avatar{width:64px!important;height:64px!important}
+@media(max-width:680px){
+  .profile-avatar-host>.team-avatar>.avatar{width:36px!important;height:36px!important}
+  .avatar-preview-stage>.team-avatar>.avatar{width:56px!important;height:56px!important}
+}
