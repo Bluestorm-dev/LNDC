@@ -1,0 +1,35 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
+const root=path.resolve(new URL('..',import.meta.url).pathname);
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const assert=(ok,msg)=>{if(!ok)throw new Error(msg);};
+
+assert(read('VERSION').trim()==='0.7.0','VERSION != 0.7.0');
+assert(read('config.js').includes('APP_VERSION: "0.7.0"'),'config.js version');
+assert(read('sw.js').includes('nid-champions-v0.7.0'),'service worker cache');
+const html=read('index.html');
+for(const needle of ['view-museum','adminGamificationPanel','homeNarrativeCard','rankingTestTab','js/gamification.js','css/gamification.css']) assert(html.includes(needle),`index missing ${needle}`);
+const avatars=read('js/avatars.js')+read('js/teams.js');
+assert(!avatars.includes('team-avatar-mark'),'obsolete Team corner marker still rendered');
+assert(!avatars.includes('team-color-mark'),'obsolete Team color marker still rendered');
+const teamsCss=read('css/teams.css');
+assert(teamsCss.includes('width:62px!important;height:62px!important'),'mobile home Team avatar not reduced');
+const realtime=read('js/realtime.js');
+assert(realtime.includes('startLiveFallback'),'LIVE fallback missing');
+assert(realtime.includes('10000'),'LIVE fallback should run around every 10s');
+const sql=read('sql/019_patch_v0.7.0_gamification.sql');
+for(const fn of ['get_test_leaderboard_v070','get_museum_summary_v070','process_match_gamification_v070','evaluate_badges_v070','admin_send_gamification_test_notification_v070']) assert(sql.includes(fn),`SQL missing ${fn}`);
+const seed=read('sql/020_seed_v0.7.0_narrative_texts.sql');
+const rows=[...seed.matchAll(/\('([^']+)','automatic',/g)].map(m=>m[1]);
+const counts=new Map();for(const k of rows)counts.set(k,(counts.get(k)||0)+1);
+assert(rows.length===1360,`narrative seed count ${rows.length} != 1360`);
+assert([...counts.values()].every(v=>v===40),'not every narrative subject has 40 templates');
+const badgeBlock=sql.split('insert into public.gamification_badges(code,name,description,category,rarity,is_secret,secret_visibility,scope,default_asset_path,condition_json,auto_evaluate,sort_order) values')[1]?.split('on conflict(code)')[0]||'';
+assert((badgeBlock.match(/\('badge-/g)||[]).length===100,'initial badge seed != 100');
+const manifest=JSON.parse(read('assets/assets-manifest.json'));
+assert(manifest.version==='0.7.0','assets manifest version');
+assert(manifest.gamification?.narrative_seed_total===1360,'manifest narrative count');
+for(const f of JSON.parse(JSON.stringify(manifest.front.css_files||[])))assert(fs.existsSync(path.join(root,'css',f)),`missing css/${f}`);
+for(const f of JSON.parse(JSON.stringify(manifest.front.js_files||[])))assert(fs.existsSync(path.join(root,'js',f)),`missing js/${f}`);
+console.log('V0.7.0 release checks: OK');

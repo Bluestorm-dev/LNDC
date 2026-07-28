@@ -1,22 +1,22 @@
-# Changelog
-
-## 0.6.8
-- Nouvel onglet Super Admin « Test ».
-- Générateur de 2 journées TEST avec clubs réels, stade, pays, date et heure.
-- Activation/désactivation complète des matchs TEST sans suppression.
-- Suppression ciblée des matchs TEST et remise à zéro complète du calendrier.
-- Matchs TEST identifiés visuellement et ignorés quand ils sont désactivés.
-- Conservation du config.js de production fourni par Parkaf.
-
 # CHANGELOG
 
-## V0.6.8 — Drapeaux FlagCDN
+## V0.7.0 — Musée, Gamification & LIVE robuste
 
-- remplacement des emojis de drapeaux par des SVG FlagCDN afin d'obtenir le même rendu sur Chrome Windows, Android, iOS et PWA ;
-- codes dédiés pour Angleterre (`gb-eng`), Écosse (`gb-sct`), Pays de Galles (`gb-wls`) et Irlande du Nord (`gb-nir`) ;
-- fallback texte automatique si le CDN ne répond pas ;
-- aucune modification SQL / Supabase ;
-- cache PWA `nid-champions-v0.6.8`.
+- nouveau Musée : Badges, Records, Casseroles et Génie ;
+- catalogue initial de 100 badges, moteur extensible sans limite codée à 100 ;
+- création/duplication/import JSON/archivage des badges réservés au Super Admin ;
+- raretés, secrets personnels, première découverte mondiale, progression et recalcul rétroactif contrôlé ;
+- Casseroles 2.0 avec gravités configurables, séries de zéros, catastrophe unique et champion éliminé tôt ;
+- Coups de Génie selon rareté des pronostics, exact rare et cote lorsqu’elle est fiable ;
+- records personnels + Records du Nid avec historique, égalisation et ancien détenteur prévenu ;
+- laboratoire Gamification TEST séparé et classement LIVE TEST ;
+- correctif LIVE joueur : Realtime renforcé et resynchronisation de secours sans F5 ;
+- centre de notifications enrichi avec Badges / Records / Gamification ;
+- moteur narratif du Hibou et banque initiale d’environ 40 variantes par famille de sujet ;
+- nouvelles animations de déblocage graduées selon la rareté ;
+- blasons Team : suppression du marqueur parasite bas-droite et réduction supplémentaire de l’avatar ;
+- nouveaux scripts `019_patch_v0.7.0_gamification.sql` et `020_seed_v0.7.0_narrative_texts.sql` ;
+- redéploiement de `push-dispatch` requis après installation SQL ; aucune régénération VAPID.
 
 ## V0.6.5 — Déconnexion mobile
 

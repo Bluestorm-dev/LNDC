@@ -1,28 +1,39 @@
-# Le Nid des Champions — V0.6.8
+# Le Nid des Champions — V0.7.0
 
-## Drapeaux identiques sur tous les appareils
+## 🏛️ Badges, records, Casseroles & Génie
 
-V0.6.8 reprend V0.6.5 et remplace les emojis de pays par des drapeaux SVG servis par FlagCDN. Les codes de pays restent déterminés localement par le Nid ; seul le visuel du drapeau est chargé depuis le CDN. Un fallback texte est prévu si le CDN est indisponible. Angleterre, Écosse, Pays de Galles et Irlande du Nord utilisent leurs drapeaux propres. Aucun SQL n'est nécessaire.
+La V0.7.0 installe le moteur principal de gamification du Nid sans modifier le barème officiel des pronostics. Les points Casserole et Génie restent des scores parallèles.
 
----
+### Ce qui arrive en V0.7.0
 
-## Correctif Web Push immédiat & Test Cron
+- **Musée** : vue générale, badges, records, Casseroles et Génie ;
+- **catalogue initial de 100 badges**, mais moteur illimité : le Super Admin peut en ajouter, dupliquer, désactiver, archiver, importer/exporter en JSON ou les gérer par SQL/code ;
+- raretés Commun / Rare / Épique / Légendaire / Secret, progression, secrets personnels, saison/carrière et recalcul rétroactif contrôlé ;
+- **Casseroles 2.0** automatiques et manuelles, gravités configurable +1 / +3 / +5 / +10 par défaut, classement parallèle et préparation de la Poêle d’Or ;
+- **Coups de Génie** calculés selon la rareté du bon résultat, l’exact et, lorsqu’elle est disponible, une cote fiable ;
+- **records personnels et Records du Nid**, historique, record égalé et notification de l’ancien détenteur lorsqu’il est battu ;
+- **Super Admin → Gamification** : catalogue, événements manuels, médias, réglages, banques de textes, audit, laboratoire et clôture de saison ;
+- **laboratoire TEST séparé** avec faux pronostics, simulation de scores, distinctions TEST et **classement LIVE TEST** ;
+- **LIVE renforcé** : Supabase Realtime + resynchronisation de secours toutes les 10 secondes pendant l’utilisation, afin qu’un compte joueur n’ait plus besoin de faire F5 pour recevoir un score ;
+- **blasons Team nettoyés** : plus de pastille/rappel en bas à droite et avatar du joueur encore réduit pour laisser respirer les couleurs du blason.
 
-V0.6.5 reprend V0.6.4 et ajoute la déconnexion dans Profil.
+### 🦉 Un Nid vivant
 
-V0.6.4 part de V0.6.3 et fiabilise toute la chaîne Web Push :
+La narration ne se limite plus à une phrase fixe. La V0.7.0 fournit une banque initiale de **40 formulations par famille de sujet** pour les points, résumés de journée, rivalités, variations de classement, badges, secrets, records, Casseroles, Génie, champions, Teams et rappels. Le moteur choisit selon le contexte et le tempérament du Hibou, avec anti-répétition côté joueur.
 
-- un compte joueur peut enregistrer son propre appareil même si le même navigateur avait auparavant été utilisé par un autre compte ;
-- la RLS reste stricte : le transfert d'un endpoint existant n'est accepté que si les clés cryptographiques de l'abonnement correspondent ;
-- toute notification créée avec `push_requested=true` et sans heure programmée déclenche désormais immédiatement `push-dispatch` via `pg_net` ;
-- le Cron ne sert plus à attendre les actions humaines : il traite uniquement les événements programmés et joue le rôle de filet de secours ;
-- le Cron passe à une vérification **chaque minute** ;
-- le Super Admin dispose d'un **Test Cron** à heure réglable ;
-- le test Push immédiat envoie exactement le titre et le texte présents dans les champs ;
-- les messages Hibou / système / Team / rivalité / réaction utilisent le même mécanisme immédiat central ;
-- les clés VAPID existantes ne doivent pas être régénérées.
+Les libellés fonctionnels restent fixes : le caractère aléatoire sert à raconter le Nid, pas à rendre l’interface imprévisible.
 
-Mise à jour : exécuter `sql/HOTFIX_V0.6.4_EXISTING_DB.sql`, redéployer `push-dispatch`, puis déployer le front V0.6.4.
+### Installation sur une base V0.6.7 / front V0.6.8
+
+1. Exécuter `sql/HOTFIX_V0.7.0_EXISTING_DB.sql` dans l’éditeur SQL Supabase.
+2. Redéployer l’Edge Function : `npx.cmd supabase functions deploy push-dispatch`.
+3. **Ne pas régénérer les clés VAPID.**
+4. Déployer le frontend V0.7.0.
+5. Faire un `Ctrl+F5` sur navigateur et fermer/réouvrir la PWA une fois afin de remplacer l’ancien cache.
+
+Le fichier `config.js` fourni contient la configuration de production déjà utilisée par le projet ; seule la version applicative passe à `0.7.0`.
+
+> Certaines conditions du catalogue initial dépendent de fonctions prévues en V0.8/V0.9 (Hibou solitaire, historique long de rang, etc.). Elles sont conservées dans le catalogue mais restent manuelles/dormantes tant que leur source métier n’existe pas encore.
 
 ---
 

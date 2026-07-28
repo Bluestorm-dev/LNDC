@@ -1,8 +1,8 @@
-const CACHE = "nid-champions-v0.6.8";
+const CACHE = "nid-champions-v0.7.0";
 const CORE = [
   "./","./index.html","./manifest.webmanifest","./config.js",
-  "./css/base.css","./css/predictions.css","./css/ranking.css","./css/clubs.css","./css/champions.css","./css/layout.css","./css/teams.css","./css/avatars.css","./css/communication.css","./css/social.css","./css/admin.css",
-  "./js/core.js","./js/avatars.js","./js/teams.js","./js/notifications.js","./js/social.js","./js/rivals.js","./js/support.js","./js/owl.js","./js/auth.js","./js/data.js","./js/champions.js","./js/profile.js","./js/predictions.js","./js/ranking.js","./js/admin.js","./js/admin-test.js","./js/realtime.js","./js/app.js",
+  "./css/base.css","./css/predictions.css","./css/ranking.css","./css/clubs.css","./css/champions.css","./css/layout.css","./css/teams.css","./css/avatars.css","./css/communication.css","./css/social.css","./css/admin.css","./css/gamification.css",
+  "./js/core.js","./js/avatars.js","./js/teams.js","./js/notifications.js","./js/social.js","./js/rivals.js","./js/support.js","./js/owl.js","./js/auth.js","./js/data.js","./js/champions.js","./js/profile.js","./js/predictions.js","./js/ranking.js","./js/admin.js","./js/admin-test.js","./js/realtime.js","./js/gamification.js","./js/app.js",
   "./assets/assets-manifest.json","./assets/avatars/avatar-catalog.json","./assets/icons/icon-192.png","./assets/icons/icon-512.png","./assets/branding/owl/owl-masked-main.png","./assets/avatars/nid/avatar-hibou-or.png"
 ];
 self.addEventListener("install",event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)));self.skipWaiting();});
