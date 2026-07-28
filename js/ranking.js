@@ -1,13 +1,15 @@
 "use strict";
 
-// Le Nid des Champions V0.6.4 — historique, classements et live
+// Le Nid des Champions V0.7.0 — historique, classements, narration et live
   function renderHistory() {
     const panel=$("#historyPanel"); if(!panel)return;
     const rows=state.history.filter(r=>["finished","cancelled"].includes(r.match_status));
     $("#historyCount").textContent=String(rows.length);
     panel.innerHTML=rows.length?rows.map(r=>{
-      const cancelled=r.match_status==="cancelled";
-      return `<div class="history-row"><div class="history-meta"><b>J${r.matchday_number??"?"}</b><span>${esc(fmtDate(r.kickoff_at))}</span></div><div class="history-fixture"><span>${esc(r.home_short)}</span><strong>${r.prediction_home}–${r.prediction_away}</strong><span>${esc(r.away_short)}</span></div><div class="history-result">${cancelled?'Annulé':`Résultat ${r.result_home}–${r.result_away}`}</div><div class="history-points ${Number(r.points)>0?'positive':''}">${cancelled?'—':`${Number(r.points||0)} pts`}</div></div>`;
+      const cancelled=r.match_status==="cancelled";let base=0;
+      if(!cancelled){const ph=Number(r.prediction_home),pa=Number(r.prediction_away),rh=Number(r.result_home),ra=Number(r.result_away);base=ph===rh&&pa===ra?7:(ph-pa)===(rh-ra)?5:Math.sign(ph-pa)===Math.sign(rh-ra)?3:0;}
+      const narrative=cancelled?"":(typeof narrativeTextForEvent==="function"?narrativeTextForEvent(`points_${base}`,r.match_id,{player:state.profile?.username||"Joueur",prediction:`${r.prediction_home}–${r.prediction_away}`,result:`${r.result_home}–${r.result_away}`,points:Number(r.points||0),home:r.home_short,away:r.away_short,club_home:r.home_short,club_away:r.away_short},`${base===7?'Plein centre.':base===5?'Le bon écart.':base===3?'Le résultat est là.':'Cette fois, le Hibou range le stylo.'} ${Number(r.points||0)} point${Number(r.points||0)>1?'s':''}.`):"");
+      return `<div class="history-row"><div class="history-meta"><b>J${r.matchday_number??"?"}</b><span>${esc(fmtDate(r.kickoff_at))}</span></div><div class="history-fixture"><span>${esc(r.home_short)}</span><strong>${r.prediction_home}–${r.prediction_away}</strong><span>${esc(r.away_short)}</span></div><div class="history-result">${cancelled?'Annulé':`Résultat ${r.result_home}–${r.result_away}`}${narrative?`<small class="history-narrative">🦉 ${esc(narrative)}</small>`:''}</div><div class="history-points ${Number(r.points)>0?'positive':''}">${cancelled?'—':`${Number(r.points||0)} pts`}</div></div>`;
     }).join(""):'<div class="empty">Ton historique apparaîtra ici dès qu’un match sera terminé.</div>';
   }
 
@@ -18,8 +20,8 @@
     if(state.rankingScope==="exacts") rows.sort((a,b)=>Number(b.exact_scores||0)-Number(a.exact_scores||0)||Number(b.points||0)-Number(a.points||0)||Number(b.precision_pct||0)-Number(a.precision_pct||0)||String(a.username).localeCompare(String(b.username)));
     const metric=r=>state.rankingScope==="precision"?Number(r.precision_pct||0):state.rankingScope==="exacts"?Number(r.exact_scores||0):Number(r.points||0);
     rows=rows.map((r,i)=>({...r,display_rank:i+1,display_above:i?metric(rows[i-1])-metric(r):null,display_below:i<rows.length-1?metric(r)-metric(rows[i+1]):null}));
-    const scopeLabel={general:"Général",matchday:`J${selectedMatchday()?.number||"?"}`,evening:"Soirée",precision:"Précision",exacts:"Scores exacts"}[state.rankingScope]||"Général";
-    $("#rankingSubtitle").textContent=state.rankingScope==="general"?"Points → exacts → moyenne → bons écarts → pronostics joués.":state.rankingScope==="matchday"?`Classement limité à ${selectedMatchday()?.name||"la journée sélectionnée"}.`:state.rankingScope==="evening"?`Classement de la soirée du ${state.selectedEveningDate||"—"}.`:state.rankingScope==="precision"?"Taux de bons résultats sur les rencontres scorées.":"Qui empile le plus de scores parfaitement exacts.";
+    const scopeLabel={general:"Général",matchday:`J${selectedMatchday()?.number||"?"}`,evening:"Soirée",precision:"Précision",exacts:"Scores exacts",test:"🧪 TEST"}[state.rankingScope]||"Général";
+    $("#rankingSubtitle").textContent=state.rankingScope==="general"?"Points → exacts → moyenne → bons écarts → pronostics joués.":state.rankingScope==="matchday"?`Classement limité à ${selectedMatchday()?.name||"la journée sélectionnée"}.`:state.rankingScope==="evening"?`Classement de la soirée du ${state.selectedEveningDate||"—"}.`:state.rankingScope==="precision"?"Taux de bons résultats sur les rencontres scorées.":state.rankingScope==="test"?"Laboratoire séparé : les matchs TEST n’affectent jamais le classement officiel.":"Qui empile le plus de scores parfaitement exacts.";
     $("#rankingContext").innerHTML=`<span class="context-pill">${esc(scopeLabel)}</span><span class="context-pill">${rows.length} joueur${rows.length>1?'s':''}</span>${state.rankingScope==="general"?'<span class="context-pill">Variation = rang avant la soirée</span>':''}`;
     $("#collectiveScopeChip").textContent=scopeLabel;
     const gapText=value=>value==null?"—":`${Number(value).toFixed(state.rankingScope==="precision"?1:0)}${state.rankingScope==="precision"?' pt%':''}`;
@@ -64,10 +66,13 @@
   }
 
   function renderLiveTicker() {
-    const live=state.allMatches.filter(m=>m.status==="live");
-    const ticker=$("#liveTicker"), badge=$("#rankingLiveBadge");
-    if(ticker){ticker.classList.toggle("hidden",!live.length);ticker.innerHTML=live.length?`<span class="live-word">LIVE</span>${live.map(m=>`<b>${esc(m.home_club?.short_name||"?")} ${m.home_score??0}–${m.away_score??0} ${esc(m.away_club?.short_name||"?")}</b>`).join(" · ")}`:"";}
-    if(badge){badge.classList.toggle("live",!!live.length);badge.innerHTML=live.length?`<span class="pulse-dot"></span><b>CLASSEMENT LIVE</b><small>${live.length} match${live.length>1?'s':''} en cours</small>`:`<span class="pulse-dot"></span><b>HORS LIVE</b><small>Aucun match en cours</small>`;}
+    const officialLive=state.allMatches.filter(m=>m.status==="live"&&!m.is_test);
+    const testLive=state.allMatches.filter(m=>m.status==="live"&&m.is_test);
+    const live=state.rankingScope==="test"?testLive:officialLive;
+    const ticker=$("#liveTicker"), badge=$("#rankingLiveBadge"),testTab=$("#rankingTestTab");
+    if(testTab)testTab.classList.toggle("hidden",!(state.adminAllMatches||state.allMatches||[]).some(m=>m.is_test&&m.test_enabled!==false));
+    if(ticker){ticker.classList.toggle("hidden",!live.length);ticker.innerHTML=live.length?`<span class="live-word">${state.rankingScope==="test"?'TEST LIVE':'LIVE'}</span>${live.map(m=>`<b>${esc(m.home_club?.short_name||"?")} ${m.home_score??0}–${m.away_score??0} ${esc(m.away_club?.short_name||"?")}</b>`).join(" · ")}`:"";}
+    if(badge){badge.classList.toggle("live",!!live.length);badge.innerHTML=live.length?`<span class="pulse-dot"></span><b>${state.rankingScope==="test"?'🧪 CLASSEMENT LIVE TEST':'CLASSEMENT LIVE'}</b><small>${live.length} match${live.length>1?'s':''} en cours</small>`:`<span class="pulse-dot"></span><b>${state.rankingScope==="test"?'🧪 TEST':'HORS LIVE'}</b><small>${state.rankingScope==="test"?'Laboratoire séparé':'Aucun match officiel en cours'}</small>`;}
   }
 
   function renderSeason() {

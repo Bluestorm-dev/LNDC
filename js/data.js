@@ -129,19 +129,26 @@
         p_evening_date:dbScope==="evening"?evening:null,
         p_include_live:true
       };
-      const [{data:rows,error:rErr},{data:collective,error:cErr}]=await Promise.all([
-        sb.rpc("get_leaderboard_v040",args),
-        sb.rpc("get_collective_stats_v030",{
-          p_season_id:state.season.id,
-          p_scope:dbScope,
-          p_matchday_id:dbScope==="matchday"?state.selectedMatchdayId:null,
-          p_evening_date:dbScope==="evening"?evening:null
-        })
-      ]);
-      if(rErr) throw rErr;
-      state.rankingRows=rows||[];
-      if(dbScope==="general") state.standings=rows||[];
-      state.collectiveStats=cErr?null:(collective?.[0]||null);
+      if(dbScope==="test"){
+        const {data:rows,error:rErr}=await sb.rpc("get_test_leaderboard_v070",{p_season_id:state.season.id,p_include_live:true});
+        if(rErr) throw rErr;
+        state.rankingRows=rows||[];
+        state.collectiveStats=null;
+      }else{
+        const [{data:rows,error:rErr},{data:collective,error:cErr}]=await Promise.all([
+          sb.rpc("get_leaderboard_v040",args),
+          sb.rpc("get_collective_stats_v030",{
+            p_season_id:state.season.id,
+            p_scope:dbScope,
+            p_matchday_id:dbScope==="matchday"?state.selectedMatchdayId:null,
+            p_evening_date:dbScope==="evening"?evening:null
+          })
+        ]);
+        if(rErr) throw rErr;
+        state.rankingRows=rows||[];
+        if(dbScope==="general") state.standings=rows||[];
+        state.collectiveStats=cErr?null:(collective?.[0]||null);
+      }
     }
     if(shouldRender){renderRanking();renderCollectiveStats();updateKpis();renderLiveTicker();}
   }

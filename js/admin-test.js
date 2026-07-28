@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.8 — laboratoire Super Admin / calendrier TEST
+// Le Nid des Champions V0.7.0 — laboratoire Super Admin / calendrier TEST
 function testAdminAllowed(){return state.profile?.role==="super_admin"&&state.profile?.status==="active";}
 
 function adminTestClubOptions(selected=""){

@@ -83,6 +83,22 @@
     history: [],
     channel: null,
     realtimeTimer: null,
+    livePollTimer: null,
+    livePollBusy: false,
+    museumSummary: null,
+    gamificationEvents: [],
+    gamificationRecords: [],
+    gamificationSettings: null,
+    narrativeTemplates: [],
+    museumTab: "overview",
+    museumFilter: "all",
+    museumSearch: "",
+    adminGamificationTab: "overview",
+    adminBadges: [],
+    adminPlayerBadges: [],
+    adminNarrativeTemplates: [],
+    gamificationAudit: [],
+    gamificationLoadedOnce: false,
     demoUsers: JSON.parse(localStorage.getItem("nidc_demo_users") || "null") || [
       {id:"demo-parkaf", username:"Parkaf", role:"super_admin", status:"active", club_heart:"Stade Brestois", avatar_key:"avatar-hibou-or", avatar_source:"library", avatar_storage_path:null, avatar_moderation_status:"approved"},
       {id:"demo-ju", username:"Ju", role:"player", status:"active", club_heart:"PSG", avatar_key:"avatar-hibou-saphir", avatar_source:"library", avatar_storage_path:null, avatar_moderation_status:"approved"},
@@ -163,11 +179,12 @@
   function setView(name) {
     // V0.4.1 : le choix champion vit désormais dans Profil.
     if(name === "champions") name = "profile";
-    const titles={home:"Accueil",matches:"Pronostics",knockout:"Phases finales",ranking:"Classements",season:"Saison",teams:"Teams",profile:"Profil & champions",rival:"Rivalités",admin:"Administration"};
+    const titles={home:"Accueil",matches:"Pronostics",knockout:"Phases finales",ranking:"Classements",season:"Saison",teams:"Teams",museum:"Musée",profile:"Profil & champions",rival:"Rivalités",admin:"Administration"};
     $$(".view").forEach(v => v.classList.toggle("hidden", v.id !== `view-${name}`));
     $$('[data-view]').forEach(b => b.classList.toggle("active", b.dataset.view === name));
     const title=$("#pageTitle");
     if(title) title.textContent=titles[name]||"Le Nid des Champions";
+    if(name==="museum"&&typeof renderMuseum==="function")renderMuseum();
     window.scrollTo({top:0, behavior:"smooth"});
   }
 

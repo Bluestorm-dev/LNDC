@@ -120,6 +120,8 @@
   async function afterLogin() {
     showApp();
     await loadData();
+    if(typeof loadGamificationData==="function")await loadGamificationData();
+    if(typeof loadAdminGamificationData==="function"&&state.profile?.role==="super_admin")await loadAdminGamificationData();
     renderAll();
     setView("home");
     setupRealtime();

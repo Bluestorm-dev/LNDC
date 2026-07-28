@@ -417,7 +417,7 @@
       syncEditorUi();
       const draft=draftFromEditor();
       const playerCore=avatarCoreHTML(state.profile||{username:"Joueur",avatar_key:"avatar-hibou-or"},{allowPending:true});
-      const draftAvatar=`<span class="team-avatar ${teamClass(draft)}" style="${teamVisualVars(draft)}">${playerCore}<i class="team-avatar-mark team-color-mark" aria-hidden="true"></i></span>`;
+      const draftAvatar=`<span class="team-avatar ${teamClass(draft)}" style="${teamVisualVars(draft)}">${playerCore}</span>`;
       const visibility=$("#teamEditVisibility",root).value==="private"?"Privée 🔒":"Publique";
       $("#teamLivePreview",root).innerHTML=`
         <div class="team-preview-emblem"><span>Blason Team</span>${teamBadgeHTML(draft,true)}<strong>${esc(draft.name)}</strong>${draft.slogan?`<small>« ${esc(draft.slogan)} »</small>`:""}</div>

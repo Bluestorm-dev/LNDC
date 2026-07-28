@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.4 — rival principal, duels et historique
+// Le Nid des Champions V0.7.0 — rival principal, duels, historique et narration
 function nextRivalChoiceMatchday(){
   const candidates=(state.matchdays||[]).map(md=>({md,first:Math.min(...state.allMatches.filter(m=>m.matchday_id===md.id&&m.status!=="cancelled").map(m=>new Date(m.kickoff_at).getTime()))})).filter(x=>Number.isFinite(x.first)&&x.first>Date.now()).sort((a,b)=>a.first-b.first);
   return candidates[0]?.md||null;
@@ -40,11 +40,10 @@ function currentRivalProfile(){return state.currentRival?state.profileDirectory.
 function leaderboardProfile(userId){return (state.standings||state.rankingRows||[]).find(r=>String(r.user_id)===String(userId))||null;}
 
 function rivalToneCopy(kind){
-  const tone=state.notificationPreferences?.owl_tone||"automatic";
-  const hard=tone==="sans_pitie"||(tone==="automatic"&&kind==="loss");
-  if(kind==="win")return hard?"Le Hibou hésite entre applaudir et envoyer une carte de condoléances à ton rival.":"Belle plume. Ton rival vient de prendre un courant d’air.";
-  if(kind==="loss")return hard?"Le Hibou a cherché une excuse crédible. Il n’en a trouvé aucune.":tone==="sage"?"Il reste des journées pour répondre.":"Ça pique. On évite peut-être le classement pendant cinq minutes.";
-  return tone==="sage"?"Un duel très équilibré.":"Un nul. La manière élégante de dire que personne n’a réussi à se débarrasser de l’autre.";
+  const rival=currentRivalProfile();const latest=(state.rivalDuels||[]).find(d=>d.finalized_at)||{};
+  const vars={player:state.profile?.username||"Joueur",rival:rival?.username||"ton rival",margin:Math.abs(Number(latest.user_points||0)-Number(latest.rival_points||0)),streak:Number(state.rivalSummary?.current_win_streak||0),points:Number(latest.user_points||0),my_points:Number(latest.user_points||0),rival_points:Number(latest.rival_points||0)};
+  const fallback=kind==="win"?"Belle plume. {rival} vient de prendre un courant d’air.":kind==="loss"?"Ça pique. {rival} prend ce duel, mais le Nid n’a pas fini de compter.":"Un nul. La manière élégante de dire que personne n’a réussi à se débarrasser de l’autre.";
+  return typeof narrativeText==="function"?narrativeText(`rival_${kind}`,vars,fallback):fillNarrativeTemplate?fillNarrativeTemplate(fallback,vars):fallback;
 }
 
 function renderHomeRival(){

@@ -1,7 +1,7 @@
 "use strict";
 
 // Le Nid des Champions V0.6.4 — administration modulaire
-  const ADMIN_SECTIONS = new Set(["dashboard","matches","test","competition","players","teams","communication","application"]);
+  const ADMIN_SECTIONS = new Set(["dashboard","matches","test","competition","players","teams","gamification","communication","application"]);
 
   function currentAdminSection(){
     const saved=localStorage.getItem("nidc_admin_section")||"dashboard";
@@ -10,12 +10,13 @@
 
   function setAdminSection(name,{scroll=true}={}){
     let section=ADMIN_SECTIONS.has(name)?name:"dashboard";
-    if(section==="test"&&state.profile?.role!=="super_admin")section="dashboard";
+    if(["test","gamification"].includes(section)&&state.profile?.role!=="super_admin")section="dashboard";
     localStorage.setItem("nidc_admin_section",section);
     $$('[data-admin-panel]').forEach(p=>p.classList.toggle("active",p.dataset.adminPanel===section));
     $$('[data-admin-section]').forEach(b=>b.classList.toggle("active",b.dataset.adminSection===section));
     if(section==="players")renderAdminPlayers();
     if(section==="test"&&typeof renderAdminTest==="function")renderAdminTest();
+    if(section==="gamification"&&typeof renderAdminGamification==="function")renderAdminGamification();
     if(section==="application")renderAdminAppState();
     if(section==="dashboard")renderAdminDashboard();
     if(scroll){const view=$("#view-admin");if(view)window.scrollTo({top:Math.max(0,view.offsetTop-72),behavior:"smooth"});}
@@ -62,7 +63,7 @@
 
   async function reloadAdminData(){
     setMsg("#adminMaintenanceMsg","Rechargement des données…");
-    try{await loadData();renderAll();setAdminSection("application",{scroll:false});setMsg("#adminMaintenanceMsg","Données rechargées.","ok");toast("↻ Données du Nid rechargées.");}catch(err){setMsg("#adminMaintenanceMsg",friendlyError(err),"error");}
+    try{await loadData();if(typeof loadGamificationData==="function")await loadGamificationData();if(state.profile?.role==="super_admin"&&typeof loadAdminGamificationData==="function")await loadAdminGamificationData();renderAll();setAdminSection("application",{scroll:false});setMsg("#adminMaintenanceMsg","Données rechargées.","ok");toast("↻ Données du Nid rechargées.");}catch(err){setMsg("#adminMaintenanceMsg",friendlyError(err),"error");}
   }
 
   async function refreshAdminPwa(){
@@ -77,7 +78,8 @@
     if(section){const allowed=state.profile?.role==="super_admin";section.classList.toggle("hidden",!allowed);if(allowed)loadRegistrationRequests();}
     renderAdminDashboard();renderAdminAppState();
     const testNav=$("#adminTestNav");if(testNav)testNav.classList.toggle("hidden",state.profile?.role!=="super_admin");
-    if(typeof renderAdminTest==="function")renderAdminTest();bindAdminNavigation();
+    const gamiNav=$("#adminGamificationNav");if(gamiNav)gamiNav.classList.toggle("hidden",state.profile?.role!=="super_admin");
+    if(typeof renderAdminTest==="function")renderAdminTest();if(typeof renderAdminGamification==="function")renderAdminGamification();bindAdminNavigation();
   }
 
   function renderAdminBuilder() {
