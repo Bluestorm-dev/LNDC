@@ -43,10 +43,7 @@
     return `${prefix} shape-${shape} frame-${frame} bg-${bg}`;
   }
   function teamLogoHTML(team,large=false) {
-    if(!team) return `<span class="team-logo ${large?'large':''}">🛡</span>`;
-    if(team.logo_type==="upload" && team.logo_url) return `<span class="team-logo ${large?'large':''}"><img src="${esc(team.logo_url)}" alt="" loading="lazy"></span>`;
-    const logo=TEAM_LOGOS[team.logo_asset_key]||TEAM_LOGOS.owl;
-    return `<span class="team-logo ${large?'large':''}" aria-hidden="true">${logo.glyph}</span>`;
+    return `<span class="team-logo team-logo-color-only ${large?'large':''}" aria-hidden="true"></span>`;
   }
   function teamForUser(userId) { return state.teamDirectoryMap?.get(String(userId))||null; }
   function profileForUser(profile) {
@@ -73,7 +70,7 @@
   }
   function teamBadgeHTML(team,large=false) {
     if(!team) return "";
-    return `<span class="team-badge-visual ${teamClass(team)} ${large?'large':''}" style="${teamVisualVars(team)}">${teamLogoHTML(team,large)}</span>`;
+    return `<span class="team-badge-visual color-only ${teamClass(team)} ${large?'large':''}" style="${teamVisualVars(team)}">${teamLogoHTML(team,large)}</span>`;
   }
   function teamFavoriteClub(team) {
     if(!team?.favorite_club_id) return null;
@@ -300,7 +297,7 @@
     const selectedPrimary=safeTeamColor(team?.primary_color);
     const selectedSecondary=safeTeamColor(team?.secondary_color,"#7454ff");
     const colorMode=selectedBg==="solid"?"single":"two";
-    const logos=Object.entries(TEAM_LOGOS).map(([key,l])=>`<button type="button" class="team-logo-option ${team?.logo_type!=='upload'&&((!team?.logo_asset_key&&key==='owl')||team?.logo_asset_key===key)?'active':''}" data-logo-key="${key}" title="${esc(l.label)}"><span class="team-logo-glyph">${l.glyph}</span><small>${esc(l.label)}</small></button>`).join('');
+    const logos='';
     const shapes=TEAM_SHAPES.map(([key,label])=>{
       const demo={shape:key,frame_style:"champions",primary_color:"#173a79",secondary_color:"#6c55ff",background_style:"diagonal"};
       return `<button type="button" class="team-visual-option ${key===selectedShape?'active':''}" data-shape-key="${key}">${teamChoiceMarkHTML(demo)}<small>${esc(label)}</small></button>`;
@@ -324,9 +321,8 @@
         </section>
 
         <section class="team-editor-block">
-          <div class="team-editor-block-head"><div><span class="eyebrow">Emblème</span><h4>Choisis le symbole</h4></div><small>Les pictos sont volontairement transparents. De vraies images viendront ensuite.</small></div>
-          <div class="team-logo-library">${logos}</div>
-          <div class="field team-upload-field"><label>Ou uploader ton propre logo</label><input id="teamEditLogoFile" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml"><small class="field-help">PNG transparent conseillé · JPG/WebP/SVG acceptés · 3 Mo max.</small></div>
+          <div class="team-editor-block-head"><div><span class="eyebrow">Emblème</span><h4>Sans logo</h4></div><small>La Team revient à un blason uniquement basé sur ses couleurs et son style de drapeau.</small></div>
+          <p class="muted">Aucun pictogramme ni logo n'est affiché. Le hibou du joueur reste visuellement prioritaire au centre du blason.</p>
         </section>
 
         <section class="team-editor-block">
@@ -377,13 +373,12 @@
     if(!team&&!state.myTeam&&state.teamMigrationError)return toast(state.teamMigrationError,'error');
     const root=modal(team?'Personnaliser ma Team':'Créer une Team',teamEditorHTML(team));
     root.querySelector('.modal-card')?.classList.add('team-editor-modal-card');
-    let selectedLogo=team?.logo_type==='upload'?null:(team?.logo_asset_key||'owl');
+    let selectedLogo=null;
     let localUploadPreview=null;
 
     const draftFromEditor=()=>{
       const primary=$("#teamEditPrimary",root).value;
       const mode=$("#teamEditColorMode",root).value;
-      const useUpload=Boolean(localUploadPreview)||(selectedLogo===null&&team?.logo_type==='upload'&&team?.logo_url);
       return {
         ...team,
         name:$("#teamEditName",root).value||"Ma Team",
@@ -393,9 +388,9 @@
         primary_color:primary,
         secondary_color:mode==="single"?primary:$("#teamEditSecondary",root).value,
         background_style:mode==="single"?"solid":$("#teamEditBackground",root).value,
-        logo_type:useUpload?'upload':'library',
-        logo_asset_key:useUpload?null:(selectedLogo||'owl'),
-        logo_url:localUploadPreview||(useUpload?(team?.logo_url||null):null)
+        logo_type:null,
+        logo_asset_key:null,
+        logo_url:null
       };
     };
 
@@ -422,7 +417,7 @@
       syncEditorUi();
       const draft=draftFromEditor();
       const playerCore=avatarCoreHTML(state.profile||{username:"Joueur",avatar_key:"avatar-hibou-or"},{allowPending:true});
-      const draftAvatar=`<span class="team-avatar ${teamClass(draft)}" style="${teamVisualVars(draft)}">${playerCore}<i>${teamLogoHTML(draft)}</i></span>`;
+      const draftAvatar=`<span class="team-avatar ${teamClass(draft)}" style="${teamVisualVars(draft)}">${playerCore}<i class="team-avatar-mark team-color-mark" aria-hidden="true"></i></span>`;
       const visibility=$("#teamEditVisibility",root).value==="private"?"Privée 🔒":"Publique";
       $("#teamLivePreview",root).innerHTML=`
         <div class="team-preview-emblem"><span>Blason Team</span>${teamBadgeHTML(draft,true)}<strong>${esc(draft.name)}</strong>${draft.slogan?`<small>« ${esc(draft.slogan)} »</small>`:""}</div>
@@ -431,14 +426,15 @@
         <div class="team-preview-mini-card bg-${esc(draft.background_style)}" style="${teamVisualVars(draft)}"><div>${teamBadgeHTML(draft)}<span><small>${visibility}</small><strong>${esc(draft.name)}</strong></span></div><b>12 membres</b></div>`;
     }
 
+    const logoInput=$("#teamEditLogoFile",root);
     $$('[data-logo-key]',root).forEach(b=>b.onclick=()=>{
       selectedLogo=b.dataset.logoKey;
       if(localUploadPreview){URL.revokeObjectURL(localUploadPreview);localUploadPreview=null;}
-      $("#teamEditLogoFile",root).value="";
+      if(logoInput)logoInput.value="";
       $$('[data-logo-key]',root).forEach(x=>x.classList.toggle('active',x===b));
       preview();
     });
-    $("#teamEditLogoFile",root).addEventListener("change",e=>{
+    if(logoInput)logoInput.addEventListener("change",e=>{
       const file=e.target.files?.[0];
       if(!file)return;
       if(localUploadPreview)URL.revokeObjectURL(localUploadPreview);
@@ -488,9 +484,9 @@
   }
 
   async function saveTeamEditor(existing,selectedLogo,root){
-    setMsg('#teamEditorMsg','Enregistrement…');try{const file=$("#teamEditLogoFile",root).files?.[0];let logoUrl=existing?.logo_url||null,logoType=existing?.logo_type||'library';if(file){logoUrl=await uploadTeamLogo(file);logoType='upload';selectedLogo=null;}else if(selectedLogo!==null){logoType='library';logoUrl=null;}
+    setMsg('#teamEditorMsg','Enregistrement…');try{
       const colorMode=$("#teamEditColorMode",root)?.value||"two",primary=$("#teamEditPrimary",root).value;
-      const values={name:$("#teamEditName",root).value.trim(),slogan:$("#teamEditSlogan",root).value.trim(),description:$("#teamEditDescription",root).value.trim(),favorite_club_id:$("#teamEditFavorite",root).value||null,visibility:$("#teamEditVisibility",root).value,logo_type:logoType,logo_asset_key:logoType==='library'?selectedLogo:null,logo_url:logoUrl,shape:$("#teamEditShape",root).value,frame_style:$("#teamEditFrame",root).value,primary_color:primary,secondary_color:colorMode==="single"?primary:$("#teamEditSecondary",root).value,background_style:colorMode==="single"?"solid":$("#teamEditBackground",root).value};
+      const values={name:$("#teamEditName",root).value.trim(),slogan:$("#teamEditSlogan",root).value.trim(),description:$("#teamEditDescription",root).value.trim(),favorite_club_id:$("#teamEditFavorite",root).value||null,visibility:$("#teamEditVisibility",root).value,logo_type:null,logo_asset_key:null,logo_url:null,shape:$("#teamEditShape",root).value,frame_style:$("#teamEditFrame",root).value,primary_color:primary,secondary_color:colorMode==="single"?primary:$("#teamEditSecondary",root).value,background_style:colorMode==="single"?"solid":$("#teamEditBackground",root).value};
       if(values.name.length<3)throw new Error('Le nom doit contenir au moins 3 caractères.');
       if(demoMode){demoSaveTeam(existing,values);}else if(existing){const {error}=await sb.rpc('update_team_v050',{p_team_id:existing.team_id,...Object.fromEntries(Object.entries(values).map(([k,v])=>[`p_${k}`,v]))});if(error)throw error;}else{const {error}=await sb.rpc('create_team_v050',{p_season_id:state.season.id,...Object.fromEntries(Object.entries(values).map(([k,v])=>[`p_${k}`,v]))});if(error)throw error;}
       $("#modalRoot").innerHTML='';await reloadTeamsAfterMutation();toast(existing?'🛡 Team mise à jour.':'🛡 Bienvenue dans ta nouvelle Team.');

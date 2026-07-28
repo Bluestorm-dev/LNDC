@@ -32,7 +32,7 @@
     const team=teamForUser(userId);
     const core=avatarCoreHTML(p,opts);
     if(!team) return core;
-    return `<span class="team-avatar unified-player-avatar ${teamClass(team)}" style="${teamVisualVars(team)}" data-player-id="${esc(userId||'')}" title="${esc(team.team_name||team.name||'Team')}">${core}<i class="team-avatar-mark" aria-label="${esc(team.team_name||team.name||'Team')}">${teamLogoHTML(team)}</i></span>`;
+    return `<span class="team-avatar unified-player-avatar ${teamClass(team)}" style="${teamVisualVars(team)}" data-player-id="${esc(userId||'')}" title="${esc(team.team_name||team.name||'Team')}">${core}<i class="team-avatar-mark team-color-mark" aria-hidden="true"></i></span>`;
   }
 
   async function signAvatarRows(rows,{allowPendingForAdmin=false}={}) {
