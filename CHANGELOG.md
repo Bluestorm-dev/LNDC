@@ -1,6 +1,13 @@
+
+## 0.7.3
+- Correction de la création de Team pour les comptes `player`.
+- Séparation explicite entre rôle applicatif et rôle Team.
+- Le créateur reste joueur et devient capitaine uniquement dans sa Team.
+- Correction du paramètre technique `logo_type` pour les Teams sans logo.
+- Ajout du diagnostic `get_my_roles_v073`.
 # CHANGELOG
 
-## V0.7.2 — Calendrier réel 2026/27 & nettoyage complet
+## V0.7.3 — Calendrier réel 2026/27 & nettoyage complet
 
 - Import strict de la vraie saison Champions League 2026/27 (`season=2026`).
 - Suppression du décalage artificiel des rencontres 2025/26.
