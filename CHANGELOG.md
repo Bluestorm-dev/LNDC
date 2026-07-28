@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## V0.7.2 — Calendrier réel 2026/27 & nettoyage complet
+
+- Import strict de la vraie saison Champions League 2026/27 (`season=2026`).
+- Suppression du décalage artificiel des rencontres 2025/26.
+- Refus propre tant que les 144 matchs de phase de ligue réels ne sont pas disponibles.
+- « Vider tous les matchs » supprime également `knockout_ties` et les pronostics de qualifiés liés.
+- Nettoyage TEST étendu aux confrontations finales TEST.
+
 ## V0.7.1 — Blasons propres & LIVE TEST fiable
 
 - suppression définitive du rectangle/plaque interne des blasons Team ;

@@ -50,10 +50,10 @@ function safeSlug(input: string): string {
     .slice(0, 80) || "club";
 }
 
-// Correctif V0.2.2 : la saison test est volontairement figée sur la vraie
-// Champions League 2025/26. Les dates sont ensuite transposées d'un an vers
-// la saison de test 2026/27 du Nid. Les résultats historiques ne sont jamais importés.
-const TEST_SOURCE_SEASON_YEAR = 2025;
+// V0.7.2 : la synchronisation utilise strictement la saison demandée par le Nid.
+// Aucun calendrier d'une ancienne saison n'est transposé. Pour ucl-2026-27,
+// football-data.org est donc interrogé avec season=2026 et les dates restent réelles.
+const DEFAULT_SOURCE_SEASON_YEAR = 2026;
 const EXPECTED_CLUBS = 36;
 const EXPECTED_MATCHDAYS = 8;
 const EXPECTED_MATCHES_PER_MATCHDAY = 18;
@@ -84,11 +84,14 @@ const LEGACY_TEST_CLUBS = [
   { legacyName: "Dortmund", externalId: 4 },
 ] as const;
 
-function shiftTestDate(iso: string): string {
+function sourceKickoffDate(iso: string): string {
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) throw new Error(`Date football-data invalide : ${iso}`);
-  date.setUTCFullYear(date.getUTCFullYear() + 1);
   return date.toISOString();
+}
+
+function seasonLabel(startYear: number): string {
+  return `${startYear}/${String((startYear + 1) % 100).padStart(2, "0")}`;
 }
 
 Deno.serve(async (req: Request) => {
@@ -127,8 +130,12 @@ Deno.serve(async (req: Request) => {
 
     const payload = await req.json().catch(() => ({}));
     const action = (["clubs", "catalog", "calendar", "odds", "full"].includes(payload?.action) ? payload.action : "full") as Action;
-    const sourceSeasonYear = TEST_SOURCE_SEASON_YEAR;
-    const requestedSeasonYear = Number(payload?.seasonYear || 2026);
+    const requestedSeasonYear = Number(payload?.seasonYear || DEFAULT_SOURCE_SEASON_YEAR);
+    if (!Number.isInteger(requestedSeasonYear) || requestedSeasonYear < 2024 || requestedSeasonYear > 2100) {
+      throw new Error("Année de saison invalide.");
+    }
+    const sourceSeasonYear = requestedSeasonYear;
+    const sourceSeasonLabel = seasonLabel(sourceSeasonYear);
     const seasonSlug = String(payload?.seasonSlug || "ucl-2026-27");
     const competitionCode = String(payload?.competitionCode || "CL").toUpperCase();
 
@@ -347,7 +354,7 @@ Deno.serve(async (req: Request) => {
       const teamsPayload = await fdFetch(`/competitions/${encodeURIComponent(competitionCode)}/teams?season=${sourceSeasonYear}`);
       const teams = [...new Map(((teamsPayload?.teams || []) as FDTeam[]).map(team => [team.id, team])).values()];
       if (teams.length !== EXPECTED_CLUBS) {
-        throw new Error(`Import refusé : la saison test doit fournir exactement ${EXPECTED_CLUBS} clubs de phase de ligue. Reçu ${teams.length}.`);
+        throw new Error(`Import ${sourceSeasonLabel} indisponible ou incomplet : football-data.org doit fournir exactement ${EXPECTED_CLUBS} clubs de phase de ligue. Reçu ${teams.length}. Aucun club d’une ancienne saison n’a été chargé.`);
       }
 
       const canonicalIds: string[] = [];
@@ -406,8 +413,8 @@ Deno.serve(async (req: Request) => {
       const matchesPayload = await fdFetch(`/competitions/${encodeURIComponent(competitionCode)}/matches?season=${sourceSeasonYear}`);
       const matches = (matchesPayload?.matches || []) as FDMatch[];
       const numbered = matches.filter(m => Number.isInteger(m.matchday) && Number(m.matchday) >= 1 && Number(m.matchday) <= EXPECTED_MATCHDAYS);
-      const explicitLeagueStage = numbered.filter(m => /LEAGUE/i.test(String(m.stage || "")));
-      const sourcePool = explicitLeagueStage.length ? explicitLeagueStage : numbered;
+      // Ne jamais confondre les tours qualificatifs avec la phase de ligue.
+      const sourcePool = numbered.filter(m => /LEAGUE|REGULAR_SEASON/i.test(String(m.stage || "")));
       const leagueMatches = [...new Map(sourcePool.map(m => [m.id, m])).values()]
         .sort((a, b) => Number(a.matchday) - Number(b.matchday) || new Date(a.utcDate).getTime() - new Date(b.utcDate).getTime());
 
@@ -419,7 +426,7 @@ Deno.serve(async (req: Request) => {
       const malformedDays = Array.from({ length: EXPECTED_MATCHDAYS }, (_, i) => i + 1)
         .filter(md => perDay.get(md) !== EXPECTED_MATCHES_PER_MATCHDAY);
       if (leagueMatches.length !== EXPECTED_LEAGUE_MATCHES || malformedDays.length) {
-        throw new Error(`Import refusé : football-data doit fournir exactement 144 matchs de phase de ligue (8 × 18). Reçu ${leagueMatches.length}; journées invalides : ${malformedDays.join(", ") || "aucune"}.`);
+        throw new Error(`Calendrier réel ${sourceSeasonLabel} indisponible ou incomplet : ${leagueMatches.length}/${EXPECTED_LEAGUE_MATCHES} matchs de phase de ligue reçus ; journées incomplètes : ${malformedDays.join(", ") || "aucune"}. Aucun match 2025/26 n’a été chargé. Réessaie après la publication du calendrier UEFA.`);
       }
 
       if (action === "odds") {
@@ -441,8 +448,8 @@ Deno.serve(async (req: Request) => {
               odds_away: rawAwayOdds,
               odds_provider: "football-data",
               odds_bookmaker: "football-data.org",
-              odds_source_season: "2025/26",
-              odds_is_test_shifted: true,
+              odds_source_season: sourceSeasonLabel,
+              odds_is_test_shifted: false,
               odds_updated_at: new Date().toISOString(),
               updated_at: new Date().toISOString(),
             })
@@ -477,7 +484,7 @@ Deno.serve(async (req: Request) => {
         const matchdayIds = new Map<number, string>();
         for (const number of Array.from({ length: EXPECTED_MATCHDAYS }, (_, i) => i + 1)) {
           const dayMatches = leagueMatches.filter(m => Number(m.matchday) === number);
-          const times = dayMatches.map(m => new Date(shiftTestDate(m.utcDate)).getTime()).filter(Number.isFinite);
+          const times = dayMatches.map(m => new Date(sourceKickoffDate(m.utcDate)).getTime()).filter(Number.isFinite);
           const startsAt = times.length ? new Date(Math.min(...times)).toISOString() : null;
           const endsAt = times.length ? new Date(Math.max(...times) + 3 * 3600_000).toISOString() : null;
           const { data: md, error } = await admin.from("matchdays").upsert({
@@ -509,7 +516,7 @@ Deno.serve(async (req: Request) => {
             matchday_id: matchdayIds.get(Number(match.matchday)),
             home_club_id: homeId,
             away_club_id: awayId,
-            kickoff_at: shiftTestDate(match.utcDate),
+            kickoff_at: sourceKickoffDate(match.utcDate),
             stadium: match.venue || null,
             status: apiStatusToNid(match.status),
             data_source: "manual",
@@ -522,8 +529,8 @@ Deno.serve(async (req: Request) => {
               odds_away: rawAwayOdds,
               odds_provider: "football-data",
               odds_bookmaker: "football-data.org",
-              odds_source_season: "2025/26",
-              odds_is_test_shifted: true,
+              odds_source_season: sourceSeasonLabel,
+              odds_is_test_shifted: false,
               odds_updated_at: new Date().toISOString(),
             } : {}),
             updated_at: new Date().toISOString(),
@@ -592,10 +599,10 @@ Deno.serve(async (req: Request) => {
       action: "football_data_sync",
       entity_type: "season",
       entity_id: seasonSlug,
-      new_data: { action, competitionCode, sourceSeasonYear, requestedSeasonYear, clubCount, logoCount, matchdayCount, matchCount, oddsCount, repairedLegacyClubs, catalogClubCount, catalogLogoCount, catalogByCompetition, expectedClubs: EXPECTED_CLUBS, expectedLeagueMatches: EXPECTED_LEAGUE_MATCHES },
+      new_data: { action, competitionCode, sourceSeasonYear, sourceSeasonLabel, requestedSeasonYear, clubCount, logoCount, matchdayCount, matchCount, oddsCount, repairedLegacyClubs, catalogClubCount, catalogLogoCount, catalogByCompetition, expectedClubs: EXPECTED_CLUBS, expectedLeagueMatches: EXPECTED_LEAGUE_MATCHES },
     });
 
-    return json({ ok: true, action, clubCount, logoCount, matchdayCount, matchCount, oddsCount, repairedLegacyClubs, catalogClubCount, catalogLogoCount, catalogByCompetition, sourceSeasonYear, requestedSeasonYear, expectedClubs: EXPECTED_CLUBS, expectedLeagueMatches: EXPECTED_LEAGUE_MATCHES });
+    return json({ ok: true, action, clubCount, logoCount, matchdayCount, matchCount, oddsCount, repairedLegacyClubs, catalogClubCount, catalogLogoCount, catalogByCompetition, sourceSeasonYear, sourceSeasonLabel, requestedSeasonYear, expectedClubs: EXPECTED_CLUBS, expectedLeagueMatches: EXPECTED_LEAGUE_MATCHES });
   } catch (error) {
     console.error("sync-football-data", error);
     return json({ ok: false, error: error instanceof Error ? error.message : "Synchronisation impossible." }, 500);
