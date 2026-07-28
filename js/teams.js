@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.7.1 — Teams
+// Le Nid des Champions V0.7.2 — Teams
   // ========================================================================
   // V0.5.2 — Teams · formes/cadres/couleurs corrigés
   // ========================================================================
@@ -43,7 +43,7 @@
     return `${prefix} shape-${shape} frame-${frame} bg-${bg}`;
   }
   function teamLogoHTML() {
-    // V0.7.1 : aucun conteneur/logo interne. Le blason porte déjà l'identité Team.
+    // V0.7.2 : aucun conteneur/logo interne. Le blason porte déjà l'identité Team.
     return "";
   }
   function teamForUser(userId) { return state.teamDirectoryMap?.get(String(userId))||null; }
@@ -487,10 +487,10 @@
   async function saveTeamEditor(existing,selectedLogo,root){
     setMsg('#teamEditorMsg','Enregistrement…');try{
       const colorMode=$("#teamEditColorMode",root)?.value||"two",primary=$("#teamEditPrimary",root).value;
-      const values={name:$("#teamEditName",root).value.trim(),slogan:$("#teamEditSlogan",root).value.trim(),description:$("#teamEditDescription",root).value.trim(),favorite_club_id:$("#teamEditFavorite",root).value||null,visibility:$("#teamEditVisibility",root).value,logo_type:null,logo_asset_key:null,logo_url:null,shape:$("#teamEditShape",root).value,frame_style:$("#teamEditFrame",root).value,primary_color:primary,secondary_color:colorMode==="single"?primary:$("#teamEditSecondary",root).value,background_style:colorMode==="single"?"solid":$("#teamEditBackground",root).value};
+      const values={name:$("#teamEditName",root).value.trim(),slogan:$("#teamEditSlogan",root).value.trim(),description:$("#teamEditDescription",root).value.trim(),favorite_club_id:$("#teamEditFavorite",root).value||null,visibility:$("#teamEditVisibility",root).value,logo_type:"library",logo_asset_key:null,logo_url:null,shape:$("#teamEditShape",root).value,frame_style:$("#teamEditFrame",root).value,primary_color:primary,secondary_color:colorMode==="single"?primary:$("#teamEditSecondary",root).value,background_style:colorMode==="single"?"solid":$("#teamEditBackground",root).value};
       if(values.name.length<3)throw new Error('Le nom doit contenir au moins 3 caractères.');
       if(demoMode){demoSaveTeam(existing,values);}else if(existing){const {error}=await sb.rpc('update_team_v050',{p_team_id:existing.team_id,...Object.fromEntries(Object.entries(values).map(([k,v])=>[`p_${k}`,v]))});if(error)throw error;}else{const {error}=await sb.rpc('create_team_v050',{p_season_id:state.season.id,...Object.fromEntries(Object.entries(values).map(([k,v])=>[`p_${k}`,v]))});if(error)throw error;}
-      $("#modalRoot").innerHTML='';await reloadTeamsAfterMutation();toast(existing?'🛡 Team mise à jour.':'🛡 Bienvenue dans ta nouvelle Team.');
+      $("#modalRoot").innerHTML='';await reloadTeamsAfterMutation();if(!demoMode&&typeof loadProfile==='function')await loadProfile();toast(existing?'🛡 Team mise à jour.':'🛡 Bienvenue dans ta nouvelle Team. Ton statut de joueur reste inchangé.');
     }catch(err){setMsg('#teamEditorMsg',friendlyError(err),'error');}}
 
   function demoSaveTeam(existing,values){const store=ensureDemoTeams(),teams=store.teams,memberships=store.memberships,now=new Date().toISOString();if(existing){const idx=teams.findIndex(t=>t.id===existing.team_id);if(idx>=0)teams[idx]={...teams[idx],...values};demoLogTeam(existing.team_id,'identity_changed',state.user.id,null,{name:values.name});}else{if(memberships.some(m=>m.season_id===state.season.id&&m.user_id===state.user.id&&!m.left_at))throw new Error('Tu appartiens déjà à une Team.');const id=`team-${Date.now()}`;teams.push({id,team_id:id,season_id:state.season.id,slug:`demo-${Date.now()}`,status:'active',captain_user_id:state.user.id,...values,created_at:now});memberships.push({id:`tm-${Date.now()}`,season_id:state.season.id,team_id:id,user_id:state.user.id,joined_at:now,left_at:null,join_type:'creator'});demoLogTeam(id,'team_created',state.user.id,state.user.id,{name:values.name});}localStorage.setItem('nidc_demo_teams',JSON.stringify(teams));localStorage.setItem('nidc_demo_team_memberships',JSON.stringify(memberships));}

@@ -1,4 +1,4 @@
-/* V0.7.1 — Teams, blasons sans plaque interne */
+/* V0.7.2 — Teams, blasons sans plaque interne */
 /* ========================================================================== 
    V0.5.0 — Teams
    Identité communautaire : formes, matières, couleurs et cadres d'avatar.
@@ -508,7 +508,7 @@
 }
 
 
-/* V0.7.1 — blason Team pur : aucune plaque, aucun carré, aucun rappel interne. */
+/* V0.7.2 — blason Team pur : aucune plaque, aucun carré, aucun rappel interne. */
 .team-badge-visual.color-only::after,.team-badge-visual.color-only::before{pointer-events:none}
 .team-badge-visual.color-only::after{content:none!important;display:none!important;background:none!important;box-shadow:none!important}
 .team-badge-visual.color-only>.team-logo,.team-badge-visual .team-logo-color-only{display:none!important}

@@ -71,7 +71,7 @@ body:after{
 .history-narrative{display:block;margin-top:.28rem;max-width:48rem;font-size:.78rem;line-height:1.35;color:var(--muted,#aab6d6);font-weight:500}
 
 
-/* V0.7.1 — accès explicite au classement LIVE TEST. */
+/* V0.7.2 — accès explicite au classement LIVE TEST. */
 .ranking-live-actions{display:grid;justify-items:end;gap:8px}
 #openTestLiveRanking{white-space:nowrap}
 @media(max-width:620px){.ranking-live-actions{width:100%;justify-items:stretch}.ranking-live-actions .ranking-live-badge{width:100%}#openTestLiveRanking{width:100%}}

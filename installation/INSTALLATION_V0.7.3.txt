@@ -1,0 +1,30 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.7.3
+
+OBJET
+Correction de la création de Team pour les comptes ayant le rôle global « player ».
+Le capitanat est un rôle de Team et ne remplace jamais le rôle applicatif.
+
+MISE À JOUR D'UNE BASE EXISTANTE
+1. Ouvrir Supabase > SQL Editor.
+2. Exécuter : sql/HOTFIX_V0.7.3_EXISTING_DB.sql
+3. Déployer le contenu frontend de la V0.7.3 sur GitHub Pages.
+4. Sur ordinateur : Ctrl+F5.
+5. Sur mobile/PWA : fermer complètement puis rouvrir l'application.
+
+AUCUN REDEPLOIEMENT EDGE FUNCTION
+- push-dispatch : non
+- sync-football-data : non
+- clés VAPID : aucun changement
+
+TEST CONSEILLÉ
+1. Se connecter avec un compte dont profiles.role = 'player'.
+2. Créer une Team.
+3. Vérifier que la Team est créée et que le joueur est capitaine.
+4. Exécuter dans Supabase :
+   select * from public.get_my_roles_v073('<season_uuid>');
+   Résultat attendu : application_role='player', team_role='captain'.
+5. Vérifier que les écrans joueur et les pronostics restent accessibles.
+
+NOTE TECHNIQUE
+Le champ historique teams.logo_type reste obligatoire dans la base. L'interface sans logo envoie
+maintenant la valeur technique « library », sans afficher de logo dans le blason.

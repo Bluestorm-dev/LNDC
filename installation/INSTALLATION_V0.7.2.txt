@@ -1,0 +1,34 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.7.2
+================================================
+
+Cette version corrige deux points :
+- « Vider tous les matchs » supprime désormais aussi les confrontations de phase finale (knockout_ties) ;
+- la synchronisation Football-Data charge strictement la vraie saison 2026/27 (season=2026), sans reprendre ni décaler les matchs 2025/26.
+
+MISE À JOUR DEPUIS V0.7.1
+--------------------------
+1. Dans Supabase > SQL Editor, exécuter :
+   sql/HOTFIX_V0.7.2_EXISTING_DB.sql
+
+2. Pour nettoyer immédiatement les anciennes confrontations encore affichées :
+   - soit retourner dans Admin > Test et utiliser « Vider tous les matchs » ;
+   - soit exécuter sql/CLEANUP_CALENDAR_2026_27_V0.7.2.sql.
+
+3. Redéployer la fonction qui importe le calendrier réel :
+   npx.cmd supabase functions deploy sync-football-data
+
+4. Déployer tout le frontend V0.7.2 sur GitHub Pages.
+
+5. Sur PC : Ctrl+F5.
+   Sur mobile : fermer complètement la PWA puis la rouvrir.
+
+IMPORTANT — CALENDRIER 2026/27
+------------------------------
+Le Nid ne charge plus aucune rencontre 2025/26 et ne décale plus les dates d'un an.
+Il demande à football-data.org la saison 2026. Tant que les 144 rencontres de la phase de ligue 2026/27 ne sont pas publiées par le fournisseur, l'import est refusé avec un message clair et la base reste vide.
+
+Le tirage de la phase de ligue UEFA 2026/27 est prévu le 27 août 2026 ; le calendrier complet ne peut donc pas être importé avant sa publication par l'UEFA puis sa disponibilité chez Football-Data.
+
+Aucun redéploiement de push-dispatch.
+Aucune modification des clés VAPID.
+Aucune modification manuelle de config.js : APP_VERSION vaut déjà 0.7.2.

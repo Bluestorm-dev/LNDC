@@ -322,14 +322,20 @@
     return match ? Number(match[1]) : new Date().getFullYear();
   }
 
+  function seasonDisplayLabel(startYear=seasonStartYear()) {
+    const year=Number(startYear)||new Date().getFullYear();
+    return `${year}/${String((year+1)%100).padStart(2,"0")}`;
+  }
+
   async function syncFootballData(action) {
+    const seasonLabel=seasonDisplayLabel();
     const pending = action === "clubs"
-      ? "Synchronisation des 36 clubs et logos Champions League 2025/26…"
+      ? `Synchronisation des clubs et logos Champions League ${seasonLabel}…`
       : action === "catalog"
         ? "Import de la bibliothèque clubs + logos : Ligue 1, Premier League, Liga, Serie A et Bundesliga…"
         : action === "odds"
-          ? "Actualisation des cotes 1N2 pré-match depuis football-data.org…"
-          : "Import strict des 144 matchs (8 × 18), cotes disponibles incluses, puis décalage en 2026/27…";
+          ? `Actualisation des cotes 1N2 ${seasonLabel} depuis football-data.org…`
+          : `Import des vrais matchs de phase de ligue ${seasonLabel} (8 × 18), sans décalage de saison…`;
     setMsg("#syncStatus", pending);
     try {
       if(demoMode){setMsg("#syncStatus",action==="odds"?"Mode démo : les cotes affichées sont fictives et servent uniquement à tester l’interface.":"Mode démo : la synchronisation distante n'est pas appelée.","ok");return;}
@@ -342,13 +348,14 @@
         await loadData(); state.clubPreviewFilter="ALL"; if($("#clubPreviewFilter"))$("#clubPreviewFilter").value="ALL"; renderAll(); toast("Bibliothèque clubs Top 5 actualisée.");
         return;
       }
-      const common=`source ${data.sourceSeasonYear||2025}/26 → saison test 2026/27 · ${data.clubCount||0} clubs · ${data.logoCount||0} logos · ${data.matchdayCount||0} journées · ${data.matchCount||0} matchs`;
+      const importedLabel=data.sourceSeasonLabel||seasonDisplayLabel(data.sourceSeasonYear||seasonStartYear());
+      const common=`saison réelle ${importedLabel} · ${data.clubCount||0} clubs · ${data.logoCount||0} logos · ${data.matchdayCount||0} journées · ${data.matchCount||0} matchs`;
       if(action==="odds" && Number(data.oddsCount||0)===0){
         setMsg("#syncStatus",`⚠️ ${common} · aucune cote 1N2 reçue. Le flux football-data.org renvoie actuellement odds=null ; l’option Odds doit être disponible sur l’abonnement pour remplir ces valeurs.`);
       } else {
         setMsg("#syncStatus",`✓ ${common} · ${data.oddsCount||0} match(s) avec cotes 1N2${Number(data.repairedLegacyClubs||0)>0?` · ${data.repairedLegacyClubs} doublon(s) TEST réparé(s)`:""}`,"ok");
       }
-      await loadData(); renderAll(); toast(action==="odds"?`${data.oddsCount||0} match(s) avec cotes 1N2.`:"Synchronisation V0.4.0 terminée.");
+      await loadData(); renderAll(); toast(action==="odds"?`${data.oddsCount||0} match(s) avec cotes 1N2.`:`Calendrier ${importedLabel} synchronisé.`);
     } catch(err) { setMsg("#syncStatus",friendlyError(err),"error"); }
   }
 
@@ -370,8 +377,7 @@
       let external = null;
       let externalUnavailable = false;
 
-      // Complément optionnel pour les vraies rencontres à venir. La saison TEST est
-      // transposée d'un an, donc une source de cotes courantes peut ne rien retrouver.
+      // Complément optionnel pour les rencontres réelles à venir de la saison sélectionnée.
       if (CFG.ODDS_EXTERNAL_ENABLED === true) {
         try {
           const ext = await sb.functions.invoke("sync-odds", {

@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.7.1 — Realtime robuste, LIVE sans F5 et filet de sécurité
+// Le Nid des Champions V0.7.2 — Realtime robuste, LIVE sans F5 et filet de sécurité
   function setupRealtime() {
     if(demoMode||!sb||!state.season)return;
     if(state.channel)sb.removeChannel(state.channel);

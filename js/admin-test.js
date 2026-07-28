@@ -128,13 +128,13 @@ async function setAdminTestEnabled(enabled){
 }
 
 async function deleteAdminTestSchedule(){
-  if(!testAdminAllowed()||!confirm("Supprimer définitivement tous les matchs et journées marqués TEST ? Les pronostics liés seront aussi supprimés."))return;
-  try{setMsg("#adminTestDangerMsg","Suppression des matchs TEST…");const {data,error}=await sb.rpc("admin_delete_test_schedule_v067",{p_season_id:state.season.id});if(error)throw error;await loadData();renderAll();setAdminSection("test",{scroll:false});setMsg("#adminTestDangerMsg",`${data?.matches_deleted||0} match(s) TEST supprimés.`,"ok");toast("Matchs TEST supprimés.");}catch(err){setMsg("#adminTestDangerMsg",friendlyError(err),"error");}
+  if(!testAdminAllowed()||!confirm("Supprimer définitivement tous les matchs, journées et confrontations finales marqués TEST ? Les pronostics liés seront aussi supprimés."))return;
+  try{setMsg("#adminTestDangerMsg","Suppression des matchs TEST…");const {data,error}=await sb.rpc("admin_delete_test_schedule_v067",{p_season_id:state.season.id});if(error)throw error;await loadData();renderAll();setAdminSection("test",{scroll:false});setMsg("#adminTestDangerMsg",`${data?.matches_deleted||0} match(s), ${data?.matchdays_deleted||0} journée(s) et ${data?.ties_deleted||0} confrontation(s) TEST supprimés.`,"ok");toast("Matchs TEST supprimés.");}catch(err){setMsg("#adminTestDangerMsg",friendlyError(err),"error");}
 }
 
 async function deleteAdminAllMatches(){
   if(!testAdminAllowed())return;
-  if(!confirm("ATTENTION : cela va supprimer TOUS les matchs et TOUTES les journées de la saison, y compris les 4 anciens matchs TEST et les pronostics associés. Continuer ?"))return;
+  if(!confirm("ATTENTION : cela va supprimer TOUS les matchs, TOUTES les journées et TOUT le tableau de phase finale de la saison, avec les pronostics associés. Continuer ?"))return;
   const word=prompt('Dernière sécurité : écris exactement VIDER pour confirmer.');if(word!=="VIDER"){toast("Suppression annulée.");return;}
-  try{setMsg("#adminTestDangerMsg","Remise à zéro complète du calendrier…");const {data,error}=await sb.rpc("admin_delete_all_matches_v067",{p_season_id:state.season.id});if(error)throw error;state.selectedMatchdayId=null;await loadData();renderAll();setAdminSection("test",{scroll:false});setMsg("#adminTestDangerMsg",`${data?.matches_deleted||0} match(s) et ${data?.matchdays_deleted||0} journée(s) supprimés.`,"ok");toast("⚠ Calendrier vidé.");}catch(err){setMsg("#adminTestDangerMsg",friendlyError(err),"error");}
+  try{setMsg("#adminTestDangerMsg","Remise à zéro complète du calendrier…");const {data,error}=await sb.rpc("admin_delete_all_matches_v067",{p_season_id:state.season.id});if(error)throw error;state.selectedMatchdayId=null;await loadData();renderAll();setAdminSection("test",{scroll:false});setMsg("#adminTestDangerMsg",`${data?.matches_deleted||0} match(s), ${data?.matchdays_deleted||0} journée(s) et ${data?.ties_deleted||0} confrontation(s) finales supprimés.`,"ok");toast("⚠ Calendrier vidé.");}catch(err){setMsg("#adminTestDangerMsg",friendlyError(err),"error");}
 }
