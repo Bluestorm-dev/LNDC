@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.9.5 — cockpit Admin, recherche, sécurité, sauvegardes et audit
+// Le Nid des Champions V0.9.8 — cockpit Admin + accès fin de saison
 (function(){
   const defaults={
     registration_open:true,maintenance:false,feature_rivals:true,feature_polls:true,feature_api:true,
@@ -31,6 +31,7 @@
     ["Tickets joueurs","support bug question demande","communication","#adminSupportPanel","🎫"],
     ["Notifications Push","push appareil cron notification","communication","#adminNotificationsPanel","🔔"],
     ["Gérer les saisons","saison active archive création","application","#adminSeasonManagementPanel","◇"],
+    ["Fin de saison & PDF","collector diplôme livre or export archive clôture","application","#adminFinalSeasonPanelV098","📘"],
     ["Maintenance","maintenance fermer application","application","#adminSettingsPanelV095","🛠"],
     ["Ouvrir / fermer les inscriptions","registration compte","application","#adminSettingsPanelV095","🚪"],
     ["Feature flags","fonction activer désactiver rival sondage api","application","#adminSettingsPanelV095","🚩"],
@@ -38,7 +39,8 @@
     ["Exporter les données","json csv export saison joueurs audit","application","#adminExportPanelV095","⇩"],
     ["Journal d'audit","logs historique modification sécurité","application","#adminAuditPanelV095","📜"],
     ["Nettoyer le cache PWA","service worker cache actualiser","application","#adminRefreshPwaBtn","↻"],
-    ["Tests techniques","diagnostic test cron calendrier","test","#adminTestPanelSection","🧪"]
+    ["Tests techniques","diagnostic test cron calendrier","test","#adminTestPanelSection","🧪"],
+    ["Centres de tests","tests page validation 0.8.1 0.9.0 0.9.5 0.9.8 road check matrice","test","#adminTestCentersV095","✅"]
   ].map((x,i)=>({id:`cmd-${i+1}`,label:x[0],keywords:x[1],section:x[2],selector:x[3],icon:x[4]}));
 
   function boolSetting(key,fallback=true){const v=state.appSettings?.[key];return typeof v==="boolean"?v:(v==null?fallback:Boolean(v));}

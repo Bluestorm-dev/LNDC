@@ -1,0 +1,72 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.9.8
+============================================
+
+OBJET
+V0.9.8 — PDF & fin de saison.
+Cette version prépare dès maintenant la clôture de saison : Collector A4, carnet joueur, diplôme,
+Livre d'or, export global et archive finale.
+
+MISE À JOUR DEPUIS V0.9.5
+-------------------------
+1. Faire une sauvegarde de la base Supabase et du dossier du site.
+
+2. Décompresser le patch V0.9.5 -> V0.9.8 à la RACINE de l'application.
+   Le ZIP ajoute notamment PATCH_FILES et tools/apply-v0.9.8.mjs.
+
+3. Dans un terminal ouvert à la racine, lancer :
+      node tools\apply-v0.9.8.mjs
+
+   Ce script ne touche pas à SUPABASE_URL ni SUPABASE_ANON_KEY.
+   Il copie les fichiers V0.9.8, sauvegarde les fichiers remplacés en .v095.bak et change seulement
+   APP_VERSION dans config.js.
+
+4. Dans Supabase > SQL Editor, exécuter intégralement :
+      sql/HOTFIX_V0.9.8_EXISTING_DB.sql
+
+5. Contrôler la version locale :
+      node tests\run-all-v0.9.8.mjs
+   Résultat attendu : 0 FAIL.
+
+6. Déployer le frontend sur GitHub Pages.
+
+7. Contrôler le déploiement réel :
+      node tests\run-all-v0.9.8.mjs --url=https://bluestorm-dev.github.io/LNDC/
+   Résultat attendu : 0 FAIL.
+
+8. Sur ordinateur : Ctrl+F5.
+   Sur mobile/PWA : fermer complètement l'application puis la rouvrir.
+
+AUCUN REDEPLOIEMENT EDGE FUNCTION
+---------------------------------
+- sync-football-data : non
+- push-dispatch : non
+- login-by-username : non
+- secrets Football-Data/VAPID : aucun changement
+
+NOUVEAUTÉS PRINCIPALES
+----------------------
+- espace Saison > Fin de saison ;
+- Collector saison A4 imprimable / Enregistrer en PDF ;
+- carnet personnel A4 ;
+- diplôme A4 paysage ;
+- génération de tous les diplômes réservée au Super Admin ;
+- Livre d'or de fin de saison, une contribution par joueur et par saison ;
+- modération du Livre d'or ;
+- export global JSON de fin de saison ;
+- snapshot/empreinte d'archive ;
+- archivage final protégé par le mot ARCHIVER ;
+- les matchs TEST sont exclus des statistiques finales ;
+- accès direct au Centre de tests V0.9.8 depuis Admin > Laboratoire ;
+- 1660 contrôles cumulés V0.1.x -> V0.9.8.
+
+IMPORTANT — ARCHIVAGE
+---------------------
+Le bouton « Archiver définitivement » est une opération de fin de saison.
+Ne pas l'utiliser sur la saison réelle en cours.
+Il reste désactivé tant que des matchs officiels sont encore à terminer ou LIVE.
+Une fois archivée, la saison reste consultable mais les fonctions métier protégées restent en lecture seule.
+
+GRAND ROAD-CHECK
+----------------
+Le grand test manuel cumulatif de toute l'application est volontairement reporté à la V0.9.9,
+qui constituera la répétition générale avant V1.0.0.

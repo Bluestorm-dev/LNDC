@@ -1,0 +1,25 @@
+LE NID DES CHAMPIONS — PATCH V0.9.5 -> V0.9.8
+================================================
+
+THÈME : PDF & FIN DE SAISON
+
+Ajouts :
+- Collector A4 de saison ;
+- carnet A4 individuel ;
+- diplôme A4 paysage ;
+- export de tous les diplômes Super Admin ;
+- Livre d'or + modération ;
+- export global JSON ;
+- état de préparation à la clôture ;
+- archive finale versionnée et hashée ;
+- archivage définitif avec confirmation ARCHIVER ;
+- journalisation des actions sensibles ;
+- diagnostics V0.9.8 ;
+- Centre de tests V0.9.8 : 1660 contrôles cumulés.
+
+PRÉSERVÉ :
+- V0.9.5 Administration & durcissement ;
+- V0.9.0 multi-saisons / carrière / Hall of Fame / Replay / distinction Coupe du monde ;
+- V0.8.1 protection Football-Data sans fallback 2025/26.
+
+Aucune Edge Function à redéployer.

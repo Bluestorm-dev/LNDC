@@ -12,6 +12,7 @@ function resetSeasonBoundStateV090(){
   state.uclMatches=[];state.uclStandings=[];state.uclCenterLoaded=false;state.uclCenterError=null;
   state.eveningRankingRows=[];state.solitaryLeaderboard=[];state.solitaryEvents=[];state.monthlyPolls=[];state.eveningLoadedDate=null;state.eveningError=null;
   state.seasonProfileStats=null;state.playerCareer=null;state.hallOfFame=[];state.seasonReplay=[];state.generalPolls=[];state.titleHolder=null;state.seasonMemoryLoaded=false;state.seasonMemoryError=null;
+  if(typeof resetFinalSeasonDataV098==="function")resetFinalSeasonDataV098();
 }
 
 async function switchSeasonV090(slug){

@@ -1,6 +1,6 @@
 {
   "app": "Le Nid des Champions",
-  "version": "0.9.5",
+  "version": "0.9.8",
   "schema": 1,
   "branding": {
     "owl_main": "assets/branding/owl/owl-masked-main.png"
@@ -589,7 +589,11 @@
       "communication.css",
       "social.css",
       "admin.css",
-      "gamification.css"
+      "gamification.css",
+      "career.css",
+      "admin095.css",
+      "finale098.css",
+      "final-report098.css"
     ],
     "js_directory": "js",
     "js_files": [
@@ -611,9 +615,17 @@
       "admin-test.js",
       "realtime.js",
       "gamification.js",
-      "app.js"
+      "app.js",
+      "career.js",
+      "admin095.js",
+      "finale098.js",
+      "final-report098.js"
     ],
-    "entrypoint": "index.html"
+    "entrypoint": "index.html",
+    "report_pages": [
+      "finale.html",
+      "diplome.html"
+    ]
   },
   "gamification": {
     "initial_badges": 100,

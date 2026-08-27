@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.9.5 — orchestration et démarrage
+// Le Nid des Champions V0.9.8 — orchestration et démarrage
   async function boot() {
     bindStaticEvents();
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(()=>{});
@@ -10,7 +10,7 @@
       $("#configWarning").innerHTML = "<b>Mode démonstration.</b> Configure <code>config.js</code> et Supabase pour passer en réel.";
       $("#backendStatus span:last-child").textContent = "Démo locale";
       $("#demoBanner").classList.remove("hidden");
-      $("#demoBanner").innerHTML = "🛠️ <b>V0.9.5 en mode démo :</b> phase de ligue, champions, phases finales et LIVE sont simulés localement quand les données sont disponibles.";
+      $("#demoBanner").innerHTML = "🛠️ <b>V0.9.8 en mode démo :</b> phase de ligue, champions, phases finales et LIVE sont simulés localement quand les données sont disponibles.";
       demoInit();
       const demoSession = JSON.parse(localStorage.getItem("nidc_demo_session") || "null");
       if (demoSession) {
@@ -82,7 +82,7 @@
     const isAdmin=["admin","super_admin"].includes(state.profile?.role);
     $("#adminNav").classList.toggle("hidden",!isAdmin);
     $("#profileAdminBtn").classList.toggle("hidden",!isAdmin);
-    renderProfile(); if(typeof renderProfileCareerV090==="function")renderProfileCareerV090(); if(typeof renderAccountPrivacyV095==="function")renderAccountPrivacyV095(); renderChampions(); renderKnockout(); renderMatchdayTabs(); renderMatchPanels(); renderHistory(); renderRanking(); renderCollectiveStats(); renderLiveTicker(); renderSeason(); if(typeof renderSeasonMemory==="function")renderSeasonMemory(); renderTeams(); renderHome(); if(typeof renderUclCenter==="function"&&state.uclCenterLoaded)renderUclCenter(); if(typeof renderEveningHub==="function"&&state.eveningLoadedDate)renderEveningHub(); if(typeof renderMuseum==="function")renderMuseum(); if(typeof renderHomeMuseumCard==="function")renderHomeMuseumCard(); if(typeof renderHomeNarrativeCard==="function")renderHomeNarrativeCard(); if(typeof renderHomeEveningCard==="function")renderHomeEveningCard(); renderNotificationBell(); renderNotificationPreferences(); renderHomePushPrompt(); renderOwlHome(); renderHomeRival(); renderRivalView(); if(isAdmin) renderAdmin(); if(isAdmin&&typeof renderAdminMonthlyPollPanel==="function") renderAdminMonthlyPollPanel(); if(isAdmin&&typeof renderAdminGeneralPollPanelV090==="function")renderAdminGeneralPollPanelV090(); if(isAdmin&&typeof renderAdminDistinctionPanelV090==="function")renderAdminDistinctionPanelV090(); if(isAdmin&&typeof renderAdminSeasonManagementV090==="function")renderAdminSeasonManagementV090(); updateKpis(); if(typeof applyFeatureFlagsV095==="function")applyFeatureFlagsV095();
+    renderProfile(); if(typeof renderProfileCareerV090==="function")renderProfileCareerV090(); if(typeof renderAccountPrivacyV095==="function")renderAccountPrivacyV095(); renderChampions(); renderKnockout(); renderMatchdayTabs(); renderMatchPanels(); renderHistory(); renderRanking(); renderCollectiveStats(); renderLiveTicker(); renderSeason(); if(typeof renderSeasonMemory==="function")renderSeasonMemory(); if(typeof renderFinalSeasonHubV098==="function")renderFinalSeasonHubV098(); renderTeams(); renderHome(); if(typeof renderUclCenter==="function"&&state.uclCenterLoaded)renderUclCenter(); if(typeof renderEveningHub==="function"&&state.eveningLoadedDate)renderEveningHub(); if(typeof renderMuseum==="function")renderMuseum(); if(typeof renderHomeMuseumCard==="function")renderHomeMuseumCard(); if(typeof renderHomeNarrativeCard==="function")renderHomeNarrativeCard(); if(typeof renderHomeEveningCard==="function")renderHomeEveningCard(); renderNotificationBell(); renderNotificationPreferences(); renderHomePushPrompt(); renderOwlHome(); renderHomeRival(); renderRivalView(); if(isAdmin) renderAdmin(); if(isAdmin&&typeof renderAdminMonthlyPollPanel==="function") renderAdminMonthlyPollPanel(); if(isAdmin&&typeof renderAdminGeneralPollPanelV090==="function")renderAdminGeneralPollPanelV090(); if(isAdmin&&typeof renderAdminDistinctionPanelV090==="function")renderAdminDistinctionPanelV090(); if(isAdmin&&typeof renderAdminSeasonManagementV090==="function")renderAdminSeasonManagementV090(); if(isAdmin&&typeof renderAdminFinaleV098==="function")renderAdminFinaleV098(); updateKpis(); if(typeof applyFeatureFlagsV095==="function")applyFeatureFlagsV095();
   }
 
   boot().catch(err=>{console.error(err);toast(friendlyError(err),"error");showAuth();});

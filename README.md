@@ -1,3 +1,24 @@
+# Le Nid des Champions — V0.9.8
+
+## Nouveautés V0.9.8 — PDF & fin de saison
+
+- Collector de saison A4 imprimable / enregistrable en PDF ;
+- carnet personnel A4 ;
+- diplôme A4 paysage et export de tous les diplômes pour le Super Admin ;
+- Livre d’or de fin de saison avec modération ;
+- export global JSON ;
+- snapshot final versionné + empreinte ;
+- archivage définitif sécurisé par confirmation `ARCHIVER` ;
+- exclusion des matchs/données TEST des statistiques finales ;
+- Centre de tests V0.9.8 accessible depuis l’Admin ;
+- 1660 contrôles cumulés V0.1.x → V0.9.8.
+
+La V0.9.8 conserve le cockpit Admin V0.9.5, le multi-saisons/carrière V0.9.0 et le correctif Football-Data V0.8.1.
+
+Voir `INSTALLATION_V0.9.8.txt` et `README_TEST_SYSTEM_V0.9.8.md`.
+
+---
+
 # Le Nid des Champions — V0.9.5
 
 PWA de pronostics UEFA Champions League avec Teams, rivalités, gamification, Centre C1, mémoire multi-saisons et un cockpit Admin renforcé.
@@ -54,3 +75,5 @@ Voir `INSTALLATION_V0.9.0.txt`.
 V0.9.0 — Palmarès historique
 - Le Super Admin peut désigner ou retirer manuellement le « Vainqueur du Nid des Pronos — Coupe du monde 2026 ».
 - Cette distinction est unique, persistante entre les saisons et visible dans le profil/carrière.
+
+- R2 Admin : accès direct depuis Laboratoire aux centres de tests V0.8.1, V0.9.0 et V0.9.5 ; recherche Admin enrichie.

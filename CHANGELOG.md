@@ -1,3 +1,18 @@
+# V0.9.8
+
+## 0.9.8 — PDF & fin de saison
+- Collector de saison A4 et carnet personnel.
+- Diplôme A4 paysage, génération groupée Super Admin.
+- Livre d’or de fin de saison avec modération.
+- Export final JSON, snapshot hashé et archive finale.
+- Clôture protégée par confirmation `ARCHIVER` et contrôle des matchs officiels.
+- Exclusion des données TEST des statistiques finales.
+- Recherche Admin enrichie : Fin de saison & PDF.
+- Centre de tests V0.9.8 : 1660 contrôles cumulés.
+- Grand road-check manuel conservé pour V0.9.9.
+
+---
+
 # V0.9.5
 
 ## 0.9.5 — Administration & durcissement
@@ -511,3 +526,5 @@
 V0.9.0 — Palmarès historique
 - Le Super Admin peut désigner ou retirer manuellement le « Vainqueur du Nid des Pronos — Coupe du monde 2026 ».
 - Cette distinction est unique, persistante entre les saisons et visible dans le profil/carrière.
+
+- R2 Admin : accès direct depuis Laboratoire aux centres de tests V0.8.1, V0.9.0 et V0.9.5 ; recherche Admin enrichie.
