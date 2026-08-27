@@ -170,6 +170,13 @@ need("tests.center-version",center.includes("Centre de tests — V0.9.9")&&cente
 need("tests.center-diagnostic",center.includes("admin_diagnostics_v099")&&center.includes("v099.runs")&&center.includes("v099.onboarding")&&center.includes("v099.owl"),"Centre web exécute le diagnostic et les sondes V0.9.9");
 need("tests.center-readiness-scope",!center.includes("p_season_id:season.id")&&center.includes("État de clôture non testé : aucune saison active lisible"),"Test readiness résout explicitement la saison active");
 need("tests.center-v095-compat",center.includes("historicalVersionCheck")&&center.includes("backend courant"),"Diagnostic historique V0.9.5 tolère le backend courant V0.9.9 sans masquer V0.9.9");
+need("tests.center-current-release",
+  center.includes("t=>t.trim()==='0.9.9'") &&
+  center.includes("nid-champions-v0.9.9") &&
+  center.includes("Cache Service Worker V0.9.9") &&
+  center.includes("js/preseason099.js"),
+  "Centre web contrôle réellement la release courante V0.9.9"
+);
 need("tests.windows-safe",read("tests/run-all-v0.9.9.mjs").includes("fileURLToPath(import.meta.url)"),"Runner compatible chemins Windows");
 need("docs.checklist-count",(read("docs/TEST_CHECKLIST_V0.9.9.md").match(/\*\*T\d{4}\*\*/g)||[]).length===220,"Checklist V0.9.9 contient 220 contrôles spécifiques");
 
