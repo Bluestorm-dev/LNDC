@@ -1,0 +1,19 @@
+LE NID DES CHAMPIONS — PATCH NOTES V0.8.1
+===========================================
+
+1. FOOTBALL-DATA / CENTRE C1
+- Le statut HTTP du fournisseur est conservé dans l'Edge Function.
+- 404 -> code métier season_not_available, message explicite, HTTP 200 côté Function.
+- 401/403 -> provider_auth_error.
+- 429 -> provider_rate_limit.
+- Aucun fallback 2025/26 n'est ajouté.
+
+2. TESTS
+- Matrice complète issue des checklists historiques du projet.
+- Centre de tests web : filtres, états OK/KO/N/A, notes, persistance locale, export JSON/CSV.
+- Diagnostic SQL : présence des tables, RPC, colonnes et RLS clés par génération.
+- Runner Node : validation statique locale et option de contrôle du site déployé avec --url=.
+
+3. UTILISATION
+- Tests automatiques = non destructifs.
+- Tests manuels destructifs = uniquement via les outils TEST prévus par l'application et après sauvegarde.

@@ -1,0 +1,188 @@
+{
+  "version": "0.8.1",
+  "generated_at": "2026-08-27T09:23:17.035Z",
+  "base_url": null,
+  "summary": {
+    "total": 35,
+    "passed": 35,
+    "warnings": 0,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "id": "file:VERSION",
+      "status": "PASS",
+      "message": "Présent: VERSION"
+    },
+    {
+      "id": "file:config.js",
+      "status": "PASS",
+      "message": "Présent: config.js"
+    },
+    {
+      "id": "file:index.html",
+      "status": "PASS",
+      "message": "Présent: index.html"
+    },
+    {
+      "id": "file:sw.js",
+      "status": "PASS",
+      "message": "Présent: sw.js"
+    },
+    {
+      "id": "file:js/core.js",
+      "status": "PASS",
+      "message": "Présent: js/core.js"
+    },
+    {
+      "id": "file:js/app.js",
+      "status": "PASS",
+      "message": "Présent: js/app.js"
+    },
+    {
+      "id": "file:js/admin.js",
+      "status": "PASS",
+      "message": "Présent: js/admin.js"
+    },
+    {
+      "id": "file:js/admin-test.js",
+      "status": "PASS",
+      "message": "Présent: js/admin-test.js"
+    },
+    {
+      "id": "file:js/predictions.js",
+      "status": "PASS",
+      "message": "Présent: js/predictions.js"
+    },
+    {
+      "id": "file:js/ranking.js",
+      "status": "PASS",
+      "message": "Présent: js/ranking.js"
+    },
+    {
+      "id": "file:js/teams.js",
+      "status": "PASS",
+      "message": "Présent: js/teams.js"
+    },
+    {
+      "id": "file:js/notifications.js",
+      "status": "PASS",
+      "message": "Présent: js/notifications.js"
+    },
+    {
+      "id": "file:js/rivals.js",
+      "status": "PASS",
+      "message": "Présent: js/rivals.js"
+    },
+    {
+      "id": "file:js/support.js",
+      "status": "PASS",
+      "message": "Présent: js/support.js"
+    },
+    {
+      "id": "file:js/gamification.js",
+      "status": "PASS",
+      "message": "Présent: js/gamification.js"
+    },
+    {
+      "id": "file:supabase/functions/sync-football-data/index.ts",
+      "status": "PASS",
+      "message": "Présent: supabase/functions/sync-football-data/index.ts"
+    },
+    {
+      "id": "file:sql/HOTFIX_V0.8.1_DIAGNOSTICS.sql",
+      "status": "PASS",
+      "message": "Présent: sql/HOTFIX_V0.8.1_DIAGNOSTICS.sql"
+    },
+    {
+      "id": "file:tests/test-center-v0.8.1.html",
+      "status": "PASS",
+      "message": "Présent: tests/test-center-v0.8.1.html"
+    },
+    {
+      "id": "file:docs/TEST_MATRIX_V0.8.1.md",
+      "status": "PASS",
+      "message": "Présent: docs/TEST_MATRIX_V0.8.1.md"
+    },
+    {
+      "id": "version.file",
+      "status": "PASS",
+      "message": "VERSION = 0.8.1 (attendu 0.8.1)"
+    },
+    {
+      "id": "version.config",
+      "status": "PASS",
+      "message": "config.js annonce 0.8.1"
+    },
+    {
+      "id": "version.cache",
+      "status": "PASS",
+      "message": "cache Service Worker V0.8.1"
+    },
+    {
+      "id": "fd.strict-season",
+      "status": "PASS",
+      "message": "Football-Data reste strictement sur la saison demandée, sans ancien décalage 2025/26"
+    },
+    {
+      "id": "fd.404",
+      "status": "PASS",
+      "message": "404 Football-Data traité comme saison indisponible"
+    },
+    {
+      "id": "fd.no-fallback-2025",
+      "status": "PASS",
+      "message": "Aucun fallback explicite vers 2025 détecté"
+    },
+    {
+      "id": "feature.predictions",
+      "status": "PASS",
+      "message": "Moteur pronostics détecté"
+    },
+    {
+      "id": "feature.live",
+      "status": "PASS",
+      "message": "LIVE / Realtime détecté"
+    },
+    {
+      "id": "feature.teams",
+      "status": "PASS",
+      "message": "Teams détectées"
+    },
+    {
+      "id": "feature.push",
+      "status": "PASS",
+      "message": "Notifications / Push détectés"
+    },
+    {
+      "id": "feature.rivals",
+      "status": "PASS",
+      "message": "Rivalités détectées"
+    },
+    {
+      "id": "feature.support",
+      "status": "PASS",
+      "message": "Support / tickets détectés"
+    },
+    {
+      "id": "feature.gamification",
+      "status": "PASS",
+      "message": "Gamification / Musée détectés"
+    },
+    {
+      "id": "feature.ucl-schema",
+      "status": "PASS",
+      "message": "Schéma / frontend Centre C1 détecté"
+    },
+    {
+      "id": "feature.solitary",
+      "status": "PASS",
+      "message": "Hibou solitaire détecté"
+    },
+    {
+      "id": "feature.polls",
+      "status": "PASS",
+      "message": "Votes mensuels détectés"
+    }
+  ]
+}

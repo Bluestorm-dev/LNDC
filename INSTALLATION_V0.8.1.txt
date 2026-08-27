@@ -1,0 +1,41 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.8.1
+============================================
+
+OBJET
+-----
+V0.8.1 est un correctif de fiabilité + diagnostic :
+- un 404 Football-Data pour 2026/27 n'est plus présenté comme une Edge Function absente ;
+- aucun retour silencieux vers 2025/26 ;
+- ajout d'un système de validation complet V0.1.x -> V0.8.1 ;
+- diagnostic SQL structure/RLS/fonctions ;
+- runner Node local et Centre de tests web avec rapport JSON/CSV.
+
+MISE À JOUR DEPUIS V0.8.0
+--------------------------
+1. Sauvegarder le dossier V0.8.0 et la base Supabase.
+2. Extraire le patch V0.8.1 À LA RACINE du dossier V0.8.0.
+3. Depuis cette racine :
+      node tools\apply-v0.8.1.mjs
+4. Dans Supabase > SQL Editor, exécuter :
+      sql/HOTFIX_V0.8.1_DIAGNOSTICS.sql
+5. Redéployer :
+      npx.cmd supabase functions deploy sync-football-data
+6. Lancer les contrôles statiques :
+      node tests\run-all-v0.8.1.mjs
+7. Déployer le frontend complet sur GitHub Pages.
+8. PC : Ctrl+F5. Mobile/PWA : fermer complètement puis rouvrir.
+9. Ouvrir :
+      https://VOTRE-SITE/tests/test-center-v0.8.1.html
+   avec un compte Super Admin déjà connecté au Nid dans le même navigateur.
+
+TEST FOOTBALL-DATA
+------------------
+Tant que Football-Data ne publie pas 2026/27, Centre C1 peut renvoyer :
+  season_not_available
+Ce résultat est ATTENDU et ne doit importer aucun match 2025/26.
+
+RETOUR ARRIÈRE
+--------------
+Le script crée des sauvegardes *.v080.bak pour les fichiers qu'il modifie.
+Le SQL V0.8.1 n'altère pas les données métier ; il crée seulement le RPC de diagnostic
+et met app_settings.app_version à 0.8.1.
