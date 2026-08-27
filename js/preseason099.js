@@ -2,7 +2,7 @@
 
 // Le Nid des Champions V0.9.9 — pré-saison, répétition générale & onboarding
 (function(){
-  const q=s=>document.querySelector(s), qa=s=>Array.from(document.querySelectorAll(s));
+  const q=(s,root=document)=>root.querySelector(s), qa=(s,root=document)=>Array.from(root.querySelectorAll(s));
   state.preseason099=state.preseason099||{runs:[],activeId:null,dashboard:null,loading:false,error:null,onboarding:null,onboardingLoaded:false};
 
   const tutorialSteps=[

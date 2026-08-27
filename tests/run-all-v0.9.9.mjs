@@ -153,7 +153,7 @@ need("db099.cleanup-confirm",sql99.includes("p_confirmation<>'NETTOYER'"),"Netto
 need("front099.assets",idx99.includes("css/preseason099.css")&&idx99.includes("js/preseason099.js")&&idx99.includes("adminPreseasonPanelV099"),"UI pré-saison branchée");
 need("front099.admin",pre99.includes("renderAdminPreseasonV099")&&pre99.includes("admin_create_preseason_run_v099"),"Cockpit répétition générale");
 need("front099.steps",["live","scores","champion","teams","badges","notifications","finale","pdf","complete"].every(x=>pre99.includes(`[\"${x}\"`)||pre99.includes(`["${x}"`)),"Étapes de répétition couvertes");
-need("front099.onboarding",pre99.includes("openTutorialV099")&&pre99.includes("tutorialSteps"),"Tutoriel V0.9.9 intégré");
+need("front099.onboarding",pre99.includes("openTutorialV099")&&pre99.includes("tutorialSteps")&&pre99.includes("const q=(s,root=document)=>root.querySelector(s)"),"Tutoriel V0.9.9 intégré et boutons correctement ciblés");
 need("front099.mobile",preCss.includes("@media")&&preCss.includes("tutorial-overlay-v099"),"Pré-saison / tutoriel responsive");
 need("front099.roadcheck",idx99.includes("tests/road-check-v0.9.9.html")&&contains("tests/road-check-v0.9.9.html","24 missions guidées"),"Grand road-check V1 accessible");
 need("front099.testcenter",idx99.includes("tests/test-center-v0.9.9.html")&&contains("tests/test-center-v0.9.9.html","V0.9.9"),"Centre de tests V0.9.9 accessible");
