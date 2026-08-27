@@ -1,7 +1,8 @@
 window.NIDC_CONFIG = {
-  SUPABASE_URL: "https://nwmewsenpaxvxzbjsair.supabase.co",
-  SUPABASE_ANON_KEY: "sb_publishable_hKRN04bCtid5wliSMQfsPg_BtBKLu8X",
+  SUPABASE_URL: "https://YOUR_PROJECT.supabase.co",
+  SUPABASE_ANON_KEY: "YOUR_SUPABASE_ANON_KEY",
   APP_VERSION: "0.9.5",
   DEFAULT_SEASON_SLUG: "ucl-2026-27",
+  ODDS_EXTERNAL_ENABLED: false,
   DEMO_WHEN_UNCONFIGURED: true
 };
