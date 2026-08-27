@@ -1,12 +1,12 @@
--- =============================================================================
--- LE NID DES CHAMPIONS — PATCH V0.9.0
--- Saison, carrière & mémoire
+﻿-- =============================================================================
+-- LE NID DES CHAMPIONS â€” PATCH V0.9.0
+-- Saison, carriÃ¨re & mÃ©moire
 -- =============================================================================
 
 begin;
 
 -- -----------------------------------------------------------------------------
--- 1. Historique de rang : une photographie du classement à chaque moment clé.
+-- 1. Historique de rang : une photographie du classement Ã  chaque moment clÃ©.
 -- -----------------------------------------------------------------------------
 create table if not exists public.player_rank_history (
   id bigint generated always as identity primary key,
@@ -90,7 +90,7 @@ create trigger matches_capture_rank_v090
 after update of status on public.matches
 for each row execute function public.capture_finished_match_snapshot_v090();
 
--- Capture initiale de l'état courant des saisons déjà présentes.
+-- Capture initiale de l'Ã©tat courant des saisons dÃ©jÃ  prÃ©sentes.
 do $$
 declare s record;
 begin
@@ -108,7 +108,7 @@ create table if not exists public.player_distinctions (
   code text not null,
   label text not null,
   description text,
-  icon text not null default '🏆',
+  icon text not null default 'ðŸ†',
   source_season_id uuid references public.seasons(id) on delete set null,
   awarded_at timestamptz not null default now(),
   active boolean not null default true,
@@ -123,7 +123,7 @@ create policy player_distinctions_read on public.player_distinctions for select 
 grant select on public.player_distinctions to authenticated;
 
 create or replace function public.admin_set_distinction_v090(
-  p_user_id uuid,p_code text,p_label text,p_description text default null,p_icon text default '🏆',
+  p_user_id uuid,p_code text,p_label text,p_description text default null,p_icon text default 'ðŸ†',
   p_source_season_id uuid default null,p_active boolean default true,p_metadata jsonb default '{}'::jsonb
 )
 returns uuid
@@ -133,11 +133,11 @@ set search_path=public
 as $$
 declare v_id uuid;
 begin
-  if not public.is_super_admin() then raise exception 'Réservé au Super Admin.'; end if;
+  if not public.is_super_admin() then raise exception 'RÃ©servÃ© au Super Admin.'; end if;
   if not exists(select 1 from public.profiles where id=p_user_id) then raise exception 'Joueur introuvable.'; end if;
-  if nullif(trim(p_code),'') is null or nullif(trim(p_label),'') is null then raise exception 'Code et libellé obligatoires.'; end if;
+  if nullif(trim(p_code),'') is null or nullif(trim(p_label),'') is null then raise exception 'Code et libellÃ© obligatoires.'; end if;
   insert into public.player_distinctions(user_id,code,label,description,icon,source_season_id,active,created_by,metadata)
-  values(p_user_id,lower(trim(p_code)),trim(p_label),nullif(trim(p_description),''),coalesce(nullif(trim(p_icon),''),'🏆'),p_source_season_id,p_active,auth.uid(),coalesce(p_metadata,'{}'::jsonb))
+  values(p_user_id,lower(trim(p_code)),trim(p_label),nullif(trim(p_description),''),coalesce(nullif(trim(p_icon),''),'ðŸ†'),p_source_season_id,p_active,auth.uid(),coalesce(p_metadata,'{}'::jsonb))
   on conflict(user_id,code) do update set label=excluded.label,description=excluded.description,icon=excluded.icon,
     source_season_id=excluded.source_season_id,active=excluded.active,metadata=excluded.metadata,created_by=auth.uid(),awarded_at=now()
   returning id into v_id;
@@ -147,8 +147,8 @@ $$;
 grant execute on function public.admin_set_distinction_v090(uuid,text,text,text,text,uuid,boolean,jsonb) to authenticated;
 
 
--- Distinction historique dédiée : vainqueur du Nid des Pronos — Coupe du monde 2026.
--- Un seul joueur peut porter ce titre actif à la fois. p_user_id = null retire le titre.
+-- Distinction historique dÃ©diÃ©e : vainqueur du Nid des Pronos â€” Coupe du monde 2026.
+-- Un seul joueur peut porter ce titre actif Ã  la fois. p_user_id = null retire le titre.
 create unique index if not exists player_distinctions_single_world_cup_winner_idx
   on public.player_distinctions(code)
   where active and code='nid-pronos-world-cup-2026';
@@ -163,9 +163,9 @@ declare
   v_code constant text := 'nid-pronos-world-cup-2026';
   v_id uuid;
 begin
-  if not public.is_super_admin() then raise exception 'Réservé au Super Admin.'; end if;
+  if not public.is_super_admin() then raise exception 'RÃ©servÃ© au Super Admin.'; end if;
 
-  -- Désactive l'ancien détenteur avant toute nouvelle attribution.
+  -- DÃ©sactive l'ancien dÃ©tenteur avant toute nouvelle attribution.
   update public.player_distinctions
      set active=false, created_by=auth.uid(), awarded_at=now()
    where code=v_code and active;
@@ -183,9 +183,9 @@ begin
   ) values (
     p_user_id,
     v_code,
-    'Vainqueur du Nid des Pronos — Coupe du monde 2026',
-    'A remporté le Nid des Pronos lors de la Coupe du monde 2026.',
-    '🏆',
+    'Vainqueur du Nid des Pronos â€” Coupe du monde 2026',
+    'A remportÃ© le Nid des Pronos lors de la Coupe du monde 2026.',
+    'ðŸ†',
     null,
     true,
     auth.uid(),
@@ -213,7 +213,7 @@ $$;
 grant execute on function public.admin_set_world_cup_winner_v090(uuid) to authenticated;
 
 -- -----------------------------------------------------------------------------
--- 3. Sondages généraux (les votes mensuels V0.8 restent inchangés).
+-- 3. Sondages gÃ©nÃ©raux (les votes mensuels V0.8 restent inchangÃ©s).
 -- -----------------------------------------------------------------------------
 create table if not exists public.polls (
   id uuid primary key default gen_random_uuid(),
@@ -274,10 +274,10 @@ begin
   if not found then raise exception 'Sondage introuvable.'; end if;
   if v_poll.status<>'open' then raise exception 'Ce sondage n''est pas ouvert.'; end if;
   if v_poll.opens_at is not null and now()<v_poll.opens_at then raise exception 'Ce sondage n''est pas encore ouvert.'; end if;
-  if v_poll.closes_at is not null and now()>v_poll.closes_at then raise exception 'Ce sondage est terminé.'; end if;
+  if v_poll.closes_at is not null and now()>v_poll.closes_at then raise exception 'Ce sondage est terminÃ©.'; end if;
   if not exists(select 1 from public.poll_options where id=p_option_id and poll_id=p_poll_id) then raise exception 'Choix invalide.'; end if;
   if not v_poll.allow_change and exists(select 1 from public.poll_votes where poll_id=p_poll_id and user_id=auth.uid()) then
-    raise exception 'Ton vote est définitif pour ce sondage.';
+    raise exception 'Ton vote est dÃ©finitif pour ce sondage.';
   end if;
   insert into public.poll_votes(poll_id,option_id,user_id)
   values(p_poll_id,p_option_id,auth.uid())
@@ -298,9 +298,9 @@ set search_path=public
 as $$
 declare v_poll uuid; item jsonb; idx integer:=0;
 begin
-  if not public.is_super_admin() then raise exception 'Réservé au Super Admin.'; end if;
+  if not public.is_super_admin() then raise exception 'RÃ©servÃ© au Super Admin.'; end if;
   if nullif(trim(p_title),'') is null or nullif(trim(p_question),'') is null then raise exception 'Titre et question obligatoires.'; end if;
-  if jsonb_array_length(coalesce(p_options,'[]'::jsonb))<2 then raise exception 'Il faut au moins 2 réponses.'; end if;
+  if jsonb_array_length(coalesce(p_options,'[]'::jsonb))<2 then raise exception 'Il faut au moins 2 rÃ©ponses.'; end if;
   insert into public.polls(season_id,title,question,status,opens_at,closes_at,allow_change,show_results_before_close,created_by)
   values(p_season_id,trim(p_title),trim(p_question),'open',p_opens_at,p_closes_at,p_allow_change,p_show_results_before_close,auth.uid())
   returning id into v_poll;
@@ -321,14 +321,14 @@ security definer
 set search_path=public
 as $$
 begin
-  if not public.is_super_admin() then raise exception 'Réservé au Super Admin.'; end if;
+  if not public.is_super_admin() then raise exception 'RÃ©servÃ© au Super Admin.'; end if;
   update public.polls set status='closed',closes_at=coalesce(closes_at,now()),updated_at=now() where id=p_poll_id;
 end;
 $$;
 grant execute on function public.admin_close_poll_v090(uuid) to authenticated;
 
 -- -----------------------------------------------------------------------------
--- 4. Événements de mémoire éditoriaux facultatifs pour le replay.
+-- 4. Ã‰vÃ©nements de mÃ©moire Ã©ditoriaux facultatifs pour le replay.
 -- -----------------------------------------------------------------------------
 create table if not exists public.season_memory_events (
   id uuid primary key default gen_random_uuid(),
@@ -361,7 +361,7 @@ set search_path=public
 as $$
 declare v_id uuid;
 begin
-  if not public.is_admin() then raise exception 'Réservé aux administrateurs.'; end if;
+  if not public.is_admin() then raise exception 'RÃ©servÃ© aux administrateurs.'; end if;
   insert into public.season_memory_events(season_id,event_at,event_type,title,subtitle,user_id,icon,created_by,metadata)
   values(p_season_id,coalesce(p_event_at,now()),coalesce(nullif(trim(p_event_type),''),'memory'),trim(p_title),nullif(trim(p_subtitle),''),p_user_id,p_icon,auth.uid(),coalesce(p_metadata,'{}'::jsonb))
   returning id into v_id;
@@ -441,7 +441,7 @@ $$;
 grant execute on function public.get_player_season_profile_v090(uuid,uuid) to authenticated;
 
 -- -----------------------------------------------------------------------------
--- 6. Carrière multi-saisons.
+-- 6. CarriÃ¨re multi-saisons.
 -- -----------------------------------------------------------------------------
 create or replace function public.get_career_leaderboard_v090()
 returns table(
@@ -541,7 +541,7 @@ grant execute on function public.get_title_holder_v090(uuid) to authenticated;
 
 create or replace function public.get_hall_of_fame_v090(p_season_id uuid default null)
 returns table(
-  season_id uuid,season_name text,category text,position integer,user_id uuid,username text,value numeric,label text,metadata jsonb
+  season_id uuid,season_name text,category text,"position" integer,user_id uuid,username text,value numeric,label text,metadata jsonb
 )
 language sql
 stable
@@ -554,22 +554,22 @@ with seasons_scope as (
   select s.id season_id,s.name season_name,l.* from seasons_scope s cross join lateral public.get_leaderboard_v040(s.id,'general',null,null,false) l
 ), podium as (
   select season_id,season_name,'podium'::text category,rank::integer position,user_id,username,points value,
-    case rank when 1 then 'Champion' when 2 then 'Vice-champion' else 'Troisième' end label,'{}'::jsonb metadata
+    case rank when 1 then 'Champion' when 2 then 'Vice-champion' else 'TroisiÃ¨me' end label,'{}'::jsonb metadata
   from lb where rank<=3
 ), best_score as (
   select season_id,season_name,'best_score'::text category,1 position,user_id,username,points::numeric value,'Meilleur scoreur'::text label,
     jsonb_build_object('played',played,'average',average) metadata
   from (select l.*,row_number() over(partition by season_id order by points desc,exact_scores desc,username) rn from lb l) x where rn=1
 ), exacts as (
-  select season_id,season_name,'best_exact'::text category,1 position,user_id,username,exact_scores::numeric value,'Maître des scores exacts'::text label,'{}'::jsonb metadata
+  select season_id,season_name,'best_exact'::text category,1 position,user_id,username,exact_scores::numeric value,'MaÃ®tre des scores exacts'::text label,'{}'::jsonb metadata
   from (select l.*,row_number() over(partition by season_id order by exact_scores desc,points desc,username) rn from lb l) x where rn=1
 ), casseroles as (
-  select s.id season_id,s.name season_name,'poele_or'::text category,1 position,e.user_id,p.username,sum(e.points)::numeric value,'Poêle d''Or'::text label,jsonb_build_object('events',count(*)) metadata
+  select s.id season_id,s.name season_name,'poele_or'::text category,1 position,e.user_id,p.username,sum(e.points)::numeric value,'PoÃªle d''Or'::text label,jsonb_build_object('events',count(*)) metadata
   from seasons_scope s join public.gamification_events e on e.season_id=s.id and e.event_type='casserole' and not e.is_test join public.profiles p on p.id=e.user_id
   group by s.id,s.name,e.user_id,p.username
   having sum(e.points)=(select max(z.total) from (select sum(e2.points) total from public.gamification_events e2 where e2.season_id=s.id and e2.event_type='casserole' and not e2.is_test group by e2.user_id) z)
 ), geniuses as (
-  select s.id season_id,s.name season_name,'genius'::text category,1 position,e.user_id,p.username,sum(e.points)::numeric value,'Génie de la saison'::text label,jsonb_build_object('events',count(*)) metadata
+  select s.id season_id,s.name season_name,'genius'::text category,1 position,e.user_id,p.username,sum(e.points)::numeric value,'GÃ©nie de la saison'::text label,jsonb_build_object('events',count(*)) metadata
   from seasons_scope s join public.gamification_events e on e.season_id=s.id and e.event_type='genius' and not e.is_test join public.profiles p on p.id=e.user_id
   group by s.id,s.name,e.user_id,p.username
   having sum(e.points)=(select max(z.total) from (select sum(e2.points) total from public.gamification_events e2 where e2.season_id=s.id and e2.event_type='genius' and not e2.is_test group by e2.user_id) z)
@@ -614,7 +614,7 @@ set search_path=public
 as $$
 with leader_rows as (
   select h.captured_at event_at,'leader'::text event_type,'Nouveau leader du Nid'::text title,
-    p.username||' prend la tête avec '||round(h.points)::text||' pts' subtitle,h.user_id,p.username,'👑'::text icon,
+    p.username||' prend la tÃªte avec '||round(h.points)::text||' pts' subtitle,h.user_id,p.username,'ðŸ‘‘'::text icon,
     jsonb_build_object('rank',h.rank,'points',h.points,'source',h.source) metadata,
     lag(h.user_id) over(order by h.captured_at,h.id) previous_leader
   from public.player_rank_history h join public.profiles p on p.id=h.user_id
@@ -622,25 +622,25 @@ with leader_rows as (
 ), leaders as (
   select event_at,event_type,title,subtitle,user_id,username,icon,metadata from leader_rows where previous_leader is distinct from user_id
 ), records as (
-  select r.achieved_at,'record',coalesce(r.record_name,'Nouveau record'),p.username||' · '||r.value::text,r.user_id,p.username,'📈',jsonb_build_object('record_key',r.record_key,'value',r.value,'previous',r.previous_value)
+  select r.achieved_at,'record',coalesce(r.record_name,'Nouveau record'),p.username||' Â· '||r.value::text,r.user_id,p.username,'ðŸ“ˆ',jsonb_build_object('record_key',r.record_key,'value',r.value,'previous',r.previous_value)
   from public.gamification_records r join public.profiles p on p.id=r.user_id where r.season_id=p_season_id and r.active and not r.is_test and r.scope='nid'
 ), gamification as (
-  select e.created_at,e.event_type,coalesce(e.title,case when e.event_type='casserole' then 'Casserole' else 'Coup de génie' end),coalesce(e.message,p.username),e.user_id,p.username,
-    case when e.event_type='casserole' then '🍳' else '✨' end,jsonb_build_object('points',e.points,'severity',e.severity,'subtype',e.subtype)
+  select e.created_at,e.event_type,coalesce(e.title,case when e.event_type='casserole' then 'Casserole' else 'Coup de gÃ©nie' end),coalesce(e.message,p.username),e.user_id,p.username,
+    case when e.event_type='casserole' then 'ðŸ³' else 'âœ¨' end,jsonb_build_object('points',e.points,'severity',e.severity,'subtype',e.subtype)
   from public.gamification_events e join public.profiles p on p.id=e.user_id where e.season_id=p_season_id and e.event_type in('casserole','genius') and e.is_public and not e.is_test
 ), legendary_badges as (
-  select pb.earned_at,'legendary_badge',gb.name,p.username||' débloque un badge légendaire',pb.user_id,p.username,'🏅',jsonb_build_object('badge',gb.code,'description',gb.description)
+  select pb.earned_at,'legendary_badge',gb.name,p.username||' dÃ©bloque un badge lÃ©gendaire',pb.user_id,p.username,'ðŸ…',jsonb_build_object('badge',gb.code,'description',gb.description)
   from public.player_badges pb join public.gamification_badges gb on gb.id=pb.badge_id join public.profiles p on p.id=pb.user_id
   where pb.season_id=p_season_id and pb.revoked_at is null and not pb.is_test and gb.rarity='legendary'
 ), champion_eliminations as (
-  select cp.eliminated_at,'champion_eliminated','Un champion tombe',p.username||' perd son choix '||cp.pick_number::text,cp.user_id,p.username,'💔',jsonb_build_object('pick_number',cp.pick_number,'club_id',cp.club_id)
+  select cp.eliminated_at,'champion_eliminated','Un champion tombe',p.username||' perd son choix '||cp.pick_number::text,cp.user_id,p.username,'ðŸ’”',jsonb_build_object('pick_number',cp.pick_number,'club_id',cp.club_id)
   from public.champion_predictions cp join public.profiles p on p.id=cp.user_id where cp.season_id=p_season_id and cp.eliminated_at is not null
 ), final_event as (
-  select coalesce(t.updated_at,t.leg1_kickoff_at),'final','La finale est scellée',coalesce(c.name,'Le champion européen est connu'),null::uuid,null::text,'🏆',jsonb_build_object('qualified_club_id',t.qualified_club_id)
+  select coalesce(t.updated_at,t.leg1_kickoff_at),'final','La finale est scellÃ©e',coalesce(c.name,'Le champion europÃ©en est connu'),null::uuid,null::text,'ðŸ†',jsonb_build_object('qualified_club_id',t.qualified_club_id)
   from public.knockout_ties t left join public.clubs c on c.id=t.qualified_club_id join public.competition_phases ph on ph.id=t.phase_id
   where t.season_id=p_season_id and ph.code='FINAL' and t.status='finished'
 ), manual_events as (
-  select e.event_at,e.event_type,e.title,e.subtitle,e.user_id,p.username,coalesce(e.icon,'🦉'),e.metadata
+  select e.event_at,e.event_type,e.title,e.subtitle,e.user_id,p.username,coalesce(e.icon,'ðŸ¦‰'),e.metadata
   from public.season_memory_events e left join public.profiles p on p.id=e.user_id where e.season_id=p_season_id and e.is_public
 )
 select * from leaders
@@ -655,7 +655,7 @@ $$;
 grant execute on function public.get_season_replay_v090(uuid) to authenticated;
 
 -- -----------------------------------------------------------------------------
--- 9. Administration des saisons : création, activation et archivage.
+-- 9. Administration des saisons : crÃ©ation, activation et archivage.
 -- -----------------------------------------------------------------------------
 create or replace function public.admin_create_season_v090(
   p_name text,p_slug text,p_copy_from_season_id uuid default null
@@ -667,9 +667,9 @@ set search_path=public
 as $$
 declare v_id uuid; src public.seasons%rowtype;
 begin
-  if not public.is_super_admin() then raise exception 'Réservé au Super Admin.'; end if;
+  if not public.is_super_admin() then raise exception 'RÃ©servÃ© au Super Admin.'; end if;
   if nullif(trim(p_name),'') is null or nullif(trim(p_slug),'') is null then raise exception 'Nom et slug obligatoires.'; end if;
-  if exists(select 1 from public.seasons where slug=lower(trim(p_slug))) then raise exception 'Ce slug de saison existe déjà.'; end if;
+  if exists(select 1 from public.seasons where slug=lower(trim(p_slug))) then raise exception 'Ce slug de saison existe dÃ©jÃ .'; end if;
   if p_copy_from_season_id is not null then select * into src from public.seasons where id=p_copy_from_season_id; end if;
   insert into public.seasons(name,slug,status,is_active,timezone,points_wrong,points_result,points_difference,points_exact,champion_1_bonus,champion_2_bonus)
   values(trim(p_name),lower(trim(p_slug)),'preparation',false,coalesce(src.timezone,'Europe/Paris'),coalesce(src.points_wrong,0),coalesce(src.points_result,3),coalesce(src.points_difference,5),coalesce(src.points_exact,7),coalesce(src.champion_1_bonus,100),coalesce(src.champion_2_bonus,50))
@@ -679,7 +679,7 @@ begin
     select v_id,code,name,sort_order,default_multiplier from public.competition_phases where season_id=p_copy_from_season_id order by sort_order;
   else
     insert into public.competition_phases(season_id,code,name,sort_order,default_multiplier) values
-      (v_id,'LEAGUE','Phase de ligue',10,1),(v_id,'KNOCKOUT_PLAYOFF','Barrages',20,1),(v_id,'ROUND_OF_16','Huitièmes de finale',30,1),
+      (v_id,'LEAGUE','Phase de ligue',10,1),(v_id,'KNOCKOUT_PLAYOFF','Barrages',20,1),(v_id,'ROUND_OF_16','HuitiÃ¨mes de finale',30,1),
       (v_id,'QUARTER_FINAL','Quarts de finale',40,1),(v_id,'SEMI_FINAL','Demi-finales',50,1),(v_id,'FINAL','Finale',60,1);
   end if;
   insert into public.gamification_settings(season_id) values(v_id) on conflict(season_id) do nothing;
@@ -695,7 +695,7 @@ security definer
 set search_path=public
 as $$
 begin
-  if not public.is_super_admin() then raise exception 'Réservé au Super Admin.'; end if;
+  if not public.is_super_admin() then raise exception 'RÃ©servÃ© au Super Admin.'; end if;
   if not exists(select 1 from public.seasons where id=p_season_id) then raise exception 'Saison introuvable.'; end if;
   update public.seasons set is_active=false,updated_at=now() where is_active=true and id<>p_season_id;
   update public.seasons set is_active=true,status='active',updated_at=now() where id=p_season_id;
@@ -710,7 +710,7 @@ security definer
 set search_path=public
 as $$
 begin
-  if not public.is_super_admin() then raise exception 'Réservé au Super Admin.'; end if;
+  if not public.is_super_admin() then raise exception 'RÃ©servÃ© au Super Admin.'; end if;
   if p_status not in('preparation','active','finished','archived') then raise exception 'Statut invalide.'; end if;
   update public.seasons set status=p_status,is_active=case when p_status='active' then true when p_status in('finished','archived') then false else is_active end,updated_at=now() where id=p_season_id;
   if p_status='active' then update public.seasons set is_active=false,updated_at=now() where id<>p_season_id and is_active=true; end if;
@@ -732,8 +732,8 @@ as $$
 $$;
 grant execute on function public.season_is_writable_v090(uuid) to authenticated;
 
--- Le recalcul serveur des points reste autorisé sur une saison terminée,
--- mais un joueur ne peut plus créer/modifier son pronostic.
+-- Le recalcul serveur des points reste autorisÃ© sur une saison terminÃ©e,
+-- mais un joueur ne peut plus crÃ©er/modifier son pronostic.
 create or replace function public.guard_prediction_write()
 returns trigger
 language plpgsql
@@ -757,10 +757,10 @@ begin
   end if;
 
   if not public.season_is_writable_v090(v_match.season_id) then
-    raise exception 'Cette saison est terminée et consultable en lecture seule.';
+    raise exception 'Cette saison est terminÃ©e et consultable en lecture seule.';
   end if;
   if v_match.status not in ('scheduled','postponed') or v_match.kickoff_at<=now() then
-    raise exception 'Pronostic verrouillé.';
+    raise exception 'Pronostic verrouillÃ©.';
   end if;
 
   new.season_id:=v_match.season_id;
@@ -783,14 +783,14 @@ declare
 begin
   select * into t from public.knockout_ties where id=new.tie_id;
   if not found then raise exception 'Confrontation introuvable.'; end if;
-  if not public.season_is_writable_v090(t.season_id) then raise exception 'Cette saison est terminée et consultable en lecture seule.'; end if;
-  if t.status in ('finished','cancelled') then raise exception 'Pronostic qualifié verrouillé.'; end if;
+  if not public.season_is_writable_v090(t.season_id) then raise exception 'Cette saison est terminÃ©e et consultable en lecture seule.'; end if;
+  if t.status in ('finished','cancelled') then raise exception 'Pronostic qualifiÃ© verrouillÃ©.'; end if;
   if t.team_a_club_id is null or t.team_b_club_id is null then raise exception 'Les deux clubs ne sont pas encore connus.'; end if;
-  if new.qualified_club_id not in (t.team_a_club_id,t.team_b_club_id) then raise exception 'Le qualifié doit être l’un des deux clubs.'; end if;
+  if new.qualified_club_id not in (t.team_a_club_id,t.team_b_club_id) then raise exception 'Le qualifiÃ© doit Ãªtre lâ€™un des deux clubs.'; end if;
 
   v_first:=t.leg1_kickoff_at;
   v_last:=case when t.is_single_match then t.leg1_kickoff_at else t.leg2_kickoff_at end;
-  if now()>=v_last then raise exception 'Pronostic qualifié verrouillé.'; end if;
+  if now()>=v_last then raise exception 'Pronostic qualifiÃ© verrouillÃ©.'; end if;
 
   new.season_id:=t.season_id;
   new.pick_timing:=case
@@ -807,14 +807,14 @@ returns void
 language plpgsql security definer set search_path=public as $$
 declare v_season uuid;
 begin
-  if auth.uid() is null then raise exception 'Utilisateur non connecté.'; end if;
+  if auth.uid() is null then raise exception 'Utilisateur non connectÃ©.'; end if;
   v_season:=p_season_id;
   if v_season is null then select id into v_season from public.seasons where is_active=true order by created_at desc limit 1; end if;
   if v_season is null then raise exception 'Saison active introuvable.'; end if;
-  if not public.season_is_writable_v090(v_season) then raise exception 'Cette saison est terminée et consultable en lecture seule.'; end if;
+  if not public.season_is_writable_v090(v_season) then raise exception 'Cette saison est terminÃ©e et consultable en lecture seule.'; end if;
   if p_pick_number not in (1,2) then raise exception 'Choix champion invalide.'; end if;
-  if not public.is_champion_pick_open_v040(v_season,p_pick_number) then raise exception 'Ce choix champion est verrouillé.'; end if;
-  if not public.is_champion_candidate_v040(v_season,p_pick_number,p_club_id) then raise exception 'Ce club n’est pas disponible pour ce choix champion.'; end if;
+  if not public.is_champion_pick_open_v040(v_season,p_pick_number) then raise exception 'Ce choix champion est verrouillÃ©.'; end if;
+  if not public.is_champion_candidate_v040(v_season,p_pick_number,p_club_id) then raise exception 'Ce club nâ€™est pas disponible pour ce choix champion.'; end if;
 
   insert into public.champion_predictions(user_id,season_id,pick_number,club_id,assigned_default,locked_at)
   values(auth.uid(),v_season,p_pick_number,p_club_id,false,null)
@@ -826,7 +826,7 @@ grant execute on function public.save_champion_pick_v040(integer,uuid,uuid) to a
 
 -- -----------------------------------------------------------------------------
 -- 10b. Les archives figent aussi les Teams.
--- Le Super Admin garde la possibilité d'une correction exceptionnelle.
+-- Le Super Admin garde la possibilitÃ© d'une correction exceptionnelle.
 -- -----------------------------------------------------------------------------
 create or replace function public.guard_archived_team_mutation_v090()
 returns trigger
@@ -848,7 +848,7 @@ begin
   if v_season is not null
      and not public.season_is_writable_v090(v_season)
      and not public.is_super_admin() then
-    raise exception 'Cette saison est terminée et les Teams sont consultables en lecture seule.';
+    raise exception 'Cette saison est terminÃ©e et les Teams sont consultables en lecture seule.';
   end if;
 
   if tg_op='DELETE' then return old; end if;
@@ -896,34 +896,34 @@ declare
   v_warnings integer:=0;
   v_failed integer:=0;
 begin
-  if not public.is_super_admin() then raise exception 'Réservé au Super Admin.'; end if;
+  if not public.is_super_admin() then raise exception 'RÃ©servÃ© au Super Admin.'; end if;
   select public.admin_run_diagnostics_v081() into v_base;
 
   select jsonb_agg(jsonb_build_object('id',id,'version','0.9','category',category,'status',status,'message',message) order by id)
   into v_checks_v090
   from (
     values
-      ('table.player_rank_history','Mémoire',case when to_regclass('public.player_rank_history') is not null then 'PASS' else 'FAIL' end,'Historique de rang'),
-      ('table.player_distinctions','Carrière',case when to_regclass('public.player_distinctions') is not null then 'PASS' else 'FAIL' end,'Distinctions persistantes'),
-      ('rpc.admin_set_world_cup_winner_v090','Mémoire',case when to_regprocedure('public.admin_set_world_cup_winner_v090(uuid)') is not null then 'PASS' else 'FAIL' end,'Vainqueur manuel du Nid des Pronos — Coupe du monde 2026'),
-      ('table.polls','Sondages',case when to_regclass('public.polls') is not null then 'PASS' else 'FAIL' end,'Sondages généraux'),
+      ('table.player_rank_history','MÃ©moire',case when to_regclass('public.player_rank_history') is not null then 'PASS' else 'FAIL' end,'Historique de rang'),
+      ('table.player_distinctions','CarriÃ¨re',case when to_regclass('public.player_distinctions') is not null then 'PASS' else 'FAIL' end,'Distinctions persistantes'),
+      ('rpc.admin_set_world_cup_winner_v090','MÃ©moire',case when to_regprocedure('public.admin_set_world_cup_winner_v090(uuid)') is not null then 'PASS' else 'FAIL' end,'Vainqueur manuel du Nid des Pronos â€” Coupe du monde 2026'),
+      ('table.polls','Sondages',case when to_regclass('public.polls') is not null then 'PASS' else 'FAIL' end,'Sondages gÃ©nÃ©raux'),
       ('table.poll_options','Sondages',case when to_regclass('public.poll_options') is not null then 'PASS' else 'FAIL' end,'Choix de sondages'),
       ('table.poll_votes','Sondages',case when to_regclass('public.poll_votes') is not null then 'PASS' else 'FAIL' end,'Votes de sondages'),
-      ('table.season_memory_events','Replay',case when to_regclass('public.season_memory_events') is not null then 'PASS' else 'FAIL' end,'Événements de replay'),
+      ('table.season_memory_events','Replay',case when to_regclass('public.season_memory_events') is not null then 'PASS' else 'FAIL' end,'Ã‰vÃ©nements de replay'),
       ('rpc.get_player_season_profile_v090','Profil',case when to_regprocedure('public.get_player_season_profile_v090(uuid,uuid)') is not null then 'PASS' else 'FAIL' end,'Profil saison complet'),
-      ('rpc.get_career_leaderboard_v090','Carrière',case when to_regprocedure('public.get_career_leaderboard_v090()') is not null then 'PASS' else 'FAIL' end,'Classement carrière'),
-      ('rpc.get_player_career_v090','Carrière',case when to_regprocedure('public.get_player_career_v090(uuid)') is not null then 'PASS' else 'FAIL' end,'Fiche carrière'),
-      ('rpc.get_title_holder_v090','Mémoire',case when to_regprocedure('public.get_title_holder_v090(uuid)') is not null then 'PASS' else 'FAIL' end,'Champion en titre'),
+      ('rpc.get_career_leaderboard_v090','CarriÃ¨re',case when to_regprocedure('public.get_career_leaderboard_v090()') is not null then 'PASS' else 'FAIL' end,'Classement carriÃ¨re'),
+      ('rpc.get_player_career_v090','CarriÃ¨re',case when to_regprocedure('public.get_player_career_v090(uuid)') is not null then 'PASS' else 'FAIL' end,'Fiche carriÃ¨re'),
+      ('rpc.get_title_holder_v090','MÃ©moire',case when to_regprocedure('public.get_title_holder_v090(uuid)') is not null then 'PASS' else 'FAIL' end,'Champion en titre'),
       ('rpc.get_hall_of_fame_v090','Hall of Fame',case when to_regprocedure('public.get_hall_of_fame_v090(uuid)') is not null then 'PASS' else 'FAIL' end,'Hall of Fame'),
       ('rpc.get_season_replay_v090','Replay',case when to_regprocedure('public.get_season_replay_v090(uuid)') is not null then 'PASS' else 'FAIL' end,'Replay de saison'),
-      ('rpc.cast_poll_vote_v090','Sondages',case when to_regprocedure('public.cast_poll_vote_v090(uuid,uuid)') is not null then 'PASS' else 'FAIL' end,'Vote général'),
-      ('rpc.admin_create_season_v090','Multi-saison',case when to_regprocedure('public.admin_create_season_v090(text,text,uuid)') is not null then 'PASS' else 'FAIL' end,'Création de saison'),
+      ('rpc.cast_poll_vote_v090','Sondages',case when to_regprocedure('public.cast_poll_vote_v090(uuid,uuid)') is not null then 'PASS' else 'FAIL' end,'Vote gÃ©nÃ©ral'),
+      ('rpc.admin_create_season_v090','Multi-saison',case when to_regprocedure('public.admin_create_season_v090(text,text,uuid)') is not null then 'PASS' else 'FAIL' end,'CrÃ©ation de saison'),
       ('rpc.admin_set_active_season_v090','Multi-saison',case when to_regprocedure('public.admin_set_active_season_v090(uuid)') is not null then 'PASS' else 'FAIL' end,'Activation de saison'),
       ('rpc.admin_set_season_status_v090','Multi-saison',case when to_regprocedure('public.admin_set_season_status_v090(uuid,text)') is not null then 'PASS' else 'FAIL' end,'Statut de saison'),
       ('rpc.season_is_writable_v090','Archives',case when to_regprocedure('public.season_is_writable_v090(uuid)') is not null then 'PASS' else 'FAIL' end,'Archives en lecture seule'),
-      ('rpc.guard_archived_team_mutation_v090','Archives',case when to_regprocedure('public.guard_archived_team_mutation_v090()') is not null then 'PASS' else 'FAIL' end,'Teams figées dans les archives'),
-      ('rls.player_rank_history','Sécurité',case when exists(select 1 from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and c.relname='player_rank_history' and c.relrowsecurity) then 'PASS' else 'FAIL' end,'RLS historique de rang'),
-      ('rls.poll_votes','Sécurité',case when exists(select 1 from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and c.relname='poll_votes' and c.relrowsecurity) then 'PASS' else 'FAIL' end,'RLS votes généraux')
+      ('rpc.guard_archived_team_mutation_v090','Archives',case when to_regprocedure('public.guard_archived_team_mutation_v090()') is not null then 'PASS' else 'FAIL' end,'Teams figÃ©es dans les archives'),
+      ('rls.player_rank_history','SÃ©curitÃ©',case when exists(select 1 from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and c.relname='player_rank_history' and c.relrowsecurity) then 'PASS' else 'FAIL' end,'RLS historique de rang'),
+      ('rls.poll_votes','SÃ©curitÃ©',case when exists(select 1 from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and c.relname='poll_votes' and c.relrowsecurity) then 'PASS' else 'FAIL' end,'RLS votes gÃ©nÃ©raux')
   ) c(id,category,status,message);
 
   v_checks:=coalesce(v_base->'checks','[]'::jsonb)||coalesce(v_checks_v090,'[]'::jsonb);
@@ -955,3 +955,4 @@ on conflict(key) do update set value=excluded.value,updated_at=now();
 commit;
 
 select key,value,updated_at from public.app_settings where key='app_version';
+
