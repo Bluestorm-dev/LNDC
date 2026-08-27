@@ -1,0 +1,52 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.8.0
+============================================
+
+OBJET
+-----
+La V0.8.0 ouvre deux nouveaux blocs majeurs :
+- Soirées européennes : avant/LIVE/après, classement de soirée, Hibou de la nuit, statistiques, Moments du Nid, Hibou solitaire, archives et votes mensuels ;
+- Centre Ligue des champions : résultats réels, calendrier, classement, phases finales et fiches clubs avec forme, derniers et prochains matchs.
+
+MISE À JOUR DEPUIS V0.7.4
+--------------------------
+1. Ouvrir Supabase > SQL Editor.
+2. Exécuter : sql/HOTFIX_V0.8.0_EXISTING_DB.sql
+3. Redéployer l'Edge Function :
+   npx.cmd supabase functions deploy sync-football-data
+4. Déployer les fichiers frontend V0.8.0 sur GitHub Pages.
+5. Sur PC : Ctrl+F5.
+6. Sur mobile/PWA : fermer complètement l'application puis la rouvrir.
+
+CENTRE LIGUE DES CHAMPIONS
+---------------------------
+Dans Admin > Compétition :
+- Calendrier CL reste l'import strict de la phase de ligue 2026/27 destinée au jeu de pronostics ;
+- Centre C1 synchronise le suivi réel de la compétition : matchs, scores, statuts, classement officiel et phases disponibles chez Football-Data.
+
+Les données du Centre C1 sont stockées séparément dans ucl_matches/ucl_standings.
+Elles ne modifient pas automatiquement les points des pronostics.
+
+IMPORTANT SAISON 2026/27
+-------------------------
+La saison demandée reste strictement 2026. Aucun calendrier 2025/26 n'est décalé ou accepté en remplacement.
+Si le fournisseur ne possède pas encore les données demandées, l'import échoue proprement.
+
+SOIRÉES EUROPÉENNES
+--------------------
+L'onglet Soirées utilise les matchs officiels du Nid et le classement existant de soirée.
+Le Hibou solitaire attribue uniquement des points parallèles :
+- seul sur le bon choix : 10 ;
+- deux joueurs sur le bon choix : 7 ;
+- groupe <= 5 % et bon choix : 5.
+Ces points ne modifient jamais le classement officiel.
+
+VOTES MENSUELS
+---------------
+Le Super Admin peut préparer un vote depuis Admin > Gamification.
+Le Nid sélectionne jusqu'à 5 Casseroles ou Coups de Génie du mois et ouvre le vote pour la durée choisie.
+
+AUCUNE MODIFICATION
+--------------------
+- clés VAPID : aucune ;
+- push-dispatch : aucun redéploiement ;
+- config.js : conserver les clés existantes, APP_VERSION doit être 0.8.0.

@@ -1,0 +1,7 @@
+/* V0.8.0 — ajustements transverses */
+@media(max-width:900px){
+  .bottom-nav{display:flex!important;grid-template-columns:none!important;overflow-x:auto;overflow-y:hidden;justify-content:flex-start;scrollbar-width:none;-webkit-overflow-scrolling:touch;gap:2px}
+  .bottom-nav::-webkit-scrollbar{display:none}
+  .bottom-nav button{flex:0 0 64px;min-width:64px;font-size:.51rem!important;padding:5px 2px!important}
+  .bottom-nav button span{font-size:.9rem!important}
+}

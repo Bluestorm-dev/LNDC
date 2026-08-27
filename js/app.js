@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.7.4 — orchestration et démarrage
+// Le Nid des Champions V0.8.0 — orchestration et démarrage
   async function boot() {
     bindStaticEvents();
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(()=>{});
@@ -10,7 +10,7 @@
       $("#configWarning").innerHTML = "<b>Mode démonstration.</b> Configure <code>config.js</code> et Supabase pour passer en réel.";
       $("#backendStatus span:last-child").textContent = "Démo locale";
       $("#demoBanner").classList.remove("hidden");
-      $("#demoBanner").innerHTML = "🛠️ <b>V0.7.4 en mode démo :</b> phase de ligue, champions, phases finales et LIVE sont simulés localement quand les données sont disponibles.";
+      $("#demoBanner").innerHTML = "🛠️ <b>V0.8.0 en mode démo :</b> phase de ligue, champions, phases finales et LIVE sont simulés localement quand les données sont disponibles.";
       demoInit();
       const demoSession = JSON.parse(localStorage.getItem("nidc_demo_session") || "null");
       if (demoSession) {
@@ -56,6 +56,7 @@
     $("#syncClubsBtn").onclick = () => syncFootballData("clubs");
     $("#syncClubCatalogBtn").onclick = () => syncFootballData("catalog");
     $("#syncCalendarBtn").onclick = () => syncFootballData("calendar");
+    if($("#syncUclCenterBtn")) $("#syncUclCenterBtn").onclick = () => syncFootballData("center");
     $("#syncOddsBtn").onclick = syncOdds;
     $("#clubPreviewFilter").onchange = e => { state.clubPreviewFilter=e.target.value||"CL"; renderClubPreview(); };
     $("#createMatchdayBtn").onclick = createMatchday;
@@ -81,7 +82,7 @@
     const isAdmin=["admin","super_admin"].includes(state.profile?.role);
     $("#adminNav").classList.toggle("hidden",!isAdmin);
     $("#profileAdminBtn").classList.toggle("hidden",!isAdmin);
-    renderProfile(); renderChampions(); renderKnockout(); renderMatchdayTabs(); renderMatchPanels(); renderHistory(); renderRanking(); renderCollectiveStats(); renderLiveTicker(); renderSeason(); renderTeams(); renderHome(); if(typeof renderMuseum==="function")renderMuseum(); if(typeof renderHomeMuseumCard==="function")renderHomeMuseumCard(); if(typeof renderHomeNarrativeCard==="function")renderHomeNarrativeCard(); renderNotificationBell(); renderNotificationPreferences(); renderHomePushPrompt(); renderOwlHome(); renderHomeRival(); renderRivalView(); if(isAdmin) renderAdmin(); updateKpis();
+    renderProfile(); renderChampions(); renderKnockout(); renderMatchdayTabs(); renderMatchPanels(); renderHistory(); renderRanking(); renderCollectiveStats(); renderLiveTicker(); renderSeason(); renderTeams(); renderHome(); if(typeof renderUclCenter==="function"&&state.uclCenterLoaded)renderUclCenter(); if(typeof renderEveningHub==="function"&&state.eveningLoadedDate)renderEveningHub(); if(typeof renderMuseum==="function")renderMuseum(); if(typeof renderHomeMuseumCard==="function")renderHomeMuseumCard(); if(typeof renderHomeNarrativeCard==="function")renderHomeNarrativeCard(); if(typeof renderHomeEveningCard==="function")renderHomeEveningCard(); renderNotificationBell(); renderNotificationPreferences(); renderHomePushPrompt(); renderOwlHome(); renderHomeRival(); renderRivalView(); if(isAdmin) renderAdmin(); if(isAdmin&&typeof renderAdminMonthlyPollPanel==="function") renderAdminMonthlyPollPanel(); updateKpis();
   }
 
   boot().catch(err=>{console.error(err);toast(friendlyError(err),"error");showAuth();});

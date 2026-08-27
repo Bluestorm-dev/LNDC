@@ -335,13 +335,22 @@
         ? "Import de la bibliothèque clubs + logos : Ligue 1, Premier League, Liga, Serie A et Bundesliga…"
         : action === "odds"
           ? `Actualisation des cotes 1N2 ${seasonLabel} depuis football-data.org…`
-          : `Import des vrais matchs de phase de ligue ${seasonLabel} (8 × 18), sans décalage de saison…`;
+          : action === "center"
+            ? `Actualisation du Centre Ligue des champions ${seasonLabel} : résultats, classement et phases…`
+            : `Import des vrais matchs de phase de ligue ${seasonLabel} (8 × 18), sans décalage de saison…`;
     setMsg("#syncStatus", pending);
     try {
       if(demoMode){setMsg("#syncStatus",action==="odds"?"Mode démo : les cotes affichées sont fictives et servent uniquement à tester l’interface.":"Mode démo : la synchronisation distante n'est pas appelée.","ok");return;}
       const {data,error}=await sb.functions.invoke("sync-football-data",{body:{action,seasonYear:seasonStartYear(),seasonSlug:state.season.slug,competitionCode:"CL"}});
       if(error) throw new Error("La fonction sync-football-data ne répond pas. Vérifie son déploiement et le secret FOOTBALL_DATA_API_KEY.");
       if(!data?.ok) throw new Error(data?.error||"Synchronisation impossible.");
+      if(action==="center"){
+        const importedLabel=data.sourceSeasonLabel||seasonDisplayLabel(data.sourceSeasonYear||seasonStartYear());
+        setMsg("#syncStatus",`✓ Centre C1 ${importedLabel} · ${data.centerMatchCount||0} matchs · ${data.standingsCount||0} clubs classés · résultats réels actualisés.`,"ok");
+        if(typeof loadUclCenterData==="function"){state.uclCenterLoaded=false;await loadUclCenterData(true);renderUclCenter?.();}
+        toast("Centre Ligue des champions actualisé.");
+        return;
+      }
       if(action==="catalog"){
         const details=Object.entries(data.catalogByCompetition||{}).map(([code,v])=>`${code} ${v.clubs||0}`).join(" · ");
         setMsg("#syncStatus",`✓ Bibliothèque Top 5 : ${data.catalogClubCount||0} clubs uniques · ${data.catalogLogoCount||0} logos${details?` · ${details}`:""}`,"ok");
@@ -355,7 +364,9 @@
       } else {
         setMsg("#syncStatus",`✓ ${common} · ${data.oddsCount||0} match(s) avec cotes 1N2${Number(data.repairedLegacyClubs||0)>0?` · ${data.repairedLegacyClubs} doublon(s) TEST réparé(s)`:""}`,"ok");
       }
-      await loadData(); renderAll(); toast(action==="odds"?`${data.oddsCount||0} match(s) avec cotes 1N2.`:`Calendrier ${importedLabel} synchronisé.`);
+      await loadData();
+      if(typeof loadUclCenterData==="function" && action==="calendar"){state.uclCenterLoaded=false;await loadUclCenterData(true);}
+      renderAll(); toast(action==="odds"?`${data.oddsCount||0} match(s) avec cotes 1N2.`:`Calendrier ${importedLabel} synchronisé.`);
     } catch(err) { setMsg("#syncStatus",friendlyError(err),"error"); }
   }
 

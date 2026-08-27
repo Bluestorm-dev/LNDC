@@ -1,7 +1,7 @@
 import { createClient } from "npm:@supabase/supabase-js@^2";
 import { corsHeaders } from "npm:@supabase/supabase-js@^2/cors";
 
-type Action = "clubs" | "catalog" | "calendar" | "odds" | "full";
+type Action = "clubs" | "catalog" | "calendar" | "center" | "odds" | "full";
 
 type FDTeam = {
   id: number;
@@ -25,6 +25,12 @@ type FDMatch = {
     draw?: number | null;
     awayWin?: number | null;
   } | null;
+  score?: {
+    winner?: string | null;
+    duration?: string | null;
+    fullTime?: { home?: number | null; away?: number | null } | null;
+    halfTime?: { home?: number | null; away?: number | null } | null;
+  } | null;
   homeTeam: FDTeam;
   awayTeam: FDTeam;
 };
@@ -36,6 +42,17 @@ function apiStatusToNid(status: string): "scheduled" | "postponed" | "cancelled"
   switch (String(status || "").toUpperCase()) {
     case "POSTPONED": return "postponed";
     case "CANCELLED": return "cancelled";
+    default: return "scheduled";
+  }
+}
+
+function apiStatusToCenterStatus(status: string): "scheduled" | "live" | "finished" | "postponed" | "cancelled" | "suspended" {
+  switch (String(status || "").toUpperCase()) {
+    case "IN_PLAY": case "PAUSED": return "live";
+    case "FINISHED": return "finished";
+    case "POSTPONED": return "postponed";
+    case "CANCELLED": return "cancelled";
+    case "SUSPENDED": return "suspended";
     default: return "scheduled";
   }
 }
@@ -129,7 +146,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const payload = await req.json().catch(() => ({}));
-    const action = (["clubs", "catalog", "calendar", "odds", "full"].includes(payload?.action) ? payload.action : "full") as Action;
+    const action = (["clubs", "catalog", "calendar", "center", "odds", "full"].includes(payload?.action) ? payload.action : "full") as Action;
     const requestedSeasonYear = Number(payload?.seasonYear || DEFAULT_SOURCE_SEASON_YEAR);
     if (!Number.isInteger(requestedSeasonYear) || requestedSeasonYear < 2024 || requestedSeasonYear > 2100) {
       throw new Error("Année de saison invalide.");
@@ -348,6 +365,8 @@ Deno.serve(async (req: Request) => {
     let oddsCount = 0;
     let catalogClubCount = 0;
     let catalogLogoCount = 0;
+    let centerMatchCount = 0;
+    let standingsCount = 0;
     const catalogByCompetition: Record<string,{clubs:number;logos:number;name:string}> = {};
 
     if (action === "clubs" || action === "full") {
@@ -405,6 +424,92 @@ Deno.serve(async (req: Request) => {
       catalogLogoCount = allCatalogLogoIds.size;
     }
 
+    if (action === "center" || action === "full") {
+      const { data: season, error: seasonError } = await admin
+        .from("seasons").select("id").eq("slug", seasonSlug).single();
+      if (seasonError || !season) throw new Error(`Saison ${seasonSlug} introuvable.`);
+
+      const matchesPayload = await fdFetch(`/competitions/${encodeURIComponent(competitionCode)}/matches?season=${sourceSeasonYear}`);
+      let standingsPayload: any = {};
+      try {
+        standingsPayload = await fdFetch(`/competitions/${encodeURIComponent(competitionCode)}/standings?season=${sourceSeasonYear}`);
+      } catch (standingsError) {
+        console.warn("Classement Football-Data indisponible ; le front calculera un classement de secours à partir des résultats.", standingsError);
+      }
+      const providerSeason = Number(matchesPayload?.filters?.season ?? standingsPayload?.filters?.season);
+      if (Number.isInteger(providerSeason) && providerSeason !== sourceSeasonYear) {
+        throw new Error(`Le fournisseur a renvoyé la saison ${seasonLabel(providerSeason)} au lieu de ${sourceSeasonLabel}. Le Centre C1 n'a pas été modifié.`);
+      }
+
+      const centerMatches = (matchesPayload?.matches || []) as FDMatch[];
+      const seasonWindowStart = Date.UTC(sourceSeasonYear, 5, 1);
+      const seasonWindowEnd = Date.UTC(sourceSeasonYear + 1, 6, 1);
+      const invalidDates = centerMatches.filter(match => {
+        const kickoff = new Date(match.utcDate).getTime();
+        return !Number.isFinite(kickoff) || kickoff < seasonWindowStart || kickoff >= seasonWindowEnd;
+      });
+      if (invalidDates.length) throw new Error(`Le Centre C1 a reçu ${invalidDates.length} date(s) hors saison ${sourceSeasonLabel}. Import refusé.`);
+
+      for (const match of centerMatches) {
+        const homeId = await upsertTeam(match.homeTeam, false);
+        const awayId = await upsertTeam(match.awayTeam, false);
+        // Le Centre C1 peut contenir les tours qualificatifs : ne pas polluer
+        // club_catalog_memberships, réservé aux 36 clubs de la phase de ligue.
+        const status = apiStatusToCenterStatus(match.status);
+        const row = {
+          season_id: season.id,
+          external_provider: "football-data",
+          external_match_id: match.id,
+          competition_code: competitionCode,
+          stage: match.stage || null,
+          matchday: Number.isInteger(match.matchday) ? Number(match.matchday) : null,
+          kickoff_at: sourceKickoffDate(match.utcDate),
+          status,
+          home_club_id: homeId,
+          away_club_id: awayId,
+          home_score: match.score?.fullTime?.home ?? null,
+          away_score: match.score?.fullTime?.away ?? null,
+          half_time_home: match.score?.halfTime?.home ?? null,
+          half_time_away: match.score?.halfTime?.away ?? null,
+          winner: match.score?.winner || null,
+          venue: match.venue || null,
+          last_synced_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+        const { error } = await admin.from("ucl_matches").upsert(row, { onConflict: "external_provider,external_match_id" });
+        if (error) throw new Error(`Migration V0.8.0 absente ou ucl_matches indisponible : ${error.message}`);
+        centerMatchCount++;
+      }
+
+      const totalStanding = (standingsPayload?.standings || []).find((x: any) => String(x?.type || "").toUpperCase() === "TOTAL") || standingsPayload?.standings?.[0];
+      const table = totalStanding?.table || [];
+      if (table.length) {
+        const { error: clearError } = await admin.from("ucl_standings").delete().eq("season_id", season.id).eq("table_type", "TOTAL");
+        if (clearError) throw clearError;
+      }
+      for (const item of table) {
+        const clubId = await upsertTeam(item.team as FDTeam, false);
+        const { error } = await admin.from("ucl_standings").upsert({
+          season_id: season.id,
+          club_id: clubId,
+          position: Number(item.position || 0),
+          played_games: Number(item.playedGames || 0),
+          won: Number(item.won || 0),
+          draw: Number(item.draw || 0),
+          lost: Number(item.lost || 0),
+          points: Number(item.points || 0),
+          goals_for: Number(item.goalsFor || 0),
+          goals_against: Number(item.goalsAgainst || 0),
+          goal_difference: Number(item.goalDifference || 0),
+          form: item.form || null,
+          table_type: "TOTAL",
+          updated_at: new Date().toISOString(),
+        }, { onConflict: "season_id,club_id,table_type" });
+        if (error) throw error;
+        standingsCount++;
+      }
+    }
+
     if (action === "calendar" || action === "odds" || action === "full") {
       const { data: season, error: seasonError } = await admin
         .from("seasons").select("id").eq("slug", seasonSlug).single();
@@ -417,7 +522,7 @@ Deno.serve(async (req: Request) => {
       }
 
       const matches = (matchesPayload?.matches || []) as FDMatch[];
-      const seasonWindowStart = Date.UTC(sourceSeasonYear, 6, 1); // 1er juillet
+      const seasonWindowStart = Date.UTC(sourceSeasonYear, 5, 1); // 1er juin : tours préliminaires possibles
       const seasonWindowEnd = Date.UTC(sourceSeasonYear + 1, 6, 1); // 1er juillet suivant
       const outOfSeason = matches.filter(match => {
         const kickoff = new Date(match.utcDate).getTime();
@@ -615,10 +720,10 @@ Deno.serve(async (req: Request) => {
       action: "football_data_sync",
       entity_type: "season",
       entity_id: seasonSlug,
-      new_data: { action, competitionCode, sourceSeasonYear, sourceSeasonLabel, requestedSeasonYear, clubCount, logoCount, matchdayCount, matchCount, oddsCount, repairedLegacyClubs, catalogClubCount, catalogLogoCount, catalogByCompetition, expectedClubs: EXPECTED_CLUBS, expectedLeagueMatches: EXPECTED_LEAGUE_MATCHES },
+      new_data: { action, competitionCode, sourceSeasonYear, sourceSeasonLabel, requestedSeasonYear, clubCount, logoCount, matchdayCount, matchCount, oddsCount, centerMatchCount, standingsCount, repairedLegacyClubs, catalogClubCount, catalogLogoCount, catalogByCompetition, expectedClubs: EXPECTED_CLUBS, expectedLeagueMatches: EXPECTED_LEAGUE_MATCHES },
     });
 
-    return json({ ok: true, action, clubCount, logoCount, matchdayCount, matchCount, oddsCount, repairedLegacyClubs, catalogClubCount, catalogLogoCount, catalogByCompetition, sourceSeasonYear, sourceSeasonLabel, requestedSeasonYear, expectedClubs: EXPECTED_CLUBS, expectedLeagueMatches: EXPECTED_LEAGUE_MATCHES });
+    return json({ ok: true, action, clubCount, logoCount, matchdayCount, matchCount, oddsCount, centerMatchCount, standingsCount, repairedLegacyClubs, catalogClubCount, catalogLogoCount, catalogByCompetition, sourceSeasonYear, sourceSeasonLabel, requestedSeasonYear, expectedClubs: EXPECTED_CLUBS, expectedLeagueMatches: EXPECTED_LEAGUE_MATCHES });
   } catch (error) {
     console.error("sync-football-data", error);
     return json({ ok: false, error: error instanceof Error ? error.message : "Synchronisation impossible." }, 500);

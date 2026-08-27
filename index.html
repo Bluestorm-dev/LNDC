@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="css/ranking.css" />
   <link rel="stylesheet" href="css/clubs.css" />
   <link rel="stylesheet" href="css/champions.css" />
+  <link rel="stylesheet" href="css/ucl.css" />
+  <link rel="stylesheet" href="css/evenings.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/teams.css" />
   <link rel="stylesheet" href="css/avatars.css" />
@@ -20,6 +22,7 @@
   <link rel="stylesheet" href="css/social.css" />
   <link rel="stylesheet" href="css/admin.css" />
   <link rel="stylesheet" href="css/gamification.css" />
+  <link rel="stylesheet" href="css/v080.css" />
   <title>Le Nid des Champions</title>
 </head>
 <body>
@@ -71,6 +74,8 @@
         <button data-view="knockout"><span class="nav-icon">⚔</span><span>Phases finales</span></button>
         <button data-view="ranking"><span class="nav-icon">#</span><span>Classements</span></button>
         <button data-view="season"><span class="nav-icon">◇</span><span>Saison</span></button>
+        <button data-view="ucl"><span class="nav-icon">⭐</span><span>Ligue des champions</span></button>
+        <button data-view="evenings"><span class="nav-icon">🌙</span><span>Soirées européennes</span></button>
         <button data-view="teams"><span class="nav-icon">🛡</span><span>Teams</span></button>
         <button data-view="museum"><span class="nav-icon">🏛</span><span>Musée</span></button>
         <button data-view="profile"><span class="nav-icon">♙</span><span>Profil</span></button>
@@ -83,7 +88,7 @@
         <span class="sidebar-profile-copy"><strong id="sidebarUserName">—</strong><small id="sidebarUserClub">Club de cœur : —</small></span>
         <span class="sidebar-chevron">›</span>
       </button>
-      <div class="sidebar-foot"><span class="status-dot"></span><span>Le Nid est connecté</span><small>V0.7.4</small></div>
+      <div class="sidebar-foot"><span class="status-dot"></span><span>Le Nid est connecté</span><small>V0.8.0</small></div>
     </aside>
 
     <section class="workspace">
@@ -103,7 +108,7 @@
     <section id="view-home" class="view">
       <article class="home-hero card">
         <div class="home-hero-copy">
-          <span class="eyebrow gold">Soirées européennes · V0.7.4</span>
+          <span class="eyebrow gold">Soirées européennes · V0.8.0</span>
           <h2 id="welcomeTitle">Bienvenue dans le Nid européen.</h2>
           <p id="welcomeText">Tout ce qui compte maintenant, sans dérouler tout le calendrier sous ton bec.</p>
           <div class="home-actions"><button class="btn" data-jump="matches">Faire mes pronostics</button><button class="btn secondary" data-jump="profile">Mon profil & mes champions</button></div>
@@ -114,6 +119,7 @@
       <article id="homePushPrompt" class="card home-push-prompt hidden" aria-live="polite"></article>
       <article id="homeMuseumCard" class="card home-museum-card hidden" aria-live="polite"></article>
       <article id="homeNarrativeCard" class="card home-narrative-card hidden" aria-live="polite"></article>
+      <article id="homeEveningCard" class="card home-evening-card hidden" aria-live="polite"></article>
 
       <div class="home-kpi-strip">
         <article class="home-kpi"><span>Rang</span><strong id="kpiRank">—</strong><small>classement général</small></article>
@@ -155,7 +161,7 @@
 
 
     <section id="view-knockout" class="view hidden">
-      <div class="knockout-hero card card-pad"><div><span class="eyebrow">Phases finales · V0.7.4</span><h2>Du barrage à la coupe.</h2><p class="muted">Aller-retour, cumul, score à 120 minutes, tirs au but et qualifié. Le tableau se propage automatiquement quand une confrontation est terminée.</p></div><span class="ko-live-mark">⚔️</span></div>
+      <div class="knockout-hero card card-pad"><div><span class="eyebrow">Phases finales · V0.8.0</span><h2>Du barrage à la coupe.</h2><p class="muted">Aller-retour, cumul, score à 120 minutes, tirs au but et qualifié. Le tableau se propage automatiquement quand une confrontation est terminée.</p></div><span class="ko-live-mark">⚔️</span></div>
       <div id="knockoutPhaseTabs" class="knockout-phase-tabs"></div>
       <div id="knockoutSummary" class="knockout-summary"></div>
       <div id="knockoutPanel" class="knockout-grid"><article class="card card-pad"><div class="empty">Le tableau des phases finales n'est pas encore installé.</div></article></div>
@@ -212,6 +218,14 @@
     </section>
 
 
+    <section id="view-ucl" class="view hidden">
+      <div id="uclCenterRoot"><article class="card card-pad"><div class="empty">Chargement du Centre Ligue des champions…</div></article></div>
+    </section>
+
+    <section id="view-evenings" class="view hidden">
+      <div id="eveningHubRoot"><article class="card card-pad"><div class="empty">Chargement de la soirée européenne…</div></article></div>
+    </section>
+
     <section id="view-museum" class="view hidden">
       <div id="museumRoot"><article class="card card-pad"><div class="empty">Chargement du Musée…</div></article></div>
     </section>
@@ -219,7 +233,7 @@
     <section id="view-teams" class="view hidden">
       <div class="teams-hero card card-pad">
         <div>
-          <span class="eyebrow gold">V0.7.4 · Communautés</span>
+          <span class="eyebrow gold">V0.8.0 · Communautés</span>
           <h2>Les Teams du Nid</h2>
           <p class="muted">Une seule Team par saison. Une identité commune, des cadres reconnaissables et trois classements dédiés.</p>
         </div>
@@ -242,7 +256,7 @@
     </section>
 
     <section id="view-rival" class="view hidden">
-      <div class="section-title"><div><span class="eyebrow gold">V0.7.4 · Rivalités</span><h3>Ma Némésis</h3><p>Un duel par journée UEFA. Aucun point bonus : seulement l’honneur, les statistiques et les piques du Hibou.</p></div><span class="chip">⚔️ DUELS</span></div>
+      <div class="section-title"><div><span class="eyebrow gold">V0.8.0 · Rivalités</span><h3>Ma Némésis</h3><p>Un duel par journée UEFA. Aucun point bonus : seulement l’honneur, les statistiques et les piques du Hibou.</p></div><span class="chip">⚔️ DUELS</span></div>
       <div id="rivalPagePanel"><article class="card card-pad"><div class="empty">Chargement de la rivalité…</div></article></div>
     </section>
 
@@ -259,13 +273,13 @@
         <div id="profileMsg" class="form-msg"></div>
       </article>
 
-      <div class="section-title avatar-profile-title"><div><span class="eyebrow">Identité visuelle</span><h3>Mon avatar</h3><p>Choisis un Hibou officiel ou envoie ton propre PNG/JPG/WebP. Les uploads personnels passent par la modération Admin.</p></div><span class="chip">V0.7.4</span></div>
+      <div class="section-title avatar-profile-title"><div><span class="eyebrow">Identité visuelle</span><h3>Mon avatar</h3><p>Choisis un Hibou officiel ou envoie ton propre PNG/JPG/WebP. Les uploads personnels passent par la modération Admin.</p></div><span class="chip">V0.8.0</span></div>
       <article id="avatarEditor" class="card card-pad avatar-editor-card-v053"><div class="empty">Chargement de la bibliothèque…</div></article>
 
       <div class="section-title profile-team-title"><div><span class="eyebrow">Communauté</span><h3>Ma Team</h3><p>Ton appartenance actuelle et son identité visuelle.</p></div></div>
       <article id="profileTeamCard" class="card card-pad profile-team-card"><div class="empty">Chargement…</div></article>
 
-      <div class="section-title"><div><span class="eyebrow">Communication</span><h3>Hibou & notifications</h3><p>Choisis ce qui peut te prévenir, le niveau de piquant du Hibou et les heures où le Nid doit se taire.</p></div><span class="chip">🔔 V0.7.4</span></div>
+      <div class="section-title"><div><span class="eyebrow">Communication</span><h3>Hibou & notifications</h3><p>Choisis ce qui peut te prévenir, le niveau de piquant du Hibou et les heures où le Nid doit se taire.</p></div><span class="chip">🔔 V0.8.0</span></div>
       <article id="notificationPreferencesPanel" class="card card-pad"><div class="empty">Chargement des préférences…</div></article>
 
       <div class="section-title profile-account-title"><div><span class="eyebrow danger">Compte</span><h3>Ma session</h3><p>Fermer ta session sur cet appareil. Tes pronostics, ton profil et tes réglages restent enregistrés.</p></div></div>
@@ -290,7 +304,7 @@
           <h2>Administration</h2>
           <p>Un espace par métier, sans dérouler toute l'administration sur une seule page.</p>
         </div>
-        <span class="chip">V0.7.4</span>
+        <span class="chip">V0.8.0</span>
       </div>
 
       <div class="admin-shell">
@@ -356,8 +370,8 @@
             <div class="admin-panel-head"><div><span class="eyebrow">Données & tournoi</span><h3>Compétition</h3><p>Synchronisation, bibliothèque des clubs, cotes et préparation des phases finales.</p></div><span class="chip">ADMIN</span></div>
             <article class="card card-pad">
               <div class="admin-sync-row">
-                <div><strong>Clubs, calendrier & cotes</strong><p class="muted">Football-Data synchronise la Champions League et la bibliothèque Top 5. Aucun résultat historique n’est importé et les cotes n’influencent jamais le barème.</p></div>
-                <div class="actions"><button id="syncClubsBtn" class="btn small">Clubs C1 + logos</button><button id="syncClubCatalogBtn" class="btn gold small">Bibliothèque Top 5</button><button id="syncCalendarBtn" class="btn secondary small">Calendrier CL</button><button id="syncOddsBtn" class="btn secondary small">Cotes 1N2</button></div>
+                <div><strong>Clubs, calendrier & cotes</strong><p class="muted">Football-Data synchronise la Champions League 2026–27, le Centre C1 (résultats, classement, phases) et la bibliothèque Top 5. Les données du Centre C1 restent séparées du barème de pronostics.</p></div>
+                <div class="actions"><button id="syncClubsBtn" class="btn small">Clubs C1 + logos</button><button id="syncClubCatalogBtn" class="btn gold small">Bibliothèque Top 5</button><button id="syncCalendarBtn" class="btn secondary small">Calendrier CL</button><button id="syncUclCenterBtn" class="btn secondary small">Centre C1</button><button id="syncOddsBtn" class="btn secondary small">Cotes 1N2</button></div>
               </div>
               <div id="syncStatus" class="form-msg"></div>
               <div class="club-library-toolbar">
@@ -403,8 +417,9 @@
           </section>
 
           <section class="admin-panel" data-admin-panel="gamification">
-            <div class="admin-panel-head"><div><span class="eyebrow gold">V0.7.4</span><h3>Gamification & Musée</h3><p>Badges extensibles, Casseroles, Génie, records, laboratoire et clôture de saison.</p></div><span class="chip">SUPER ADMIN</span></div>
+            <div class="admin-panel-head"><div><span class="eyebrow gold">V0.8.0</span><h3>Gamification & Musée</h3><p>Badges extensibles, Casseroles, Génie, records, laboratoire et clôture de saison.</p></div><span class="chip">SUPER ADMIN</span></div>
             <div id="adminGamificationPanel" class="admin-gamification-panel"><div class="empty">Chargement…</div></div>
+            <article id="adminMonthlyPollPanel" class="card card-pad" style="margin-top:12px"><div class="empty">Chargement des votes mensuels…</div></article>
           </section>
 
           <section class="admin-panel" data-admin-panel="communication" id="communicationAdminSection">
@@ -418,9 +433,9 @@
           </section>
 
           <section class="admin-panel" data-admin-panel="application">
-            <div class="admin-panel-head"><div><span class="eyebrow">Technique</span><h3>Application</h3><p>L'état du Nid et les opérations de maintenance locale. Les futurs réglages globaux arriveront ici.</p></div><span class="chip">V0.7.4</span></div>
+            <div class="admin-panel-head"><div><span class="eyebrow">Technique</span><h3>Application</h3><p>L'état du Nid et les opérations de maintenance locale. Les futurs réglages globaux arriveront ici.</p></div><span class="chip">V0.8.0</span></div>
             <div class="grid grid-2">
-              <article class="card card-pad admin-app-state"><span class="eyebrow gold">État</span><h3>Le Nid des Champions</h3><dl><div><dt>Version front</dt><dd id="adminAppVersion">0.7.4</dd></div><div><dt>Saison</dt><dd id="adminAppSeason">—</dd></div><div><dt>Backend</dt><dd id="adminAppBackend">—</dd></div><div><dt>Mon rôle</dt><dd id="adminAppRole">—</dd></div></dl></article>
+              <article class="card card-pad admin-app-state"><span class="eyebrow gold">État</span><h3>Le Nid des Champions</h3><dl><div><dt>Version front</dt><dd id="adminAppVersion">0.8.0</dd></div><div><dt>Saison</dt><dd id="adminAppSeason">—</dd></div><div><dt>Backend</dt><dd id="adminAppBackend">—</dd></div><div><dt>Mon rôle</dt><dd id="adminAppRole">—</dd></div></dl></article>
               <article class="card card-pad"><span class="eyebrow">Maintenance</span><h3>Actualiser le Nid</h3><p class="muted">Ces actions ne modifient aucune donnée métier dans Supabase.</p><div class="admin-maintenance-actions"><button id="adminReloadDataBtn" class="btn small" type="button">↻ Recharger les données</button><button id="adminRefreshPwaBtn" class="btn secondary small" type="button">Nettoyer le cache PWA</button></div><div id="adminMaintenanceMsg" class="form-msg"></div></article>
             </div>
             <article class="card card-pad admin-future-card"><span class="eyebrow">À venir ici</span><h3>Paramètres généraux</h3><div class="admin-future-chips"><span>Feature flags</span><span>Saisons</span><span>Sauvegardes</span><span>Exports</span><span>Maintenance</span><span>Sécurité</span></div><p class="muted">L'architecture est déjà prête à accueillir les prochains modules sans rallonger la page.</p></article>
@@ -433,6 +448,8 @@
     <nav class="bottom-nav" aria-label="Navigation mobile">
       <button data-view="home" class="active"><span>⌂</span>Accueil</button>
       <button data-view="matches"><span>⚽</span>Matchs</button>
+      <button data-view="ucl"><span>⭐</span>C1</button>
+      <button data-view="evenings"><span>🌙</span>Soirées</button>
       <button data-view="knockout"><span>⚔️</span>Phases</button>
       <button data-view="ranking"><span>🏆</span>Classement</button>
       <button data-view="season"><span>✦</span>Saison</button>
@@ -457,6 +474,8 @@
   <script src="js/auth.js"></script>
   <script src="js/data.js"></script>
   <script src="js/champions.js"></script>
+  <script src="js/ucl.js"></script>
+  <script src="js/evenings.js"></script>
   <script src="js/profile.js"></script>
   <script src="js/predictions.js"></script>
   <script src="js/ranking.js"></script>

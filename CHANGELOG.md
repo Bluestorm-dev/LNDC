@@ -1,4 +1,17 @@
-# V0.7.4
+# V0.8.0
+
+## 0.8.0 — Soirées européennes & Centre Ligue des champions
+
+- Ajout de l'onglet Ligue des champions : résultats réels, calendrier, classement, phases finales et clubs.
+- Ajout des fiches clubs avec forme, derniers et prochains matchs.
+- Tables séparées `ucl_matches` et `ucl_standings` alimentées par Football-Data.
+- Ajout de l'action Admin `Centre C1` dans `sync-football-data`.
+- Ajout des soirées européennes, du Hibou de la nuit et des archives.
+- Ajout du moteur Hibou solitaire 10 / 7 / 5 et de son classement parallèle.
+- Ajout des votes mensuels Casserole / Génie.
+- Navigation mobile rendue défilable pour accueillir les nouveaux espaces.
+- Maintien du verrou strict sur la saison 2026/27 : aucun fallback 2025/26.
+
 
 - Aperçu mobile de création/édition Team remis aux dimensions réelles des composants finaux.
 - Import Calendrier CL strict : refus si le fournisseur renvoie une autre saison ou des dates hors 2026/27.

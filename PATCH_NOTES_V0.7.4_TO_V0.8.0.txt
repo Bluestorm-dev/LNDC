@@ -1,0 +1,59 @@
+PATCH LE NID DES CHAMPIONS — V0.7.4 → V0.8.0
+==============================================
+
+NOUVEAUTÉS
+- Centre Ligue des champions complet : vue d'ensemble, calendrier/résultats, classement, phases finales et clubs.
+- Fiches clubs cliquables : position, points, V-N-D, différence de buts, forme, 5 derniers et 5 prochains matchs.
+- Soirées européennes : états avant / LIVE / après, classement dédié, Hibou de la nuit et archives.
+- Accueil contextuel de soirée pendant les 36 h avant et jusqu'à 48 h après.
+- Statistiques collectives de soirée et carrousel « Moments du Nid ».
+- Hibou solitaire et classement parallèle 10 / 7 / 5, sans impact sur les points officiels.
+- Votes mensuels Casserole du mois / Coup de Génie du mois, gérés par le Super Admin.
+- Navigation mobile adaptée aux nouveaux onglets.
+- Synchronisation Centre C1 séparée du calendrier destiné aux pronostics.
+- Saison 2026/27 stricte : aucun fallback ou décalage depuis 2025/26.
+
+SQL OBLIGATOIRE
+- sql/HOTFIX_V0.8.0_EXISTING_DB.sql
+
+EDGE FUNCTION À REDÉPLOYER
+- supabase/functions/sync-football-data/index.ts
+
+FICHIERS MODIFIÉS
+- CHANGELOG.md
+- README.md
+- VERSION
+- config.example.js
+- config.js
+- index.html
+- js/admin.js
+- js/app.js
+- js/core.js
+- supabase/functions/sync-football-data/index.ts
+- sw.js
+
+FICHIERS AJOUTÉS
+- PATCH_NOTES_V0.7.4_TO_V0.8.0.txt
+- css/evenings.css
+- css/ucl.css
+- css/v080.css
+- docs/TEST_CHECKLIST_V0.8.0.md
+- installation/INSTALLATION_V0.8.0.txt
+- js/evenings.js
+- js/ucl.js
+- sql/000_INSTALL_FRESH_V0.8.0.sql
+- sql/024_patch_v0.8.0_evenings_ucl_center.sql
+- sql/HOTFIX_V0.8.0_EXISTING_DB.sql
+- tests/release-v0.8.0.mjs
+
+FICHIERS À SUPPRIMER
+- Aucun.
+
+ORDRE CONSEILLÉ
+1. Exécuter le HOTFIX SQL.
+2. Copier le contenu du ZIP patch à la racine du projet en remplaçant les fichiers existants.
+3. Redéployer sync-football-data.
+4. Déployer GitHub Pages.
+5. Ctrl+F5 sur PC / fermer puis rouvrir la PWA sur mobile.
+6. Dans Admin > Compétition, utiliser « Centre C1 » pour synchroniser les données réelles disponibles.
+7. Lancer la checklist V0.8.0.

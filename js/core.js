@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.7.2 — noyau, état et utilitaires
+// Le Nid des Champions V0.8.0 — noyau, état et utilitaires
   const CFG = window.NIDC_CONFIG || {};
   const configured = Boolean(
     CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY &&
@@ -102,6 +102,23 @@
     adminNarrativeTemplates: [],
     gamificationAudit: [],
     gamificationLoadedOnce: false,
+    uclMatches: [],
+    uclStandings: [],
+    uclTab: "overview",
+    uclCalendarFilter: "all",
+    uclClubSearch: "",
+    uclSelectedClubId: null,
+    uclCenterLoaded: false,
+    uclCenterLoading: false,
+    uclCenterError: null,
+    eveningRankingRows: [],
+    solitaryLeaderboard: [],
+    solitaryEvents: [],
+    monthlyPolls: [],
+    eveningTab: "summary",
+    eveningLoadedDate: null,
+    eveningLoading: false,
+    eveningError: null,
     demoUsers: JSON.parse(localStorage.getItem("nidc_demo_users") || "null") || [
       {id:"demo-parkaf", username:"Parkaf", role:"super_admin", status:"active", club_heart:"Stade Brestois", avatar_key:"avatar-hibou-or", avatar_source:"library", avatar_storage_path:null, avatar_moderation_status:"approved"},
       {id:"demo-ju", username:"Ju", role:"player", status:"active", club_heart:"PSG", avatar_key:"avatar-hibou-saphir", avatar_source:"library", avatar_storage_path:null, avatar_moderation_status:"approved"},
@@ -182,12 +199,14 @@
   function setView(name) {
     // V0.4.1 : le choix champion vit désormais dans Profil.
     if(name === "champions") name = "profile";
-    const titles={home:"Accueil",matches:"Pronostics",knockout:"Phases finales",ranking:"Classements",season:"Saison",teams:"Teams",museum:"Musée",profile:"Profil & champions",rival:"Rivalités",admin:"Administration"};
+    const titles={home:"Accueil",matches:"Pronostics",knockout:"Phases finales",ranking:"Classements",season:"Saison",ucl:"Ligue des champions",evenings:"Soirées européennes",teams:"Teams",museum:"Musée",profile:"Profil & champions",rival:"Rivalités",admin:"Administration"};
     $$(".view").forEach(v => v.classList.toggle("hidden", v.id !== `view-${name}`));
     $$('[data-view]').forEach(b => b.classList.toggle("active", b.dataset.view === name));
     const title=$("#pageTitle");
     if(title) title.textContent=titles[name]||"Le Nid des Champions";
     if(name==="museum"&&typeof renderMuseum==="function")renderMuseum();
+    if(name==="ucl"&&typeof loadUclCenterData==="function"){loadUclCenterData().then(()=>renderUclCenter?.()).catch(err=>toast(friendlyError(err),"error"));}
+    if(name==="evenings"&&typeof loadEveningHubData==="function"){loadEveningHubData().then(()=>renderEveningHub?.()).catch(err=>toast(friendlyError(err),"error"));}
     window.scrollTo({top:0, behavior:"smooth"});
   }
 
