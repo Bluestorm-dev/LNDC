@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.9.0 — chargement des données, saisons et classements serveur
+// Le Nid des Champions V0.9.5 — chargement des données, saisons et classements serveur
   function chooseDefaultMatchday() {
     if (state.selectedMatchdayId && state.matchdays.some(md=>md.id===state.selectedMatchdayId)) return;
     const upcoming = state.matchdays.find(md => state.allMatches.some(m => m.matchday_id===md.id && !isLocked(m)));
@@ -8,6 +8,7 @@
   }
 
   async function loadData() {
+    if(typeof loadPublicAppSettingsV095==="function")await loadPublicAppSettingsV095();
     if(demoMode) {
       demoInit();
       const allPred=JSON.parse(localStorage.getItem("nidc_demo_predictions")||"{}");

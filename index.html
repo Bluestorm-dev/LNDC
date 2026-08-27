@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="css/gamification.css" />
   <link rel="stylesheet" href="css/v080.css" />
   <link rel="stylesheet" href="css/career.css" />
+  <link rel="stylesheet" href="css/admin095.css" />
   <title>Le Nid des Champions</title>
 </head>
 <body>
@@ -89,7 +90,7 @@
         <span class="sidebar-profile-copy"><strong id="sidebarUserName">—</strong><small id="sidebarUserClub">Club de cœur : —</small></span>
         <span class="sidebar-chevron">›</span>
       </button>
-      <div class="sidebar-foot"><span class="status-dot"></span><span>Le Nid est connecté</span><small>V0.9.0</small></div>
+      <div class="sidebar-foot"><span class="status-dot"></span><span>Le Nid est connecté</span><small>V0.9.5</small></div>
     </aside>
 
     <section class="workspace">
@@ -109,7 +110,7 @@
     <section id="view-home" class="view">
       <article class="home-hero card">
         <div class="home-hero-copy">
-          <span class="eyebrow gold">Soirées européennes · V0.9.0</span>
+          <span class="eyebrow gold">Soirées européennes · V0.9.5</span>
           <h2 id="welcomeTitle">Bienvenue dans le Nid européen.</h2>
           <p id="welcomeText">Tout ce qui compte maintenant, sans dérouler tout le calendrier sous ton bec.</p>
           <div class="home-actions"><button class="btn" data-jump="matches">Faire mes pronostics</button><button class="btn secondary" data-jump="profile">Mon profil & mes champions</button></div>
@@ -162,7 +163,7 @@
 
 
     <section id="view-knockout" class="view hidden">
-      <div class="knockout-hero card card-pad"><div><span class="eyebrow">Phases finales · V0.9.0</span><h2>Du barrage à la coupe.</h2><p class="muted">Aller-retour, cumul, score à 120 minutes, tirs au but et qualifié. Le tableau se propage automatiquement quand une confrontation est terminée.</p></div><span class="ko-live-mark">⚔️</span></div>
+      <div class="knockout-hero card card-pad"><div><span class="eyebrow">Phases finales · V0.9.5</span><h2>Du barrage à la coupe.</h2><p class="muted">Aller-retour, cumul, score à 120 minutes, tirs au but et qualifié. Le tableau se propage automatiquement quand une confrontation est terminée.</p></div><span class="ko-live-mark">⚔️</span></div>
       <div id="knockoutPhaseTabs" class="knockout-phase-tabs"></div>
       <div id="knockoutSummary" class="knockout-summary"></div>
       <div id="knockoutPanel" class="knockout-grid"><article class="card card-pad"><div class="empty">Le tableau des phases finales n'est pas encore installé.</div></article></div>
@@ -272,18 +273,19 @@
           <div class="field"><label for="profileClubInput">Club de cœur</label><input id="profileClubInput" list="clubHeartOptions" maxlength="80" placeholder="Commence à taper le nom du club…" /><datalist id="clubHeartOptions"></datalist><small class="field-help">Champions League + Ligue 1, Premier League, Liga, Serie A et Bundesliga après synchronisation Admin.</small></div>
         </div>
         <div class="actions"><button id="saveProfileBtn" class="btn">Enregistrer le profil</button><button id="profileAdminBtn" class="btn secondary hidden" type="button">Ouvrir l’administration</button></div>
+        <article id="accountPrivacyPanelV095" class="card card-pad" style="margin-top:12px"></article>
         <div id="profileMsg" class="form-msg"></div>
       </article>
 
       <article id="profileCareerRoot" class="card card-pad" style="margin-top:14px"><div class="empty">Chargement de la carrière…</div></article>
 
-      <div class="section-title avatar-profile-title"><div><span class="eyebrow">Identité visuelle</span><h3>Mon avatar</h3><p>Choisis un Hibou officiel ou envoie ton propre PNG/JPG/WebP. Les uploads personnels passent par la modération Admin.</p></div><span class="chip">V0.9.0</span></div>
+      <div class="section-title avatar-profile-title"><div><span class="eyebrow">Identité visuelle</span><h3>Mon avatar</h3><p>Choisis un Hibou officiel ou envoie ton propre PNG/JPG/WebP. Les uploads personnels passent par la modération Admin.</p></div><span class="chip">V0.9.5</span></div>
       <article id="avatarEditor" class="card card-pad avatar-editor-card-v053"><div class="empty">Chargement de la bibliothèque…</div></article>
 
       <div class="section-title profile-team-title"><div><span class="eyebrow">Communauté</span><h3>Ma Team</h3><p>Ton appartenance actuelle et son identité visuelle.</p></div></div>
       <article id="profileTeamCard" class="card card-pad profile-team-card"><div class="empty">Chargement…</div></article>
 
-      <div class="section-title"><div><span class="eyebrow">Communication</span><h3>Hibou & notifications</h3><p>Choisis ce qui peut te prévenir, le niveau de piquant du Hibou et les heures où le Nid doit se taire.</p></div><span class="chip">🔔 V0.9.0</span></div>
+      <div class="section-title"><div><span class="eyebrow">Communication</span><h3>Hibou & notifications</h3><p>Choisis ce qui peut te prévenir, le niveau de piquant du Hibou et les heures où le Nid doit se taire.</p></div><span class="chip">🔔 V0.9.5</span></div>
       <article id="notificationPreferencesPanel" class="card card-pad"><div class="empty">Chargement des préférences…</div></article>
 
       <div class="section-title profile-account-title"><div><span class="eyebrow danger">Compte</span><h3>Ma session</h3><p>Fermer ta session sur cet appareil. Tes pronostics, ton profil et tes réglages restent enregistrés.</p></div></div>
@@ -308,20 +310,29 @@
           <h2>Administration</h2>
           <p>Un espace par métier, sans dérouler toute l'administration sur une seule page.</p>
         </div>
-        <span class="chip">V0.9.0</span>
+        <div class="admin-head-tools-v095">
+          <div class="admin-search-v095">
+            <span>⌕</span><input id="adminGlobalSearchV095" type="search" autocomplete="off" placeholder="Trouver une option…  Ctrl+K" aria-label="Rechercher une option dans l’administration" />
+            <div id="adminSearchResultsV095" class="admin-search-results-v095 hidden" role="listbox"></div>
+          </div>
+          <span class="chip">V0.9.5</span>
+        </div>
       </div>
 
       <div class="admin-shell">
         <aside class="admin-nav" aria-label="Rubriques d'administration">
-          <button class="active" type="button" data-admin-section="dashboard"><span>⌂</span><b>Vue d’ensemble</b><small>État du Nid</small></button>
+          <div class="admin-nav-group-v095">Pilotage</div>
+          <button class="active" type="button" data-admin-section="dashboard"><span>⌂</span><b>Vue d’ensemble</b><small>Urgences & raccourcis</small></button>
           <button type="button" data-admin-section="matches"><span>⚽</span><b>Matchs & LIVE</b><small>Scores et journées</small></button>
-          <button id="adminTestNav" class="hidden" type="button" data-admin-section="test"><span>🧪</span><b>Test</b><small>Calendrier & Cron</small></button>
           <button type="button" data-admin-section="competition"><span>🏆</span><b>Compétition</b><small>Clubs, API, phases</small></button>
-          <button type="button" data-admin-section="players"><span>♟</span><b>Joueurs</b><small>Comptes et avatars</small></button>
+          <div class="admin-nav-group-v095">Communauté</div>
+          <button type="button" data-admin-section="players"><span>♟</span><b>Joueurs & accès</b><small>Comptes, avatars, titres</small></button>
           <button type="button" data-admin-section="teams"><span>🛡</span><b>Teams</b><small>Communautés</small></button>
-          <button id="adminGamificationNav" class="hidden" type="button" data-admin-section="gamification"><span>🏛</span><b>Gamification</b><small>Musée & règles</small></button>
+          <button id="adminGamificationNav" class="hidden" type="button" data-admin-section="gamification"><span>🏛</span><b>Contenu & Musée</b><small>Badges, votes, records</small></button>
           <button type="button" data-admin-section="communication"><span>🦉</span><b>Communication</b><small>Hibou, tickets, push</small></button>
-          <button type="button" data-admin-section="application"><span>⚙</span><b>Application</b><small>État et maintenance</small></button>
+          <div class="admin-nav-group-v095">Technique</div>
+          <button type="button" data-admin-section="application"><span>⚙</span><b>Système & sécurité</b><small>Réglages, backups, audit</small></button>
+          <button id="adminTestNav" class="hidden" type="button" data-admin-section="test"><span>🧪</span><b>Laboratoire</b><small>Tests & Cron</small></button>
         </aside>
 
         <div class="admin-content">
@@ -337,6 +348,8 @@
               <article class="card card-pad admin-status-card"><span class="eyebrow gold">Saison</span><h3 id="adminDashSeason">—</h3><p class="muted">Phase de ligue, phases finales et finale dans le même espace de pilotage.</p><button class="text-action gold" type="button" data-admin-go="competition">Gérer la compétition →</button></article>
               <article class="card card-pad admin-status-card"><span class="eyebrow">Résultats</span><h3>LIVE MANUAL</h3><p class="muted">Les scores restent sous contrôle Admin et le classement provisoire suit immédiatement.</p><button class="text-action" type="button" data-admin-go="matches">Ouvrir les matchs →</button></article>
             </div>
+            <article id="adminHealthV095" class="card card-pad admin-v095-block"><div class="empty">Chargement de l’état du Nid…</div></article>
+            <article id="adminQuickActionsV095" class="card card-pad admin-v095-block"><div class="empty">Chargement des raccourcis…</div></article>
           </section>
 
           <section class="admin-panel" data-admin-panel="matches">
@@ -411,6 +424,8 @@
             <div class="admin-subhead"><div><h4>Modération des avatars</h4><p>Valide ou refuse les images personnelles avant leur affichage public.</p></div></div>
             <article id="avatarModerationPanel" class="card card-pad avatar-moderation-panel"><div class="empty">Chargement…</div></article>
             <article id="adminDistinctionPanel" class="card card-pad" style="margin-top:12px"><div class="empty">Chargement des distinctions…</div></article>
+            <article id="adminImpersonationPanelV095" class="card card-pad admin-v095-block"><div class="empty">Chargement de l’aperçu joueur…</div></article>
+            <article id="adminDeletionPanelV095" class="card card-pad admin-v095-block"><div class="empty">Chargement des demandes de suppression…</div></article>
           </section>
 
           <section class="admin-panel" data-admin-panel="teams">
@@ -422,7 +437,7 @@
           </section>
 
           <section class="admin-panel" data-admin-panel="gamification">
-            <div class="admin-panel-head"><div><span class="eyebrow gold">V0.9.0</span><h3>Gamification & Musée</h3><p>Badges extensibles, Casseroles, Génie, records, laboratoire et clôture de saison.</p></div><span class="chip">SUPER ADMIN</span></div>
+            <div class="admin-panel-head"><div><span class="eyebrow gold">V0.9.5</span><h3>Gamification & Musée</h3><p>Badges extensibles, Casseroles, Génie, records, laboratoire et clôture de saison.</p></div><span class="chip">SUPER ADMIN</span></div>
             <div id="adminGamificationPanel" class="admin-gamification-panel"><div class="empty">Chargement…</div></div>
             <article id="adminMonthlyPollPanel" class="card card-pad" style="margin-top:12px"><div class="empty">Chargement des votes mensuels…</div></article>
             <article id="adminGeneralPollPanel" class="card card-pad" style="margin-top:12px"><div class="empty">Chargement des sondages généraux…</div></article>
@@ -439,13 +454,16 @@
           </section>
 
           <section class="admin-panel" data-admin-panel="application">
-            <div class="admin-panel-head"><div><span class="eyebrow">Technique</span><h3>Application</h3><p>L'état du Nid et les opérations de maintenance locale. Les futurs réglages globaux arriveront ici.</p></div><span class="chip">V0.9.0</span></div>
+            <div class="admin-panel-head"><div><span class="eyebrow">Technique</span><h3>Application</h3><p>Réglages globaux, saisons, sauvegardes, exports et traçabilité réunis au même endroit.</p></div><span class="chip">V0.9.5</span></div>
             <div class="grid grid-2">
-              <article class="card card-pad admin-app-state"><span class="eyebrow gold">État</span><h3>Le Nid des Champions</h3><dl><div><dt>Version front</dt><dd id="adminAppVersion">0.9.0</dd></div><div><dt>Saison</dt><dd id="adminAppSeason">—</dd></div><div><dt>Backend</dt><dd id="adminAppBackend">—</dd></div><div><dt>Mon rôle</dt><dd id="adminAppRole">—</dd></div></dl></article>
+              <article class="card card-pad admin-app-state"><span class="eyebrow gold">État</span><h3>Le Nid des Champions</h3><dl><div><dt>Version front</dt><dd id="adminAppVersion">0.9.5</dd></div><div><dt>Saison</dt><dd id="adminAppSeason">—</dd></div><div><dt>Backend</dt><dd id="adminAppBackend">—</dd></div><div><dt>Mon rôle</dt><dd id="adminAppRole">—</dd></div></dl></article>
               <article class="card card-pad"><span class="eyebrow">Maintenance</span><h3>Actualiser le Nid</h3><p class="muted">Ces actions ne modifient aucune donnée métier dans Supabase.</p><div class="admin-maintenance-actions"><button id="adminReloadDataBtn" class="btn small" type="button">↻ Recharger les données</button><button id="adminRefreshPwaBtn" class="btn secondary small" type="button">Nettoyer le cache PWA</button></div><div id="adminMaintenanceMsg" class="form-msg"></div></article>
             </div>
             <article id="adminSeasonManagementPanel" class="card card-pad"><div class="empty">Chargement de la gestion des saisons…</div></article>
-            <article class="card card-pad admin-future-card"><span class="eyebrow">À venir ici</span><h3>Paramètres généraux</h3><div class="admin-future-chips"><span>Feature flags</span><span>Sauvegardes</span><span>Exports</span><span>Maintenance</span><span>Sécurité</span></div><p class="muted">La gestion multi-saisons est active en V0.9.0. Les autres outils de durcissement arrivent en V0.9.5.</p></article>
+            <article id="adminSettingsPanelV095" class="card card-pad admin-v095-block"><div class="empty">Chargement des réglages…</div></article>
+            <article id="adminBackupPanelV095" class="card card-pad admin-v095-block"><div class="empty">Chargement des sauvegardes…</div></article>
+            <article id="adminExportPanelV095" class="card card-pad admin-v095-block"><div class="empty">Chargement des exports…</div></article>
+            <article id="adminAuditPanelV095" class="card card-pad admin-v095-block"><div class="empty">Chargement du journal…</div></article>
           </section>
         </div>
       </div>
@@ -490,6 +508,7 @@
   <script src="js/gamification.js"></script>
   <script src="js/admin.js"></script>
   <script src="js/admin-test.js"></script>
+  <script src="js/admin095.js"></script>
   <script src="js/realtime.js"></script>
   <script src="js/app.js"></script>
 </body>

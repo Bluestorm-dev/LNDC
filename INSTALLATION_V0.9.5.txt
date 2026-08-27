@@ -1,0 +1,85 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.9.5
+============================================
+
+OBJET
+-----
+V0.9.5 — Administration & durcissement.
+
+Cette version ne change pas le cœur des pronostics : elle rend l'administration plus rapide à utiliser et ajoute les garde-fous nécessaires avant la phase de pré-production.
+
+NOUVEAUTÉS PRINCIPALES
+----------------------
+- cockpit Admin repensé : navigation regroupée, recherche globale et raccourcis ;
+- centre d'action : inscriptions, avatars, tickets, Push en échec et suppressions à traiter ;
+- réglages globaux : maintenance, inscriptions, Feature flags ;
+- liste joueurs paginée ;
+- aperçu joueur en lecture seule et journalisé ;
+- sauvegardes serveur de saison, export JSON et restauration protégée ;
+- exports CSV ;
+- journal d'audit paginé/recherchable ;
+- demandes de suppression de compte et anonymisation applicative ;
+- états réseau, accessibilité et responsive Admin renforcés ;
+- Centre de tests étendu à 1490 contrôles V0.1.x -> V0.9.5.
+
+MISE À JOUR DEPUIS V0.9.0
+-------------------------
+1. Sauvegarder le dossier V0.9.0 et la base Supabase.
+
+2. Décompresser le patch V0.9.0 -> V0.9.5 à la racine de l'application puis lancer :
+      node tools\apply-v0.9.5.mjs
+
+3. Dans Supabase > SQL Editor, exécuter :
+      sql/HOTFIX_V0.9.5_EXISTING_DB.sql
+
+4. Aucun redéploiement de sync-football-data n'est requis depuis une V0.9.0 fonctionnelle.
+   Le correctif Football-Data V0.8.1 reste inchangé : saison 2026/27 stricte et aucun fallback 2025/26.
+
+5. Lancer le contrôle automatique :
+      node tests\run-all-v0.9.5.mjs
+
+6. Déployer le frontend complet sur GitHub Pages.
+
+7. Contrôler la version réellement publiée :
+      node tests\run-all-v0.9.5.mjs --url=https://VOTRE-SITE
+
+8. PC : Ctrl+F5.
+   Mobile/PWA : fermer complètement puis rouvrir l'application.
+
+9. Centre de tests :
+      https://VOTRE-SITE/tests/test-center-v0.9.5.html
+
+INSTALLATION FRAÎCHE
+--------------------
+Sur une nouvelle base Supabase, exécuter :
+      sql/000_INSTALL_FRESH_V0.9.5.sql
+
+Puis déployer les Edge Functions habituelles et remettre uniquement les secrets Supabase prévus côté serveur.
+
+SAUVEGARDES V0.9.5
+------------------
+Les sauvegardes V0.9.5 sont des snapshots logiques stockés dans Supabase. Elles couvrent notamment calendrier, pronostics, phases finales, Teams, gamification, mémoire, sondages et Centre C1 pour une saison.
+
+Une restauration :
+- est réservée au Super Admin ;
+- exige le mode Maintenance ;
+- exige le mot de confirmation RESTAURER ;
+- remplace les données de la saison du snapshot ;
+- crée une entrée dans le journal d'audit.
+
+La sauvegarde logique ne remplace pas une sauvegarde Supabase complète avant une migration majeure.
+
+APERÇU JOUEUR
+--------------
+L'aperçu « comme un joueur » V0.9.5 est volontairement en lecture seule. Il sert au diagnostic et ne permet pas de pronostiquer à la place du joueur. Son ouverture et sa fermeture sont journalisées.
+
+SUPPRESSION DE COMPTE
+---------------------
+Le traitement V0.9.5 anonymise le profil applicatif et désactive les abonnements Push. La suppression définitive de l'identité dans Supabase Auth reste une opération distincte à effectuer dans Supabase si elle est requise.
+
+TESTS
+-----
+- Matrice cumulée : 1490 contrôles V0.1.x -> V0.9.5.
+- Runner : tests/run-all-v0.9.5.mjs.
+- Diagnostic SQL V0.9.5 : admin_diagnostics_v095().
+- Centre web : tests/test-center-v0.9.5.html.
+- Le grand road-check manuel complet est prévu en V0.9.9.

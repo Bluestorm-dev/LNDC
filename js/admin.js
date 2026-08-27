@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.4 — administration modulaire
+// Le Nid des Champions V0.9.5 — administration modulaire
   const ADMIN_SECTIONS = new Set(["dashboard","matches","test","competition","players","teams","gamification","communication","application"]);
 
   function currentAdminSection(){
@@ -25,7 +25,7 @@
   function bindAdminNavigation(){
     $$('[data-admin-section]').forEach(b=>b.onclick=()=>setAdminSection(b.dataset.adminSection));
     $$('[data-admin-go]').forEach(b=>b.onclick=()=>setAdminSection(b.dataset.adminGo));
-    const search=$("#adminPlayerSearch");if(search)search.oninput=renderAdminPlayers;
+    const search=$("#adminPlayerSearch");if(search)search.oninput=()=>{state.adminPlayerPage=0;renderAdminPlayers();};
     const reload=$("#adminReloadDataBtn");if(reload)reload.onclick=reloadAdminData;
     const refresh=$("#adminRefreshPwaBtn");if(refresh)refresh.onclick=refreshAdminPwa;
     setAdminSection(currentAdminSection(),{scroll:false});
@@ -48,14 +48,16 @@
   function renderAdminPlayers(){
     const root=$("#adminPlayersPanel");if(!root)return;
     const q=String($("#adminPlayerSearch")?.value||"").trim().toLocaleLowerCase("fr");
-    const players=[...state.profileDirectory.values()].filter(p=>{const hay=[p.username,p.first_name,p.role,p.status].filter(Boolean).join(" ").toLocaleLowerCase("fr");return !q||hay.includes(q);}).sort((a,b)=>String(a.username||"").localeCompare(String(b.username||""),"fr"));
-    const summary=$("#adminPlayersSummary");if(summary)summary.textContent=`${players.length} joueur${players.length>1?"s":""} affiché${players.length>1?"s":""}`;
-    root.innerHTML=players.length?players.map(p=>`<div class="admin-player-row" data-admin-player="${p.id||p.user_id}">${avatarHTML(p)}<div class="admin-player-copy"><strong>${esc(p.username||"Joueur")}</strong><div class="admin-player-meta"><span class="chip admin-role-${esc(p.role||"player")}">${esc(adminRoleLabel(p.role))}</span><span>${esc(p.status||"active")}</span>${p.first_name?`<span>· ${esc(p.first_name)}</span>`:""}</div></div><div class="admin-player-actions"><button class="btn secondary small" type="button" data-admin-player-open>Voir le profil</button></div></div>`).join(""):'<div class="empty">Aucun joueur correspondant.</div>';
+    const all=[...state.profileDirectory.values()].filter(p=>{const hay=[p.username,p.first_name,p.role,p.status].filter(Boolean).join(" ").toLocaleLowerCase("fr");return !q||hay.includes(q);}).sort((a,b)=>String(a.username||"").localeCompare(String(b.username||""),"fr"));
+    const pageSize=25,pages=Math.max(1,Math.ceil(all.length/pageSize));state.adminPlayerPage=Math.min(Math.max(Number(state.adminPlayerPage||0),0),pages-1);const page=state.adminPlayerPage;const players=all.slice(page*pageSize,(page+1)*pageSize);
+    const summary=$("#adminPlayersSummary");if(summary)summary.textContent=`${all.length} joueur${all.length>1?"s":""} · ${all.length?`${page*pageSize+1}–${Math.min((page+1)*pageSize,all.length)}`:"0"}`;
+    root.innerHTML=(players.length?players.map(p=>`<div class="admin-player-row" data-admin-player="${p.id||p.user_id}">${avatarHTML(p)}<div class="admin-player-copy"><strong>${esc(p.username||"Joueur")}</strong><div class="admin-player-meta"><span class="chip admin-role-${esc(p.role||"player")}">${esc(adminRoleLabel(p.role))}</span><span>${esc(p.status||"active")}</span>${p.first_name?`<span>· ${esc(p.first_name)}</span>`:""}</div></div><div class="admin-player-actions"><button class="btn secondary small" type="button" data-admin-player-open>Voir le profil</button></div></div>`).join(""):'<div class="empty">Aucun joueur correspondant.</div>')+(all.length>pageSize?`<div class="admin-player-pagination-v095"><button id="adminPlayersPrevV095" class="btn secondary small" ${page===0?'disabled':''}>←</button><span>Page ${page+1} / ${pages}</span><button id="adminPlayersNextV095" class="btn secondary small" ${page>=pages-1?'disabled':''}>→</button></div>`:'');
     $$('[data-admin-player]',root).forEach(row=>{const open=$('[data-admin-player-open]',row);if(open)open.onclick=()=>openPlayerQuickProfile(row.dataset.adminPlayer);});
+    if($("#adminPlayersPrevV095",root))$("#adminPlayersPrevV095",root).onclick=()=>{state.adminPlayerPage=Math.max(0,page-1);renderAdminPlayers();};if($("#adminPlayersNextV095",root))$("#adminPlayersNextV095",root).onclick=()=>{state.adminPlayerPage=Math.min(pages-1,page+1);renderAdminPlayers();};
   }
 
   function renderAdminAppState(){
-    if($("#adminAppVersion"))$("#adminAppVersion").textContent=CFG.APP_VERSION||"0.6.4";
+    if($("#adminAppVersion"))$("#adminAppVersion").textContent=CFG.APP_VERSION||"0.9.5";
     if($("#adminAppSeason"))$("#adminAppSeason").textContent=state.season?.name||"—";
     if($("#adminAppBackend"))$("#adminAppBackend").textContent=demoMode?"Démo locale":"Supabase";
     if($("#adminAppRole"))$("#adminAppRole").textContent=adminRoleLabel(state.profile?.role);
@@ -79,7 +81,7 @@
     renderAdminDashboard();renderAdminAppState();
     const testNav=$("#adminTestNav");if(testNav)testNav.classList.toggle("hidden",state.profile?.role!=="super_admin");
     const gamiNav=$("#adminGamificationNav");if(gamiNav)gamiNav.classList.toggle("hidden",state.profile?.role!=="super_admin");
-    if(typeof renderAdminTest==="function")renderAdminTest();if(typeof renderAdminGamification==="function")renderAdminGamification();bindAdminNavigation();
+    if(typeof renderAdminTest==="function")renderAdminTest();if(typeof renderAdminGamification==="function")renderAdminGamification();if(typeof renderAdmin095==="function")renderAdmin095();if(typeof loadAdmin095Data==="function"&&!state.admin095?.loaded)loadAdmin095Data().then(()=>renderAdmin095?.()).catch(()=>{});bindAdminNavigation();
   }
 
   function renderAdminBuilder() {

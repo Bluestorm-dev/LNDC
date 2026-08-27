@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.4 — authentification et accès
+// Le Nid des Champions V0.9.5 — authentification et accès
   function toggleAuthTab(which) {
     const loginTab = which === "login";
     $("#loginForm").classList.toggle("hidden", !loginTab);
@@ -51,6 +51,7 @@
     const username=$("#regUsername").value.trim(), first_name=$("#regFirstName").value.trim(), email=$("#regEmail").value.trim(), password=$("#regPassword").value;
     try {
       if (!/^[\p{L}\p{N}_. -]{2,24}$/u.test(username)) throw new Error("Pseudo invalide (2 à 24 caractères).");
+      if(!demoMode&&typeof registrationOpenV095==="function"&&!(await registrationOpenV095())) throw new Error("Les inscriptions sont temporairement fermées par le Super Admin.");
       if (demoMode) {
         if (state.demoUsers.some(u=>u.username.toLowerCase()===username.toLowerCase())) throw new Error("Ce pseudo est déjà pris.");
         const p={id:`demo-${Date.now()}`,username,role:"player",status:"active",club_heart:"",avatar_key:"owl"};
@@ -120,6 +121,8 @@
   async function afterLogin() {
     showApp();
     await loadData();
+    if(typeof enforceMaintenanceV095==="function"&&!enforceMaintenanceV095())return;
+    if(typeof loadAdmin095Data==="function"&&isAdminProfile())await loadAdmin095Data(true);
     if(typeof loadGamificationData==="function")await loadGamificationData();
     if(typeof loadAdminGamificationData==="function"&&state.profile?.role==="super_admin")await loadAdminGamificationData();
     if(typeof loadSeasonMemoryData==="function")await loadSeasonMemoryData(true);

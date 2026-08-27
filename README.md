@@ -1,6 +1,31 @@
-# Le Nid des Champions — V0.9.0
+# Le Nid des Champions — V0.9.5
 
-PWA de pronostics UEFA Champions League avec Teams, rivalités, gamification, Centre C1 et désormais une vraie mémoire multi-saisons.
+PWA de pronostics UEFA Champions League avec Teams, rivalités, gamification, Centre C1, mémoire multi-saisons et un cockpit Admin renforcé.
+
+
+## Nouveautés V0.9.5 — Administration & durcissement
+
+- **Admin plus simple à trouver** : recherche globale des options (`Ctrl+K` ou `/`), navigation regroupée et actions rapides.
+- **Centre d’action** : inscriptions, avatars, tickets, Push en échec et suppressions à traiter remontent au Dashboard.
+- **Système & sécurité** : Maintenance, inscriptions et Feature flags réunis au même endroit.
+- **Sauvegardes serveur** : snapshots de saison, JSON, restauration protégée et journalisée.
+- **Audit** : journal paginé/recherchable des opérations sensibles.
+- **Aperçu joueur** : diagnostic en lecture seule, sans mot de passe et journalisé.
+- **Confidentialité** : demande de suppression et traitement/anonymisation applicative.
+- **Robustesse** : pagination joueurs, états réseau, mobile et accessibilité renforcés.
+- **Tests** : 1490 contrôles cumulés V0.1.x → V0.9.5.
+
+La V0.9.5 conserve le cœur V0.9.0 (multi-saisons, carrière, Hall of Fame, Replay, sondages et vainqueur Coupe du monde 2026) ainsi que le correctif Football-Data V0.8.1.
+
+## Mise à jour depuis V0.9.0
+
+Voir `INSTALLATION_V0.9.5.txt`.
+
+## Tests V0.9.5
+
+- `README_TEST_SYSTEM_V0.9.5.md`
+- `docs/TEST_CHECKLIST_V0.9.5.md`
+- `docs/TEST_MATRIX_V0.9.5.md`
 
 ## Nouveautés V0.9.0 — Saison, carrière & mémoire
 

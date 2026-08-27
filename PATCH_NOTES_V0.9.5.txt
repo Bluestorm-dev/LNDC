@@ -1,0 +1,47 @@
+LE NID DES CHAMPIONS — NOTES V0.9.5
+====================================
+
+THÈME : ADMINISTRATION & DURCISSEMENT
+
+UX / UI ADMIN
+-------------
+- recherche globale « Trouver une option… » avec Ctrl+K et raccourci / ;
+- résultats de recherche qui ouvrent la bonne rubrique et mettent l'option en évidence ;
+- navigation regroupée en Pilotage / Communauté / Technique ;
+- libellés plus explicites : Joueurs & accès, Contenu & Musée, Système & sécurité, Laboratoire ;
+- centre d'action qui remonte uniquement les éléments nécessitant une intervention ;
+- actions rapides pour les opérations courantes ;
+- pagination de l'annuaire joueurs à 25 lignes.
+
+ADMINISTRATION / SÉCURITÉ
+-------------------------
+- Maintenance et fermeture des inscriptions pilotables par le Super Admin ;
+- Feature flags : API, Teams, gamification, sondages, rivalités, Hibou solitaire ;
+- réglages sensibles journalisés ;
+- aperçu joueur en lecture seule et journalisé ;
+- journal d'audit paginé/recherchable ;
+- demandes de suppression de compte et anonymisation applicative ;
+- RLS dédiée sur sauvegardes et demandes de suppression.
+
+SAUVEGARDES / EXPORTS
+---------------------
+- snapshots serveur d'une saison ;
+- téléchargement JSON ;
+- restauration protégée par Maintenance + confirmation RESTAURER ;
+- calendrier, pronostics, phases finales, Teams, gamification, mémoire, sondages et Centre C1 inclus ;
+- exports CSV joueurs, classement et audit.
+
+ROBUSTESSE
+----------
+- feedback Hors ligne / Connexion rétablie ;
+- écran Maintenance explicite ;
+- responsive Admin renforcé ;
+- prefers-reduced-motion et forced-colors ;
+- conservation intégrale du moteur V0.9.0 et du correctif Football-Data V0.8.1.
+
+TESTS
+-----
+- runner local/distant V0.9.5 ;
+- diagnostic SQL V0.9.5 ;
+- Centre web V0.9.5 ;
+- matrice cumulative portée à 1490 contrôles.

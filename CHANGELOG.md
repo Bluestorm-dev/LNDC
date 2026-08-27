@@ -1,3 +1,20 @@
+# V0.9.5
+
+## 0.9.5 — Administration & durcissement
+
+- Refonte UX/UI Admin centrée sur la recherche d’actions et non la mémorisation des menus.
+- Recherche globale des options avec Ctrl+K et `/`.
+- Navigation Admin regroupée en Pilotage / Communauté / Technique.
+- Dashboard avec centre d’action et raccourcis.
+- Réglages globaux : Maintenance, inscriptions et Feature flags.
+- Annuaire joueurs paginé et aperçu joueur en lecture seule journalisé.
+- Sauvegardes serveur de saison, export JSON, restauration protégée et exports CSV.
+- Journal d’audit paginé/recherchable.
+- Demandes de suppression et anonymisation applicative.
+- Améliorations réseau, mobile et accessibilité.
+- Diagnostic V0.9.5 et matrice cumulative de 1490 contrôles.
+- Conservation de la V0.9.0 et du correctif Football-Data V0.8.1.
+
 # V0.9.0
 
 ## 0.9.0 — Saison, carrière & mémoire
