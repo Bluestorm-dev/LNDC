@@ -80,6 +80,9 @@
           // Le payload réveille immédiatement le front ; la lecture serveur reste la source de vérité.
           if(payload?.new?.id){state.liveSnapshotKey="";}
           await refreshLiveSnapshot(true);
+          if(payload?.new?.status==="finished"&&typeof loadSeasonMemoryData==="function"){
+            state.seasonMemoryLoaded=false;await loadSeasonMemoryData(true);renderSeasonMemory?.();renderProfileCareerV090?.();
+          }
         }else if(kind==="predictions"){
           await loadRankingData(state.rankingScope,false);await Promise.all([loadTeamData(),loadRivalData()]);renderRanking();renderCollectiveStats();renderTeams();renderHomeRival();renderRivalView();updateKpis();
         }else if(kind==="teams"){

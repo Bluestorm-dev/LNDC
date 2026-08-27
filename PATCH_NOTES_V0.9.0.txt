@@ -1,0 +1,44 @@
+LE NID DES CHAMPIONS — NOTES V0.9.0
+====================================
+
+THÈME : SAISON, CARRIÈRE & MÉMOIRE
+
+NOUVEAUTÉS
+-----------
+- Gestion réellement multi-saisons avec sélection de la saison consultée.
+- Administration : création, activation et changement de statut des saisons.
+- Archives de saison en lecture seule côté joueurs.
+- Profil saison : rang, points, exacts, précision, forme, meilleur rang, remontées et jours en tête.
+- Historique de classement par instantanés à partir de V0.9.0.
+- Carrière multi-saisons et classement carrière global.
+- Hall of Fame : champions, podiums, meilleur scoreur, exacts, Teams, Poêle d'Or,
+  Génie, Hibou solitaire et records historiques.
+- Distinctions persistantes, dont champion en titre / distinction 2026 administrable.
+- Replay chronologique de saison.
+- Sondages généraux administrables.
+- Centre de tests étendu à 1330 contrôles (V0.1.x -> V0.9.0).
+
+INTÉGRITÉ
+---------
+- Les saisons finished/archived figent les pronostics de match, pronostics de qualifiés,
+  choix champion et mutations de Teams pour les joueurs.
+- Le Super Admin garde la possibilité d'effectuer une correction exceptionnelle.
+- Les données restent séparées par season_id.
+- La sélection de saison n'est volontairement pas conservée indéfiniment dans le navigateur :
+  au prochain chargement, la saison active reprend la priorité.
+
+COMPATIBILITÉ V0.8.1
+--------------------
+- Le Centre C1, Soirées européennes, Hibou solitaire et votes mensuels restent en place.
+- sync-football-data n'est pas modifiée par V0.9.0.
+- Le traitement season_not_available et l'interdiction du fallback 2025/26 sont conservés.
+
+LIMITE HISTORIQUE ASSUMÉE
+-------------------------
+Les variations de rang antérieures à l'installation de V0.9.0 n'ayant jamais été stockées,
+elles ne peuvent pas être recréées fidèlement. L'état final existant est conservé ; les futurs
+instantanés construisent ensuite la mémoire réelle de la compétition.
+
+V0.9.0 — Palmarès historique
+- Le Super Admin peut désigner ou retirer manuellement le « Vainqueur du Nid des Pronos — Coupe du monde 2026 ».
+- Cette distinction est unique, persistante entre les saisons et visible dans le profil/carrière.

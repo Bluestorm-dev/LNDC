@@ -122,6 +122,7 @@
     await loadData();
     if(typeof loadGamificationData==="function")await loadGamificationData();
     if(typeof loadAdminGamificationData==="function"&&state.profile?.role==="super_admin")await loadAdminGamificationData();
+    if(typeof loadSeasonMemoryData==="function")await loadSeasonMemoryData(true);
     renderAll();
     setView("home");
     setupRealtime();

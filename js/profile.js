@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.6.4 — profil et éditeur avatar
+// Le Nid des Champions V0.9.0 — profil, identité et accès à la carrière
   function renderProfile() {
     const heartName=state.profile?.club_heart||"";
     const heartClub=findClubByHeart(heartName);
@@ -85,13 +85,26 @@
   }
 
 
-function openPlayerQuickProfile(userId){
+async function openPlayerQuickProfile(userId){
   const p=state.profileDirectory.get(String(userId));if(!p)return toast("Joueur introuvable.","error");
   const lb=(state.standings||state.rankingRows||[]).find(r=>String(r.user_id)===String(userId))||{};const team=teamForUser(userId);
+  let seasonStats=null,career=null;
+  if(demoMode&&String(userId)===String(state.user?.id)){seasonStats=state.seasonProfileStats;career=state.playerCareer;}
+  else if(!demoMode&&state.season){
+    try{
+      const [sp,cp]=await Promise.all([
+        sb.rpc("get_player_season_profile_v090",{p_season_id:state.season.id,p_user_id:userId}),
+        sb.rpc("get_player_career_v090",{p_user_id:userId})
+      ]);
+      if(!sp.error)seasonStats=sp.data?.[0]||null;if(!cp.error)career=cp.data||null;
+    }catch{}
+  }
+  const ss=seasonStats||lb||{},cs=career?.summary||{};const distinctions=career?.distinctions||seasonStats?.distinctions||[];
   const superAction=state.profile?.role==="super_admin"?`<button id="superOwlFromPlayerProfile" class="btn gold small" type="button">🦉 Envoyer un message du Hibou</button>`:"";
   const reactAction=String(userId)!==String(state.user?.id)?`<button id="reactFromPlayerProfile" class="btn secondary small" type="button">😊 Envoyer une réaction</button>`:"";
   const museumAction=typeof openPlayerMuseum==="function"?`<button id="openPlayerMuseumBtn" class="btn secondary small" type="button">🏛️ Voir son Musée</button>`:"";
-  const root=modal(`Profil · ${p.username}`,`<div class="public-player-profile"><div class="public-player-head">${avatarHTML({...p,user_id:p.id||userId})}<div><span class="eyebrow">Joueur du Nid</span><h2>${esc(p.username)}</h2><p>${esc(p.club_heart||"Aucun club de cœur")}${team?` · 🛡 ${esc(team.team_name||team.name||"")}`:""}</p></div></div><div class="rival-stats-grid compact"><div><span>Rang</span><strong>#${lb.rank||"—"}</strong></div><div><span>Points</span><strong>${Number(lb.points||0).toFixed(0)}</strong></div><div><span>Exacts</span><strong>${Number(lb.exact_scores||0)}</strong></div><div><span>Moyenne</span><strong>${Number(lb.average||0).toFixed(2)}</strong></div></div><div class="actions">${museumAction}${reactAction}${superAction}${String(userId)===String(state.currentRival?.rival_user_id||"")?'<button id="openProfileRivalCompare" class="btn secondary small" type="button">⚔ Comparer au rival</button>':''}</div></div>`);
+  const careerHtml=seasonStats||career?`<div class="public-profile-memory"><div class="section-title compact"><div><span class="eyebrow gold">V0.9.0</span><h4>Saison & carrière</h4></div></div><div class="career-stat-grid compact"><article><span>Rang saison</span><strong>#${ss.rank||'—'}</strong><small>meilleur #${ss.best_rank||ss.rank||'—'}</small></article><article><span>Points</span><strong>${Number(ss.points||0).toFixed(0)}</strong><small>${Number(ss.average||0).toFixed(2)} / match</small></article><article><span>Exacts</span><strong>${Number(ss.exact_scores||0)}</strong><small>${Number(ss.precision_pct||0).toFixed(1)}% précision</small></article><article><span>Rang carrière</span><strong>#${cs.rank||'—'}</strong><small>${cs.seasons_played||0} saison(s)</small></article><article><span>Points carrière</span><strong>${Number(cs.total_points||0).toFixed(0)}</strong><small>${Number(cs.career_average||0).toFixed(2)} / match</small></article><article><span>Titres</span><strong>${cs.titles||0}</strong><small>${cs.podiums||0} podium(s)</small></article></div>${typeof formHTMLV090==='function'?formHTMLV090(ss.form||[]):''}${distinctions.length?`<div class="distinction-list compact">${distinctions.map(d=>`<span><b>${esc(d.icon||'🏆')}</b><span><strong>${esc(d.label)}</strong><small>${esc(d.description||'')}</small></span></span>`).join('')}</div>`:''}</div>`:'';
+  const root=modal(`Profil · ${p.username}`,`<div class="public-player-profile"><div class="public-player-head">${avatarHTML({...p,user_id:p.id||userId})}<div><span class="eyebrow">Joueur du Nid</span><h2>${esc(p.username)}</h2><p>${esc(p.club_heart||"Aucun club de cœur")}${team?` · 🛡 ${esc(team.team_name||team.name||"")}`:""}</p></div></div><div class="rival-stats-grid compact"><div><span>Rang</span><strong>#${lb.rank||"—"}</strong></div><div><span>Points</span><strong>${Number(lb.points||0).toFixed(0)}</strong></div><div><span>Exacts</span><strong>${Number(lb.exact_scores||0)}</strong></div><div><span>Moyenne</span><strong>${Number(lb.average||0).toFixed(2)}</strong></div></div>${careerHtml}<div class="actions">${museumAction}${reactAction}${superAction}${String(userId)===String(state.currentRival?.rival_user_id||"")?'<button id="openProfileRivalCompare" class="btn secondary small" type="button">⚔ Comparer au rival</button>':''}</div></div>`);
   if($("#openPlayerMuseumBtn",root))$("#openPlayerMuseumBtn",root).onclick=()=>openPlayerMuseum(userId);
   if($("#reactFromPlayerProfile",root))$("#reactFromPlayerProfile",root).onclick=()=>openPlayerReactionPicker(userId);
   if($("#superOwlFromPlayerProfile",root))$("#superOwlFromPlayerProfile",root).onclick=()=>openAdminOwlMessageForPlayer(userId);

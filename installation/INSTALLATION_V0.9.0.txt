@@ -1,0 +1,87 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.9.0
+============================================
+
+OBJET
+-----
+V0.9.0 — Saison, carrière & mémoire.
+
+Cette version rend Le Nid réellement multi-saisons :
+- sélection et administration des saisons ;
+- archivage en lecture seule ;
+- profil saison complet et évolution du rang ;
+- carrière multi-saisons et classement carrière ;
+- Hall of Fame et distinctions persistantes ;
+- replay de saison ;
+- sondages généraux ;
+- champion en titre / distinctions ;
+- extension du Centre de tests jusqu'à V0.9.0.
+
+MISE À JOUR DEPUIS V0.8.1
+--------------------------
+1. Sauvegarder le dossier V0.8.1 et la base Supabase.
+
+2. Copier/décompresser les fichiers V0.9.0 dans l'application, ou utiliser le patch :
+      node tools\apply-v0.9.0.mjs
+
+3. Dans Supabase > SQL Editor, exécuter UNE SEULE FOIS :
+      sql/HOTFIX_V0.9.0_EXISTING_DB.sql
+
+4. Aucun redéploiement Edge Function n'est requis si V0.8.1 fonctionnait déjà.
+   Le correctif V0.8.1 de sync-football-data (saison 2026/27 stricte et message
+   season_not_available) est conservé tel quel.
+
+5. Lancer le road-check statique :
+      node tests\run-all-v0.9.0.mjs
+
+6. Déployer le frontend complet sur GitHub Pages.
+
+7. Contrôler également la version réellement publiée :
+      node tests\run-all-v0.9.0.mjs --url=https://VOTRE-SITE
+
+8. PC : Ctrl+F5.
+   Mobile/PWA : fermer complètement l'application puis la rouvrir.
+
+9. Ouvrir le Centre de tests avec un compte Super Admin :
+      https://VOTRE-SITE/tests/test-center-v0.9.0.html
+
+10. Dans Admin > Application, vérifier la gestion multi-saisons avant de créer
+    ou archiver une saison de production.
+
+INSTALLATION FRAÎCHE
+--------------------
+Sur une nouvelle base Supabase, exécuter :
+      sql/000_INSTALL_FRESH_V0.9.0.sql
+
+Puis déployer les Edge Functions nécessaires à l'application selon la configuration
+habituelle du Nid (login-by-username, sync-football-data, sync-odds, push-dispatch)
+et remettre les secrets déjà utilisés par le projet. Ne jamais placer de secret
+Supabase/Football-Data/VAPID dans le frontend.
+
+IMPORTANT — HISTORIQUE DE RANG
+------------------------------
+V0.9.0 commence à enregistrer les instantanés de classement à partir de son installation.
+Pour une ancienne saison qui ne possédait pas ces instantanés, Le Nid conserve son état
+final connu mais ne peut pas reconstruire fidèlement, après coup, chaque variation de rang
+qui n'avait jamais été stockée.
+
+ARCHIVES
+--------
+Une saison marquée finished/archived devient consultable en lecture seule pour les joueurs :
+pronostics de matchs, qualifiés, choix champion et mutations de Teams sont verrouillés.
+Le Super Admin conserve les droits nécessaires à une correction exceptionnelle.
+
+TESTS
+-----
+- Matrice cumulée : V0.1.x -> V0.9.0.
+- 1330 contrôles manuels/dirigés.
+- Diagnostic SQL V0.9.0 : admin_run_diagnostics_v090().
+- Runner local : tests/run-all-v0.9.0.mjs.
+- Centre web : tests/test-center-v0.9.0.html.
+
+FOOTBALL-DATA
+-------------
+La V0.9.0 ne modifie pas le principe validé en V0.8.1 :
+- season=2026 pour la Ligue des champions 2026/27 ;
+- aucun fallback vers 2025/26 ;
+- un 404 fournisseur peut être remonté comme season_not_available tant que la saison
+  2026/27 n'est pas publiée chez Football-Data.

@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.7.2 — chargement des données et classements serveur
+// Le Nid des Champions V0.9.0 — chargement des données, saisons et classements serveur
   function chooseDefaultMatchday() {
     if (state.selectedMatchdayId && state.matchdays.some(md=>md.id===state.selectedMatchdayId)) return;
     const upcoming = state.matchdays.find(md => state.allMatches.some(m => m.matchday_id===md.id && !isLocked(m)));
@@ -22,12 +22,15 @@
       return;
     }
 
-    const slug=CFG.DEFAULT_SEASON_SLUG||"ucl-2026-27";
-    let {data:season,error}=await sb.from("seasons").select("*").eq("slug",slug).maybeSingle();
-    if(error) throw error;
-    if(!season){({data:season,error}=await sb.from("seasons").select("*").eq("is_active",true).limit(1).maybeSingle());if(error)throw error;}
+    const {data:seasons,error:seasonsErr}=await sb.from("seasons").select("*").order("created_at",{ascending:false});
+    if(seasonsErr) throw seasonsErr;
+    state.availableSeasons=seasons||[];
+    const preferredSlug=state.selectedSeasonSlug||null;
+    let season=preferredSlug?state.availableSeasons.find(s=>s.slug===preferredSlug)||null:null;
+    if(!season) season=state.availableSeasons.find(s=>s.is_active)||state.availableSeasons.find(s=>s.slug===(CFG.DEFAULT_SEASON_SLUG||"ucl-2026-27"))||state.availableSeasons[0]||null;
     state.season=season;
-    if(!state.season) throw new Error("Aucune saison active.");
+    if(!state.season) throw new Error("Aucune saison disponible.");
+    state.selectedSeasonSlug=state.season.slug;
 
     const [{data:matchdays,error:mdErr},{data:clubs,error:clubErr},{data:matches,error:matErr},{data:phases,error:phaseErr},{data:ties,error:tieErr}] = await Promise.all([
       sb.from("matchdays").select("*").eq("season_id",state.season.id).order("number"),

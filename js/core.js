@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.8.1 — noyau, état et utilitaires
+// Le Nid des Champions V0.9.0 — noyau, état et utilitaires
   const CFG = window.NIDC_CONFIG || {};
   const configured = Boolean(
     CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY &&
@@ -32,6 +32,19 @@
     user: null,
     profile: null,
     season: null,
+    availableSeasons: [],
+    selectedSeasonSlug: null,
+    seasonMemoryTab: "overview",
+    seasonProfileStats: null,
+    careerLeaderboard: [],
+    playerCareer: null,
+    hallOfFame: [],
+    seasonReplay: [],
+    generalPolls: [],
+    titleHolder: null,
+    seasonMemoryLoaded: false,
+    seasonMemoryLoading: false,
+    seasonMemoryError: null,
     matchdays: [],
     selectedMatchdayId: null,
     matches: [],
@@ -143,6 +156,7 @@
 
   function demoInit() {
     state.season = {id:"season-demo", name:"Champions League 2026–27", slug:"ucl-2026-27", status:"preparation", points_wrong:0, points_result:3, points_difference:5, points_exact:7, champion_1_bonus:100, champion_2_bonus:50};
+    state.availableSeasons=[state.season]; state.selectedSeasonSlug=state.season.slug;
     state.phases=[{id:"ph-league",code:"LEAGUE",name:"Phase de ligue",sort_order:10,default_multiplier:1},{id:"ph-po",code:"KNOCKOUT_PLAYOFF",name:"Barrages",sort_order:20,default_multiplier:1},{id:"ph-r16",code:"ROUND_OF_16",name:"Huitièmes de finale",sort_order:30,default_multiplier:1},{id:"ph-qf",code:"QUARTER_FINAL",name:"Quarts de finale",sort_order:40,default_multiplier:1},{id:"ph-sf",code:"SEMI_FINAL",name:"Demi-finales",sort_order:50,default_multiplier:1},{id:"ph-f",code:"FINAL",name:"Finale",sort_order:60,default_multiplier:1}];
     state.knockoutTies=JSON.parse(localStorage.getItem("nidc_demo_knockout_ties")||"[]");
     state.tiePredictions=new Map(Object.values(JSON.parse(localStorage.getItem("nidc_demo_tie_predictions")||"{}")).filter(x=>x.user_id===state.user?.id).map(x=>[x.tie_id,x]));
@@ -205,6 +219,7 @@
     const title=$("#pageTitle");
     if(title) title.textContent=titles[name]||"Le Nid des Champions";
     if(name==="museum"&&typeof renderMuseum==="function")renderMuseum();
+    if((name==="season"||name==="profile")&&typeof loadSeasonMemoryData==="function"&&!state.seasonMemoryLoaded&&!state.seasonMemoryLoading){loadSeasonMemoryData().then(()=>{if(name==="season")renderSeasonMemory?.();else renderProfileCareerV090?.();}).catch(err=>toast(friendlyError(err),"error"));}
     if(name==="ucl"&&typeof loadUclCenterData==="function"){loadUclCenterData().then(()=>renderUclCenter?.()).catch(err=>toast(friendlyError(err),"error"));}
     if(name==="evenings"&&typeof loadEveningHubData==="function"){loadEveningHubData().then(()=>renderEveningHub?.()).catch(err=>toast(friendlyError(err),"error"));}
     window.scrollTo({top:0, behavior:"smooth"});

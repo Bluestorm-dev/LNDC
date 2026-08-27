@@ -1,3 +1,19 @@
+# V0.9.0
+
+## 0.9.0 — Saison, carrière & mémoire
+
+- Passage à une architecture réellement multi-saisons côté consultation et administration.
+- Création, activation, finition et archivage des saisons depuis le Super Admin.
+- Archives joueurs en lecture seule : matchs, qualifiés, champion et Teams sont figés.
+- Historique de rang à partir de V0.9.0, meilleur rang, remontées, jours en tête et forme récente.
+- Fiche carrière multi-saisons et classement carrière global.
+- Hall of Fame historique enrichi : podiums, scoreur, exacts, Team, Poêle d'Or, Génie, Hibou solitaire et records.
+- Replay chronologique de saison et événements mémoire.
+- Champion en titre et distinctions persistantes administrables.
+- Sondages généraux avec création/fermeture Super Admin et vote joueur.
+- Diagnostic `admin_run_diagnostics_v090` et road-check cumulatif de 1330 contrôles V0.1.x -> V0.9.0.
+- Conservation intégrale du correctif V0.8.1 Football-Data, sans fallback vers 2025/26.
+
 # V0.8.0
 
 ## 0.8.0 — Soirées européennes & Centre Ligue des champions
@@ -474,3 +490,7 @@
 - import des journées 1 à 8 de la phase de ligue ;
 - résultats toujours manuels en V0.2.0 ;
 - cache PWA mis à jour en 0.2.0.
+
+V0.9.0 — Palmarès historique
+- Le Super Admin peut désigner ou retirer manuellement le « Vainqueur du Nid des Pronos — Coupe du monde 2026 ».
+- Cette distinction est unique, persistante entre les saisons et visible dans le profil/carrière.
