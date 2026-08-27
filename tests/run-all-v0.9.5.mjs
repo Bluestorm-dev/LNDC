@@ -79,6 +79,9 @@ for(const [id,token,msg] of [
   ["html.privacy","accountPrivacyPanelV095","Zone confidentialité profil"]
 ]) need(id,index.includes(token),msg);
 need("html.nav-groups",["Pilotage","Communauté","Technique","Système & sécurité","Joueurs & accès","Contenu & Musée","Laboratoire"].every(t=>index.includes(t)),"Navigation Admin regroupée et renommée");
+need("html.test-hub",index.includes('id="adminTestCentersV095"'),"Hub des centres de tests présent dans le Laboratoire Admin");
+need("html.test-links",["tests/test-center-v0.8.1.html","tests/test-center-v0.9.0.html","tests/test-center-v0.9.5.html"].every(t=>index.includes(t)),"Liens Admin vers les trois centres de tests");
+need("ux.test-search",admin95.includes('["Centres de tests"')&&admin95.includes("#adminTestCentersV095"),"Recherche Admin indexe les centres de tests");
 
 const css=read("css/admin095.css");
 need("css.mobile",css.includes("@media")&&css.includes("admin-quick-grid-v095"),"Responsive Admin V0.9.5");
@@ -154,7 +157,7 @@ need("tests.matrix-unique",new Set(ids).size===ids.length,"IDs de la matrice uni
 need("tests.matrix-last",ids.at(-1)==="T1490",`Dernier contrôle: ${ids.at(-1)||"absent"} (attendu T1490)`);
 need("tests.center-count",(read("tests/test-center-v0.9.5.html").match(/"id":"T\d{4}"/g)||[]).length===1490,"Centre web contient 1490 tests manuels");
 need("tests.windows-safe",read("tests/run-all-v0.9.5.mjs").includes("fileURLToPath(import.meta.url)"),"Runner compatible chemins Windows");
-need("tests.center-v095-diagnostic",contains("tests/test-center-v0.9.5.html","admin_diagnostics_v095","v095.settings","v095.backups"),"Centre web inclut les diagnostics V0.9.5");
+need("tests.center-v095-diagnostic",contains("tests/test-center-v0.9.5.html","admin_diagnostics_v095","v095.settings","v095.backups","Centre de tests — V0.9.5","Régression complète V0.1.x → V0.9.5","cfg.APP_VERSION==='0.9.5'"),"Centre web V0.9.5 cohérent : diagnostics, titre, périmètre et contrôle de version");
 
 const staleCurrent=["index.html","config.js","config.example.js","sw.js","assets/assets-manifest.json","js/admin095.js"].filter(rel=>{
   const t=read(rel);return /APP_VERSION:\s*"0\.9\.0"/.test(t)||/nid-champions-v0\.9\.0/.test(t)||/"version":\s*"0\.9\.0"/.test(t);
