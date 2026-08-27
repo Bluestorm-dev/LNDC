@@ -162,10 +162,7 @@ Deno.serve(async (req: Request) => {
       });
       if (!response.ok) {
         const body = await response.text();
-        const fdError = new Error(`football-data.org ${response.status}: ${body.slice(0, 220)}`);
-        (fdError as any).footballDataStatus = response.status;
-        (fdError as any).footballDataBody = body.slice(0, 500);
-        throw fdError;
+        throw new Error(`football-data.org ${response.status}: ${body.slice(0, 220)}`);
       }
       return response.json();
     };
@@ -729,24 +726,6 @@ Deno.serve(async (req: Request) => {
     return json({ ok: true, action, clubCount, logoCount, matchdayCount, matchCount, oddsCount, centerMatchCount, standingsCount, repairedLegacyClubs, catalogClubCount, catalogLogoCount, catalogByCompetition, sourceSeasonYear, sourceSeasonLabel, requestedSeasonYear, expectedClubs: EXPECTED_CLUBS, expectedLeagueMatches: EXPECTED_LEAGUE_MATCHES });
   } catch (error) {
     console.error("sync-football-data", error);
-    const fdStatus = Number((error as any)?.footballDataStatus || 0);
-    if (fdStatus === 404) {
-      // V0.8.1 : un 404 Football-Data signifie que la ressource/saison demandée
-      // n'est pas encore disponible. On renvoie HTTP 200 afin que le frontend
-      // puisse afficher l'erreur métier au lieu d'une panne générique de Function.
-      return json({
-        ok: false,
-        code: "season_not_available",
-        provider_status: 404,
-        error: "La saison 2026/27 n'est pas encore disponible chez Football-Data. Aucun match 2025/26 n'a été importé. Réessaie après la publication du calendrier."
-      }, 200);
-    }
-    if (fdStatus === 401 || fdStatus === 403) {
-      return json({ ok: false, code: "provider_auth_error", provider_status: fdStatus, error: "Football-Data refuse l'accès. Vérifie le secret FOOTBALL_DATA_API_KEY et les droits du compte API." }, 200);
-    }
-    if (fdStatus === 429) {
-      return json({ ok: false, code: "provider_rate_limit", provider_status: 429, error: "Limite de requêtes Football-Data atteinte. Réessaie dans quelques minutes." }, 200);
-    }
     return json({ ok: false, error: error instanceof Error ? error.message : "Synchronisation impossible." }, 500);
   }
 });

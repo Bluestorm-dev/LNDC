@@ -342,7 +342,7 @@
     try {
       if(demoMode){setMsg("#syncStatus",action==="odds"?"Mode démo : les cotes affichées sont fictives et servent uniquement à tester l’interface.":"Mode démo : la synchronisation distante n'est pas appelée.","ok");return;}
       const {data,error}=await sb.functions.invoke("sync-football-data",{body:{action,seasonYear:seasonStartYear(),seasonSlug:state.season.slug,competitionCode:"CL"}});
-      if(error) throw new Error("La synchronisation Centre C1 a échoué. Si Football-Data n'a pas encore publié 2026/27, réessaie plus tard ; sinon consulte les logs de sync-football-data.");
+      if(error) throw new Error("La fonction sync-football-data ne répond pas. Vérifie son déploiement et le secret FOOTBALL_DATA_API_KEY.");
       if(!data?.ok) throw new Error(data?.error||"Synchronisation impossible.");
       if(action==="center"){
         const importedLabel=data.sourceSeasonLabel||seasonDisplayLabel(data.sourceSeasonYear||seasonStartYear());
