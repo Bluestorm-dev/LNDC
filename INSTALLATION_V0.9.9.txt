@@ -1,0 +1,25 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.9.9
+==========================================
+
+OBJET
+V0.9.9 est la répétition générale avant V1.0.0 : bac à sable pré-saison, faux joueurs/matchs/Teams/pronostics isolés, test de charge, onboarding/tutoriel, textes Hibou, Centre de tests cumulatif et Grand road-check V1.
+
+MISE À JOUR DEPUIS V0.9.8
+1. Sauvegarder la base et le dossier du site.
+2. Décompresser le patch V0.9.8 -> V0.9.9 à la racine du Nid.
+3. Exécuter : node tools\apply-v0.9.9.mjs
+4. Dans Supabase > SQL Editor, exécuter : sql/HOTFIX_V0.9.9_EXISTING_DB.sql
+5. Lancer : node tests\run-all-v0.9.9.mjs
+6. Déployer le frontend sur GitHub Pages.
+7. Lancer : node tests\run-all-v0.9.9.mjs --url=https://bluestorm-dev.github.io/LNDC/
+8. Ouvrir Admin > Laboratoire > Répétition générale V1.
+9. Après la répétition : ouvrir tests/road-check-v0.9.9.html.
+
+IMPORTANT
+- Les données du bac à sable V0.9.9 restent dans les tables preseason_* et ne créent aucun vrai compte Auth.
+- Le nettoyage exige NETTOYER et ne touche qu'au scénario sélectionné.
+- L'étape Notification envoie uniquement une notification TEST interne au Super Admin courant ; aucun Push global n'est déclenché automatiquement.
+- Ne pas utiliser « Archiver définitivement » sur la vraie saison pendant la répétition.
+
+EDGE FUNCTIONS
+Aucun redéploiement nécessaire depuis V0.9.8.

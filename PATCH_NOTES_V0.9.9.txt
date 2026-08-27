@@ -1,0 +1,15 @@
+LE NID DES CHAMPIONS — PATCH V0.9.8 -> V0.9.9
+
+NOUVEAU
+- Admin > Laboratoire : Répétition générale V1.
+- Bac à sable isolé : faux joueurs, Teams, matchs, pronostics et scores.
+- Scénario LIVE, Champion, badges/Casseroles/Génie, notification TEST, finale et PDF smoke test.
+- Test de charge jusqu'à 100 000 lignes isolées.
+- Nettoyage sûr par confirmation NETTOYER.
+- Tutoriel / onboarding en 10 étapes, relançable depuis Profil.
+- Textes Hibou spécifiques pré-saison.
+- Centre de tests cumulatif V0.9.9 : 1 880 contrôles.
+- Grand road-check V1 : 24 missions guidées.
+
+AUCUN FALLBACK FOOTBALL-DATA 2025/26.
+AUCUNE EDGE FUNCTION À REDÉPLOYER.

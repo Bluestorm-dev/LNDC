@@ -1,3 +1,20 @@
+# V0.9.9
+
+## 0.9.9 — Pré-saison & répétition générale
+- Bac à sable Super Admin isolé des tables métier officielles.
+- Génération de faux joueurs, Teams, matchs et pronostics.
+- Simulation guidée LIVE → scores → champion → Teams → badges → notification → finale → PDF → validation.
+- Test de charge isolé jusqu’à 100 000 lignes et mesure de durée.
+- Nettoyage d’un scénario protégé par confirmation `NETTOYER`.
+- Tutoriel/onboarding joueur en 10 étapes avec progression persistante.
+- Textes Hibou dédiés à la pré-saison.
+- Grand road-check V1 en 24 missions avec notes et export JSON.
+- Centre de tests V0.9.9 porté à 1 880 contrôles cumulés.
+- Diagnostic SQL V0.9.9 et conservation des diagnostics historiques en mode compatibilité.
+- Correctifs R2 du Centre de tests V0.9.8 incorporés au socle.
+
+---
+
 # V0.9.8
 
 ## 0.9.8 — PDF & fin de saison

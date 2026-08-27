@@ -1,3 +1,23 @@
+# Le Nid des Champions — V0.9.9
+
+## Nouveautés V0.9.9 — Pré-saison & répétition générale
+
+- **Bac à sable pré-saison isolé** : faux joueurs, Teams, matchs, pronostics, LIVE, scores, champion, badges, notifications et finale sans toucher aux données officielles ;
+- **scénarios dimensionnables** depuis le Super Admin (48 joueurs / 24 matchs / 8 Teams par défaut) ;
+- **test de charge isolé** jusqu’à 100 000 lignes ;
+- **parcours guidé de répétition générale** avec journal des événements et nettoyage protégé par `NETTOYER` ;
+- **onboarding/tutoriel joueur en 10 étapes**, reportable et rejouable depuis le Profil ;
+- **banque de textes Hibou V0.9.9** pour les moments de pré-saison ;
+- **Grand road-check V1** en 24 missions humaines, avec OK / KO / N/A / TODO, notes et export JSON ;
+- **Centre de tests V0.9.9** : 1 880 contrôles cumulés V0.1.x → V0.9.9 ;
+- conservation des PDF/fin de saison V0.9.8, du cockpit Admin V0.9.5, du multi-saisons V0.9.0 et du correctif Football-Data V0.8.1.
+
+Les données de répétition générale vivent exclusivement dans les tables `preseason_*_v099`. Le nettoyage d’un scénario ne supprime jamais les profils, matchs ou pronostics officiels.
+
+Voir `INSTALLATION_V0.9.9.txt`, `README_TEST_SYSTEM_V0.9.9.md` et `tests/road-check-v0.9.9.html`.
+
+---
+
 # Le Nid des Champions — V0.9.8
 
 ## Nouveautés V0.9.8 — PDF & fin de saison

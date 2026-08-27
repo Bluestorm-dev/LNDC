@@ -81,7 +81,7 @@
     renderAdminDashboard();renderAdminAppState();
     const testNav=$("#adminTestNav");if(testNav)testNav.classList.toggle("hidden",state.profile?.role!=="super_admin");
     const gamiNav=$("#adminGamificationNav");if(gamiNav)gamiNav.classList.toggle("hidden",state.profile?.role!=="super_admin");
-    if(typeof renderAdminTest==="function")renderAdminTest();if(typeof renderAdminGamification==="function")renderAdminGamification();if(typeof renderAdmin095==="function")renderAdmin095();if(typeof loadAdmin095Data==="function"&&!state.admin095?.loaded)loadAdmin095Data().then(()=>renderAdmin095?.()).catch(()=>{});bindAdminNavigation();
+    if(typeof renderAdminTest==="function")renderAdminTest();if(typeof renderAdminGamification==="function")renderAdminGamification();if(typeof renderAdmin095==="function")renderAdmin095();if(typeof renderAdminPreseasonV099==="function")renderAdminPreseasonV099();if(typeof loadAdmin095Data==="function"&&!state.admin095?.loaded)loadAdmin095Data().then(()=>renderAdmin095?.()).catch(()=>{});if(typeof loadPreseasonV099==="function"&&state.profile?.role==="super_admin"&&!state.preseason099?.runs?.length)loadPreseasonV099().catch(()=>{});bindAdminNavigation();
   }
 
   function renderAdminBuilder() {

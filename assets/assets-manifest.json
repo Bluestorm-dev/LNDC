@@ -1,6 +1,6 @@
 {
   "app": "Le Nid des Champions",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "schema": 1,
   "branding": {
     "owl_main": "assets/branding/owl/owl-masked-main.png"
@@ -593,7 +593,8 @@
       "career.css",
       "admin095.css",
       "finale098.css",
-      "final-report098.css"
+      "final-report098.css",
+      "preseason099.css"
     ],
     "js_directory": "js",
     "js_files": [
@@ -619,12 +620,17 @@
       "career.js",
       "admin095.js",
       "finale098.js",
-      "final-report098.js"
+      "final-report098.js",
+      "preseason099.js"
     ],
     "entrypoint": "index.html",
     "report_pages": [
       "finale.html",
       "diplome.html"
+    ],
+    "test_pages": [
+      "tests/test-center-v0.9.9.html",
+      "tests/road-check-v0.9.9.html"
     ]
   },
   "gamification": {

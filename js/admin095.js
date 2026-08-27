@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.9.8 — cockpit Admin + accès fin de saison
+// Le Nid des Champions V0.9.9 — cockpit Admin + accès fin de saison
 (function(){
   const defaults={
     registration_open:true,maintenance:false,feature_rivals:true,feature_polls:true,feature_api:true,
@@ -40,7 +40,8 @@
     ["Journal d'audit","logs historique modification sécurité","application","#adminAuditPanelV095","📜"],
     ["Nettoyer le cache PWA","service worker cache actualiser","application","#adminRefreshPwaBtn","↻"],
     ["Tests techniques","diagnostic test cron calendrier","test","#adminTestPanelSection","🧪"],
-    ["Centres de tests","tests page validation 0.8.1 0.9.0 0.9.5 0.9.8 road check matrice","test","#adminTestCentersV095","✅"]
+    ["Répétition générale V1","pré saison rehearsal faux matchs charge onboarding tutoriel nettoyage","test","#adminPreseasonPanelV099","🔥"],
+    ["Centres de tests","tests page validation 0.8.1 0.9.0 0.9.5 0.9.8 0.9.9 road check matrice","test","#adminTestCentersV095","✅"]
   ].map((x,i)=>({id:`cmd-${i+1}`,label:x[0],keywords:x[1],section:x[2],selector:x[3],icon:x[4]}));
 
   function boolSetting(key,fallback=true){const v=state.appSettings?.[key];return typeof v==="boolean"?v:(v==null?fallback:Boolean(v));}
@@ -144,7 +145,7 @@
   function renderAdminHealthV095(){
     const root=$("#adminHealthV095");if(!root)return;const d=state.admin095.dashboard||{};const maintenance=boolSetting("maintenance",false),api=boolSetting("feature_api",true),online=navigator.onLine;
     const issues=[];if(Number(d.players_pending||0))issues.push({icon:"🚪",n:d.players_pending,label:"inscription(s) à traiter",cmd:"cmd-10"});if(Number(d.avatars_pending||0))issues.push({icon:"🖼",n:d.avatars_pending,label:"avatar(s) à modérer",cmd:"cmd-11"});if(Number(d.tickets_open||0))issues.push({icon:"🎫",n:d.tickets_open,label:"ticket(s) ouvert(s)",cmd:"cmd-19"});if(Number(d.push_failed_24h||0))issues.push({icon:"⚠",n:d.push_failed_24h,label:"push en échec sur 24 h",cmd:"cmd-20"});if(Number(d.deletion_requests||0))issues.push({icon:"🗑",n:d.deletion_requests,label:"suppression(s) demandée(s)",cmd:"cmd-14"});
-    root.innerHTML=`<div class="admin-health-strip-v095"><span class="${online?'ok':'bad'}"><i></i>${online?'Réseau OK':'Hors ligne'}</span><span class="${maintenance?'warn':'ok'}"><i></i>${maintenance?'Maintenance active':'Application ouverte'}</span><span class="${api?'ok':'warn'}"><i></i>${api?'API autorisée':'API désactivée'}</span><span><i></i>${esc(state.season?.name||'Saison')}</span></div><div class="admin-action-center-v095"><div class="section-title compact"><div><span class="eyebrow gold">À traiter</span><h3>${issues.length?`${issues.length} point${issues.length>1?'s':''} à surveiller`:'Rien d’urgent'}</h3><p>${issues.length?'Le Nid te remonte uniquement ce qui réclame une action.':'Pas besoin de fouiller tous les menus : tout est calme.'}</p></div><span class="chip">V0.9.5</span></div><div class="admin-action-list-v095">${issues.length?issues.map(x=>`<button type="button" data-admin-health-command="${x.cmd}"><span>${x.icon}</span><b>${Number(x.n||0)}</b><em>${esc(x.label)}</em><i>›</i></button>`).join(''):'<div class="admin-all-clear-v095">✓ Aucun signal critique dans les données chargées.</div>'}</div></div>`;
+    root.innerHTML=`<div class="admin-health-strip-v095"><span class="${online?'ok':'bad'}"><i></i>${online?'Réseau OK':'Hors ligne'}</span><span class="${maintenance?'warn':'ok'}"><i></i>${maintenance?'Maintenance active':'Application ouverte'}</span><span class="${api?'ok':'warn'}"><i></i>${api?'API autorisée':'API désactivée'}</span><span><i></i>${esc(state.season?.name||'Saison')}</span></div><div class="admin-action-center-v095"><div class="section-title compact"><div><span class="eyebrow gold">À traiter</span><h3>${issues.length?`${issues.length} point${issues.length>1?'s':''} à surveiller`:'Rien d’urgent'}</h3><p>${issues.length?'Le Nid te remonte uniquement ce qui réclame une action.':'Pas besoin de fouiller tous les menus : tout est calme.'}</p></div><span class="chip">V0.9.9</span></div><div class="admin-action-list-v095">${issues.length?issues.map(x=>`<button type="button" data-admin-health-command="${x.cmd}"><span>${x.icon}</span><b>${Number(x.n||0)}</b><em>${esc(x.label)}</em><i>›</i></button>`).join(''):'<div class="admin-all-clear-v095">✓ Aucun signal critique dans les données chargées.</div>'}</div></div>`;
     $$('[data-admin-health-command]',root).forEach(b=>b.onclick=()=>runAdminCommandV095(b.dataset.adminHealthCommand));
   }
 
