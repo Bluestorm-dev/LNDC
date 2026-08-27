@@ -1,0 +1,708 @@
+{
+  "version": "0.9.5",
+  "generated_at": "2026-08-27T13:13:02.251Z",
+  "base_url": null,
+  "summary": {
+    "total": 139,
+    "passed": 138,
+    "warnings": 0,
+    "failed": 1
+  },
+  "checks": [
+    {
+      "id": "file:VERSION",
+      "status": "PASS",
+      "message": "Présent: VERSION"
+    },
+    {
+      "id": "file:config.js",
+      "status": "PASS",
+      "message": "Présent: config.js"
+    },
+    {
+      "id": "file:config.example.js",
+      "status": "PASS",
+      "message": "Présent: config.example.js"
+    },
+    {
+      "id": "file:index.html",
+      "status": "PASS",
+      "message": "Présent: index.html"
+    },
+    {
+      "id": "file:sw.js",
+      "status": "PASS",
+      "message": "Présent: sw.js"
+    },
+    {
+      "id": "file:assets/assets-manifest.json",
+      "status": "PASS",
+      "message": "Présent: assets/assets-manifest.json"
+    },
+    {
+      "id": "file:css/career.css",
+      "status": "PASS",
+      "message": "Présent: css/career.css"
+    },
+    {
+      "id": "file:css/admin.css",
+      "status": "PASS",
+      "message": "Présent: css/admin.css"
+    },
+    {
+      "id": "file:css/admin095.css",
+      "status": "PASS",
+      "message": "Présent: css/admin095.css"
+    },
+    {
+      "id": "file:js/core.js",
+      "status": "PASS",
+      "message": "Présent: js/core.js"
+    },
+    {
+      "id": "file:js/data.js",
+      "status": "PASS",
+      "message": "Présent: js/data.js"
+    },
+    {
+      "id": "file:js/profile.js",
+      "status": "PASS",
+      "message": "Présent: js/profile.js"
+    },
+    {
+      "id": "file:js/career.js",
+      "status": "PASS",
+      "message": "Présent: js/career.js"
+    },
+    {
+      "id": "file:js/admin.js",
+      "status": "PASS",
+      "message": "Présent: js/admin.js"
+    },
+    {
+      "id": "file:js/admin095.js",
+      "status": "PASS",
+      "message": "Présent: js/admin095.js"
+    },
+    {
+      "id": "file:js/app.js",
+      "status": "PASS",
+      "message": "Présent: js/app.js"
+    },
+    {
+      "id": "file:js/auth.js",
+      "status": "PASS",
+      "message": "Présent: js/auth.js"
+    },
+    {
+      "id": "file:js/realtime.js",
+      "status": "PASS",
+      "message": "Présent: js/realtime.js"
+    },
+    {
+      "id": "file:sql/025_patch_v0.9.0_season_career_memory.sql",
+      "status": "PASS",
+      "message": "Présent: sql/025_patch_v0.9.0_season_career_memory.sql"
+    },
+    {
+      "id": "file:sql/026_patch_v0.9.5_admin_hardening.sql",
+      "status": "PASS",
+      "message": "Présent: sql/026_patch_v0.9.5_admin_hardening.sql"
+    },
+    {
+      "id": "file:sql/HOTFIX_V0.9.5_EXISTING_DB.sql",
+      "status": "PASS",
+      "message": "Présent: sql/HOTFIX_V0.9.5_EXISTING_DB.sql"
+    },
+    {
+      "id": "file:sql/000_INSTALL_FRESH_V0.9.5.sql",
+      "status": "PASS",
+      "message": "Présent: sql/000_INSTALL_FRESH_V0.9.5.sql"
+    },
+    {
+      "id": "file:tests/test-center-v0.9.5.html",
+      "status": "PASS",
+      "message": "Présent: tests/test-center-v0.9.5.html"
+    },
+    {
+      "id": "file:docs/TEST_CHECKLIST_V0.9.5.md",
+      "status": "PASS",
+      "message": "Présent: docs/TEST_CHECKLIST_V0.9.5.md"
+    },
+    {
+      "id": "file:docs/TEST_MATRIX_V0.9.5.md",
+      "status": "PASS",
+      "message": "Présent: docs/TEST_MATRIX_V0.9.5.md"
+    },
+    {
+      "id": "file:INSTALLATION_V0.9.5.txt",
+      "status": "PASS",
+      "message": "Présent: INSTALLATION_V0.9.5.txt"
+    },
+    {
+      "id": "file:PATCH_NOTES_V0.9.5.txt",
+      "status": "PASS",
+      "message": "Présent: PATCH_NOTES_V0.9.5.txt"
+    },
+    {
+      "id": "file:README_TEST_SYSTEM_V0.9.5.md",
+      "status": "PASS",
+      "message": "Présent: README_TEST_SYSTEM_V0.9.5.md"
+    },
+    {
+      "id": "version.file",
+      "status": "PASS",
+      "message": "VERSION = 0.9.5 (attendu 0.9.5)"
+    },
+    {
+      "id": "version.config",
+      "status": "PASS",
+      "message": "config.js annonce 0.9.5"
+    },
+    {
+      "id": "version.config-example",
+      "status": "PASS",
+      "message": "config.example.js annonce 0.9.5"
+    },
+    {
+      "id": "version.cache",
+      "status": "PASS",
+      "message": "Cache Service Worker V0.9.5"
+    },
+    {
+      "id": "version.assets",
+      "status": "PASS",
+      "message": "Manifest des assets V0.9.5"
+    },
+    {
+      "id": "front.095-assets",
+      "status": "PASS",
+      "message": "UI Admin V0.9.5 branchée dans index.html"
+    },
+    {
+      "id": "sw.095-assets",
+      "status": "PASS",
+      "message": "Service Worker pré-cache les assets Admin V0.9.5"
+    },
+    {
+      "id": "front.090-preserved",
+      "status": "PASS",
+      "message": "Fonctions V0.9.0 conservées"
+    },
+    {
+      "id": "ux.command-search",
+      "status": "PASS",
+      "message": "Recherche globale Admin"
+    },
+    {
+      "id": "ux.ctrl-k",
+      "status": "PASS",
+      "message": "Raccourci Ctrl/Cmd+K"
+    },
+    {
+      "id": "ux.slash-shortcut",
+      "status": "PASS",
+      "message": "Raccourci /"
+    },
+    {
+      "id": "ux.health",
+      "status": "PASS",
+      "message": "Centre d’action du Dashboard"
+    },
+    {
+      "id": "ux.quick-actions",
+      "status": "PASS",
+      "message": "Actions rapides Admin"
+    },
+    {
+      "id": "ux.settings",
+      "status": "PASS",
+      "message": "Réglages regroupés"
+    },
+    {
+      "id": "ux.backups",
+      "status": "PASS",
+      "message": "Gestion des sauvegardes"
+    },
+    {
+      "id": "ux.exports",
+      "status": "PASS",
+      "message": "Exports Admin"
+    },
+    {
+      "id": "ux.audit",
+      "status": "PASS",
+      "message": "Journal d’audit paginé"
+    },
+    {
+      "id": "ux.preview",
+      "status": "PASS",
+      "message": "Aperçu joueur lecture seule"
+    },
+    {
+      "id": "ux.deletion",
+      "status": "PASS",
+      "message": "Traitement demandes suppression"
+    },
+    {
+      "id": "ux.privacy",
+      "status": "PASS",
+      "message": "Demande de suppression côté joueur"
+    },
+    {
+      "id": "ux.network",
+      "status": "PASS",
+      "message": "Bandeau réseau"
+    },
+    {
+      "id": "ux.maintenance",
+      "status": "PASS",
+      "message": "Écran Maintenance"
+    },
+    {
+      "id": "ux.flags",
+      "status": "PASS",
+      "message": "Feature flags appliqués au front"
+    },
+    {
+      "id": "ux.registration",
+      "status": "PASS",
+      "message": "Ouverture/fermeture inscriptions"
+    },
+    {
+      "id": "ux.command-count",
+      "status": "PASS",
+      "message": "Recherche Admin indexe au moins 25 actions"
+    },
+    {
+      "id": "ux.search-help",
+      "status": "PASS",
+      "message": "Recherche Admin donne des exemples si aucun résultat"
+    },
+    {
+      "id": "ux.readonly-preview",
+      "status": "PASS",
+      "message": "Aperçu joueur explicitement non destructif"
+    },
+    {
+      "id": "ux.restore-maintenance",
+      "status": "PASS",
+      "message": "Restauration protégée par Maintenance + confirmation"
+    },
+    {
+      "id": "ux.csv-bom",
+      "status": "PASS",
+      "message": "Exports CSV prévoient l’encodage Excel/accents"
+    },
+    {
+      "id": "admin.pagination",
+      "status": "PASS",
+      "message": "Liste joueurs paginée à 25"
+    },
+    {
+      "id": "admin.search-page-reset",
+      "status": "PASS",
+      "message": "Recherche joueur revient en page 1"
+    },
+    {
+      "id": "admin.render-095",
+      "status": "PASS",
+      "message": "Cockpit V0.9.5 intégré au rendu Admin"
+    },
+    {
+      "id": "html.search",
+      "status": "PASS",
+      "message": "Champ Trouver une option"
+    },
+    {
+      "id": "html.health",
+      "status": "PASS",
+      "message": "Zone état du Nid"
+    },
+    {
+      "id": "html.quick",
+      "status": "PASS",
+      "message": "Zone raccourcis"
+    },
+    {
+      "id": "html.preview",
+      "status": "PASS",
+      "message": "Zone aperçu joueur"
+    },
+    {
+      "id": "html.deletions",
+      "status": "PASS",
+      "message": "Zone suppressions"
+    },
+    {
+      "id": "html.settings",
+      "status": "PASS",
+      "message": "Zone réglages"
+    },
+    {
+      "id": "html.backups",
+      "status": "PASS",
+      "message": "Zone sauvegardes"
+    },
+    {
+      "id": "html.exports",
+      "status": "PASS",
+      "message": "Zone exports"
+    },
+    {
+      "id": "html.audit",
+      "status": "PASS",
+      "message": "Zone audit"
+    },
+    {
+      "id": "html.privacy",
+      "status": "PASS",
+      "message": "Zone confidentialité profil"
+    },
+    {
+      "id": "html.nav-groups",
+      "status": "PASS",
+      "message": "Navigation Admin regroupée et renommée"
+    },
+    {
+      "id": "css.mobile",
+      "status": "PASS",
+      "message": "Responsive Admin V0.9.5"
+    },
+    {
+      "id": "css.reduced-motion",
+      "status": "PASS",
+      "message": "Respect prefers-reduced-motion"
+    },
+    {
+      "id": "css.forced-colors",
+      "status": "PASS",
+      "message": "Compatibilité forced-colors"
+    },
+    {
+      "id": "css.search",
+      "status": "PASS",
+      "message": "Palette de recherche stylée"
+    },
+    {
+      "id": "css.network",
+      "status": "PASS",
+      "message": "États réseau/maintenance stylés"
+    },
+    {
+      "id": "db090.rank-history",
+      "status": "PASS",
+      "message": "Historique du rang V0.9.0 conservé"
+    },
+    {
+      "id": "db090.world-cup",
+      "status": "PASS",
+      "message": "Vainqueur Coupe du monde conservé"
+    },
+    {
+      "id": "db090.career",
+      "status": "PASS",
+      "message": "Carrière multi-saisons conservée"
+    },
+    {
+      "id": "db090.hall",
+      "status": "PASS",
+      "message": "Hall of Fame conservé"
+    },
+    {
+      "id": "db090.replay",
+      "status": "PASS",
+      "message": "Replay conservé"
+    },
+    {
+      "id": "db090.archive",
+      "status": "PASS",
+      "message": "Archives lecture seule conservées"
+    },
+    {
+      "id": "db090.position-fix",
+      "status": "FAIL",
+      "message": "Correctif SQL du mot réservé position conservé"
+    },
+    {
+      "id": "db095.backup-table",
+      "status": "PASS",
+      "message": "Table sauvegardes"
+    },
+    {
+      "id": "db095.delete-table",
+      "status": "PASS",
+      "message": "Table demandes suppression"
+    },
+    {
+      "id": "db095.setting-rpc",
+      "status": "PASS",
+      "message": "RPC réglages"
+    },
+    {
+      "id": "db095.dashboard-rpc",
+      "status": "PASS",
+      "message": "RPC Dashboard"
+    },
+    {
+      "id": "db095.audit-rpc",
+      "status": "PASS",
+      "message": "RPC audit"
+    },
+    {
+      "id": "db095.preview-rpc",
+      "status": "PASS",
+      "message": "RPC aperçu joueur"
+    },
+    {
+      "id": "db095.preview-log",
+      "status": "PASS",
+      "message": "Journalisation aperçu joueur"
+    },
+    {
+      "id": "db095.backup-create",
+      "status": "PASS",
+      "message": "Création sauvegarde"
+    },
+    {
+      "id": "db095.backup-restore",
+      "status": "PASS",
+      "message": "Restauration sauvegarde"
+    },
+    {
+      "id": "db095.backup-delete",
+      "status": "PASS",
+      "message": "Suppression sauvegarde"
+    },
+    {
+      "id": "db095.delete-request",
+      "status": "PASS",
+      "message": "Demande suppression joueur"
+    },
+    {
+      "id": "db095.delete-process",
+      "status": "PASS",
+      "message": "Traitement suppression Admin"
+    },
+    {
+      "id": "db095.diagnostic",
+      "status": "PASS",
+      "message": "Diagnostic SQL V0.9.5"
+    },
+    {
+      "id": "setting:registration_open",
+      "status": "PASS",
+      "message": "Réglage registration_open"
+    },
+    {
+      "id": "setting:maintenance",
+      "status": "PASS",
+      "message": "Réglage maintenance"
+    },
+    {
+      "id": "setting:feature_rivals",
+      "status": "PASS",
+      "message": "Réglage feature_rivals"
+    },
+    {
+      "id": "setting:feature_polls",
+      "status": "PASS",
+      "message": "Réglage feature_polls"
+    },
+    {
+      "id": "setting:feature_api",
+      "status": "PASS",
+      "message": "Réglage feature_api"
+    },
+    {
+      "id": "setting:feature_solitary_owl",
+      "status": "PASS",
+      "message": "Réglage feature_solitary_owl"
+    },
+    {
+      "id": "setting:feature_gamification",
+      "status": "PASS",
+      "message": "Réglage feature_gamification"
+    },
+    {
+      "id": "setting:feature_teams",
+      "status": "PASS",
+      "message": "Réglage feature_teams"
+    },
+    {
+      "id": "db095.setting-whitelist",
+      "status": "PASS",
+      "message": "Liste blanche des réglages côté SQL"
+    },
+    {
+      "id": "db095.rls-backups",
+      "status": "PASS",
+      "message": "RLS Super Admin sur sauvegardes"
+    },
+    {
+      "id": "db095.rls-deletions",
+      "status": "PASS",
+      "message": "RLS demandes suppression"
+    },
+    {
+      "id": "db095.unique-open-request",
+      "status": "PASS",
+      "message": "Une seule demande de suppression ouverte par joueur"
+    },
+    {
+      "id": "db095.restore-confirm",
+      "status": "PASS",
+      "message": "Confirmation serveur pour restauration"
+    },
+    {
+      "id": "db095.backup-schema",
+      "status": "PASS",
+      "message": "Snapshots versionnés 0.9.5"
+    },
+    {
+      "id": "backup:team_join_requests",
+      "status": "PASS",
+      "message": "Sauvegarde contient team_join_requests"
+    },
+    {
+      "id": "backup:team_invites",
+      "status": "PASS",
+      "message": "Sauvegarde contient team_invites"
+    },
+    {
+      "id": "backup:gamification_settings",
+      "status": "PASS",
+      "message": "Sauvegarde contient gamification_settings"
+    },
+    {
+      "id": "backup:monthly_polls",
+      "status": "PASS",
+      "message": "Sauvegarde contient monthly_polls"
+    },
+    {
+      "id": "backup:monthly_poll_candidates",
+      "status": "PASS",
+      "message": "Sauvegarde contient monthly_poll_candidates"
+    },
+    {
+      "id": "backup:monthly_poll_votes",
+      "status": "PASS",
+      "message": "Sauvegarde contient monthly_poll_votes"
+    },
+    {
+      "id": "backup:polls",
+      "status": "PASS",
+      "message": "Sauvegarde contient polls"
+    },
+    {
+      "id": "backup:ucl_matches",
+      "status": "PASS",
+      "message": "Sauvegarde contient ucl_matches"
+    },
+    {
+      "id": "backup:ucl_standings",
+      "status": "PASS",
+      "message": "Sauvegarde contient ucl_standings"
+    },
+    {
+      "id": "db095.transaction",
+      "status": "PASS",
+      "message": "Migration V0.9.5 encapsulée dans des transactions"
+    },
+    {
+      "id": "db095.app-version",
+      "status": "PASS",
+      "message": "Version backend mise à 0.9.5"
+    },
+    {
+      "id": "sql.hotfix-sync",
+      "status": "PASS",
+      "message": "HOTFIX V0.9.5 identique au patch SQL validé"
+    },
+    {
+      "id": "sql.fresh-090",
+      "status": "PASS",
+      "message": "Installation fraîche contient la V0.9.0 corrigée"
+    },
+    {
+      "id": "sql.fresh-095",
+      "status": "PASS",
+      "message": "Installation fraîche contient le durcissement V0.9.5"
+    },
+    {
+      "id": "front.registration-guard",
+      "status": "PASS",
+      "message": "Inscription protégée par le réglage V0.9.5"
+    },
+    {
+      "id": "front.admin-data-login",
+      "status": "PASS",
+      "message": "Données Admin chargées après connexion Admin"
+    },
+    {
+      "id": "front.settings-load",
+      "status": "PASS",
+      "message": "Réglages globaux chargés avec les données"
+    },
+    {
+      "id": "front.privacy-render",
+      "status": "PASS",
+      "message": "Confidentialité rendue dans le profil"
+    },
+    {
+      "id": "front.flags-render",
+      "status": "PASS",
+      "message": "Feature flags réappliqués au rendu"
+    },
+    {
+      "id": "fd.081-preserved",
+      "status": "PASS",
+      "message": "Correctif Football-Data V0.8.1 conservé"
+    },
+    {
+      "id": "fd.no-fallback-2025",
+      "status": "PASS",
+      "message": "Aucun fallback explicite vers 2025/26 détecté"
+    },
+    {
+      "id": "fd.strict-season",
+      "status": "PASS",
+      "message": "Synchronisation Football-Data reste pilotée par la saison source"
+    },
+    {
+      "id": "tests.matrix-count",
+      "status": "PASS",
+      "message": "Matrice: 1490 contrôles (attendu 1490)"
+    },
+    {
+      "id": "tests.matrix-unique",
+      "status": "PASS",
+      "message": "IDs de la matrice uniques"
+    },
+    {
+      "id": "tests.matrix-last",
+      "status": "PASS",
+      "message": "Dernier contrôle: T1490 (attendu T1490)"
+    },
+    {
+      "id": "tests.center-count",
+      "status": "PASS",
+      "message": "Centre web contient 1490 tests manuels"
+    },
+    {
+      "id": "tests.windows-safe",
+      "status": "PASS",
+      "message": "Runner compatible chemins Windows"
+    },
+    {
+      "id": "tests.center-v095-diagnostic",
+      "status": "PASS",
+      "message": "Centre web inclut les diagnostics V0.9.5"
+    },
+    {
+      "id": "version.no-stale-current",
+      "status": "PASS",
+      "message": "Aucune référence de version courante V0.9.0 résiduelle"
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 {
   "version": "0.9.0",
-  "generated_at": "2026-08-27T10:24:44.165Z",
-  "base_url": null,
+  "generated_at": "2026-08-27T10:45:09.100Z",
+  "base_url": "https://bluestorm-dev.github.io/LNDC",
   "summary": {
-    "total": 74,
-    "passed": 74,
+    "total": 79,
+    "passed": 79,
     "warnings": 0,
     "failed": 0
   },
@@ -378,6 +378,31 @@
       "id": "version.no-stale-current",
       "status": "PASS",
       "message": "Aucune référence technique V0.8.1 résiduelle dans les fichiers courants"
+    },
+    {
+      "id": "remote:VERSION",
+      "status": "PASS",
+      "message": "Déployé et conforme: VERSION"
+    },
+    {
+      "id": "remote:config.js",
+      "status": "PASS",
+      "message": "Déployé et conforme: config.js"
+    },
+    {
+      "id": "remote:sw.js",
+      "status": "PASS",
+      "message": "Déployé et conforme: sw.js"
+    },
+    {
+      "id": "remote:index.html",
+      "status": "PASS",
+      "message": "Déployé et conforme: index.html"
+    },
+    {
+      "id": "remote:js/career.js",
+      "status": "PASS",
+      "message": "Déployé et conforme: js/career.js"
     }
   ]
 }
