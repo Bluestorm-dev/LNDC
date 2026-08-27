@@ -139,6 +139,8 @@ const center=read("tests/test-center-v0.9.8.html");
 need("tests.center-count",(center.match(/"id":"T\d{4}"/g)||[]).length===1660,"Centre web contient 1660 tests manuels");
 need("tests.center-version",center.includes("Centre de tests — V0.9.8")&&center.includes("Régression complète V0.1.x → V0.9.8")&&center.includes("cfg.APP_VERSION==='0.9.8'"),"Centre de tests V0.9.8 cohérent");
 need("tests.center-diagnostic",center.includes("admin_diagnostics_v098")&&center.includes("v098.guestbook")&&center.includes("v098.archive")&&center.includes("v098.readiness"),"Centre web exécute les diagnostics V0.9.8");
+need("tests.center-readiness-scope",!center.includes("p_season_id:season.id")&&center.includes("État de clôture non testé : aucune saison active lisible"),"Test readiness résout explicitement la saison active");
+need("tests.center-v095-compat",center.includes("historicalVersionCheck")&&center.includes("backend courant 0.9.8"),"Diagnostic historique V0.9.5 tolère le backend courant V0.9.8 sans masquer V0.9.8");
 need("tests.windows-safe",read("tests/run-all-v0.9.8.mjs").includes("fileURLToPath(import.meta.url)"),"Runner compatible chemins Windows");
 need("docs.checklist-count",(read("docs/TEST_CHECKLIST_V0.9.8.md").match(/\*\*T\d{4}\*\*/g)||[]).length===170,"Checklist V0.9.8 contient 170 contrôles spécifiques");
 
