@@ -1,0 +1,41 @@
+LE NID DES CHAMPIONS — PACK D'ICÔNES HIBOU MASQUÉ
+===================================================
+
+Ajout au projet sans modification du comportement de l'application.
+
+CONTENU
+- assets/icons/app/       : 25 icônes principales de l'application
+- assets/icons/ui/        : 38 icônes d'actions et d'interface
+- assets/icons/football/  : 31 icônes football / compétition
+- assets/badges/mascot/   : 32 badges / récompenses
+- assets/icons/icon-catalog.json : catalogue et correspondances
+- assets/source-sheets/icons-2026-08/ : planches PNG sources
+
+FORMAT
+- PNG RGBA
+- 512 x 512 px
+- fond transparent
+- nommage en minuscules avec tirets
+
+COMPATIBILITÉ
+Les noms historiques documentés dans docs/ASSETS_MANIFEST.md
+(icon-home.png, icon-ranking.png, icon-live.png, etc.) ont également
+été créés comme alias afin de préparer leur utilisation dans l'interface.
+
+IMPORTANT
+Cette étape ajoute et organise les ressources graphiques. Elle ne remplace
+pas encore automatiquement tous les emojis/glyphes présents dans le HTML/JS/CSS.
+Cette activation pourra être faite écran par écran lors de la passe UI/UX 0.10.0.
+
+
+RACCORDEMENT INTERFACE
+----------------------
+- navigation desktop : raccordée aux PNG
+- navigation mobile : raccordée aux PNG
+- cloche de notifications : raccordée
+- navigation et tuiles Admin : raccordées
+- boutons principaux Accueil : raccordés
+- icônes dynamiques générées par JavaScript : conversion automatique des glyphes UI les plus courants via js/icons.js
+- réactions entre joueurs : volontairement conservées comme emojis, car elles constituent le contenu envoyé par les joueurs
+- copies runtime 128x128 : assets/icons/runtime/ pour alléger la PWA
+- originaux 512x512 : conservés sans modification

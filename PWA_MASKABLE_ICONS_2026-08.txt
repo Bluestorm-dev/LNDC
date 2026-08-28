@@ -1,0 +1,17 @@
+LE NID DES CHAMPIONS — ICÔNES PWA MASKABLE
+=============================================
+
+Branchement effectué sur la branche esthétique V0.9.9.
+
+FICHIERS
+- assets/icons/icon-192.png          : icône standard, purpose=any
+- assets/icons/icon-512.png          : icône standard, purpose=any
+- assets/icons/icon-maskable-192.png : icône PWA maskable
+- assets/icons/icon-maskable-512.png : icône PWA maskable
+
+Le manifeste expose séparément les icônes classiques et maskable.
+Les variantes maskable sont opaques et le visuel central est replacé
+dans la zone de sécurité pour supporter les recadrages Android.
+
+Le Service Worker précache également les deux fichiers maskable.
+Cache : nid-champions-v0.9.9-icons-maskable

@@ -579,6 +579,7 @@
     "css_directory": "css",
     "css_files": [
       "base.css",
+      "icons.css",
       "predictions.css",
       "ranking.css",
       "clubs.css",
@@ -599,6 +600,7 @@
     "js_directory": "js",
     "js_files": [
       "core.js",
+      "icons.js",
       "avatars.js",
       "teams.js",
       "notifications.js",
@@ -647,5 +649,39 @@
     "narrative_subjects": 34,
     "narrative_templates_per_subject": 40,
     "narrative_seed_total": 1360
+  },
+  "icon_pack_2026_08": {
+    "catalog": "assets/icons/icon-catalog.json",
+    "app_count": 25,
+    "ui_count": 38,
+    "football_count": 31,
+    "badge_count": 32,
+    "total": 126,
+    "source_sheets": [
+      "assets/source-sheets/icons-2026-08/planche_d_icônes_hiboux_et_football.png",
+      "assets/source-sheets/icons-2026-08/pack_d_icônes_hibou_football_bleu_et_or.png",
+      "assets/source-sheets/icons-2026-08/pack_d_icônes_football_mascotte_hibou.png",
+      "assets/source-sheets/icons-2026-08/autocollants_de_badges_de_football_hibou.png"
+    ]
+  },
+  "icon_runtime_2026_08": {
+    "directory": "assets/icons/runtime",
+    "catalog": "assets/icons/runtime/runtime-manifest.json",
+    "size": "128x128",
+    "count": 96,
+    "wired_surfaces": [
+      "desktop navigation",
+      "mobile navigation",
+      "notification bell",
+      "home primary actions",
+      "admin navigation",
+      "admin dashboard",
+      "dynamic UI glyphs"
+    ],
+    "emoji_exceptions": [
+      "player reactions",
+      "rarity color dots",
+      "narrative/prose emojis not used as controls"
+    ]
   }
 }

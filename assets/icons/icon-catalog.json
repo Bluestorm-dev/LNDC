@@ -1,0 +1,557 @@
+{
+  "version": 1,
+  "style": "Le Nid des Champions — hibou masqué bleu/or",
+  "format": "image/png RGBA 512x512",
+  "collections": {
+    "app": [
+      {
+        "key": "home",
+        "file": "assets/icons/app/app-home.png"
+      },
+      {
+        "key": "poll",
+        "file": "assets/icons/app/app-poll.png"
+      },
+      {
+        "key": "calendar",
+        "file": "assets/icons/app/app-calendar.png"
+      },
+      {
+        "key": "predictions",
+        "file": "assets/icons/app/app-predictions.png"
+      },
+      {
+        "key": "vote",
+        "file": "assets/icons/app/app-vote.png"
+      },
+      {
+        "key": "ranking-podium",
+        "file": "assets/icons/app/app-ranking-podium.png"
+      },
+      {
+        "key": "ranking-stats",
+        "file": "assets/icons/app/app-ranking-stats.png"
+      },
+      {
+        "key": "teams",
+        "file": "assets/icons/app/app-teams.png"
+      },
+      {
+        "key": "museum",
+        "file": "assets/icons/app/app-museum.png"
+      },
+      {
+        "key": "season",
+        "file": "assets/icons/app/app-season.png"
+      },
+      {
+        "key": "trophy",
+        "file": "assets/icons/app/app-trophy.png"
+      },
+      {
+        "key": "news",
+        "file": "assets/icons/app/app-news.png"
+      },
+      {
+        "key": "live",
+        "file": "assets/icons/app/app-live.png"
+      },
+      {
+        "key": "notification",
+        "file": "assets/icons/app/app-notification.png"
+      },
+      {
+        "key": "profile",
+        "file": "assets/icons/app/app-profile.png"
+      },
+      {
+        "key": "admin",
+        "file": "assets/icons/app/app-admin.png"
+      },
+      {
+        "key": "settings",
+        "file": "assets/icons/app/app-settings.png"
+      },
+      {
+        "key": "help",
+        "file": "assets/icons/app/app-help.png"
+      },
+      {
+        "key": "search",
+        "file": "assets/icons/app/app-search.png"
+      },
+      {
+        "key": "results",
+        "file": "assets/icons/app/app-results.png"
+      },
+      {
+        "key": "stadium",
+        "file": "assets/icons/app/app-stadium.png"
+      },
+      {
+        "key": "tournament",
+        "file": "assets/icons/app/app-tournament.png"
+      },
+      {
+        "key": "genius",
+        "file": "assets/icons/app/app-genius.png"
+      },
+      {
+        "key": "success",
+        "file": "assets/icons/app/app-success.png"
+      },
+      {
+        "key": "rivalry",
+        "file": "assets/icons/app/app-rivalry.png"
+      }
+    ],
+    "ui": [
+      {
+        "key": "arrow-left",
+        "file": "assets/icons/ui/ui-arrow-left.png"
+      },
+      {
+        "key": "arrow-right",
+        "file": "assets/icons/ui/ui-arrow-right.png"
+      },
+      {
+        "key": "arrow-up",
+        "file": "assets/icons/ui/ui-arrow-up.png"
+      },
+      {
+        "key": "arrow-down",
+        "file": "assets/icons/ui/ui-arrow-down.png"
+      },
+      {
+        "key": "previous",
+        "file": "assets/icons/ui/ui-previous.png"
+      },
+      {
+        "key": "next",
+        "file": "assets/icons/ui/ui-next.png"
+      },
+      {
+        "key": "refresh",
+        "file": "assets/icons/ui/ui-refresh.png"
+      },
+      {
+        "key": "sync",
+        "file": "assets/icons/ui/ui-sync.png"
+      },
+      {
+        "key": "share",
+        "file": "assets/icons/ui/ui-share.png"
+      },
+      {
+        "key": "external-link",
+        "file": "assets/icons/ui/ui-external-link.png"
+      },
+      {
+        "key": "menu",
+        "file": "assets/icons/ui/ui-menu.png"
+      },
+      {
+        "key": "close",
+        "file": "assets/icons/ui/ui-close.png"
+      },
+      {
+        "key": "add",
+        "file": "assets/icons/ui/ui-add.png"
+      },
+      {
+        "key": "remove",
+        "file": "assets/icons/ui/ui-remove.png"
+      },
+      {
+        "key": "edit",
+        "file": "assets/icons/ui/ui-edit.png"
+      },
+      {
+        "key": "delete",
+        "file": "assets/icons/ui/ui-delete.png"
+      },
+      {
+        "key": "filter",
+        "file": "assets/icons/ui/ui-filter.png"
+      },
+      {
+        "key": "sort",
+        "file": "assets/icons/ui/ui-sort.png"
+      },
+      {
+        "key": "search",
+        "file": "assets/icons/ui/ui-search.png"
+      },
+      {
+        "key": "info",
+        "file": "assets/icons/ui/ui-info.png"
+      },
+      {
+        "key": "help",
+        "file": "assets/icons/ui/ui-help.png"
+      },
+      {
+        "key": "notification",
+        "file": "assets/icons/ui/ui-notification.png"
+      },
+      {
+        "key": "notification-off",
+        "file": "assets/icons/ui/ui-notification-off.png"
+      },
+      {
+        "key": "show",
+        "file": "assets/icons/ui/ui-show.png"
+      },
+      {
+        "key": "hide",
+        "file": "assets/icons/ui/ui-hide.png"
+      },
+      {
+        "key": "lock",
+        "file": "assets/icons/ui/ui-lock.png"
+      },
+      {
+        "key": "unlock",
+        "file": "assets/icons/ui/ui-unlock.png"
+      },
+      {
+        "key": "download",
+        "file": "assets/icons/ui/ui-download.png"
+      },
+      {
+        "key": "upload",
+        "file": "assets/icons/ui/ui-upload.png"
+      },
+      {
+        "key": "cloud-sync",
+        "file": "assets/icons/ui/ui-cloud-sync.png"
+      },
+      {
+        "key": "online",
+        "file": "assets/icons/ui/ui-online.png"
+      },
+      {
+        "key": "offline",
+        "file": "assets/icons/ui/ui-offline.png"
+      },
+      {
+        "key": "hourglass",
+        "file": "assets/icons/ui/ui-hourglass.png"
+      },
+      {
+        "key": "timer",
+        "file": "assets/icons/ui/ui-timer.png"
+      },
+      {
+        "key": "success",
+        "file": "assets/icons/ui/ui-success.png"
+      },
+      {
+        "key": "warning",
+        "file": "assets/icons/ui/ui-warning.png"
+      },
+      {
+        "key": "error",
+        "file": "assets/icons/ui/ui-error.png"
+      },
+      {
+        "key": "more",
+        "file": "assets/icons/ui/ui-more.png"
+      }
+    ],
+    "football": [
+      {
+        "key": "football",
+        "file": "assets/icons/football/football-football.png"
+      },
+      {
+        "key": "stadium",
+        "file": "assets/icons/football/football-stadium.png"
+      },
+      {
+        "key": "referee-whistle",
+        "file": "assets/icons/football/football-referee-whistle.png"
+      },
+      {
+        "key": "yellow-card",
+        "file": "assets/icons/football/football-yellow-card.png"
+      },
+      {
+        "key": "red-card",
+        "file": "assets/icons/football/football-red-card.png"
+      },
+      {
+        "key": "match-timer",
+        "file": "assets/icons/football/football-match-timer.png"
+      },
+      {
+        "key": "calendar",
+        "file": "assets/icons/football/football-calendar.png"
+      },
+      {
+        "key": "next-match",
+        "file": "assets/icons/football/football-next-match.png"
+      },
+      {
+        "key": "final-score",
+        "file": "assets/icons/football/football-final-score.png"
+      },
+      {
+        "key": "live",
+        "file": "assets/icons/football/football-live.png"
+      },
+      {
+        "key": "group-stage",
+        "file": "assets/icons/football/football-group-stage.png"
+      },
+      {
+        "key": "knockout-bracket",
+        "file": "assets/icons/football/football-knockout-bracket.png"
+      },
+      {
+        "key": "qualified",
+        "file": "assets/icons/football/football-qualified.png"
+      },
+      {
+        "key": "eliminated",
+        "file": "assets/icons/football/football-eliminated.png"
+      },
+      {
+        "key": "podium",
+        "file": "assets/icons/football/football-podium.png"
+      },
+      {
+        "key": "cup",
+        "file": "assets/icons/football/football-cup.png"
+      },
+      {
+        "key": "medal",
+        "file": "assets/icons/football/football-medal.png"
+      },
+      {
+        "key": "champion-crown",
+        "file": "assets/icons/football/football-champion-crown.png"
+      },
+      {
+        "key": "shield",
+        "file": "assets/icons/football/football-shield.png"
+      },
+      {
+        "key": "teams",
+        "file": "assets/icons/football/football-teams.png"
+      },
+      {
+        "key": "rivalry",
+        "file": "assets/icons/football/football-rivalry.png"
+      },
+      {
+        "key": "tactics",
+        "file": "assets/icons/football/football-tactics.png"
+      },
+      {
+        "key": "venue-map",
+        "file": "assets/icons/football/football-venue-map.png"
+      },
+      {
+        "key": "scoreboard",
+        "file": "assets/icons/football/football-scoreboard.png"
+      },
+      {
+        "key": "predictions-list",
+        "file": "assets/icons/football/football-predictions-list.png"
+      },
+      {
+        "key": "notification-help",
+        "file": "assets/icons/football/football-notification-help.png"
+      },
+      {
+        "key": "award-star",
+        "file": "assets/icons/football/football-award-star.png"
+      },
+      {
+        "key": "hot-match",
+        "file": "assets/icons/football/football-hot-match.png"
+      },
+      {
+        "key": "hall-of-fame",
+        "file": "assets/icons/football/football-hall-of-fame.png"
+      },
+      {
+        "key": "news",
+        "file": "assets/icons/football/football-news.png"
+      },
+      {
+        "key": "stats",
+        "file": "assets/icons/football/football-stats.png"
+      }
+    ],
+    "badges": [
+      {
+        "key": "champion-owl-cup",
+        "file": "assets/badges/mascot/badge-champion-owl-cup.png"
+      },
+      {
+        "key": "champion-cup",
+        "file": "assets/badges/mascot/badge-champion-cup.png"
+      },
+      {
+        "key": "gold-medal",
+        "file": "assets/badges/mascot/badge-gold-medal.png"
+      },
+      {
+        "key": "silver-medal",
+        "file": "assets/badges/mascot/badge-silver-medal.png"
+      },
+      {
+        "key": "bronze-medal",
+        "file": "assets/badges/mascot/badge-bronze-medal.png"
+      },
+      {
+        "key": "crown",
+        "file": "assets/badges/mascot/badge-crown.png"
+      },
+      {
+        "key": "star",
+        "file": "assets/badges/mascot/badge-star.png"
+      },
+      {
+        "key": "master-predictor",
+        "file": "assets/badges/mascot/badge-master-predictor.png"
+      },
+      {
+        "key": "perfect-score",
+        "file": "assets/badges/mascot/badge-perfect-score.png"
+      },
+      {
+        "key": "top-streak",
+        "file": "assets/badges/mascot/badge-top-streak.png"
+      },
+      {
+        "key": "knockout-expert",
+        "file": "assets/badges/mascot/badge-knockout-expert.png"
+      },
+      {
+        "key": "group-stage-expert",
+        "file": "assets/badges/mascot/badge-group-stage-expert.png"
+      },
+      {
+        "key": "hall-of-fame",
+        "file": "assets/badges/mascot/badge-hall-of-fame.png"
+      },
+      {
+        "key": "admin",
+        "file": "assets/badges/mascot/badge-admin.png"
+      },
+      {
+        "key": "trusted",
+        "file": "assets/badges/mascot/badge-trusted.png"
+      },
+      {
+        "key": "verified",
+        "file": "assets/badges/mascot/badge-verified.png"
+      },
+      {
+        "key": "team-spirit",
+        "file": "assets/badges/mascot/badge-team-spirit.png"
+      },
+      {
+        "key": "live-watcher",
+        "file": "assets/badges/mascot/badge-live-watcher.png"
+      },
+      {
+        "key": "news-scout",
+        "file": "assets/badges/mascot/badge-news-scout.png"
+      },
+      {
+        "key": "calendar-master",
+        "file": "assets/badges/mascot/badge-calendar-master.png"
+      },
+      {
+        "key": "comeback",
+        "file": "assets/badges/mascot/badge-comeback.png"
+      },
+      {
+        "key": "rivalry",
+        "file": "assets/badges/mascot/badge-rivalry.png"
+      },
+      {
+        "key": "legend",
+        "file": "assets/badges/mascot/badge-legend.png"
+      },
+      {
+        "key": "crest-champion",
+        "file": "assets/badges/mascot/badge-crest-champion.png"
+      },
+      {
+        "key": "football-star",
+        "file": "assets/badges/mascot/badge-football-star.png"
+      },
+      {
+        "key": "crest-owl",
+        "file": "assets/badges/mascot/badge-crest-owl.png"
+      },
+      {
+        "key": "champions-ball",
+        "file": "assets/badges/mascot/badge-champions-ball.png"
+      },
+      {
+        "key": "hex-owl",
+        "file": "assets/badges/mascot/badge-hex-owl.png"
+      },
+      {
+        "key": "round-owl",
+        "file": "assets/badges/mascot/badge-round-owl.png"
+      },
+      {
+        "key": "crest-ball",
+        "file": "assets/badges/mascot/badge-crest-ball.png"
+      },
+      {
+        "key": "winged-ball",
+        "file": "assets/badges/mascot/badge-winged-ball.png"
+      },
+      {
+        "key": "star-medal",
+        "file": "assets/badges/mascot/badge-star-medal.png"
+      }
+    ]
+  },
+  "canonical_aliases": {
+    "icon-home.png": "assets/icons/app/app-home.png",
+    "icon-matches.png": "assets/icons/app/app-predictions.png",
+    "icon-ranking.png": "assets/icons/app/app-ranking-podium.png",
+    "icon-season.png": "assets/icons/app/app-season.png",
+    "icon-profile.png": "assets/icons/app/app-profile.png",
+    "icon-teams.png": "assets/icons/app/app-teams.png",
+    "icon-records.png": "assets/icons/app/app-museum.png",
+    "icon-notification.png": "assets/icons/app/app-notification.png",
+    "icon-settings.png": "assets/icons/app/app-settings.png",
+    "icon-admin.png": "assets/icons/app/app-admin.png",
+    "icon-live.png": "assets/icons/app/app-live.png",
+    "icon-lock.png": "assets/icons/ui/ui-lock.png",
+    "icon-unlock.png": "assets/icons/ui/ui-unlock.png",
+    "icon-check.png": "assets/icons/ui/ui-success.png",
+    "icon-warning.png": "assets/icons/ui/ui-warning.png",
+    "icon-calendar.png": "assets/icons/app/app-calendar.png",
+    "icon-trophy.png": "assets/icons/app/app-trophy.png",
+    "icon-badge.png": "assets/badges/mascot/badge-star-medal.png",
+    "icon-rival.png": "assets/icons/app/app-rivalry.png",
+    "icon-genius.png": "assets/icons/app/app-genius.png",
+    "icon-solo.png": "assets/icons/app/app-profile.png",
+    "icon-poll.png": "assets/icons/app/app-poll.png",
+    "icon-ticket.png": "assets/icons/app/app-help.png",
+    "icon-camera.png": "assets/icons/app/app-search.png",
+    "icon-download.png": "assets/icons/ui/ui-download.png",
+    "icon-install.png": "assets/icons/ui/ui-download.png",
+    "icon-maintenance.png": "assets/icons/app/app-settings.png",
+    "icon-history.png": "assets/icons/ui/ui-refresh.png",
+    "icon-arrow-up.png": "assets/icons/ui/ui-arrow-up.png",
+    "icon-arrow-down.png": "assets/icons/ui/ui-arrow-down.png",
+    "icon-equal.png": "assets/icons/ui/ui-remove.png",
+    "icon-search.png": "assets/icons/ui/ui-search.png",
+    "icon-filter.png": "assets/icons/ui/ui-filter.png",
+    "icon-menu.png": "assets/icons/ui/ui-menu.png",
+    "icon-owl.png": "assets/branding/owl/owl-masked-main.png",
+    "icon-pan.png": "assets/avatars/nid/avatar-hibou-casserole.png"
+  }
+}
