@@ -6,6 +6,8 @@ function rarityIcon(r){return ({common:"⚪",rare:"🔵",epic:"🟣",legendary:"
 function gamificationEventIcon(e){return e?.event_type==="casserole"?"🍳":e?.event_type==="genius"?"✨":"✦";}
 function genericBadgeIcon(r){return ({common:"✦",rare:"✧",epic:"✹",legendary:"★",secret:"?"}[r]||"✦");}
 
+function badgeVisual(b){return b?.image_url||b?.default_asset_path||"";}
+
 function narrativeStorageKey(key){return `nidc_narrative_recent:${state.user?.id||"anon"}:${key}`;}
 function fillNarrativeTemplate(template,vars={}){
   return String(template||"").replace(/\{([a-z0-9_]+)\}/gi,(_,k)=>vars[k]===undefined||vars[k]===null?"":String(vars[k]));
@@ -61,7 +63,7 @@ function badgeVisibleName(b){return b?.is_secret&&!b?.obtained?"???":b?.name||"B
 function badgeCardHTML(b){
   const locked=!b.obtained;const p=badgeProgressData(b);const secretLocked=b.is_secret&&locked;
   return `<article class="museum-badge ${esc(b.rarity)} ${locked?'locked':'obtained'}" data-badge-id="${esc(b.badge_id||'')}">
-    <div class="badge-emblem ${esc(b.rarity)}">${b.image_url?`<img src="${esc(b.image_url)}" alt="">`:`<b>${secretLocked?'?':genericBadgeIcon(b.rarity)}</b>`}<span>${rarityIcon(b.rarity)}</span></div>
+    <div class="badge-emblem ${esc(b.rarity)}">${badgeVisual(b)?`<img src="${esc(badgeVisual(b))}" alt="">`:`<b>${secretLocked?'?':genericBadgeIcon(b.rarity)}</b>`}<span>${rarityIcon(b.rarity)}</span></div>
     <div class="museum-badge-copy"><div><small>${esc(rarityLabel(b.rarity))} · ${esc(b.category||'')}</small>${b.first_discovery?'<em>🥇 Premier découvreur</em>':''}</div><h4>${esc(badgeVisibleName(b))}</h4><p>${esc(secretLocked?'Secret non découvert':b.description||'')}</p>${b.earned_at?`<time>Débloqué le ${esc(fmtDate(b.earned_at))}</time>`:''}${!locked&&b.scope==='career'?'<span class="career-chip">Carrière</span>':''}${locked&&p?`<div class="badge-progress"><i style="width:${p.pct}%"></i></div><small>${esc(p.label)}</small>`:''}</div>
   </article>`;
 }
@@ -203,7 +205,7 @@ function showBadgeReveal(badges){
   const rarity=highestBadgeRarity(rows),single=rows.length===1,first=rows[0];
   const wrap=document.createElement("div");wrap.id="badgeRevealV070";wrap.className=`badge-reveal reveal-${rarity}`;
   const title=single?(first.is_secret?"🕵️ SECRET DÉCOUVERT":"🏅 NOUVEAU BADGE"):`🏅 ${rows.length} NOUVEAUX BADGES`;
-  wrap.innerHTML=`<div class="badge-reveal-card ${esc(rarity)}"><span class="eyebrow gold">${title}</span>${single?`<div class="badge-emblem ${esc(first.rarity)}">${first.image_url?`<img src="${esc(first.image_url)}" alt="">`:`<b>${genericBadgeIcon(first.rarity)}</b>`}</div><h2>${esc(first.name||"Badge")}</h2><p>${esc(first.description||"")}</p>`:`<h2>Le Musée s’agrandit</h2><p>L’animation suit le niveau du badge le plus rare obtenu.</p><div class="badge-reveal-gallery">${rows.slice(0,8).map(b=>`<span class="badge-emblem mini ${esc(b.rarity)}" title="${esc(b.name)}">${b.image_url?`<img src="${esc(b.image_url)}" alt="">`:`<b>${genericBadgeIcon(b.rarity)}</b>`}</span>`).join("")}</div>`}<button class="btn gold" type="button" id="closeBadgeRevealV070">Voir dans le Musée</button></div>`;
+  wrap.innerHTML=`<div class="badge-reveal-card ${esc(rarity)}"><span class="eyebrow gold">${title}</span>${single?`<div class="badge-emblem ${esc(first.rarity)}">${badgeVisual(first)?`<img src="${esc(badgeVisual(first))}" alt="">`:`<b>${genericBadgeIcon(first.rarity)}</b>`}</div><h2>${esc(first.name||"Badge")}</h2><p>${esc(first.description||"")}</p>`:`<h2>Le Musée s’agrandit</h2><p>L’animation suit le niveau du badge le plus rare obtenu.</p><div class="badge-reveal-gallery">${rows.slice(0,8).map(b=>`<span class="badge-emblem mini ${esc(b.rarity)}" title="${esc(b.name)}">${badgeVisual(b)?`<img src="${esc(badgeVisual(b))}" alt="">`:`<b>${genericBadgeIcon(b.rarity)}</b>`}</span>`).join("")}</div>`}<button class="btn gold" type="button" id="closeBadgeRevealV070">Voir dans le Musée</button></div>`;
   document.body.appendChild(wrap);$("#closeBadgeRevealV070",wrap).onclick=()=>{wrap.remove();setView("museum");};
 }
 
@@ -241,7 +243,7 @@ async function loadAdminGamificationData(){
   ]);
   state.adminBadges=badges||[];state.adminPlayerBadges=awards||[];state.adminNarrativeTemplates=texts||[];state.gamificationAudit=audit||[];state.gamificationSettings=settings||state.gamificationSettings;state.adminGamificationEvents=events||[];state.adminGamificationRecords=records||[];
 }
-function adminBadgeRowHTML(b){return `<div class="admin-gami-badge-row"><span class="badge-emblem mini ${esc(b.rarity)}">${b.image_url?`<img src="${esc(b.image_url)}" alt="">`:`<b>${genericBadgeIcon(b.rarity)}</b>`}</span><div><strong>${esc(b.is_secret?'🕵️ '+b.name:b.name)}</strong><small>${esc(rarityLabel(b.rarity))} · ${esc(b.category)} · ${b.auto_evaluate?'Auto':'Manuel/futur'}${b.archived_at?' · Archivé':''}</small></div><span class="${b.active?'green':'muted'}">${b.active?'Actif':(b.archived_at?'Archivé':'Inactif')}</span><button class="btn secondary small" data-edit-badge="${b.id}">Éditer</button><button class="btn secondary small" data-test-badge="${b.id}">🧪 Tester</button>${!b.archived_at?`<button class="btn danger small" data-archive-badge="${b.id}">Archiver</button>`:''}</div>`;}
+function adminBadgeRowHTML(b){return `<div class="admin-gami-badge-row"><span class="badge-emblem mini ${esc(b.rarity)}">${badgeVisual(b)?`<img src="${esc(badgeVisual(b))}" alt="">`:`<b>${genericBadgeIcon(b.rarity)}</b>`}</span><div><strong>${esc(b.is_secret?'🕵️ '+b.name:b.name)}</strong><small>${esc(rarityLabel(b.rarity))} · ${esc(b.category)} · ${b.auto_evaluate?'Auto':'Manuel/futur'}${b.archived_at?' · Archivé':''}</small></div><span class="${b.active?'green':'muted'}">${b.active?'Actif':(b.archived_at?'Archivé':'Inactif')}</span><button class="btn secondary small" data-edit-badge="${b.id}">Éditer</button><button class="btn secondary small" data-test-badge="${b.id}">🧪 Tester</button>${!b.archived_at?`<button class="btn danger small" data-archive-badge="${b.id}">Archiver</button>`:''}</div>`;}
 
 async function uploadGamificationMedia(file,folder="misc"){
   if(!file)return "";const allowed=new Set(["image/png","image/jpeg","image/webp"]);if(!allowed.has(file.type))throw new Error("Image PNG, JPG ou WebP uniquement.");if(file.size>5*1024*1024)throw new Error("Image limitée à 5 Mo.");

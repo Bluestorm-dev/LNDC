@@ -1206,5 +1206,19 @@
       "rarity color dots",
       "narrative/prose emojis not used as controls"
     ]
+  },
+  "badges": {
+    "official_count": 100,
+    "directory": "assets/badges",
+    "catalog": "assets/badges/badge-catalog.json",
+    "size": "512x512",
+    "format": "image/png",
+    "rarity_directories": [
+      "common",
+      "rare",
+      "epic",
+      "legendary",
+      "secret"
+    ]
   }
 }

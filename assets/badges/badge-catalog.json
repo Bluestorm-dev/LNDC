@@ -1,0 +1,708 @@
+{
+  "count": 100,
+  "directory": "assets/badges",
+  "format": "image/png",
+  "size": "512x512",
+  "items": [
+    {
+      "sort_order": 1,
+      "code": "badge-premier-envol",
+      "name": "Premier envol",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-premier-envol.png"
+    },
+    {
+      "sort_order": 2,
+      "code": "badge-premiers-points",
+      "name": "Premiers points",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-premiers-points.png"
+    },
+    {
+      "sort_order": 3,
+      "code": "badge-premier-exact",
+      "name": "Dans le mille",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-premier-exact.png"
+    },
+    {
+      "sort_order": 4,
+      "code": "badge-journee-complete",
+      "name": "Carnet rempli",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-journee-complete.png"
+    },
+    {
+      "sort_order": 5,
+      "code": "badge-premiere-team",
+      "name": "Bienvenue dans la Team",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-premiere-team.png"
+    },
+    {
+      "sort_order": 6,
+      "code": "badge-premier-duel",
+      "name": "Premier duel",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-premier-duel.png"
+    },
+    {
+      "sort_order": 7,
+      "code": "badge-premiere-casserole",
+      "name": "Ça commence bien",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-premiere-casserole.png"
+    },
+    {
+      "sort_order": 8,
+      "code": "badge-premier-genie",
+      "name": "Éclair de génie",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-premier-genie.png"
+    },
+    {
+      "sort_order": 9,
+      "code": "badge-premier-hibou-solitaire",
+      "name": "Hibou solitaire",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-premier-hibou-solitaire.png"
+    },
+    {
+      "sort_order": 10,
+      "code": "badge-premier-record",
+      "name": "Petit record",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-premier-record.png"
+    },
+    {
+      "sort_order": 11,
+      "code": "badge-cinq-pronos",
+      "name": "On prend le rythme",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-cinq-pronos.png"
+    },
+    {
+      "sort_order": 12,
+      "code": "badge-dix-pronos",
+      "name": "Le carnet chauffe",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-dix-pronos.png"
+    },
+    {
+      "sort_order": 13,
+      "code": "badge-vingt-pronos",
+      "name": "Habitué du Nid",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-vingt-pronos.png"
+    },
+    {
+      "sort_order": 14,
+      "code": "badge-trois-bons-resultats",
+      "name": "Bonne lecture",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-trois-bons-resultats.png"
+    },
+    {
+      "sort_order": 15,
+      "code": "badge-deux-exacts",
+      "name": "Double vision",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-deux-exacts.png"
+    },
+    {
+      "sort_order": 16,
+      "code": "badge-sans-oubli-soiree",
+      "name": "Présent !",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-sans-oubli-soiree.png"
+    },
+    {
+      "sort_order": 17,
+      "code": "badge-premiere-remontee",
+      "name": "Ça remonte",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-premiere-remontee.png"
+    },
+    {
+      "sort_order": 18,
+      "code": "badge-premier-top10",
+      "name": "Top 10",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-premier-top10.png"
+    },
+    {
+      "sort_order": 19,
+      "code": "badge-premier-top5",
+      "name": "Top 5",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-premier-top5.png"
+    },
+    {
+      "sort_order": 20,
+      "code": "badge-premier-podium",
+      "name": "Première plume sur le podium",
+      "rarity": "common",
+      "file": "assets/badges/common/badge-common-premier-podium.png"
+    },
+    {
+      "sort_order": 21,
+      "code": "badge-dix-exacts",
+      "name": "Sniper",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-dix-exacts.png"
+    },
+    {
+      "sort_order": 22,
+      "code": "badge-vingt-bons-ecarts",
+      "name": "Compas dans l'œil",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-vingt-bons-ecarts.png"
+    },
+    {
+      "sort_order": 23,
+      "code": "badge-serie-cinq-points",
+      "name": "Série propre",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-serie-cinq-points.png"
+    },
+    {
+      "sort_order": 24,
+      "code": "badge-serie-dix-points",
+      "name": "Métronome",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-serie-dix-points.png"
+    },
+    {
+      "sort_order": 25,
+      "code": "badge-trois-exacts-soiree",
+      "name": "Triple impact",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-trois-exacts-soiree.png"
+    },
+    {
+      "sort_order": 26,
+      "code": "badge-cinq-journees-completes",
+      "name": "Assidu",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-cinq-journees-completes.png"
+    },
+    {
+      "sort_order": 27,
+      "code": "badge-dix-journees-completes",
+      "name": "Fidèle au poste",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-dix-journees-completes.png"
+    },
+    {
+      "sort_order": 28,
+      "code": "badge-top3-trois-fois",
+      "name": "Habitué du podium",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-top3-trois-fois.png"
+    },
+    {
+      "sort_order": 29,
+      "code": "badge-leader-une-fois",
+      "name": "Chef du Nid",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-leader-une-fois.png"
+    },
+    {
+      "sort_order": 30,
+      "code": "badge-leader-sept-jours",
+      "name": "Une semaine au sommet",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-leader-sept-jours.png"
+    },
+    {
+      "sort_order": 31,
+      "code": "badge-remontee-dix",
+      "name": "Ascenseur express",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-remontee-dix.png"
+    },
+    {
+      "sort_order": 32,
+      "code": "badge-aucun-zero-soiree",
+      "name": "Soirée sans trou",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-aucun-zero-soiree.png"
+    },
+    {
+      "sort_order": 33,
+      "code": "badge-outsider-reussi",
+      "name": "Le flair",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-outsider-reussi.png"
+    },
+    {
+      "sort_order": 34,
+      "code": "badge-hibou-solitaire-3",
+      "name": "Solitaire confirmé",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-hibou-solitaire-3.png"
+    },
+    {
+      "sort_order": 35,
+      "code": "badge-genie-50",
+      "name": "Cerveau en fusion",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-genie-50.png"
+    },
+    {
+      "sort_order": 36,
+      "code": "badge-casserole-50",
+      "name": "Cuisine ouverte",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-casserole-50.png"
+    },
+    {
+      "sort_order": 37,
+      "code": "badge-rival-5",
+      "name": "Bête noire",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-rival-5.png"
+    },
+    {
+      "sort_order": 38,
+      "code": "badge-team-top3",
+      "name": "Team sur le podium",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-team-top3.png"
+    },
+    {
+      "sort_order": 39,
+      "code": "badge-precision-60",
+      "name": "Œil sûr",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-precision-60.png"
+    },
+    {
+      "sort_order": 40,
+      "code": "badge-aucun-oubli-phase",
+      "name": "Phase complète",
+      "rarity": "rare",
+      "file": "assets/badges/rare/badge-rare-aucun-oubli-phase.png"
+    },
+    {
+      "sort_order": 41,
+      "code": "badge-quatre-exacts-journee",
+      "name": "Quatre à la suite",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-quatre-exacts-journee.png"
+    },
+    {
+      "sort_order": 42,
+      "code": "badge-leader-trente-jours",
+      "name": "Trône occupé",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-leader-trente-jours.png"
+    },
+    {
+      "sort_order": 43,
+      "code": "badge-top3-dix-soirees",
+      "name": "Abonné au podium",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-top3-dix-soirees.png"
+    },
+    {
+      "sort_order": 44,
+      "code": "badge-remontee-quinze",
+      "name": "Remontada",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-remontee-quinze.png"
+    },
+    {
+      "sort_order": 45,
+      "code": "badge-hibou-solitaire-10",
+      "name": "Seul contre presque tous",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-hibou-solitaire-10.png"
+    },
+    {
+      "sort_order": 46,
+      "code": "badge-genie-150",
+      "name": "Génie européen",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-genie-150.png"
+    },
+    {
+      "sort_order": 47,
+      "code": "badge-casserole-150",
+      "name": "Chef étoilé… autrement",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-casserole-150.png"
+    },
+    {
+      "sort_order": 48,
+      "code": "badge-exact-finale",
+      "name": "Finaliste visionnaire",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-exact-finale.png"
+    },
+    {
+      "sort_order": 49,
+      "code": "badge-qualifies-parfaits-phase",
+      "name": "Tableau limpide",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-qualifies-parfaits-phase.png"
+    },
+    {
+      "sort_order": 50,
+      "code": "badge-phase-top1",
+      "name": "Roi d'une phase",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-phase-top1.png"
+    },
+    {
+      "sort_order": 51,
+      "code": "badge-serie-20-points",
+      "name": "Inarrêtable",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-serie-20-points.png"
+    },
+    {
+      "sort_order": 52,
+      "code": "badge-precision-70",
+      "name": "Chirurgical",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-precision-70.png"
+    },
+    {
+      "sort_order": 53,
+      "code": "badge-rival-10",
+      "name": "Némésis",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-rival-10.png"
+    },
+    {
+      "sort_order": 54,
+      "code": "badge-team-champion-phase",
+      "name": "Team dominante",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-team-champion-phase.png"
+    },
+    {
+      "sort_order": 55,
+      "code": "badge-cinq-exacts-semaine",
+      "name": "Semaine magique",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-cinq-exacts-semaine.png"
+    },
+    {
+      "sort_order": 56,
+      "code": "badge-outsider-3",
+      "name": "Flair insolent",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-outsider-3.png"
+    },
+    {
+      "sort_order": 57,
+      "code": "badge-podium-50-jours",
+      "name": "Installé là-haut",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-podium-50-jours.png"
+    },
+    {
+      "sort_order": 58,
+      "code": "badge-aucun-oubli-long",
+      "name": "Mémoire de fer",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-aucun-oubli-long.png"
+    },
+    {
+      "sort_order": 59,
+      "code": "badge-double-champion-vivant",
+      "name": "Double espoir",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-double-champion-vivant.png"
+    },
+    {
+      "sort_order": 60,
+      "code": "badge-hibou-nuit-5",
+      "name": "Noctambule d'élite",
+      "rarity": "epic",
+      "file": "assets/badges/epic/badge-epic-hibou-nuit-5.png"
+    },
+    {
+      "sort_order": 61,
+      "code": "badge-prophete",
+      "name": "Le Prophète",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-prophete.png"
+    },
+    {
+      "sort_order": 62,
+      "code": "badge-seul-contre-le-nid",
+      "name": "Seul contre le Nid",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-seul-contre-le-nid.png"
+    },
+    {
+      "sort_order": 63,
+      "code": "badge-nid-tappartient",
+      "name": "Le Nid t'appartient",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-nid-tappartient.png"
+    },
+    {
+      "sort_order": 64,
+      "code": "badge-nuit-parfaite",
+      "name": "Nuit parfaite",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-nuit-parfaite.png"
+    },
+    {
+      "sort_order": 65,
+      "code": "badge-oracle-europeen",
+      "name": "Oracle européen",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-oracle-europeen.png"
+    },
+    {
+      "sort_order": 66,
+      "code": "badge-immortel",
+      "name": "Immortel",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-immortel.png"
+    },
+    {
+      "sort_order": 67,
+      "code": "badge-champion-nid",
+      "name": "Champion du Nid",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-champion-nid.png"
+    },
+    {
+      "sort_order": 68,
+      "code": "badge-double-champion",
+      "name": "Double champion",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-double-champion.png"
+    },
+    {
+      "sort_order": 69,
+      "code": "badge-triple-champion",
+      "name": "Dynastie",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-triple-champion.png"
+    },
+    {
+      "sort_order": 70,
+      "code": "badge-exact-finale-x4",
+      "name": "L'œil du trophée",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-exact-finale-x4.png"
+    },
+    {
+      "sort_order": 71,
+      "code": "badge-100-exacts-carriere",
+      "name": "Cent impacts",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-100-exacts-carriere.png"
+    },
+    {
+      "sort_order": 72,
+      "code": "badge-500-pronos-sans-oubli",
+      "name": "Machine à pronos",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-500-pronos-sans-oubli.png"
+    },
+    {
+      "sort_order": 73,
+      "code": "badge-hibou-solitaire-impossible",
+      "name": "Contre l'univers",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-hibou-solitaire-impossible.png"
+    },
+    {
+      "sort_order": 74,
+      "code": "badge-genie-500",
+      "name": "Cerveau légendaire",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-genie-500.png"
+    },
+    {
+      "sort_order": 75,
+      "code": "badge-poele-or",
+      "name": "Poêle d'Or",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-poele-or.png"
+    },
+    {
+      "sort_order": 76,
+      "code": "badge-invincible-rival",
+      "name": "Rivalité à sens unique",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-invincible-rival.png"
+    },
+    {
+      "sort_order": 77,
+      "code": "badge-team-dynastie",
+      "name": "Dynastie de Team",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-team-dynastie.png"
+    },
+    {
+      "sort_order": 78,
+      "code": "badge-top3-toute-saison",
+      "name": "Jamais descendu",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-top3-toute-saison.png"
+    },
+    {
+      "sort_order": 79,
+      "code": "badge-champion-allin",
+      "name": "All-in parfait",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-champion-allin.png"
+    },
+    {
+      "sort_order": 80,
+      "code": "badge-grand-chelem",
+      "name": "Grand Chelem du Nid",
+      "rarity": "legendary",
+      "file": "assets/badges/legendary/badge-legendary-grand-chelem.png"
+    },
+    {
+      "sort_order": 81,
+      "code": "badge-derniere-seconde",
+      "name": "Derniere Seconde",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-derniere-seconde.png"
+    },
+    {
+      "sort_order": 82,
+      "code": "badge-om-par-defaut",
+      "name": "OM Par Defaut",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-om-par-defaut.png"
+    },
+    {
+      "sort_order": 83,
+      "code": "badge-quinze-zero",
+      "name": "Quinze Zero",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-quinze-zero.png"
+    },
+    {
+      "sort_order": 84,
+      "code": "badge-zero-partout",
+      "name": "Zero Partout",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-zero-partout.png"
+    },
+    {
+      "sort_order": 85,
+      "code": "badge-casserole-mauvaise-foi",
+      "name": "Casserole Mauvaise Foi",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-casserole-mauvaise-foi.png"
+    },
+    {
+      "sort_order": 86,
+      "code": "badge-hibou-masque-contact",
+      "name": "Hibou Masque Contact",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-hibou-masque-contact.png"
+    },
+    {
+      "sort_order": 87,
+      "code": "badge-retour-de-nulle-part",
+      "name": "Retour De Nulle Part",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-retour-de-nulle-part.png"
+    },
+    {
+      "sort_order": 88,
+      "code": "badge-var-maudit",
+      "name": "VAR Maudit",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-var-maudit.png"
+    },
+    {
+      "sort_order": 89,
+      "code": "badge-90plus",
+      "name": "90plus",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-90plus.png"
+    },
+    {
+      "sort_order": 90,
+      "code": "badge-team-traitre",
+      "name": "Team Traitre",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-team-traitre.png"
+    },
+    {
+      "sort_order": 91,
+      "code": "badge-capitaine-abandonne",
+      "name": "Capitaine Abandonne",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-capitaine-abandonne.png"
+    },
+    {
+      "sort_order": 92,
+      "code": "badge-faux-prophete",
+      "name": "Faux Prophete",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-faux-prophete.png"
+    },
+    {
+      "sort_order": 93,
+      "code": "badge-tout-le-monde-a-tort",
+      "name": "Tout Le Monde A Tort",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-tout-le-monde-a-tort.png"
+    },
+    {
+      "sort_order": 94,
+      "code": "badge-tout-le-monde-a-raison",
+      "name": "Tout Le Monde A Raison",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-tout-le-monde-a-raison.png"
+    },
+    {
+      "sort_order": 95,
+      "code": "badge-hibou-insomniaque",
+      "name": "Hibou Insomniaque",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-hibou-insomniaque.png"
+    },
+    {
+      "sort_order": 96,
+      "code": "badge-pile-ou-face",
+      "name": "Pile Ou Face",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-pile-ou-face.png"
+    },
+    {
+      "sort_order": 97,
+      "code": "badge-exact-maudit",
+      "name": "Exact Maudit",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-exact-maudit.png"
+    },
+    {
+      "sort_order": 98,
+      "code": "badge-sept-zero",
+      "name": "Sept Zero",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-sept-zero.png"
+    },
+    {
+      "sort_order": 99,
+      "code": "badge-fantome-du-nid",
+      "name": "Fantome Du Nid",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-fantome-du-nid.png"
+    },
+    {
+      "sort_order": 100,
+      "code": "badge-secret-ultime",
+      "name": "Secret Ultime",
+      "rarity": "secret",
+      "file": "assets/badges/secret/badge-secret-secret-ultime.png"
+    }
+  ]
+}
