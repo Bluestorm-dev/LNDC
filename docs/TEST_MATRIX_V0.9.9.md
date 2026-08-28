@@ -948,7 +948,7 @@
 - [ ] **T0704** — Les quatre RPC `*avatar*v053` sont visibles après reload du schéma.
 ### 2. Bibliothèque officielle
 
-- [ ] **T0705** — Le Profil affiche 9 catégories / 90 avatars.
+- [ ] **T0705** — Le Profil affiche 13 catégories / 168 avatars.
 - [ ] **T0706** — Chaque vignette charge un PNG sans image cassée.
 - [ ] **T0707** — Cliquer un avatar change l’aperçu sans l’enregistrer immédiatement.
 - [ ] **T0708** — « Utiliser l’avatar officiel sélectionné » met à jour l’avatar du joueur.

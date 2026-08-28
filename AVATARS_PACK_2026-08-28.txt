@@ -1,0 +1,37 @@
+LE NID DES CHAMPIONS — PACK AVATARS 2026-08-28
+===============================================
+
+Avatars existants conservés : 90
+Nouveaux avatars : 168
+Total bibliothèque : 168
+
+CATÉGORIES AJOUTÉES
+- Clubs · Ligue 1: 18
+- Clubs · Europe: 18
+- Stade Brestois · Spécial: 12
+- Humour · Apéro: 12
+- Humour · Tribune: 12
+- Humour · Canapé: 12
+- Humour · Arbitrage: 12
+- Humour · Victoire: 12
+- Humour · Poisse: 12
+- Humour · BBQ: 12
+- Humour · Déguisements: 12
+- Humour · Café & PMU: 12
+- Humour · Personnages: 12
+
+DOSSIERS
+- assets/avatars/nid/clubs/ligue-1
+- assets/avatars/nid/clubs/europe
+- assets/avatars/nid/clubs/stade-brestois
+- assets/avatars/nid/humour/*
+
+BASE EXISTANTE
+Exécuter sql/HOTFIX_AVATARS_CLUBS_HUMOUR_V0.9.9.sql dans Supabase SQL Editor.
+
+Le front est branché sur les sous-dossiers via officialAvatarUrl().
+Les images sont chargées en lazy-loading dans le sélecteur et mises en cache à la demande par le Service Worker.
+
+NETTOYAGE
+- Les 90 anciens avatars placeholder ont été supprimés du projet et du catalogue.
+- Le fallback courant est : avatar-hibou-humour-personnages-chanceux

@@ -152,7 +152,7 @@ Exemples :
 
 > La liste réelle des clubs sera remplie saison par saison après validation du plateau officiel.
 
-# 7. Avatars officiels — 90 PNG
+# 7. Avatars officiels — 168 PNG
 
 Dossier : `assets/avatars/nid/`  
 Convention : `avatar-<slug>.png`
@@ -292,11 +292,22 @@ Convention : `avatar-<slug>.png`
 | 89 | `avatar-hibou-arcane.png` | Arcane |
 | 90 | `avatar-hibou-aurora.png` | Aurora |
 
-**Total : 90 avatars.**
+### Extension avatars 2026-08-28
+
+La bibliothèque conserve les 90 Hiboux historiques et ajoute **168 avatars** rangés dans des sous-dossiers :
+
+- `clubs/ligue-1/` — 18 avatars de clubs français ;
+- `clubs/europe/` — 18 grands clubs européens ;
+- `clubs/stade-brestois/` — 12 variantes spéciales Brest ;
+- `humour/` — 120 avatars répartis en Apéro, Tribune, Canapé, Arbitrage, Victoire, Poisse, BBQ, Déguisements, Café & PMU et Personnages.
+
+Le chemin de fichier est porté par `avatar-catalog.json` : une clé d’avatar n’est donc plus obligatoirement située directement à la racine de `assets/avatars/nid/`.
+
+**Total : 168 avatars.**
 
 ### Statut V0.5.3
 
-**DONE — les 90 PNG sont livrés** dans `assets/avatars/nid/` et référencés par `assets/avatars/avatar-catalog.json`. Ils sont utilisés par le sélecteur du Profil. Les uploads personnels ne remplacent pas cette bibliothèque : ils sont stockés séparément dans le bucket Supabase `player-avatars` et soumis à modération Admin.
+**DONE — les 168 PNG sont livrés** dans `assets/avatars/nid/` et référencés par `assets/avatars/avatar-catalog.json`. Ils sont utilisés par le sélecteur du Profil. Les uploads personnels ne remplacent pas cette bibliothèque : ils sont stockés séparément dans le bucket Supabase `player-avatars` et soumis à modération Admin.
 
 # 8. Badges — 100 PNG
 
@@ -521,7 +532,7 @@ Les formes sont blanches/alpha puis teintées dynamiquement par l'application.
 
 # 14. Manifest machine
 
-**DONE en V0.5.3** : `assets/assets-manifest.json` centralise la version, le branding principal, les icônes PWA, les **90 avatars officiels**, le catalogue et les contraintes du bucket `player-avatars`.
+**DONE en V0.5.3** : `assets/assets-manifest.json` centralise la version, le branding principal, les icônes PWA, les **168 avatars officiels**, le catalogue et les contraintes du bucket `player-avatars`.
 
 ```json
 {

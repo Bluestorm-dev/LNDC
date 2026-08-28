@@ -81,3 +81,16 @@
   .profile-avatar-host>.team-avatar>.avatar{width:36px!important;height:36px!important}
   .avatar-preview-stage>.team-avatar>.avatar{width:56px!important;height:56px!important}
 }
+
+/* Pack avatars 2026-08 — catégories repliables */
+.avatar-category{border:1px solid var(--line-soft);border-radius:14px;background:rgba(255,255,255,.018);overflow:hidden}
+.avatar-category+.avatar-category{margin-top:9px}
+.avatar-category>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;color:#aebbe0;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;user-select:none}
+.avatar-category>summary::-webkit-details-marker{display:none}
+.avatar-category>summary:before{content:"▸";color:var(--gold);transition:transform .15s ease}
+.avatar-category[open]>summary:before{transform:rotate(90deg)}
+.avatar-category>summary span{flex:1}
+.avatar-category>summary b{display:inline-grid;place-items:center;min-width:24px;height:20px;padding:0 6px;border-radius:999px;background:rgba(232,200,110,.1);color:#e8c86e;font-size:.62rem}
+.avatar-category>div{display:grid;grid-template-columns:repeat(5,minmax(72px,1fr));gap:7px;padding:0 9px 10px}
+@media(max-width:980px){.avatar-category>div{grid-template-columns:repeat(6,minmax(68px,1fr))}}
+@media(max-width:680px){.avatar-category>div{grid-template-columns:repeat(4,minmax(62px,1fr))}}

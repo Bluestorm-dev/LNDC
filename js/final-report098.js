@@ -9,7 +9,7 @@
   const params=new URLSearchParams(location.search),kind=document.body.dataset.report||"collector",mode=params.get("mode")||"season";
   const configured=CFG.SUPABASE_URL&&CFG.SUPABASE_ANON_KEY&&!String(CFG.SUPABASE_URL).includes("YOUR_PROJECT");
   const sb=configured?window.supabase.createClient(CFG.SUPABASE_URL,CFG.SUPABASE_ANON_KEY,{auth:{persistSession:true,autoRefreshToken:true}}):null;
-  const avatar=k=>`assets/avatars/nid/${k||"avatar-hibou-or"}.png`;
+  const avatar=k=>typeof officialAvatarUrl==="function"?officialAvatarUrl(k):`assets/avatars/nid/avatar-hibou-humour-personnages-chanceux.png`;
   const head=(title,subtitle="")=>`<header class="doc-head"><div class="brand"><img src="assets/branding/owl/owl-masked-main.png" alt=""><div><strong>Le Nid des Champions</strong><small>${esc(subtitle)}</small></div></div><div><span class="eyebrow">V0.9.8</span><h3>${esc(title)}</h3></div></header>`;
   const page=(html,cls="")=>`<section class="a4 ${cls}">${html}</section>`;
   const error=(title,msg)=>{root.innerHTML=`<div class="error-box"><h2>${esc(title)}</h2><p>${esc(msg)}</p><p><a href="./">Retour au Nid</a></p></div>`;};

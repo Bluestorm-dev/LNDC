@@ -133,7 +133,7 @@
     eveningLoading: false,
     eveningError: null,
     demoUsers: JSON.parse(localStorage.getItem("nidc_demo_users") || "null") || [
-      {id:"demo-parkaf", username:"Parkaf", role:"super_admin", status:"active", club_heart:"Stade Brestois", avatar_key:"avatar-hibou-or", avatar_source:"library", avatar_storage_path:null, avatar_moderation_status:"approved"},
+      {id:"demo-parkaf", username:"Parkaf", role:"super_admin", status:"active", club_heart:"Stade Brestois", avatar_key:"avatar-hibou-humour-personnages-chanceux", avatar_source:"library", avatar_storage_path:null, avatar_moderation_status:"approved"},
       {id:"demo-ju", username:"Ju", role:"player", status:"active", club_heart:"PSG", avatar_key:"avatar-hibou-saphir", avatar_source:"library", avatar_storage_path:null, avatar_moderation_status:"approved"},
       {id:"demo-tourteau", username:"Tourteau", role:"player", status:"active", club_heart:"Real Madrid", avatar_key:"avatar-hibou-amethyste", avatar_source:"library", avatar_storage_path:null, avatar_moderation_status:"approved"}
     ]

@@ -1,542 +1,1010 @@
 [
   {
-    "key": "avatar-hibou-royal",
-    "file": "avatar-hibou-royal.png",
-    "label": "Royal",
-    "category": "Nobles"
+    "key": "avatar-hibou-club-psg",
+    "file": "clubs/ligue-1/avatar-hibou-club-psg.png",
+    "label": "Paris Saint-Germain",
+    "category": "Clubs · Ligue 1"
   },
   {
-    "key": "avatar-hibou-argent",
-    "file": "avatar-hibou-argent.png",
-    "label": "Argent",
-    "category": "Nobles"
+    "key": "avatar-hibou-club-om",
+    "file": "clubs/ligue-1/avatar-hibou-club-om.png",
+    "label": "Olympique de Marseille",
+    "category": "Clubs · Ligue 1"
   },
   {
-    "key": "avatar-hibou-or",
-    "file": "avatar-hibou-or.png",
-    "label": "Or",
-    "category": "Nobles"
+    "key": "avatar-hibou-club-ol",
+    "file": "clubs/ligue-1/avatar-hibou-club-ol.png",
+    "label": "Olympique Lyonnais",
+    "category": "Clubs · Ligue 1"
   },
   {
-    "key": "avatar-hibou-saphir",
-    "file": "avatar-hibou-saphir.png",
-    "label": "Saphir",
-    "category": "Nobles"
+    "key": "avatar-hibou-club-monaco",
+    "file": "clubs/ligue-1/avatar-hibou-club-monaco.png",
+    "label": "AS Monaco",
+    "category": "Clubs · Ligue 1"
   },
   {
-    "key": "avatar-hibou-amethyste",
-    "file": "avatar-hibou-amethyste.png",
-    "label": "Amethyste",
-    "category": "Nobles"
+    "key": "avatar-hibou-club-lille",
+    "file": "clubs/ligue-1/avatar-hibou-club-lille.png",
+    "label": "LOSC Lille",
+    "category": "Clubs · Ligue 1"
   },
   {
-    "key": "avatar-hibou-velours",
-    "file": "avatar-hibou-velours.png",
-    "label": "Velours",
-    "category": "Nobles"
+    "key": "avatar-hibou-club-nice",
+    "file": "clubs/ligue-1/avatar-hibou-club-nice.png",
+    "label": "OGC Nice",
+    "category": "Clubs · Ligue 1"
   },
   {
-    "key": "avatar-hibou-couronne",
-    "file": "avatar-hibou-couronne.png",
-    "label": "Couronne",
-    "category": "Nobles"
+    "key": "avatar-hibou-club-lens",
+    "file": "clubs/ligue-1/avatar-hibou-club-lens.png",
+    "label": "RC Lens",
+    "category": "Clubs · Ligue 1"
   },
   {
-    "key": "avatar-hibou-imperial",
-    "file": "avatar-hibou-imperial.png",
-    "label": "Imperial",
-    "category": "Nobles"
+    "key": "avatar-hibou-club-rennes",
+    "file": "clubs/ligue-1/avatar-hibou-club-rennes.png",
+    "label": "Stade Rennais",
+    "category": "Clubs · Ligue 1"
   },
   {
-    "key": "avatar-hibou-europe",
-    "file": "avatar-hibou-europe.png",
-    "label": "Europe",
-    "category": "Nobles"
+    "key": "avatar-hibou-club-nantes",
+    "file": "clubs/ligue-1/avatar-hibou-club-nantes.png",
+    "label": "FC Nantes",
+    "category": "Clubs · Ligue 1"
   },
   {
-    "key": "avatar-hibou-prestige",
-    "file": "avatar-hibou-prestige.png",
-    "label": "Prestige",
-    "category": "Nobles"
+    "key": "avatar-hibou-club-brest",
+    "file": "clubs/ligue-1/avatar-hibou-club-brest.png",
+    "label": "Stade Brestois 29",
+    "category": "Clubs · Ligue 1"
   },
   {
-    "key": "avatar-hibou-minuit",
-    "file": "avatar-hibou-minuit.png",
-    "label": "Minuit",
-    "category": "Nocturnes"
+    "key": "avatar-hibou-club-strasbourg",
+    "file": "clubs/ligue-1/avatar-hibou-club-strasbourg.png",
+    "label": "RC Strasbourg",
+    "category": "Clubs · Ligue 1"
   },
   {
-    "key": "avatar-hibou-eclipse",
-    "file": "avatar-hibou-eclipse.png",
-    "label": "Eclipse",
-    "category": "Nocturnes"
+    "key": "avatar-hibou-club-toulouse",
+    "file": "clubs/ligue-1/avatar-hibou-club-toulouse.png",
+    "label": "Toulouse FC",
+    "category": "Clubs · Ligue 1"
   },
   {
-    "key": "avatar-hibou-lunaire",
-    "file": "avatar-hibou-lunaire.png",
-    "label": "Lunaire",
-    "category": "Nocturnes"
+    "key": "avatar-hibou-club-auxerre",
+    "file": "clubs/ligue-1/avatar-hibou-club-auxerre.png",
+    "label": "AJ Auxerre",
+    "category": "Clubs · Ligue 1"
   },
   {
-    "key": "avatar-hibou-nebuleuse",
-    "file": "avatar-hibou-nebuleuse.png",
-    "label": "Nebuleuse",
-    "category": "Nocturnes"
+    "key": "avatar-hibou-club-reims",
+    "file": "clubs/ligue-1/avatar-hibou-club-reims.png",
+    "label": "Stade de Reims",
+    "category": "Clubs · Ligue 1"
   },
   {
-    "key": "avatar-hibou-astral",
-    "file": "avatar-hibou-astral.png",
-    "label": "Astral",
-    "category": "Nocturnes"
+    "key": "avatar-hibou-club-le-havre",
+    "file": "clubs/ligue-1/avatar-hibou-club-le-havre.png",
+    "label": "Le Havre AC",
+    "category": "Clubs · Ligue 1"
   },
   {
-    "key": "avatar-hibou-constellation",
-    "file": "avatar-hibou-constellation.png",
-    "label": "Constellation",
-    "category": "Nocturnes"
+    "key": "avatar-hibou-club-montpellier",
+    "file": "clubs/ligue-1/avatar-hibou-club-montpellier.png",
+    "label": "Montpellier HSC",
+    "category": "Clubs · Ligue 1"
   },
   {
-    "key": "avatar-hibou-etoile",
-    "file": "avatar-hibou-etoile.png",
-    "label": "Etoile",
-    "category": "Nocturnes"
+    "key": "avatar-hibou-club-saint-etienne",
+    "file": "clubs/ligue-1/avatar-hibou-club-saint-etienne.png",
+    "label": "AS Saint-Étienne",
+    "category": "Clubs · Ligue 1"
   },
   {
-    "key": "avatar-hibou-comete",
-    "file": "avatar-hibou-comete.png",
-    "label": "Comete",
-    "category": "Nocturnes"
+    "key": "avatar-hibou-club-angers",
+    "file": "clubs/ligue-1/avatar-hibou-club-angers.png",
+    "label": "Angers SCO",
+    "category": "Clubs · Ligue 1"
   },
   {
-    "key": "avatar-hibou-orbite",
-    "file": "avatar-hibou-orbite.png",
-    "label": "Orbite",
-    "category": "Nocturnes"
+    "key": "avatar-hibou-club-real-madrid",
+    "file": "clubs/europe/avatar-hibou-club-real-madrid.png",
+    "label": "Real Madrid",
+    "category": "Clubs · Europe"
   },
   {
-    "key": "avatar-hibou-galaxie",
-    "file": "avatar-hibou-galaxie.png",
-    "label": "Galaxie",
-    "category": "Nocturnes"
+    "key": "avatar-hibou-club-barcelone",
+    "file": "clubs/europe/avatar-hibou-club-barcelone.png",
+    "label": "FC Barcelone",
+    "category": "Clubs · Europe"
   },
   {
-    "key": "avatar-hibou-echarpe",
-    "file": "avatar-hibou-echarpe.png",
-    "label": "Echarpe",
-    "category": "Supporters"
+    "key": "avatar-hibou-club-atletico-madrid",
+    "file": "clubs/europe/avatar-hibou-club-atletico-madrid.png",
+    "label": "Atlético de Madrid",
+    "category": "Clubs · Europe"
   },
   {
-    "key": "avatar-hibou-tambour",
-    "file": "avatar-hibou-tambour.png",
-    "label": "Tambour",
-    "category": "Supporters"
+    "key": "avatar-hibou-club-arsenal",
+    "file": "clubs/europe/avatar-hibou-club-arsenal.png",
+    "label": "Arsenal",
+    "category": "Clubs · Europe"
   },
   {
-    "key": "avatar-hibou-tribune",
-    "file": "avatar-hibou-tribune.png",
-    "label": "Tribune",
-    "category": "Supporters"
+    "key": "avatar-hibou-club-liverpool",
+    "file": "clubs/europe/avatar-hibou-club-liverpool.png",
+    "label": "Liverpool",
+    "category": "Clubs · Europe"
   },
   {
-    "key": "avatar-hibou-ultra",
-    "file": "avatar-hibou-ultra.png",
-    "label": "Ultra",
-    "category": "Supporters"
+    "key": "avatar-hibou-club-manchester-city",
+    "file": "clubs/europe/avatar-hibou-club-manchester-city.png",
+    "label": "Manchester City",
+    "category": "Clubs · Europe"
   },
   {
-    "key": "avatar-hibou-drapeau",
-    "file": "avatar-hibou-drapeau.png",
-    "label": "Drapeau",
-    "category": "Supporters"
+    "key": "avatar-hibou-club-manchester-united",
+    "file": "clubs/europe/avatar-hibou-club-manchester-united.png",
+    "label": "Manchester United",
+    "category": "Clubs · Europe"
   },
   {
-    "key": "avatar-hibou-chant",
-    "file": "avatar-hibou-chant.png",
-    "label": "Chant",
-    "category": "Supporters"
+    "key": "avatar-hibou-club-chelsea",
+    "file": "clubs/europe/avatar-hibou-club-chelsea.png",
+    "label": "Chelsea",
+    "category": "Clubs · Europe"
   },
   {
-    "key": "avatar-hibou-stade",
-    "file": "avatar-hibou-stade.png",
-    "label": "Stade",
-    "category": "Supporters"
+    "key": "avatar-hibou-club-bayern-munich",
+    "file": "clubs/europe/avatar-hibou-club-bayern-munich.png",
+    "label": "Bayern Munich",
+    "category": "Clubs · Europe"
   },
   {
-    "key": "avatar-hibou-kop",
-    "file": "avatar-hibou-kop.png",
-    "label": "Kop",
-    "category": "Supporters"
+    "key": "avatar-hibou-club-juventus",
+    "file": "clubs/europe/avatar-hibou-club-juventus.png",
+    "label": "Juventus",
+    "category": "Clubs · Europe"
   },
   {
-    "key": "avatar-hibou-tifo",
-    "file": "avatar-hibou-tifo.png",
-    "label": "Tifo",
-    "category": "Supporters"
+    "key": "avatar-hibou-club-ac-milan",
+    "file": "clubs/europe/avatar-hibou-club-ac-milan.png",
+    "label": "AC Milan",
+    "category": "Clubs · Europe"
   },
   {
-    "key": "avatar-hibou-fumigene",
-    "file": "avatar-hibou-fumigene.png",
-    "label": "Fumigene",
-    "category": "Supporters"
+    "key": "avatar-hibou-club-inter-milan",
+    "file": "clubs/europe/avatar-hibou-club-inter-milan.png",
+    "label": "Inter Milan",
+    "category": "Clubs · Europe"
   },
   {
-    "key": "avatar-hibou-buteur",
-    "file": "avatar-hibou-buteur.png",
-    "label": "Buteur",
-    "category": "Football"
+    "key": "avatar-hibou-club-naples",
+    "file": "clubs/europe/avatar-hibou-club-naples.png",
+    "label": "SSC Napoli",
+    "category": "Clubs · Europe"
   },
   {
-    "key": "avatar-hibou-gardien",
-    "file": "avatar-hibou-gardien.png",
-    "label": "Gardien",
-    "category": "Football"
+    "key": "avatar-hibou-club-dortmund",
+    "file": "clubs/europe/avatar-hibou-club-dortmund.png",
+    "label": "Borussia Dortmund",
+    "category": "Clubs · Europe"
   },
   {
-    "key": "avatar-hibou-coach",
-    "file": "avatar-hibou-coach.png",
-    "label": "Coach",
-    "category": "Football"
+    "key": "avatar-hibou-club-ajax",
+    "file": "clubs/europe/avatar-hibou-club-ajax.png",
+    "label": "Ajax Amsterdam",
+    "category": "Clubs · Europe"
   },
   {
-    "key": "avatar-hibou-arbitre",
-    "file": "avatar-hibou-arbitre.png",
-    "label": "Arbitre",
-    "category": "Football"
+    "key": "avatar-hibou-club-benfica",
+    "file": "clubs/europe/avatar-hibou-club-benfica.png",
+    "label": "Benfica",
+    "category": "Clubs · Europe"
   },
   {
-    "key": "avatar-hibou-capitaine",
-    "file": "avatar-hibou-capitaine.png",
-    "label": "Capitaine",
-    "category": "Football"
+    "key": "avatar-hibou-club-porto",
+    "file": "clubs/europe/avatar-hibou-club-porto.png",
+    "label": "FC Porto",
+    "category": "Clubs · Europe"
   },
   {
-    "key": "avatar-hibou-meneur",
-    "file": "avatar-hibou-meneur.png",
-    "label": "Meneur",
-    "category": "Football"
+    "key": "avatar-hibou-club-celtic",
+    "file": "clubs/europe/avatar-hibou-club-celtic.png",
+    "label": "Celtic Glasgow",
+    "category": "Clubs · Europe"
   },
   {
-    "key": "avatar-hibou-defenseur",
-    "file": "avatar-hibou-defenseur.png",
-    "label": "Defenseur",
-    "category": "Football"
+    "key": "avatar-hibou-brest-drapeau",
+    "file": "clubs/stade-brestois/avatar-hibou-brest-drapeau.png",
+    "label": "Brest · Drapeau rouge et blanc",
+    "category": "Stade Brestois · Spécial"
   },
   {
-    "key": "avatar-hibou-ailier",
-    "file": "avatar-hibou-ailier.png",
-    "label": "Ailier",
-    "category": "Football"
+    "key": "avatar-hibou-brest-biere",
+    "file": "clubs/stade-brestois/avatar-hibou-brest-biere.png",
+    "label": "Brest · Bière au port",
+    "category": "Stade Brestois · Spécial"
   },
   {
-    "key": "avatar-hibou-numero10",
-    "file": "avatar-hibou-numero10.png",
-    "label": "Numero10",
-    "category": "Football"
+    "key": "avatar-hibou-brest-fumigene",
+    "file": "clubs/stade-brestois/avatar-hibou-brest-fumigene.png",
+    "label": "Brest · Fumigène breton",
+    "category": "Stade Brestois · Spécial"
   },
   {
-    "key": "avatar-hibou-remplacant",
-    "file": "avatar-hibou-remplacant.png",
-    "label": "Remplacant",
-    "category": "Football"
+    "key": "avatar-hibou-brest-capitaine",
+    "file": "clubs/stade-brestois/avatar-hibou-brest-capitaine.png",
+    "label": "Brest · Capitaine du port",
+    "category": "Stade Brestois · Spécial"
   },
   {
-    "key": "avatar-hibou-coupe",
-    "file": "avatar-hibou-coupe.png",
-    "label": "Coupe",
-    "category": "Champions"
+    "key": "avatar-hibou-brest-phare",
+    "file": "clubs/stade-brestois/avatar-hibou-brest-phare.png",
+    "label": "Brest · Gardien du phare",
+    "category": "Stade Brestois · Spécial"
   },
   {
-    "key": "avatar-hibou-medaille",
-    "file": "avatar-hibou-medaille.png",
-    "label": "Medaille",
-    "category": "Champions"
+    "key": "avatar-hibou-brest-pluie",
+    "file": "clubs/stade-brestois/avatar-hibou-brest-pluie.png",
+    "label": "Brest · Jour de pluie",
+    "category": "Stade Brestois · Spécial"
   },
   {
-    "key": "avatar-hibou-champion",
-    "file": "avatar-hibou-champion.png",
-    "label": "Champion",
-    "category": "Champions"
+    "key": "avatar-hibou-brest-tambour",
+    "file": "clubs/stade-brestois/avatar-hibou-brest-tambour.png",
+    "label": "Brest · Tambour du kop",
+    "category": "Stade Brestois · Spécial"
   },
   {
-    "key": "avatar-hibou-finale",
-    "file": "avatar-hibou-finale.png",
-    "label": "Finale",
-    "category": "Champions"
+    "key": "avatar-hibou-brest-canape",
+    "file": "clubs/stade-brestois/avatar-hibou-brest-canape.png",
+    "label": "Brest · Match au canapé",
+    "category": "Stade Brestois · Spécial"
   },
   {
-    "key": "avatar-hibou-podium",
-    "file": "avatar-hibou-podium.png",
-    "label": "Podium",
-    "category": "Champions"
+    "key": "avatar-hibou-brest-triskell",
+    "file": "clubs/stade-brestois/avatar-hibou-brest-triskell.png",
+    "label": "Brest · Triskell porte-bonheur",
+    "category": "Stade Brestois · Spécial"
   },
   {
-    "key": "avatar-hibou-victoire",
-    "file": "avatar-hibou-victoire.png",
-    "label": "Victoire",
-    "category": "Champions"
+    "key": "avatar-hibou-brest-emotion",
+    "file": "clubs/stade-brestois/avatar-hibou-brest-emotion.png",
+    "label": "Brest · Ému aux larmes",
+    "category": "Stade Brestois · Spécial"
   },
   {
-    "key": "avatar-hibou-etoile-or",
-    "file": "avatar-hibou-etoile-or.png",
-    "label": "Etoile Or",
-    "category": "Champions"
+    "key": "avatar-hibou-brest-ultra",
+    "file": "clubs/stade-brestois/avatar-hibou-brest-ultra.png",
+    "label": "Brest · Ultra au fumigène",
+    "category": "Stade Brestois · Spécial"
   },
   {
-    "key": "avatar-hibou-trophee",
-    "file": "avatar-hibou-trophee.png",
-    "label": "Trophee",
-    "category": "Champions"
+    "key": "avatar-hibou-brest-super-hibou",
+    "file": "clubs/stade-brestois/avatar-hibou-brest-super-hibou.png",
+    "label": "Brest · Super Hibou",
+    "category": "Stade Brestois · Spécial"
   },
   {
-    "key": "avatar-hibou-legende",
-    "file": "avatar-hibou-legende.png",
-    "label": "Legende",
-    "category": "Champions"
+    "key": "avatar-hibou-humour-apero-biere",
+    "file": "humour/apero/avatar-hibou-humour-apero-biere.png",
+    "label": "Bière du Hibou",
+    "category": "Humour · Apéro"
   },
   {
-    "key": "avatar-hibou-dynastie",
-    "file": "avatar-hibou-dynastie.png",
-    "label": "Dynastie",
-    "category": "Champions"
+    "key": "avatar-hibou-humour-apero-bouteille-vip",
+    "file": "humour/apero/avatar-hibou-humour-apero-bouteille-vip.png",
+    "label": "Bouteille VIP",
+    "category": "Humour · Apéro"
   },
   {
-    "key": "avatar-hibou-casserole",
-    "file": "avatar-hibou-casserole.png",
-    "label": "Casserole",
-    "category": "Humour"
+    "key": "avatar-hibou-humour-apero-decapsuleur",
+    "file": "humour/apero/avatar-hibou-humour-apero-decapsuleur.png",
+    "label": "Décapsuleur officiel",
+    "category": "Humour · Apéro"
   },
   {
-    "key": "avatar-hibou-poele",
-    "file": "avatar-hibou-poele.png",
-    "label": "Poele",
-    "category": "Humour"
+    "key": "avatar-hibou-humour-apero-lendemain-match",
+    "file": "humour/apero/avatar-hibou-humour-apero-lendemain-match.png",
+    "label": "Lendemain de match",
+    "category": "Humour · Apéro"
   },
   {
-    "key": "avatar-hibou-boulet",
-    "file": "avatar-hibou-boulet.png",
-    "label": "Boulet",
-    "category": "Humour"
+    "key": "avatar-hibou-humour-apero-tournee-generale",
+    "file": "humour/apero/avatar-hibou-humour-apero-tournee-generale.png",
+    "label": "Tournée générale",
+    "category": "Humour · Apéro"
   },
   {
-    "key": "avatar-hibou-perdu",
-    "file": "avatar-hibou-perdu.png",
-    "label": "Perdu",
-    "category": "Humour"
+    "key": "avatar-hibou-humour-apero-bretzel-kop",
+    "file": "humour/apero/avatar-hibou-humour-apero-bretzel-kop.png",
+    "label": "Bretzel du kop",
+    "category": "Humour · Apéro"
   },
   {
-    "key": "avatar-hibou-endormi",
-    "file": "avatar-hibou-endormi.png",
-    "label": "Endormi",
-    "category": "Humour"
+    "key": "avatar-hibou-humour-apero-apero-transat",
+    "file": "humour/apero/avatar-hibou-humour-apero-apero-transat.png",
+    "label": "Apéro transat",
+    "category": "Humour · Apéro"
   },
   {
-    "key": "avatar-hibou-retard",
-    "file": "avatar-hibou-retard.png",
-    "label": "Retard",
-    "category": "Humour"
+    "key": "avatar-hibou-humour-apero-dj-nid",
+    "file": "humour/apero/avatar-hibou-humour-apero-dj-nid.png",
+    "label": "DJ du Nid",
+    "category": "Humour · Apéro"
   },
   {
-    "key": "avatar-hibou-var",
-    "file": "avatar-hibou-var.png",
-    "label": "Var",
-    "category": "Humour"
+    "key": "avatar-hibou-humour-apero-porte-voix-mousse",
+    "file": "humour/apero/avatar-hibou-humour-apero-porte-voix-mousse.png",
+    "label": "Porte-voix et mousse",
+    "category": "Humour · Apéro"
   },
   {
-    "key": "avatar-hibou-carton",
-    "file": "avatar-hibou-carton.png",
-    "label": "Carton",
-    "category": "Humour"
+    "key": "avatar-hibou-humour-apero-barman",
+    "file": "humour/apero/avatar-hibou-humour-apero-barman.png",
+    "label": "Barman du Nid",
+    "category": "Humour · Apéro"
   },
   {
-    "key": "avatar-hibou-zero",
-    "file": "avatar-hibou-zero.png",
-    "label": "Zero",
-    "category": "Humour"
+    "key": "avatar-hibou-humour-apero-cacahuetes-pression",
+    "file": "humour/apero/avatar-hibou-humour-apero-cacahuetes-pression.png",
+    "label": "Cacahuètes & pression",
+    "category": "Humour · Apéro"
   },
   {
-    "key": "avatar-hibou-mauvaise-foi",
-    "file": "avatar-hibou-mauvaise-foi.png",
-    "label": "Mauvaise Foi",
-    "category": "Humour"
+    "key": "avatar-hibou-humour-apero-haut-de-biere",
+    "file": "humour/apero/avatar-hibou-humour-apero-haut-de-biere.png",
+    "label": "Chapeau haut-de-bière",
+    "category": "Humour · Apéro"
   },
   {
-    "key": "avatar-hibou-masque",
-    "file": "avatar-hibou-masque.png",
-    "label": "Masque",
-    "category": "Mystérieux"
+    "key": "avatar-hibou-humour-tribune-tambour-kop",
+    "file": "humour/tribune/avatar-hibou-humour-tribune-tambour-kop.png",
+    "label": "Tambour du kop",
+    "category": "Humour · Tribune"
   },
   {
-    "key": "avatar-hibou-ombre",
-    "file": "avatar-hibou-ombre.png",
-    "label": "Ombre",
-    "category": "Mystérieux"
+    "key": "avatar-hibou-humour-tribune-megaphone",
+    "file": "humour/tribune/avatar-hibou-humour-tribune-megaphone.png",
+    "label": "Mégaphone",
+    "category": "Humour · Tribune"
   },
   {
-    "key": "avatar-hibou-fantome",
-    "file": "avatar-hibou-fantome.png",
-    "label": "Fantome",
-    "category": "Mystérieux"
+    "key": "avatar-hibou-humour-tribune-porte-drapeau",
+    "file": "humour/tribune/avatar-hibou-humour-tribune-porte-drapeau.png",
+    "label": "Porte-drapeau",
+    "category": "Humour · Tribune"
   },
   {
-    "key": "avatar-hibou-secret",
-    "file": "avatar-hibou-secret.png",
-    "label": "Secret",
-    "category": "Mystérieux"
+    "key": "avatar-hibou-humour-tribune-doigt-mousse",
+    "file": "humour/tribune/avatar-hibou-humour-tribune-doigt-mousse.png",
+    "label": "Doigt en mousse",
+    "category": "Humour · Tribune"
   },
   {
-    "key": "avatar-hibou-oracle",
-    "file": "avatar-hibou-oracle.png",
-    "label": "Oracle",
-    "category": "Mystérieux"
+    "key": "avatar-hibou-humour-tribune-jumelles",
+    "file": "humour/tribune/avatar-hibou-humour-tribune-jumelles.png",
+    "label": "Jumelles de tribune",
+    "category": "Humour · Tribune"
   },
   {
-    "key": "avatar-hibou-prophete",
-    "file": "avatar-hibou-prophete.png",
-    "label": "Prophete",
-    "category": "Mystérieux"
+    "key": "avatar-hibou-humour-tribune-levitation",
+    "file": "humour/tribune/avatar-hibou-humour-tribune-levitation.png",
+    "label": "Supporter en lévitation",
+    "category": "Humour · Tribune"
   },
   {
-    "key": "avatar-hibou-mage",
-    "file": "avatar-hibou-mage.png",
-    "label": "Mage",
-    "category": "Mystérieux"
+    "key": "avatar-hibou-humour-tribune-ballon-porte-bonheur",
+    "file": "humour/tribune/avatar-hibou-humour-tribune-ballon-porte-bonheur.png",
+    "label": "Ballon porte-bonheur",
+    "category": "Humour · Tribune"
   },
   {
-    "key": "avatar-hibou-alchimiste",
-    "file": "avatar-hibou-alchimiste.png",
-    "label": "Alchimiste",
-    "category": "Mystérieux"
+    "key": "avatar-hibou-humour-tribune-popcorn-3d",
+    "file": "humour/tribune/avatar-hibou-humour-tribune-popcorn-3d.png",
+    "label": "Pop-corn 3D",
+    "category": "Humour · Tribune"
   },
   {
-    "key": "avatar-hibou-sorcier",
-    "file": "avatar-hibou-sorcier.png",
-    "label": "Sorcier",
-    "category": "Mystérieux"
+    "key": "avatar-hibou-humour-tribune-perruque-kop",
+    "file": "humour/tribune/avatar-hibou-humour-tribune-perruque-kop.png",
+    "label": "Perruque du kop",
+    "category": "Humour · Tribune"
   },
   {
-    "key": "avatar-hibou-enigme",
-    "file": "avatar-hibou-enigme.png",
-    "label": "Enigme",
-    "category": "Mystérieux"
+    "key": "avatar-hibou-humour-tribune-danse-victoire",
+    "file": "humour/tribune/avatar-hibou-humour-tribune-danse-victoire.png",
+    "label": "Danse de victoire",
+    "category": "Humour · Tribune"
   },
   {
-    "key": "avatar-hibou-neon",
-    "file": "avatar-hibou-neon.png",
-    "label": "Neon",
-    "category": "Futuristes"
+    "key": "avatar-hibou-humour-tribune-lunettes-stade",
+    "file": "humour/tribune/avatar-hibou-humour-tribune-lunettes-stade.png",
+    "label": "Lunettes du stade",
+    "category": "Humour · Tribune"
   },
   {
-    "key": "avatar-hibou-cyber",
-    "file": "avatar-hibou-cyber.png",
-    "label": "Cyber",
-    "category": "Futuristes"
+    "key": "avatar-hibou-humour-tribune-tacle-imaginaire",
+    "file": "humour/tribune/avatar-hibou-humour-tribune-tacle-imaginaire.png",
+    "label": "Tacle imaginaire",
+    "category": "Humour · Tribune"
   },
   {
-    "key": "avatar-hibou-hologramme",
-    "file": "avatar-hibou-hologramme.png",
-    "label": "Hologramme",
-    "category": "Futuristes"
+    "key": "avatar-hibou-humour-canape-telecommande-popcorn",
+    "file": "humour/canape/avatar-hibou-humour-canape-telecommande-popcorn.png",
+    "label": "Télécommande & pop-corn",
+    "category": "Humour · Canapé"
   },
   {
-    "key": "avatar-hibou-quantique",
-    "file": "avatar-hibou-quantique.png",
-    "label": "Quantique",
-    "category": "Futuristes"
+    "key": "avatar-hibou-humour-canape-pizza-match",
+    "file": "humour/canape/avatar-hibou-humour-canape-pizza-match.png",
+    "label": "Pizza du match",
+    "category": "Humour · Canapé"
   },
   {
-    "key": "avatar-hibou-electrique",
-    "file": "avatar-hibou-electrique.png",
-    "label": "Electrique",
-    "category": "Futuristes"
+    "key": "avatar-hibou-humour-canape-plaid-tactique",
+    "file": "humour/canape/avatar-hibou-humour-canape-plaid-tactique.png",
+    "label": "Plaid tactique",
+    "category": "Humour · Canapé"
   },
   {
-    "key": "avatar-hibou-plasma",
-    "file": "avatar-hibou-plasma.png",
-    "label": "Plasma",
-    "category": "Futuristes"
+    "key": "avatar-hibou-humour-canape-sieste-match",
+    "file": "humour/canape/avatar-hibou-humour-canape-sieste-match.png",
+    "label": "Sieste devant le match",
+    "category": "Humour · Canapé"
   },
   {
-    "key": "avatar-hibou-vector",
-    "file": "avatar-hibou-vector.png",
-    "label": "Vector",
-    "category": "Futuristes"
+    "key": "avatar-hibou-humour-canape-chaussettes-chance",
+    "file": "humour/canape/avatar-hibou-humour-canape-chaussettes-chance.png",
+    "label": "Chaussettes porte-bonheur",
+    "category": "Humour · Canapé"
   },
   {
-    "key": "avatar-hibou-digital",
-    "file": "avatar-hibou-digital.png",
-    "label": "Digital",
-    "category": "Futuristes"
+    "key": "avatar-hibou-humour-canape-telephone-surchauffe",
+    "file": "humour/canape/avatar-hibou-humour-canape-telephone-surchauffe.png",
+    "label": "Téléphone en surchauffe",
+    "category": "Humour · Canapé"
   },
   {
-    "key": "avatar-hibou-android",
-    "file": "avatar-hibou-android.png",
-    "label": "Android",
-    "category": "Futuristes"
+    "key": "avatar-hibou-humour-canape-defaite-canape",
+    "file": "humour/canape/avatar-hibou-humour-canape-defaite-canape.png",
+    "label": "Défaite canapé",
+    "category": "Humour · Canapé"
   },
   {
-    "key": "avatar-hibou-cosmos",
-    "file": "avatar-hibou-cosmos.png",
-    "label": "Cosmos",
-    "category": "Futuristes"
+    "key": "avatar-hibou-humour-canape-cinema-foot",
+    "file": "humour/canape/avatar-hibou-humour-canape-cinema-foot.png",
+    "label": "Cinéma du foot",
+    "category": "Humour · Canapé"
   },
   {
-    "key": "avatar-hibou-cristal",
-    "file": "avatar-hibou-cristal.png",
-    "label": "Cristal",
-    "category": "Rares"
+    "key": "avatar-hibou-humour-canape-dodo-ballon",
+    "file": "humour/canape/avatar-hibou-humour-canape-dodo-ballon.png",
+    "label": "Dodo ballon",
+    "category": "Humour · Canapé"
   },
   {
-    "key": "avatar-hibou-diamant",
-    "file": "avatar-hibou-diamant.png",
-    "label": "Diamant",
-    "category": "Rares"
+    "key": "avatar-hibou-humour-canape-gamer",
+    "file": "humour/canape/avatar-hibou-humour-canape-gamer.png",
+    "label": "Gamer du Nid",
+    "category": "Humour · Canapé"
   },
   {
-    "key": "avatar-hibou-obsidienne",
-    "file": "avatar-hibou-obsidienne.png",
-    "label": "Obsidienne",
-    "category": "Rares"
+    "key": "avatar-hibou-humour-canape-match-tele",
+    "file": "humour/canape/avatar-hibou-humour-canape-match-tele.png",
+    "label": "Match à la télé",
+    "category": "Humour · Canapé"
   },
   {
-    "key": "avatar-hibou-rubis",
-    "file": "avatar-hibou-rubis.png",
-    "label": "Rubis",
-    "category": "Rares"
+    "key": "avatar-hibou-humour-canape-supporter-bondissant",
+    "file": "humour/canape/avatar-hibou-humour-canape-supporter-bondissant.png",
+    "label": "Supporter bondissant",
+    "category": "Humour · Canapé"
   },
   {
-    "key": "avatar-hibou-emeraude",
-    "file": "avatar-hibou-emeraude.png",
-    "label": "Emeraude",
-    "category": "Rares"
+    "key": "avatar-hibou-humour-arbitrage-carton-rouge",
+    "file": "humour/arbitrage/avatar-hibou-humour-arbitrage-carton-rouge.png",
+    "label": "Carton rouge",
+    "category": "Humour · Arbitrage"
   },
   {
-    "key": "avatar-hibou-opale",
-    "file": "avatar-hibou-opale.png",
-    "label": "Opale",
-    "category": "Rares"
+    "key": "avatar-hibou-humour-arbitrage-var-furieuse",
+    "file": "humour/arbitrage/avatar-hibou-humour-arbitrage-var-furieuse.png",
+    "label": "VAR furieuse",
+    "category": "Humour · Arbitrage"
   },
   {
-    "key": "avatar-hibou-titane",
-    "file": "avatar-hibou-titane.png",
-    "label": "Titane",
-    "category": "Rares"
+    "key": "avatar-hibou-humour-arbitrage-facepalm-arbitral",
+    "file": "humour/arbitrage/avatar-hibou-humour-arbitrage-facepalm-arbitral.png",
+    "label": "Facepalm arbitral",
+    "category": "Humour · Arbitrage"
   },
   {
-    "key": "avatar-hibou-platine",
-    "file": "avatar-hibou-platine.png",
-    "label": "Platine",
-    "category": "Rares"
+    "key": "avatar-hibou-humour-arbitrage-juge-touche",
+    "file": "humour/arbitrage/avatar-hibou-humour-arbitrage-juge-touche.png",
+    "label": "Juge de touche",
+    "category": "Humour · Arbitrage"
   },
   {
-    "key": "avatar-hibou-arcane",
-    "file": "avatar-hibou-arcane.png",
-    "label": "Arcane",
-    "category": "Rares"
+    "key": "avatar-hibou-humour-arbitrage-priere-var",
+    "file": "humour/arbitrage/avatar-hibou-humour-arbitrage-priere-var.png",
+    "label": "Prière pour le VAR",
+    "category": "Humour · Arbitrage"
   },
   {
-    "key": "avatar-hibou-aurora",
-    "file": "avatar-hibou-aurora.png",
-    "label": "Aurora",
-    "category": "Rares"
+    "key": "avatar-hibou-humour-arbitrage-larmes-supporter",
+    "file": "humour/arbitrage/avatar-hibou-humour-arbitrage-larmes-supporter.png",
+    "label": "Larmes du supporter",
+    "category": "Humour · Arbitrage"
+  },
+  {
+    "key": "avatar-hibou-humour-arbitrage-deal-with-it",
+    "file": "humour/arbitrage/avatar-hibou-humour-arbitrage-deal-with-it.png",
+    "label": "Deal with it",
+    "category": "Humour · Arbitrage"
+  },
+  {
+    "key": "avatar-hibou-humour-arbitrage-coach-complotiste",
+    "file": "humour/arbitrage/avatar-hibou-humour-arbitrage-coach-complotiste.png",
+    "label": "Coach complotiste",
+    "category": "Humour · Arbitrage"
+  },
+  {
+    "key": "avatar-hibou-humour-arbitrage-mais-enfin",
+    "file": "humour/arbitrage/avatar-hibou-humour-arbitrage-mais-enfin.png",
+    "label": "Mais enfin !",
+    "category": "Humour · Arbitrage"
+  },
+  {
+    "key": "avatar-hibou-humour-arbitrage-ange-innocent",
+    "file": "humour/arbitrage/avatar-hibou-humour-arbitrage-ange-innocent.png",
+    "label": "Ange innocent",
+    "category": "Humour · Arbitrage"
+  },
+  {
+    "key": "avatar-hibou-humour-arbitrage-choc-score",
+    "file": "humour/arbitrage/avatar-hibou-humour-arbitrage-choc-score.png",
+    "label": "Choc du score",
+    "category": "Humour · Arbitrage"
+  },
+  {
+    "key": "avatar-hibou-humour-arbitrage-hibou-furieux",
+    "file": "humour/arbitrage/avatar-hibou-humour-arbitrage-hibou-furieux.png",
+    "label": "Hibou furieux",
+    "category": "Humour · Arbitrage"
+  },
+  {
+    "key": "avatar-hibou-humour-victoire-amour-coupe",
+    "file": "humour/victoire/avatar-hibou-humour-victoire-amour-coupe.png",
+    "label": "Amour de la coupe",
+    "category": "Humour · Victoire"
+  },
+  {
+    "key": "avatar-hibou-humour-victoire-canon-confettis",
+    "file": "humour/victoire/avatar-hibou-humour-victoire-canon-confettis.png",
+    "label": "Canon à confettis",
+    "category": "Humour · Victoire"
+  },
+  {
+    "key": "avatar-hibou-humour-victoire-roi-match",
+    "file": "humour/victoire/avatar-hibou-humour-victoire-roi-match.png",
+    "label": "Roi du match",
+    "category": "Humour · Victoire"
+  },
+  {
+    "key": "avatar-hibou-humour-victoire-dj-champion",
+    "file": "humour/victoire/avatar-hibou-humour-victoire-dj-champion.png",
+    "label": "DJ champion",
+    "category": "Humour · Victoire"
+  },
+  {
+    "key": "avatar-hibou-humour-victoire-selfie-victoire",
+    "file": "humour/victoire/avatar-hibou-humour-victoire-selfie-victoire.png",
+    "label": "Selfie victoire",
+    "category": "Humour · Victoire"
+  },
+  {
+    "key": "avatar-hibou-humour-victoire-patron",
+    "file": "humour/victoire/avatar-hibou-humour-victoire-patron.png",
+    "label": "Le patron",
+    "category": "Humour · Victoire"
+  },
+  {
+    "key": "avatar-hibou-humour-victoire-medaille-xxl",
+    "file": "humour/victoire/avatar-hibou-humour-victoire-medaille-xxl.png",
+    "label": "Médaille XXL",
+    "category": "Humour · Victoire"
+  },
+  {
+    "key": "avatar-hibou-humour-victoire-bouteille-champion",
+    "file": "humour/victoire/avatar-hibou-humour-victoire-bouteille-champion.png",
+    "label": "Bouteille du champion",
+    "category": "Humour · Victoire"
+  },
+  {
+    "key": "avatar-hibou-humour-victoire-feux-artifice",
+    "file": "humour/victoire/avatar-hibou-humour-victoire-feux-artifice.png",
+    "label": "Feux d’artifice",
+    "category": "Humour · Victoire"
+  },
+  {
+    "key": "avatar-hibou-humour-victoire-priere-champion",
+    "file": "humour/victoire/avatar-hibou-humour-victoire-priere-champion.png",
+    "label": "Prière du champion",
+    "category": "Humour · Victoire"
+  },
+  {
+    "key": "avatar-hibou-humour-victoire-sieste-coupe",
+    "file": "humour/victoire/avatar-hibou-humour-victoire-sieste-coupe.png",
+    "label": "Sieste avec la coupe",
+    "category": "Humour · Victoire"
+  },
+  {
+    "key": "avatar-hibou-humour-victoire-crampons-or",
+    "file": "humour/victoire/avatar-hibou-humour-victoire-crampons-or.png",
+    "label": "Crampons d’or",
+    "category": "Humour · Victoire"
+  },
+  {
+    "key": "avatar-hibou-humour-poisse-coeur-brise",
+    "file": "humour/poisse/avatar-hibou-humour-poisse-coeur-brise.png",
+    "label": "Cœur brisé",
+    "category": "Humour · Poisse"
+  },
+  {
+    "key": "avatar-hibou-humour-poisse-cafe-renverse",
+    "file": "humour/poisse/avatar-hibou-humour-poisse-cafe-renverse.png",
+    "label": "Café renversé",
+    "category": "Humour · Poisse"
+  },
+  {
+    "key": "avatar-hibou-humour-poisse-stress-total",
+    "file": "humour/poisse/avatar-hibou-humour-poisse-stress-total.png",
+    "label": "Stress total",
+    "category": "Humour · Poisse"
+  },
+  {
+    "key": "avatar-hibou-humour-poisse-reveil-rate",
+    "file": "humour/poisse/avatar-hibou-humour-poisse-reveil-rate.png",
+    "label": "Réveil raté",
+    "category": "Humour · Poisse"
+  },
+  {
+    "key": "avatar-hibou-humour-poisse-pluie-match",
+    "file": "humour/poisse/avatar-hibou-humour-poisse-pluie-match.png",
+    "label": "Pluie de match",
+    "category": "Humour · Poisse"
+  },
+  {
+    "key": "avatar-hibou-humour-poisse-nuage-noir",
+    "file": "humour/poisse/avatar-hibou-humour-poisse-nuage-noir.png",
+    "label": "Nuage noir",
+    "category": "Humour · Poisse"
+  },
+  {
+    "key": "avatar-hibou-humour-poisse-tete-tourne",
+    "file": "humour/poisse/avatar-hibou-humour-poisse-tete-tourne.png",
+    "label": "Tête qui tourne",
+    "category": "Humour · Poisse"
+  },
+  {
+    "key": "avatar-hibou-humour-poisse-drapeau-blanc",
+    "file": "humour/poisse/avatar-hibou-humour-poisse-drapeau-blanc.png",
+    "label": "Drapeau blanc",
+    "category": "Humour · Poisse"
+  },
+  {
+    "key": "avatar-hibou-humour-poisse-blesse-dimanche",
+    "file": "humour/poisse/avatar-hibou-humour-poisse-blesse-dimanche.png",
+    "label": "Blessé du dimanche",
+    "category": "Humour · Poisse"
+  },
+  {
+    "key": "avatar-hibou-humour-poisse-chat-noir",
+    "file": "humour/poisse/avatar-hibou-humour-poisse-chat-noir.png",
+    "label": "Chat noir",
+    "category": "Humour · Poisse"
+  },
+  {
+    "key": "avatar-hibou-humour-poisse-ko-technique",
+    "file": "humour/poisse/avatar-hibou-humour-poisse-ko-technique.png",
+    "label": "KO technique",
+    "category": "Humour · Poisse"
+  },
+  {
+    "key": "avatar-hibou-humour-poisse-ballon-rafistole",
+    "file": "humour/poisse/avatar-hibou-humour-poisse-ballon-rafistole.png",
+    "label": "Ballon rafistolé",
+    "category": "Humour · Poisse"
+  },
+  {
+    "key": "avatar-hibou-humour-bbq-chef-barbecue",
+    "file": "humour/bbq/avatar-hibou-humour-bbq-chef-barbecue.png",
+    "label": "Chef du barbecue",
+    "category": "Humour · BBQ"
+  },
+  {
+    "key": "avatar-hibou-humour-bbq-saucisse-volante",
+    "file": "humour/bbq/avatar-hibou-humour-bbq-saucisse-volante.png",
+    "label": "Saucisse volante",
+    "category": "Humour · BBQ"
+  },
+  {
+    "key": "avatar-hibou-humour-bbq-roi-camping",
+    "file": "humour/bbq/avatar-hibou-humour-bbq-roi-camping.png",
+    "label": "Roi du camping",
+    "category": "Humour · BBQ"
+  },
+  {
+    "key": "avatar-hibou-humour-bbq-grillade-feu",
+    "file": "humour/bbq/avatar-hibou-humour-bbq-grillade-feu.png",
+    "label": "Grillade en feu",
+    "category": "Humour · BBQ"
+  },
+  {
+    "key": "avatar-hibou-humour-bbq-pique-nique",
+    "file": "humour/bbq/avatar-hibou-humour-bbq-pique-nique.png",
+    "label": "Pique-nique du match",
+    "category": "Humour · BBQ"
+  },
+  {
+    "key": "avatar-hibou-humour-bbq-hot-dog",
+    "file": "humour/bbq/avatar-hibou-humour-bbq-hot-dog.png",
+    "label": "Hot-dog du Nid",
+    "category": "Humour · BBQ"
+  },
+  {
+    "key": "avatar-hibou-humour-bbq-plancha",
+    "file": "humour/bbq/avatar-hibou-humour-bbq-plancha.png",
+    "label": "Plancha du Nid",
+    "category": "Humour · BBQ"
+  },
+  {
+    "key": "avatar-hibou-humour-bbq-triple-burger",
+    "file": "humour/bbq/avatar-hibou-humour-bbq-triple-burger.png",
+    "label": "Triple burger",
+    "category": "Humour · BBQ"
+  },
+  {
+    "key": "avatar-hibou-humour-bbq-saucisse-biere",
+    "file": "humour/bbq/avatar-hibou-humour-bbq-saucisse-biere.png",
+    "label": "Saucisse & bière",
+    "category": "Humour · BBQ"
+  },
+  {
+    "key": "avatar-hibou-humour-bbq-glaciere-kop",
+    "file": "humour/bbq/avatar-hibou-humour-bbq-glaciere-kop.png",
+    "label": "Glacière du kop",
+    "category": "Humour · BBQ"
+  },
+  {
+    "key": "avatar-hibou-humour-bbq-barbecue-ballon",
+    "file": "humour/bbq/avatar-hibou-humour-bbq-barbecue-ballon.png",
+    "label": "Barbecue ballon",
+    "category": "Humour · BBQ"
+  },
+  {
+    "key": "avatar-hibou-humour-bbq-hot-dog-heureux",
+    "file": "humour/bbq/avatar-hibou-humour-bbq-hot-dog-heureux.png",
+    "label": "Hot-dog heureux",
+    "category": "Humour · BBQ"
+  },
+  {
+    "key": "avatar-hibou-humour-deguisements-gentleman",
+    "file": "humour/deguisements/avatar-hibou-humour-deguisements-gentleman.png",
+    "label": "Gentleman moustachu",
+    "category": "Humour · Déguisements"
+  },
+  {
+    "key": "avatar-hibou-humour-deguisements-star-kop",
+    "file": "humour/deguisements/avatar-hibou-humour-deguisements-star-kop.png",
+    "label": "Star du kop",
+    "category": "Humour · Déguisements"
+  },
+  {
+    "key": "avatar-hibou-humour-deguisements-super-hibou",
+    "file": "humour/deguisements/avatar-hibou-humour-deguisements-super-hibou.png",
+    "label": "Super Hibou",
+    "category": "Humour · Déguisements"
+  },
+  {
+    "key": "avatar-hibou-humour-deguisements-bouffon",
+    "file": "humour/deguisements/avatar-hibou-humour-deguisements-bouffon.png",
+    "label": "Bouffon du Nid",
+    "category": "Humour · Déguisements"
+  },
+  {
+    "key": "avatar-hibou-humour-deguisements-annees-80",
+    "file": "humour/deguisements/avatar-hibou-humour-deguisements-annees-80.png",
+    "label": "Années 80",
+    "category": "Humour · Déguisements"
+  },
+  {
+    "key": "avatar-hibou-humour-deguisements-pirate",
+    "file": "humour/deguisements/avatar-hibou-humour-deguisements-pirate.png",
+    "label": "Pirate du Nid",
+    "category": "Humour · Déguisements"
+  },
+  {
+    "key": "avatar-hibou-humour-deguisements-chevalier",
+    "file": "humour/deguisements/avatar-hibou-humour-deguisements-chevalier.png",
+    "label": "Chevalier du Nid",
+    "category": "Humour · Déguisements"
+  },
+  {
+    "key": "avatar-hibou-humour-deguisements-disco",
+    "file": "humour/deguisements/avatar-hibou-humour-deguisements-disco.png",
+    "label": "Disco Hibou",
+    "category": "Humour · Déguisements"
+  },
+  {
+    "key": "avatar-hibou-humour-deguisements-magicien",
+    "file": "humour/deguisements/avatar-hibou-humour-deguisements-magicien.png",
+    "label": "Magicien",
+    "category": "Humour · Déguisements"
+  },
+  {
+    "key": "avatar-hibou-humour-deguisements-roi",
+    "file": "humour/deguisements/avatar-hibou-humour-deguisements-roi.png",
+    "label": "Roi du Nid",
+    "category": "Humour · Déguisements"
+  },
+  {
+    "key": "avatar-hibou-humour-deguisements-vacancier",
+    "file": "humour/deguisements/avatar-hibou-humour-deguisements-vacancier.png",
+    "label": "Vacancier",
+    "category": "Humour · Déguisements"
+  },
+  {
+    "key": "avatar-hibou-humour-deguisements-viking",
+    "file": "humour/deguisements/avatar-hibou-humour-deguisements-viking.png",
+    "label": "Viking du Nid",
+    "category": "Humour · Déguisements"
+  },
+  {
+    "key": "avatar-hibou-humour-cafe-pmu-petit-cafe",
+    "file": "humour/cafe-pmu/avatar-hibou-humour-cafe-pmu-petit-cafe.png",
+    "label": "Petit café",
+    "category": "Humour · Café & PMU"
+  },
+  {
+    "key": "avatar-hibou-humour-cafe-pmu-journal-courses",
+    "file": "humour/cafe-pmu/avatar-hibou-humour-cafe-pmu-journal-courses.png",
+    "label": "Journal des courses",
+    "category": "Humour · Café & PMU"
+  },
+  {
+    "key": "avatar-hibou-humour-cafe-pmu-parieur-stylo",
+    "file": "humour/cafe-pmu/avatar-hibou-humour-cafe-pmu-parieur-stylo.png",
+    "label": "Parieur au stylo",
+    "category": "Humour · Café & PMU"
+  },
+  {
+    "key": "avatar-hibou-humour-cafe-pmu-croissant-cafe",
+    "file": "humour/cafe-pmu/avatar-hibou-humour-cafe-pmu-croissant-cafe.png",
+    "label": "Croissant café",
+    "category": "Humour · Café & PMU"
+  },
+  {
+    "key": "avatar-hibou-humour-cafe-pmu-apero-terrasse",
+    "file": "humour/cafe-pmu/avatar-hibou-humour-cafe-pmu-apero-terrasse.png",
+    "label": "Apéro terrasse",
+    "category": "Humour · Café & PMU"
+  },
+  {
+    "key": "avatar-hibou-humour-cafe-pmu-poker",
+    "file": "humour/cafe-pmu/avatar-hibou-humour-cafe-pmu-poker.png",
+    "label": "Poker du Nid",
+    "category": "Humour · Café & PMU"
+  },
+  {
+    "key": "avatar-hibou-humour-cafe-pmu-biere-comptoir",
+    "file": "humour/cafe-pmu/avatar-hibou-humour-cafe-pmu-biere-comptoir.png",
+    "label": "Bière au comptoir",
+    "category": "Humour · Café & PMU"
+  },
+  {
+    "key": "avatar-hibou-humour-cafe-pmu-pronostics-hippiques",
+    "file": "humour/cafe-pmu/avatar-hibou-humour-cafe-pmu-pronostics-hippiques.png",
+    "label": "Pronostics hippiques",
+    "category": "Humour · Café & PMU"
+  },
+  {
+    "key": "avatar-hibou-humour-cafe-pmu-cafe-serre",
+    "file": "humour/cafe-pmu/avatar-hibou-humour-cafe-pmu-cafe-serre.png",
+    "label": "Café serré",
+    "category": "Humour · Café & PMU"
+  },
+  {
+    "key": "avatar-hibou-humour-cafe-pmu-porte-bonheur",
+    "file": "humour/cafe-pmu/avatar-hibou-humour-cafe-pmu-porte-bonheur.png",
+    "label": "Porte-bonheur",
+    "category": "Humour · Café & PMU"
+  },
+  {
+    "key": "avatar-hibou-humour-cafe-pmu-rendez-vous",
+    "file": "humour/cafe-pmu/avatar-hibou-humour-cafe-pmu-rendez-vous.png",
+    "label": "Rendez-vous galant",
+    "category": "Humour · Café & PMU"
+  },
+  {
+    "key": "avatar-hibou-humour-cafe-pmu-trompette-bistrot",
+    "file": "humour/cafe-pmu/avatar-hibou-humour-cafe-pmu-trompette-bistrot.png",
+    "label": "Trompette du bistrot",
+    "category": "Humour · Café & PMU"
+  },
+  {
+    "key": "avatar-hibou-humour-personnages-chanceux",
+    "file": "humour/personnages/avatar-hibou-humour-personnages-chanceux.png",
+    "label": "Le chanceux",
+    "category": "Humour · Personnages"
+  },
+  {
+    "key": "avatar-hibou-humour-personnages-analyste",
+    "file": "humour/personnages/avatar-hibou-humour-personnages-analyste.png",
+    "label": "L’analyste",
+    "category": "Humour · Personnages"
+  },
+  {
+    "key": "avatar-hibou-humour-personnages-arbitre-strict",
+    "file": "humour/personnages/avatar-hibou-humour-personnages-arbitre-strict.png",
+    "label": "L’arbitre strict",
+    "category": "Humour · Personnages"
+  },
+  {
+    "key": "avatar-hibou-humour-personnages-selfie-supporter",
+    "file": "humour/personnages/avatar-hibou-humour-personnages-selfie-supporter.png",
+    "label": "Le selfie supporter",
+    "category": "Humour · Personnages"
+  },
+  {
+    "key": "avatar-hibou-humour-personnages-popcorn-geant",
+    "file": "humour/personnages/avatar-hibou-humour-personnages-popcorn-geant.png",
+    "label": "Pop-corn géant",
+    "category": "Humour · Personnages"
+  },
+  {
+    "key": "avatar-hibou-humour-personnages-zen",
+    "file": "humour/personnages/avatar-hibou-humour-personnages-zen.png",
+    "label": "Le zen",
+    "category": "Humour · Personnages"
+  },
+  {
+    "key": "avatar-hibou-humour-personnages-oracle-meteo",
+    "file": "humour/personnages/avatar-hibou-humour-personnages-oracle-meteo.png",
+    "label": "Oracle météo",
+    "category": "Humour · Personnages"
+  },
+  {
+    "key": "avatar-hibou-humour-personnages-genie",
+    "file": "humour/personnages/avatar-hibou-humour-personnages-genie.png",
+    "label": "Le génie",
+    "category": "Humour · Personnages"
+  },
+  {
+    "key": "avatar-hibou-humour-personnages-commentateur",
+    "file": "humour/personnages/avatar-hibou-humour-personnages-commentateur.png",
+    "label": "Le commentateur",
+    "category": "Humour · Personnages"
+  },
+  {
+    "key": "avatar-hibou-humour-personnages-echarpes-empilees",
+    "file": "humour/personnages/avatar-hibou-humour-personnages-echarpes-empilees.png",
+    "label": "Écharpes empilées",
+    "category": "Humour · Personnages"
+  },
+  {
+    "key": "avatar-hibou-humour-personnages-globe-trotter",
+    "file": "humour/personnages/avatar-hibou-humour-personnages-globe-trotter.png",
+    "label": "Globe-trotter",
+    "category": "Humour · Personnages"
+  },
+  {
+    "key": "avatar-hibou-humour-personnages-cotillons",
+    "file": "humour/personnages/avatar-hibou-humour-personnages-cotillons.png",
+    "label": "Cotillons",
+    "category": "Humour · Personnages"
   }
 ]

@@ -4,7 +4,7 @@
 (function(){
   state.final098=state.final098||{seasonId:null,loaded:false,loading:false,error:null,readiness:null,archive:null,guestbook:[]};
   const q=s=>$(s);
-  const avatarPath=p=>`assets/avatars/nid/${typeof normalizedAvatarKey==="function"?normalizedAvatarKey(p?.avatar_key):p?.avatar_key||"avatar-hibou-or"}.png`;
+  const avatarPath=p=>typeof officialAvatarUrl==="function"?officialAvatarUrl(p?.avatar_key):`assets/avatars/nid/avatar-hibou-humour-personnages-chanceux.png`;
   const finalUrlV098=(mode="season",extra={})=>{const u=new URL("finale.html",location.href);u.searchParams.set("season",state.season?.slug||"");u.searchParams.set("mode",mode);Object.entries(extra).forEach(([k,v])=>{if(v!=null)u.searchParams.set(k,v)});return u.href;};
   const diplomaUrlV098=(extra={})=>{const u=new URL("diplome.html",location.href);u.searchParams.set("season",state.season?.slug||"");Object.entries(extra).forEach(([k,v])=>{if(v!=null)u.searchParams.set(k,v)});return u.href;};
   window.finalUrlV098=finalUrlV098;window.diplomaUrlV098=diplomaUrlV098;

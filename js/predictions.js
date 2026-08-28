@@ -5,7 +5,7 @@
     const welcome=$("#welcomeTitle");
     if(welcome) welcome.textContent=`Salut ${state.profile?.username||"Hibou"}, prêt pour l'Europe ?`;
     const heroAvatar=$("#homeHeroAvatar");
-    if(heroAvatar) heroAvatar.innerHTML=avatarHTML(state.profile||{username:"Hibou",avatar_key:"avatar-hibou-or"},{allowPending:true});
+    if(heroAvatar) heroAvatar.innerHTML=avatarHTML(state.profile||{username:"Hibou",avatar_key:"avatar-hibou-humour-personnages-chanceux"},{allowPending:true});
 
     const now=Date.now();
     const live=state.allMatches.find(m=>m.status==="live");

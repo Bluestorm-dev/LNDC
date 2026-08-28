@@ -417,7 +417,7 @@
     function preview(){
       syncEditorUi();
       const draft=draftFromEditor();
-      const playerCore=avatarCoreHTML(state.profile||{username:"Joueur",avatar_key:"avatar-hibou-or"},{allowPending:true});
+      const playerCore=avatarCoreHTML(state.profile||{username:"Joueur",avatar_key:"avatar-hibou-humour-personnages-chanceux"},{allowPending:true});
       const draftAvatar=`<span class="team-avatar ${teamClass(draft)}" style="${teamVisualVars(draft)}">${playerCore}</span>`;
       const visibility=$("#teamEditVisibility",root).value==="private"?"Privée 🔒":"Publique";
       $("#teamLivePreview",root).innerHTML=`
