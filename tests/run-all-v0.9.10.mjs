@@ -210,6 +210,19 @@ need("tests.center-current-release",
   center.includes("js/preseason099.js"),
   "Centre web contrôle réellement la release courante V0.9.10"
 );
+need("tests.center-v099-compat-r2",
+  center.includes("x.test==='Version'") &&
+  center.includes("app_settings.app_version") &&
+  center.includes("backend courant 0.9.10"),
+  "Diagnostic historique V0.9.9 tolère le backend courant V0.9.10"
+);
+need("ui.no-stale-public-099",
+  !index.includes("Phases finales · V0.9.9") &&
+  !index.includes("Le Nid est connecté</span><small>V0.9.9") &&
+  !index.includes('<span class="eyebrow gold">V0.9.9</span>') &&
+  !index.includes('<dd id="adminAppVersion">0.9.9</dd>'),
+  "Aucun marquage V0.9.9 obsolète dans les surfaces visibles courantes"
+);
 need("tests.windows-safe",read("tests/run-all-v0.9.10.mjs").includes("fileURLToPath(import.meta.url)"),"Runner compatible chemins Windows");
 need("docs.checklist-count",(read("docs/TEST_CHECKLIST_V0.9.10.md").match(/\*\*T\d{4}\*\*/g)||[]).length===40,"Checklist V0.9.10 contient 40 contrôles spécifiques");
 
