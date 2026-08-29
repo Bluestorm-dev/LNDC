@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.9.9 — cockpit Admin + accès fin de saison
+// Le Nid des Champions V0.9.10 — cockpit Admin + sécurisation pré-lancement
 (function(){
   const defaults={
     registration_open:true,maintenance:false,feature_rivals:true,feature_polls:true,feature_api:true,
@@ -13,7 +13,8 @@
     ["Saisir un score LIVE","match score résultat live","matches","#adminMatches","⚽"],
     ["Créer une journée","journée calendrier matchday","matches",".admin-builder","＋"],
     ["Ajouter un match","rencontre coup envoi stade","matches",".admin-builder","⚽"],
-    ["Synchroniser le calendrier C1","api football data calendrier champions","competition","#syncCalendarBtn","↻"],
+    ["Calendrier sécurisé C1","uefa calendrier initial manuel football data 144 matchs","competition","#adminCalendarSafetyV0910","📅"],
+    ["Synchroniser le calendrier C1","api football data calendrier champions partiel","competition","#syncCalendarBtn","↻"],
     ["Synchroniser le Centre C1","classement résultats champions league","competition","#syncUclCenterBtn","⭐"],
     ["Synchroniser les clubs","logos clubs bibliothèque","competition","#syncClubsBtn","🛡"],
     ["Synchroniser les cotes","odds 1n2 api","competition","#syncOddsBtn","📊"],
@@ -32,6 +33,7 @@
     ["Notifications Push","push appareil cron notification","communication","#adminNotificationsPanel","🔔"],
     ["Gérer les saisons","saison active archive création","application","#adminSeasonManagementPanel","◇"],
     ["Fin de saison & PDF","collector diplôme livre or export archive clôture","application","#adminFinalSeasonPanelV098","📘"],
+    ["Reset avant ouverture","nettoyage recette préproduction badges pronostics test ouverture","application","#prelaunchResetBtnV0910","🧹"],
     ["Maintenance","maintenance fermer application","application","#adminSettingsPanelV095","🛠"],
     ["Ouvrir / fermer les inscriptions","registration compte","application","#adminSettingsPanelV095","🚪"],
     ["Feature flags","fonction activer désactiver rival sondage api","application","#adminSettingsPanelV095","🚩"],
@@ -41,7 +43,7 @@
     ["Nettoyer le cache PWA","service worker cache actualiser","application","#adminRefreshPwaBtn","↻"],
     ["Tests techniques","diagnostic test cron calendrier","test","#adminTestPanelSection","🧪"],
     ["Répétition générale V1","pré saison rehearsal faux matchs charge onboarding tutoriel nettoyage","test","#adminPreseasonPanelV099","🔥"],
-    ["Centres de tests","tests page validation 0.8.1 0.9.0 0.9.5 0.9.8 0.9.9 road check matrice","test","#adminTestCentersV095","✅"]
+    ["Centres de tests","tests page validation 0.8.1 0.9.0 0.9.5 0.9.8 0.9.9 0.9.10 road check matrice","test","#adminTestCentersV095","✅"]
   ].map((x,i)=>({id:`cmd-${i+1}`,label:x[0],keywords:x[1],section:x[2],selector:x[3],icon:x[4]}));
 
   function boolSetting(key,fallback=true){const v=state.appSettings?.[key];return typeof v==="boolean"?v:(v==null?fallback:Boolean(v));}
@@ -145,7 +147,7 @@
   function renderAdminHealthV095(){
     const root=$("#adminHealthV095");if(!root)return;const d=state.admin095.dashboard||{};const maintenance=boolSetting("maintenance",false),api=boolSetting("feature_api",true),online=navigator.onLine;
     const issues=[];if(Number(d.players_pending||0))issues.push({icon:"🚪",n:d.players_pending,label:"inscription(s) à traiter",cmd:"cmd-10"});if(Number(d.avatars_pending||0))issues.push({icon:"🖼",n:d.avatars_pending,label:"avatar(s) à modérer",cmd:"cmd-11"});if(Number(d.tickets_open||0))issues.push({icon:"🎫",n:d.tickets_open,label:"ticket(s) ouvert(s)",cmd:"cmd-19"});if(Number(d.push_failed_24h||0))issues.push({icon:"⚠",n:d.push_failed_24h,label:"push en échec sur 24 h",cmd:"cmd-20"});if(Number(d.deletion_requests||0))issues.push({icon:"🗑",n:d.deletion_requests,label:"suppression(s) demandée(s)",cmd:"cmd-14"});
-    root.innerHTML=`<div class="admin-health-strip-v095"><span class="${online?'ok':'bad'}"><i></i>${online?'Réseau OK':'Hors ligne'}</span><span class="${maintenance?'warn':'ok'}"><i></i>${maintenance?'Maintenance active':'Application ouverte'}</span><span class="${api?'ok':'warn'}"><i></i>${api?'API autorisée':'API désactivée'}</span><span><i></i>${esc(state.season?.name||'Saison')}</span></div><div class="admin-action-center-v095"><div class="section-title compact"><div><span class="eyebrow gold">À traiter</span><h3>${issues.length?`${issues.length} point${issues.length>1?'s':''} à surveiller`:'Rien d’urgent'}</h3><p>${issues.length?'Le Nid te remonte uniquement ce qui réclame une action.':'Pas besoin de fouiller tous les menus : tout est calme.'}</p></div><span class="chip">V0.9.9</span></div><div class="admin-action-list-v095">${issues.length?issues.map(x=>`<button type="button" data-admin-health-command="${x.cmd}"><span>${x.icon}</span><b>${Number(x.n||0)}</b><em>${esc(x.label)}</em><i>›</i></button>`).join(''):'<div class="admin-all-clear-v095">✓ Aucun signal critique dans les données chargées.</div>'}</div></div>`;
+    root.innerHTML=`<div class="admin-health-strip-v095"><span class="${online?'ok':'bad'}"><i></i>${online?'Réseau OK':'Hors ligne'}</span><span class="${maintenance?'warn':'ok'}"><i></i>${maintenance?'Maintenance active':'Application ouverte'}</span><span class="${api?'ok':'warn'}"><i></i>${api?'API autorisée':'API désactivée'}</span><span><i></i>${esc(state.season?.name||'Saison')}</span></div><div class="admin-action-center-v095"><div class="section-title compact"><div><span class="eyebrow gold">À traiter</span><h3>${issues.length?`${issues.length} point${issues.length>1?'s':''} à surveiller`:'Rien d’urgent'}</h3><p>${issues.length?'Le Nid te remonte uniquement ce qui réclame une action.':'Pas besoin de fouiller tous les menus : tout est calme.'}</p></div><span class="chip">V0.9.10</span></div><div class="admin-action-list-v095">${issues.length?issues.map(x=>`<button type="button" data-admin-health-command="${x.cmd}"><span>${x.icon}</span><b>${Number(x.n||0)}</b><em>${esc(x.label)}</em><i>›</i></button>`).join(''):'<div class="admin-all-clear-v095">✓ Aucun signal critique dans les données chargées.</div>'}</div></div>`;
     $$('[data-admin-health-command]',root).forEach(b=>b.onclick=()=>runAdminCommandV095(b.dataset.adminHealthCommand));
   }
 

@@ -48,7 +48,7 @@ async function loadGamificationData(){
     sb.from("gamification_settings").select("*").eq("season_id",state.season.id).maybeSingle(),
     sb.from("gamification_text_templates").select("id,event_key,tone,template,weight,active").eq("active",true).range(0,1999)
   ]);
-  if(sErr)throw new Error("Migration V0.7.0 absente : exécute sql/HOTFIX_V0.7.0_EXISTING_DB.sql.");
+  if(sErr)throw new Error("Module du Musée non initialisé. Vérifie la migration de la base dans l’administration.");
   state.museumSummary=summary||{metrics:{},badges:[],events:[],records:[]};
   state.gamificationEvents=eErr?[]:(events||[]);state.gamificationRecords=rErr?[]:(records||[]);state.gamificationSettings=setErr?null:settings;state.narrativeTemplates=tErr?[]:(texts||[]);
 }
@@ -81,7 +81,7 @@ function renderMuseum(){
   if(filter==="obtained")filtered=filtered.filter(b=>b.obtained);else if(filter==="locked")filtered=filtered.filter(b=>!b.obtained);else if(["common","rare","epic","legendary","secret"].includes(filter))filtered=filtered.filter(b=>b.rarity===filter);else if(filter==="career")filtered=filtered.filter(b=>b.scope==="career");else if(filter==="season")filtered=filtered.filter(b=>b.scope==="season");
   filtered.sort((a,b)=>Number(b.obtained)-Number(a.obtained)||(badgeProgressData(b)?.pct||0)-(badgeProgressData(a)?.pct||0)||Number(a.sort_order||999)-Number(b.sort_order||999));
   const visibleTotal=badges.length;
-  root.innerHTML=`<div class="museum-hero card card-pad"><div><span class="eyebrow gold">V0.7.0 · Gamification</span><h2>🏛️ Le Musée du Nid</h2><p>Badges, records, casseroles et coups de génie. Les vrais points restent intouchables.</p></div><div class="museum-hero-kpis"><span><b>${obtained.length}</b><small>/ ${visibleTotal} badges visibles</small></span><span><b>${Number(m.records_count||0)}</b><small>records</small></span><span><b>${Number(m.casserole_points||0)}</b><small>🍳 casserole</small></span><span><b>${Number(m.genius_points||0)}</b><small>✨ génie</small></span></div></div>
+  root.innerHTML=`<div class="museum-hero card card-pad"><div><span class="eyebrow gold">Le Musée du Nid</span><h2>🏛️ Le Musée du Nid</h2><p>Badges, records, casseroles et coups de génie. Les vrais points restent intouchables.</p></div><div class="museum-hero-kpis"><span><b>${obtained.length}</b><small>/ ${visibleTotal} badges visibles</small></span><span><b>${Number(m.records_count||0)}</b><small>records</small></span><span><b>${Number(m.casserole_points||0)}</b><small>🍳 casserole</small></span><span><b>${Number(m.genius_points||0)}</b><small>✨ génie</small></span></div></div>
   <div class="museum-tabs"><button data-museum-tab="overview" class="${tab==='overview'?'active':''}">Vue générale</button><button data-museum-tab="badges" class="${tab==='badges'?'active':''}">Badges</button><button data-museum-tab="records" class="${tab==='records'?'active':''}">Records</button><button data-museum-tab="casseroles" class="${tab==='casseroles'?'active':''}">Casseroles</button><button data-museum-tab="genius" class="${tab==='genius'?'active':''}">Génie</button></div>
   <div id="museumTabBody"></div>`;
   $$('[data-museum-tab]',root).forEach(b=>b.onclick=()=>{state.museumTab=b.dataset.museumTab;renderMuseum();});
@@ -222,7 +222,7 @@ async function loadGamificationData(){
     sb.from("gamification_settings").select("*").eq("season_id",state.season.id).maybeSingle(),
     sb.from("gamification_text_templates").select("id,event_key,tone,template,weight,active").eq("active",true).range(0,2499)
   ]);
-  if(sErr)throw new Error("Migration V0.7.0 absente : exécute sql/HOTFIX_V0.7.0_EXISTING_DB.sql.");
+  if(sErr)throw new Error("Module du Musée non initialisé. Vérifie la migration de la base dans l’administration.");
   state.museumSummary=summary||{metrics:{},badges:[],events:[],records:[]};state.gamificationEvents=eErr?[]:(events||[]);state.gamificationRecords=rErr?[]:(records||[]);state.gamificationSettings=setErr?null:settings;state.narrativeTemplates=tErr?[]:(texts||[]);state.gamificationLoadedOnce=true;
   if(hadLoaded){
     const fresh=(state.museumSummary.badges||[]).filter(b=>b.obtained&&b.player_badge_id&&!previousIds.has(String(b.player_badge_id)));

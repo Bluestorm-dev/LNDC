@@ -233,8 +233,35 @@ Deno.serve(async (req: Request) => {
     const upsertTeam = async (team: FDTeam, withLogo: boolean) => {
       let logo = { source: team.crest || null, path: null as string | null };
       if (withLogo) logo = await uploadLogo(team);
+      const nowIso = new Date().toISOString();
 
-      const row = {
+      let { data: existing } = await admin
+        .from("clubs")
+        .select("id,logo_storage_path,manual_metadata_lock")
+        .eq("external_provider", "football-data")
+        .eq("external_id", team.id)
+        .maybeSingle();
+
+      // Un club créé manuellement peut être rattaché au fournisseur par son nom exact,
+      // mais son verrou manuel reste prioritaire sur les métadonnées Football-Data.
+      if (!existing) {
+        const byManualName = await admin
+          .from("clubs")
+          .select("id,logo_storage_path,manual_metadata_lock")
+          .eq("name", team.name)
+          .is("external_provider", null)
+          .maybeSingle();
+        existing = byManualName.data || null;
+      }
+
+      const providerIdentity = {
+        external_provider: "football-data",
+        external_id: team.id,
+        is_active: true,
+        provider_metadata_updated_at: nowIso,
+        updated_at: nowIso,
+      };
+      const providerMetadata = {
         name: team.name,
         short_name: team.shortName || team.tla || team.name,
         tla: team.tla || null,
@@ -243,46 +270,22 @@ Deno.serve(async (req: Request) => {
         logo_url: team.crest || null,
         logo_source_url: logo.source,
         logo_storage_path: logo.path,
-        logo_updated_at: withLogo ? new Date().toISOString() : null,
-        external_provider: "football-data",
-        external_id: team.id,
-        is_active: true,
-        updated_at: new Date().toISOString(),
+        logo_updated_at: withLogo ? nowIso : null,
+        metadata_source: "football-data",
       };
 
-      let { data: existing } = await admin
-        .from("clubs")
-        .select("id,logo_storage_path")
-        .eq("external_provider", "football-data")
-        .eq("external_id", team.id)
-        .maybeSingle();
-
-      // V0.3.4 — IMPORTANT : un TLA (sigle sur 3 lettres) n'est PAS une identité
-      // globale. Exemple réel : Stade Brestois 29 et Brentford FC utilisent tous les
-      // deux « BRE ». Une recherche par TLA/nom court fusionnerait donc deux clubs
-      // distincts. L'identité canonique est l'ID Football-Data.
-      //
-      // On n'autorise le rattachement par nom exact que pour une ancienne ligne
-      // MANUELLE (external_provider IS NULL). Une ligne déjà liée à un fournisseur
-      // ne peut jamais être réattribuée à un autre external_id.
-      if (!existing) {
-        const byManualName = await admin
-          .from("clubs")
-          .select("id,logo_storage_path")
-          .eq("name", team.name)
-          .is("external_provider", null)
-          .maybeSingle();
-        existing = byManualName.data || null;
-      }
-
       if (existing) {
-        if (!row.logo_storage_path && existing.logo_storage_path) row.logo_storage_path = existing.logo_storage_path;
-        const { data, error } = await admin.from("clubs").update(row).eq("id", existing.id).select("id").single();
+        const locked = Boolean(existing.manual_metadata_lock);
+        const updateRow: Record<string,unknown> = locked ? { ...providerIdentity } : { ...providerMetadata, ...providerIdentity };
+        if (!locked && !updateRow.logo_storage_path && existing.logo_storage_path) updateRow.logo_storage_path = existing.logo_storage_path;
+        const { data, error } = await admin.from("clubs").update(updateRow).eq("id", existing.id).select("id").single();
         if (error) throw error;
         return data.id as string;
       }
 
-      const { data, error } = await admin.from("clubs").insert(row).select("id").single();
+      const { data, error } = await admin.from("clubs").insert({
+        ...providerMetadata, ...providerIdentity, manual_metadata_lock: false,
+      }).select("id").single();
       if (error) throw error;
       return data.id as string;
     };
@@ -366,6 +369,9 @@ Deno.serve(async (req: Request) => {
     let matchCount = 0;
     let matchdayCount = 0;
     let oddsCount = 0;
+    let providerReceived = 0;
+    let matchedByPair = 0;
+    let manualProtected = 0;
     let catalogClubCount = 0;
     let catalogLogoCount = 0;
     let centerMatchCount = 0;
@@ -525,8 +531,8 @@ Deno.serve(async (req: Request) => {
       }
 
       const matches = (matchesPayload?.matches || []) as FDMatch[];
-      const seasonWindowStart = Date.UTC(sourceSeasonYear, 5, 1); // 1er juin : tours préliminaires possibles
-      const seasonWindowEnd = Date.UTC(sourceSeasonYear + 1, 6, 1); // 1er juillet suivant
+      const seasonWindowStart = Date.UTC(sourceSeasonYear, 5, 1);
+      const seasonWindowEnd = Date.UTC(sourceSeasonYear + 1, 6, 1);
       const outOfSeason = matches.filter(match => {
         const kickoff = new Date(match.utcDate).getTime();
         return !Number.isFinite(kickoff) || kickoff < seasonWindowStart || kickoff >= seasonWindowEnd;
@@ -537,146 +543,117 @@ Deno.serve(async (req: Request) => {
       }
 
       const numbered = matches.filter(m => Number.isInteger(m.matchday) && Number(m.matchday) >= 1 && Number(m.matchday) <= EXPECTED_MATCHDAYS);
-      // Ne jamais confondre les tours qualificatifs avec la phase de ligue.
       const sourcePool = numbered.filter(m => /LEAGUE|REGULAR_SEASON/i.test(String(m.stage || "")));
       const leagueMatches = [...new Map(sourcePool.map(m => [m.id, m])).values()]
         .sort((a, b) => Number(a.matchday) - Number(b.matchday) || new Date(a.utcDate).getTime() - new Date(b.utcDate).getTime());
+      providerReceived = leagueMatches.length;
 
-      const perDay = new Map<number, number>();
-      for (const match of leagueMatches) {
-        const md = Number(match.matchday);
-        perDay.set(md, (perDay.get(md) || 0) + 1);
+      // V0.9.10 : Football-Data est désormais un fournisseur de mise à jour, pas la
+      // source unique du calendrier. Un lot partiel (même un seul jour) est accepté.
+      // La protection anti-ancienne saison reste stricte et aucune donnée locale absente
+      // de la réponse du fournisseur n'est supprimée.
+      if (!leagueMatches.length) {
+        return json({ ok: true, action, sourceSeasonYear, sourceSeasonLabel, providerReceived: 0,
+          partialCalendar: true, expectedLeagueMatches: EXPECTED_LEAGUE_MATCHES, oddsCount: 0,
+          message: `Football-Data ne fournit actuellement aucun match de phase de ligue ${sourceSeasonLabel}. Le calendrier local est conservé.` });
       }
-      const malformedDays = Array.from({ length: EXPECTED_MATCHDAYS }, (_, i) => i + 1)
-        .filter(md => perDay.get(md) !== EXPECTED_MATCHES_PER_MATCHDAY);
-      if (leagueMatches.length !== EXPECTED_LEAGUE_MATCHES || malformedDays.length) {
-        throw new Error(`Calendrier réel ${sourceSeasonLabel} indisponible ou incomplet : ${leagueMatches.length}/${EXPECTED_LEAGUE_MATCHES} matchs de phase de ligue reçus ; journées incomplètes : ${malformedDays.join(", ") || "aucune"}. Aucun match 2025/26 n’a été chargé. Réessaie après la publication du calendrier UEFA.`);
-      }
 
-      if (action === "odds") {
-        // V0.3.2 : actualisation légère des cotes uniquement. Les scores, statuts,
-        // dates et rattachements de clubs ne sont jamais touchés par cette action.
-        for (const match of leagueMatches) {
-          const rawHomeOdds = Number(match.odds?.homeWin);
-          const rawDrawOdds = Number(match.odds?.draw);
-          const rawAwayOdds = Number(match.odds?.awayWin);
-          const hasFootballDataOdds = [rawHomeOdds, rawDrawOdds, rawAwayOdds]
-            .every(value => Number.isFinite(value) && value > 1);
-          if (!hasFootballDataOdds) continue;
+      const { data: leaguePhase, error: phaseError } = await admin
+        .from("competition_phases")
+        .upsert({ season_id: season.id, code: "LEAGUE", name: "Phase de ligue", sort_order: 10, default_multiplier: 1 }, { onConflict: "season_id,code" })
+        .select("id").single();
+      if (phaseError) throw phaseError;
 
-          const { error: oddsError } = await admin
-            .from("matches")
-            .update({
-              odds_home: rawHomeOdds,
-              odds_draw: rawDrawOdds,
-              odds_away: rawAwayOdds,
-              odds_provider: "football-data",
-              odds_bookmaker: "football-data.org",
-              odds_source_season: sourceSeasonLabel,
-              odds_is_test_shifted: false,
-              odds_updated_at: new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-            })
-            .eq("season_id", season.id)
-            .eq("external_provider", "football-data")
-            .eq("external_match_id", match.id);
-          if (oddsError) throw oddsError;
-          oddsCount++;
-        }
-      } else {
-        const { data: leaguePhase, error: phaseError } = await admin
-          .from("competition_phases")
-          .upsert({ season_id: season.id, code: "LEAGUE", name: "Phase de ligue", sort_order: 10, default_multiplier: 1 }, { onConflict: "season_id,code" })
-          .select("id").single();
-        if (phaseError) throw phaseError;
-
-        const expectedExternalIds = new Set(leagueMatches.map(m => m.id));
-        const { data: importedExisting, error: importedError } = await admin
-          .from("matches")
-          .select("id,external_match_id")
-          .eq("season_id", season.id)
-          .eq("external_provider", "football-data");
-        if (importedError) throw importedError;
-        const staleIds = (importedExisting || [])
-          .filter(row => !expectedExternalIds.has(Number(row.external_match_id)))
-          .map(row => row.id);
-        if (staleIds.length) {
-          const { error: cleanupError } = await admin.from("matches").delete().in("id", staleIds);
-          if (cleanupError) throw cleanupError;
-        }
-
-        const matchdayIds = new Map<number, string>();
-        for (const number of Array.from({ length: EXPECTED_MATCHDAYS }, (_, i) => i + 1)) {
+      const matchdayIds = new Map<number, string>();
+      for (const number of [...new Set(leagueMatches.map(m => Number(m.matchday)))].sort((a,b)=>a-b)) {
+        const { data: existingMd, error: existingMdError } = await admin.from("matchdays")
+          .select("id").eq("season_id", season.id).eq("number", number).maybeSingle();
+        if (existingMdError) throw existingMdError;
+        if (existingMd?.id) {
+          matchdayIds.set(number, existingMd.id);
+          const { error } = await admin.from("matchdays").update({ phase_id: leaguePhase.id, name: `Journée ${number}` }).eq("id", existingMd.id);
+          if (error) throw error;
+        } else {
           const dayMatches = leagueMatches.filter(m => Number(m.matchday) === number);
           const times = dayMatches.map(m => new Date(sourceKickoffDate(m.utcDate)).getTime()).filter(Number.isFinite);
-          const startsAt = times.length ? new Date(Math.min(...times)).toISOString() : null;
-          const endsAt = times.length ? new Date(Math.max(...times) + 3 * 3600_000).toISOString() : null;
-          const { data: md, error } = await admin.from("matchdays").upsert({
-            season_id: season.id,
-            phase_id: leaguePhase.id,
-            number,
-            name: `Journée ${number}`,
-            starts_at: startsAt,
-            ends_at: endsAt,
-          }, { onConflict: "season_id,number" }).select("id").single();
+          const { data: md, error } = await admin.from("matchdays").insert({
+            season_id: season.id, phase_id: leaguePhase.id, number, name: `Journée ${number}`,
+            starts_at: times.length ? new Date(Math.min(...times)).toISOString() : null,
+            ends_at: times.length ? new Date(Math.max(...times) + 3 * 3600_000).toISOString() : null,
+          }).select("id").single();
           if (error) throw error;
           matchdayIds.set(number, md.id);
-          matchdayCount++;
-        }
-
-        for (const match of leagueMatches) {
-          const homeId = await upsertTeam(match.homeTeam, false);
-          const awayId = await upsertTeam(match.awayTeam, false);
-          await upsertMembership(homeId, "CL", "UEFA Champions League", match.homeTeam.area?.name || null, sourceSeasonYear);
-          await upsertMembership(awayId, "CL", "UEFA Champions League", match.awayTeam.area?.name || null, sourceSeasonYear);
-          const rawHomeOdds = Number(match.odds?.homeWin);
-          const rawDrawOdds = Number(match.odds?.draw);
-          const rawAwayOdds = Number(match.odds?.awayWin);
-          const hasFootballDataOdds = [rawHomeOdds, rawDrawOdds, rawAwayOdds].every(value => Number.isFinite(value) && value > 1);
-
-          const row = {
-            season_id: season.id,
-            phase_id: leaguePhase.id,
-            matchday_id: matchdayIds.get(Number(match.matchday)),
-            home_club_id: homeId,
-            away_club_id: awayId,
-            kickoff_at: sourceKickoffDate(match.utcDate),
-            stadium: match.venue || null,
-            status: apiStatusToNid(match.status),
-            data_source: "manual",
-            external_provider: "football-data",
-            external_match_id: match.id,
-            external_stage: match.stage || null,
-            ...(hasFootballDataOdds ? {
-              odds_home: rawHomeOdds,
-              odds_draw: rawDrawOdds,
-              odds_away: rawAwayOdds,
-              odds_provider: "football-data",
-              odds_bookmaker: "football-data.org",
-              odds_source_season: sourceSeasonLabel,
-              odds_is_test_shifted: false,
-              odds_updated_at: new Date().toISOString(),
-            } : {}),
-            updated_at: new Date().toISOString(),
-          };
-          if (hasFootballDataOdds) oddsCount++;
-
-          const { data: existing } = await admin.from("matches")
-            .select("id,status,home_score,away_score,odds_home,odds_draw,odds_away,odds_provider,odds_bookmaker,odds_updated_at")
-            .eq("external_provider", "football-data")
-            .eq("external_match_id", match.id)
-            .maybeSingle();
-          if (existing) {
-            const safeRow = existing.status === "finished" ? { ...row, status: existing.status } : row;
-            const { error } = await admin.from("matches").update(safeRow).eq("id", existing.id);
-            if (error) throw error;
-          } else {
-            const { error } = await admin.from("matches").insert(row);
-            if (error) throw error;
-          }
-          matchCount++;
         }
       }
+
+      for (const match of leagueMatches) {
+        const homeId = await upsertTeam(match.homeTeam, false);
+        const awayId = await upsertTeam(match.awayTeam, false);
+        await upsertMembership(homeId, "CL", "UEFA Champions League", match.homeTeam.area?.name || null, sourceSeasonYear);
+        await upsertMembership(awayId, "CL", "UEFA Champions League", match.awayTeam.area?.name || null, sourceSeasonYear);
+
+        const rawHomeOdds = Number(match.odds?.homeWin), rawDrawOdds = Number(match.odds?.draw), rawAwayOdds = Number(match.odds?.awayWin);
+        const hasOdds = [rawHomeOdds, rawDrawOdds, rawAwayOdds].every(value => Number.isFinite(value) && value > 1);
+
+        let { data: existing, error: existingError } = await admin.from("matches")
+          .select("id,status,manual_schedule_lock,external_match_id")
+          .eq("season_id", season.id).eq("external_provider", "football-data").eq("external_match_id", match.id).maybeSingle();
+        if (existingError) throw existingError;
+        if (!existing) {
+          const byPair = await admin.from("matches")
+            .select("id,status,manual_schedule_lock,external_match_id")
+            .eq("season_id", season.id).eq("home_club_id", homeId).eq("away_club_id", awayId).eq("is_test", false)
+            .order("created_at", { ascending: true }).limit(1).maybeSingle();
+          if (byPair.error) throw byPair.error;
+          existing = byPair.data || null;
+          if (existing) matchedByPair++;
+        }
+
+        const nowIso = new Date().toISOString();
+        const identityAndOdds: Record<string,unknown> = {
+          external_provider: "football-data", external_match_id: match.id, external_stage: match.stage || null,
+          provider_schedule_updated_at: nowIso, updated_at: nowIso,
+          ...(hasOdds ? { odds_home: rawHomeOdds, odds_draw: rawDrawOdds, odds_away: rawAwayOdds,
+            odds_provider: "football-data", odds_bookmaker: "football-data.org", odds_source_season: sourceSeasonLabel,
+            odds_is_test_shifted: false, odds_updated_at: nowIso } : {}),
+        };
+        if (hasOdds) oddsCount++;
+
+        if (action === "odds") {
+          if (existing) {
+            const { error } = await admin.from("matches").update(identityAndOdds).eq("id", existing.id);
+            if (error) throw error;
+          }
+          continue;
+        }
+
+        if (existing) {
+          const locked = Boolean(existing.manual_schedule_lock);
+          if (locked) manualProtected++;
+          const schedule = locked || existing.status === "finished" ? {} : {
+            phase_id: leaguePhase.id, matchday_id: matchdayIds.get(Number(match.matchday)),
+            home_club_id: homeId, away_club_id: awayId, kickoff_at: sourceKickoffDate(match.utcDate),
+            stadium: match.venue || null, status: apiStatusToNid(match.status), data_source: "api", schedule_source: "football-data",
+          };
+          const { error } = await admin.from("matches").update({ ...schedule, ...identityAndOdds }).eq("id", existing.id);
+          if (error) throw error;
+        } else {
+          const { error } = await admin.from("matches").insert({
+            season_id: season.id, phase_id: leaguePhase.id, matchday_id: matchdayIds.get(Number(match.matchday)),
+            home_club_id: homeId, away_club_id: awayId, kickoff_at: sourceKickoffDate(match.utcDate), stadium: match.venue || null,
+            status: apiStatusToNid(match.status), data_source: "api", schedule_source: "football-data", manual_schedule_lock: false,
+            ...identityAndOdds,
+          });
+          if (error) throw error;
+        }
+      }
+
+      const { data: localRows, error: localError } = await admin.from("matches")
+        .select("id,matchday_id,odds_home,odds_draw,odds_away").eq("season_id", season.id).eq("is_test", false);
+      if (localError) throw localError;
+      matchCount = (localRows || []).length;
+      matchdayCount = new Set((localRows || []).map(r => r.matchday_id).filter(Boolean)).size;
+      if (action === "odds") oddsCount = (localRows || []).filter(m => m.odds_home != null && m.odds_draw != null && m.odds_away != null).length;
     }
 
     const repairedLegacyClubs = await repairLegacyTestClubLinks();
@@ -723,10 +700,10 @@ Deno.serve(async (req: Request) => {
       action: "football_data_sync",
       entity_type: "season",
       entity_id: seasonSlug,
-      new_data: { action, competitionCode, sourceSeasonYear, sourceSeasonLabel, requestedSeasonYear, clubCount, logoCount, matchdayCount, matchCount, oddsCount, centerMatchCount, standingsCount, repairedLegacyClubs, catalogClubCount, catalogLogoCount, catalogByCompetition, expectedClubs: EXPECTED_CLUBS, expectedLeagueMatches: EXPECTED_LEAGUE_MATCHES },
+      new_data: { action, competitionCode, sourceSeasonYear, sourceSeasonLabel, requestedSeasonYear, clubCount, logoCount, matchdayCount, matchCount, oddsCount, centerMatchCount, standingsCount, repairedLegacyClubs, catalogClubCount, catalogLogoCount, catalogByCompetition, providerReceived, matchedByPair, manualProtected, partialCalendar: providerReceived < EXPECTED_LEAGUE_MATCHES, expectedClubs: EXPECTED_CLUBS, expectedLeagueMatches: EXPECTED_LEAGUE_MATCHES },
     });
 
-    return json({ ok: true, action, clubCount, logoCount, matchdayCount, matchCount, oddsCount, centerMatchCount, standingsCount, repairedLegacyClubs, catalogClubCount, catalogLogoCount, catalogByCompetition, sourceSeasonYear, sourceSeasonLabel, requestedSeasonYear, expectedClubs: EXPECTED_CLUBS, expectedLeagueMatches: EXPECTED_LEAGUE_MATCHES });
+    return json({ ok: true, action, clubCount, logoCount, matchdayCount, matchCount, oddsCount, centerMatchCount, standingsCount, repairedLegacyClubs, catalogClubCount, catalogLogoCount, catalogByCompetition, providerReceived, matchedByPair, manualProtected, partialCalendar: providerReceived < EXPECTED_LEAGUE_MATCHES, sourceSeasonYear, sourceSeasonLabel, requestedSeasonYear, expectedClubs: EXPECTED_CLUBS, expectedLeagueMatches: EXPECTED_LEAGUE_MATCHES });
   } catch (error) {
     console.error("sync-football-data", error);
     const fdStatus = Number((error as any)?.footballDataStatus || 0);

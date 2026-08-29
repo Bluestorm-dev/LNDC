@@ -1,3 +1,11 @@
+# V0.9.10 — Sécurisation pré-production
+
+- Calendrier hybride UEFA + manuel + Football-Data partiel.
+- Édition et protection manuelle des équipes/matchs.
+- Réparation Cotes 1N2 et Champion 1 avant compétition.
+- Reset propre avant ouverture sans supprimer les 100 succès du catalogue.
+- Nettoyage des labels de versions dans les écrans publics.
+
 # V0.9.9
 
 ## 0.9.9 — Pré-saison & répétition générale

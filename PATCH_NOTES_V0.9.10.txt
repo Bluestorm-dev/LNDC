@@ -1,0 +1,21 @@
+LE NID DES CHAMPIONS — V0.9.10
+==============================
+
+Sécurisation fonctionnelle avant la passe esthétique V0.10.0.
+
+- Calendrier officiel UEFA 2026/27 embarqué : 144 matchs, 8 journées de 18.
+- Fenêtres officielles des barrages, huitièmes, quarts, demies et finale.
+- Football-Data accepte les réponses partielles et ne supprime plus les matchs absents du lot reçu.
+- Rapprochement d'un match UEFA local avec son identifiant Football-Data par affiche.
+- Édition manuelle des matchs : équipes, journée, date, stade, pays + verrou de protection.
+- Ajout/édition manuelle des équipes : nom, sigle, pays, stade, logo + verrou de protection.
+- Cotes 1N2 indépendantes de l'exigence historique des 144 matchs chez Football-Data.
+- Messages d'erreur Cotes distinguant transport Edge Function et erreur fournisseur.
+- Champion n°1 disponible depuis le catalogue des 36 clubs C1 avant publication complète du calendrier API.
+- Reset Super Admin avant ouverture, avec prévisualisation et confirmation forte.
+- Reset des badges gagnés/test (y compris carrière acquise pendant la recette), sans suppression du catalogue de 100 succès.
+- Reset des traces de fin de saison de recette (Livre d’or / archive finale) avant ouverture.
+- Suppression des numéros de version techniques dans Centre C1, Soirée européenne et Musée.
+- Centre de tests cumulatif porté à 1920 contrôles.
+
+Cette version nécessite le redéploiement de sync-football-data APRÈS le HOTFIX SQL.

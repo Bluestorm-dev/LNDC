@@ -1,0 +1,948 @@
+{
+  "version": "0.9.10",
+  "generated_at": "2026-08-29T19:30:35.233Z",
+  "base_url": null,
+  "summary": {
+    "total": 187,
+    "passed": 187,
+    "warnings": 0,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "id": "file:VERSION",
+      "status": "PASS",
+      "message": "Présent: VERSION"
+    },
+    {
+      "id": "file:config.js",
+      "status": "PASS",
+      "message": "Présent: config.js"
+    },
+    {
+      "id": "file:config.example.js",
+      "status": "PASS",
+      "message": "Présent: config.example.js"
+    },
+    {
+      "id": "file:index.html",
+      "status": "PASS",
+      "message": "Présent: index.html"
+    },
+    {
+      "id": "file:sw.js",
+      "status": "PASS",
+      "message": "Présent: sw.js"
+    },
+    {
+      "id": "file:assets/assets-manifest.json",
+      "status": "PASS",
+      "message": "Présent: assets/assets-manifest.json"
+    },
+    {
+      "id": "file:css/career.css",
+      "status": "PASS",
+      "message": "Présent: css/career.css"
+    },
+    {
+      "id": "file:css/admin095.css",
+      "status": "PASS",
+      "message": "Présent: css/admin095.css"
+    },
+    {
+      "id": "file:css/finale098.css",
+      "status": "PASS",
+      "message": "Présent: css/finale098.css"
+    },
+    {
+      "id": "file:css/final-report098.css",
+      "status": "PASS",
+      "message": "Présent: css/final-report098.css"
+    },
+    {
+      "id": "file:css/preseason099.css",
+      "status": "PASS",
+      "message": "Présent: css/preseason099.css"
+    },
+    {
+      "id": "file:js/core.js",
+      "status": "PASS",
+      "message": "Présent: js/core.js"
+    },
+    {
+      "id": "file:js/data.js",
+      "status": "PASS",
+      "message": "Présent: js/data.js"
+    },
+    {
+      "id": "file:js/profile.js",
+      "status": "PASS",
+      "message": "Présent: js/profile.js"
+    },
+    {
+      "id": "file:js/career.js",
+      "status": "PASS",
+      "message": "Présent: js/career.js"
+    },
+    {
+      "id": "file:js/admin.js",
+      "status": "PASS",
+      "message": "Présent: js/admin.js"
+    },
+    {
+      "id": "file:js/admin095.js",
+      "status": "PASS",
+      "message": "Présent: js/admin095.js"
+    },
+    {
+      "id": "file:js/finale098.js",
+      "status": "PASS",
+      "message": "Présent: js/finale098.js"
+    },
+    {
+      "id": "file:js/final-report098.js",
+      "status": "PASS",
+      "message": "Présent: js/final-report098.js"
+    },
+    {
+      "id": "file:js/preseason099.js",
+      "status": "PASS",
+      "message": "Présent: js/preseason099.js"
+    },
+    {
+      "id": "file:js/app.js",
+      "status": "PASS",
+      "message": "Présent: js/app.js"
+    },
+    {
+      "id": "file:js/auth.js",
+      "status": "PASS",
+      "message": "Présent: js/auth.js"
+    },
+    {
+      "id": "file:js/realtime.js",
+      "status": "PASS",
+      "message": "Présent: js/realtime.js"
+    },
+    {
+      "id": "file:finale.html",
+      "status": "PASS",
+      "message": "Présent: finale.html"
+    },
+    {
+      "id": "file:diplome.html",
+      "status": "PASS",
+      "message": "Présent: diplome.html"
+    },
+    {
+      "id": "file:sql/025_patch_v0.9.0_season_career_memory.sql",
+      "status": "PASS",
+      "message": "Présent: sql/025_patch_v0.9.0_season_career_memory.sql"
+    },
+    {
+      "id": "file:sql/026_patch_v0.9.5_admin_hardening.sql",
+      "status": "PASS",
+      "message": "Présent: sql/026_patch_v0.9.5_admin_hardening.sql"
+    },
+    {
+      "id": "file:sql/027_patch_v0.9.8_finale_pdf.sql",
+      "status": "PASS",
+      "message": "Présent: sql/027_patch_v0.9.8_finale_pdf.sql"
+    },
+    {
+      "id": "file:sql/028_patch_v0.9.9_preseason.sql",
+      "status": "PASS",
+      "message": "Présent: sql/028_patch_v0.9.9_preseason.sql"
+    },
+    {
+      "id": "file:sql/HOTFIX_V0.9.9_EXISTING_DB.sql",
+      "status": "PASS",
+      "message": "Présent: sql/HOTFIX_V0.9.9_EXISTING_DB.sql"
+    },
+    {
+      "id": "file:sql/000_INSTALL_FRESH_V0.9.9.sql",
+      "status": "PASS",
+      "message": "Présent: sql/000_INSTALL_FRESH_V0.9.9.sql"
+    },
+    {
+      "id": "file:tests/test-center-v0.8.1.html",
+      "status": "PASS",
+      "message": "Présent: tests/test-center-v0.8.1.html"
+    },
+    {
+      "id": "file:tests/test-center-v0.9.0.html",
+      "status": "PASS",
+      "message": "Présent: tests/test-center-v0.9.0.html"
+    },
+    {
+      "id": "file:tests/test-center-v0.9.5.html",
+      "status": "PASS",
+      "message": "Présent: tests/test-center-v0.9.5.html"
+    },
+    {
+      "id": "file:tests/test-center-v0.9.8.html",
+      "status": "PASS",
+      "message": "Présent: tests/test-center-v0.9.8.html"
+    },
+    {
+      "id": "file:tests/test-center-v0.9.9.html",
+      "status": "PASS",
+      "message": "Présent: tests/test-center-v0.9.9.html"
+    },
+    {
+      "id": "file:tests/road-check-v0.9.9.html",
+      "status": "PASS",
+      "message": "Présent: tests/road-check-v0.9.9.html"
+    },
+    {
+      "id": "file:docs/TEST_CHECKLIST_V0.9.9.md",
+      "status": "PASS",
+      "message": "Présent: docs/TEST_CHECKLIST_V0.9.9.md"
+    },
+    {
+      "id": "file:docs/TEST_MATRIX_V0.9.9.md",
+      "status": "PASS",
+      "message": "Présent: docs/TEST_MATRIX_V0.9.9.md"
+    },
+    {
+      "id": "file:INSTALLATION_V0.9.9.txt",
+      "status": "PASS",
+      "message": "Présent: INSTALLATION_V0.9.9.txt"
+    },
+    {
+      "id": "file:PATCH_NOTES_V0.9.9.txt",
+      "status": "PASS",
+      "message": "Présent: PATCH_NOTES_V0.9.9.txt"
+    },
+    {
+      "id": "file:README_TEST_SYSTEM_V0.9.9.md",
+      "status": "PASS",
+      "message": "Présent: README_TEST_SYSTEM_V0.9.9.md"
+    },
+    {
+      "id": "file:css/preprod0910.css",
+      "status": "PASS",
+      "message": "Présent: css/preprod0910.css"
+    },
+    {
+      "id": "file:js/preprod0910.js",
+      "status": "PASS",
+      "message": "Présent: js/preprod0910.js"
+    },
+    {
+      "id": "file:assets/data/ucl-2026-27-official.json",
+      "status": "PASS",
+      "message": "Présent: assets/data/ucl-2026-27-official.json"
+    },
+    {
+      "id": "file:sql/029_patch_v0.9.10_preprod_safety.sql",
+      "status": "PASS",
+      "message": "Présent: sql/029_patch_v0.9.10_preprod_safety.sql"
+    },
+    {
+      "id": "file:sql/HOTFIX_V0.9.10_EXISTING_DB.sql",
+      "status": "PASS",
+      "message": "Présent: sql/HOTFIX_V0.9.10_EXISTING_DB.sql"
+    },
+    {
+      "id": "file:sql/000_INSTALL_FRESH_V0.9.10.sql",
+      "status": "PASS",
+      "message": "Présent: sql/000_INSTALL_FRESH_V0.9.10.sql"
+    },
+    {
+      "id": "file:tests/test-center-v0.9.10.html",
+      "status": "PASS",
+      "message": "Présent: tests/test-center-v0.9.10.html"
+    },
+    {
+      "id": "file:docs/TEST_CHECKLIST_V0.9.10.md",
+      "status": "PASS",
+      "message": "Présent: docs/TEST_CHECKLIST_V0.9.10.md"
+    },
+    {
+      "id": "file:docs/TEST_MATRIX_V0.9.10.md",
+      "status": "PASS",
+      "message": "Présent: docs/TEST_MATRIX_V0.9.10.md"
+    },
+    {
+      "id": "file:INSTALLATION_V0.9.10.txt",
+      "status": "PASS",
+      "message": "Présent: INSTALLATION_V0.9.10.txt"
+    },
+    {
+      "id": "file:PATCH_NOTES_V0.9.10.txt",
+      "status": "PASS",
+      "message": "Présent: PATCH_NOTES_V0.9.10.txt"
+    },
+    {
+      "id": "file:README_TEST_SYSTEM_V0.9.10.md",
+      "status": "PASS",
+      "message": "Présent: README_TEST_SYSTEM_V0.9.10.md"
+    },
+    {
+      "id": "version.file",
+      "status": "PASS",
+      "message": "VERSION = 0.9.10 (attendu 0.9.10)"
+    },
+    {
+      "id": "version.config",
+      "status": "PASS",
+      "message": "config.js annonce 0.9.10"
+    },
+    {
+      "id": "version.config-example",
+      "status": "PASS",
+      "message": "config.example.js annonce 0.9.10"
+    },
+    {
+      "id": "version.cache",
+      "status": "PASS",
+      "message": "Cache Service Worker V0.9.10"
+    },
+    {
+      "id": "version.assets",
+      "status": "PASS",
+      "message": "Manifest des assets V0.9.10"
+    },
+    {
+      "id": "front.098-assets",
+      "status": "PASS",
+      "message": "UI Fin de saison V0.9.9 branchée dans index.html"
+    },
+    {
+      "id": "front.report-pages",
+      "status": "PASS",
+      "message": "Pages Collector et diplôme branchées"
+    },
+    {
+      "id": "sw.098-assets",
+      "status": "PASS",
+      "message": "Service Worker pré-cache la fin de saison V0.9.9"
+    },
+    {
+      "id": "assets.098-manifest",
+      "status": "PASS",
+      "message": "Manifest d'assets référence les composants V0.9.9"
+    },
+    {
+      "id": "preserve.090.multiseason",
+      "status": "PASS",
+      "message": "Multi-saisons V0.9.0 conservé"
+    },
+    {
+      "id": "preserve.090.career",
+      "status": "PASS",
+      "message": "Carrière V0.9.0 conservée"
+    },
+    {
+      "id": "preserve.090.hall",
+      "status": "PASS",
+      "message": "Hall of Fame et Replay conservés"
+    },
+    {
+      "id": "preserve.090.worldcup",
+      "status": "PASS",
+      "message": "Vainqueur Coupe du monde conservé"
+    },
+    {
+      "id": "preserve.090.position",
+      "status": "PASS",
+      "message": "Correctif SQL du mot réservé position conservé"
+    },
+    {
+      "id": "preserve.095.backups",
+      "status": "PASS",
+      "message": "Sauvegardes V0.9.5 conservées"
+    },
+    {
+      "id": "preserve.095.security",
+      "status": "PASS",
+      "message": "Durcissement V0.9.5 conservé"
+    },
+    {
+      "id": "preserve.095.ux",
+      "status": "PASS",
+      "message": "Cockpit Admin V0.9.5 conservé"
+    },
+    {
+      "id": "fd.081-preserved",
+      "status": "PASS",
+      "message": "Correctif Football-Data V0.8.1 conservé"
+    },
+    {
+      "id": "fd.no-fallback-2025",
+      "status": "PASS",
+      "message": "Aucun fallback explicite vers 2025/26 détecté"
+    },
+    {
+      "id": "fd.strict-season",
+      "status": "PASS",
+      "message": "Synchronisation Football-Data reste pilotée par la saison source"
+    },
+    {
+      "id": "front.final.load",
+      "status": "PASS",
+      "message": "Chargement état de clôture"
+    },
+    {
+      "id": "front.final.hub",
+      "status": "PASS",
+      "message": "Hub Fin de saison"
+    },
+    {
+      "id": "front.final.guestbook",
+      "status": "PASS",
+      "message": "Livre d'or côté joueur"
+    },
+    {
+      "id": "front.final.admin",
+      "status": "PASS",
+      "message": "Panneau Admin fin de saison"
+    },
+    {
+      "id": "front.final.export",
+      "status": "PASS",
+      "message": "Export global JSON"
+    },
+    {
+      "id": "front.final.archive",
+      "status": "PASS",
+      "message": "Archivage définitif"
+    },
+    {
+      "id": "front.final.confirm",
+      "status": "PASS",
+      "message": "Confirmation explicite ARCHIVER"
+    },
+    {
+      "id": "front.final.moderation",
+      "status": "PASS",
+      "message": "Modération Livre d'or"
+    },
+    {
+      "id": "front.final.render-hook",
+      "status": "PASS",
+      "message": "V0.9.9 intégrée au rendu général"
+    },
+    {
+      "id": "front.final.season-reset",
+      "status": "PASS",
+      "message": "Changement de saison réinitialise la fin de saison"
+    },
+    {
+      "id": "front.final.links",
+      "status": "PASS",
+      "message": "Admin pointe vers le Centre V0.9.10 et conserve l’historique V0.9.9"
+    },
+    {
+      "id": "front.final.test-history",
+      "status": "PASS",
+      "message": "Historique des centres de tests accessible dans Admin"
+    },
+    {
+      "id": "front.final.search",
+      "status": "PASS",
+      "message": "Recherche Admin indexe V0.9.9 et Fin de saison & PDF"
+    },
+    {
+      "id": "front.final.mobile",
+      "status": "PASS",
+      "message": "Hub fin de saison responsive"
+    },
+    {
+      "id": "print.a4",
+      "status": "PASS",
+      "message": "Styles d'impression A4 présents"
+    },
+    {
+      "id": "print.landscape",
+      "status": "PASS",
+      "message": "Diplôme A4 paysage prévu"
+    },
+    {
+      "id": "print.hide-toolbar",
+      "status": "PASS",
+      "message": "Barre web masquée à l'impression"
+    },
+    {
+      "id": "report.season",
+      "status": "PASS",
+      "message": "Collector utilise le rapport saison"
+    },
+    {
+      "id": "report.player",
+      "status": "PASS",
+      "message": "Carnet utilise le rapport joueur"
+    },
+    {
+      "id": "report.print",
+      "status": "PASS",
+      "message": "Impression navigateur / PDF disponible"
+    },
+    {
+      "id": "report.collector",
+      "status": "PASS",
+      "message": "Rendu Collector saison"
+    },
+    {
+      "id": "report.replay-subtitle",
+      "status": "PASS",
+      "message": "Texte Replay V0.9.0 repris dans le Collector"
+    },
+    {
+      "id": "report.personal",
+      "status": "PASS",
+      "message": "Rendu carnet personnel"
+    },
+    {
+      "id": "report.diploma",
+      "status": "PASS",
+      "message": "Rendu diplôme"
+    },
+    {
+      "id": "report.batch-diplomas",
+      "status": "PASS",
+      "message": "Export de tous les diplômes"
+    },
+    {
+      "id": "report.superadmin",
+      "status": "PASS",
+      "message": "Tous les diplômes réservés au Super Admin"
+    },
+    {
+      "id": "db098.guestbook-table",
+      "status": "PASS",
+      "message": "Table Livre d'or"
+    },
+    {
+      "id": "db098.archive-table",
+      "status": "PASS",
+      "message": "Table archive finale"
+    },
+    {
+      "id": "db098.guestbook-read",
+      "status": "PASS",
+      "message": "RPC lecture Livre d'or"
+    },
+    {
+      "id": "db098.guestbook-save",
+      "status": "PASS",
+      "message": "RPC écriture Livre d'or"
+    },
+    {
+      "id": "db098.guestbook-moderate",
+      "status": "PASS",
+      "message": "RPC modération Livre d'or"
+    },
+    {
+      "id": "db098.readiness",
+      "status": "PASS",
+      "message": "RPC préparation clôture"
+    },
+    {
+      "id": "db098.season-report",
+      "status": "PASS",
+      "message": "RPC rapport saison"
+    },
+    {
+      "id": "db098.player-report",
+      "status": "PASS",
+      "message": "RPC rapport joueur"
+    },
+    {
+      "id": "db098.build-archive",
+      "status": "PASS",
+      "message": "RPC construction archive"
+    },
+    {
+      "id": "db098.final-archive",
+      "status": "PASS",
+      "message": "RPC archivage définitif"
+    },
+    {
+      "id": "db098.archive-meta",
+      "status": "PASS",
+      "message": "RPC métadonnées archive"
+    },
+    {
+      "id": "db098.diagnostic",
+      "status": "PASS",
+      "message": "Diagnostic V0.9.8"
+    },
+    {
+      "id": "db098.guestbook-length",
+      "status": "PASS",
+      "message": "Livre d'or limité à 2–500 caractères"
+    },
+    {
+      "id": "db098.guestbook-unique",
+      "status": "PASS",
+      "message": "Une contribution Livre d'or par joueur et saison"
+    },
+    {
+      "id": "db098.guestbook-rls",
+      "status": "PASS",
+      "message": "RLS Livre d'or activée"
+    },
+    {
+      "id": "db098.archive-rls",
+      "status": "PASS",
+      "message": "RLS archive finale activée"
+    },
+    {
+      "id": "db098.no-email",
+      "status": "PASS",
+      "message": "Aucune adresse e-mail n'est incluse dans le rapport final V0.9.8"
+    },
+    {
+      "id": "db098.test-exclusion",
+      "status": "PASS",
+      "message": "Données TEST exclues des statistiques finales"
+    },
+    {
+      "id": "db098.superadmin",
+      "status": "PASS",
+      "message": "Archivage protégé côté serveur par rôle Super Admin"
+    },
+    {
+      "id": "db098.confirm",
+      "status": "PASS",
+      "message": "Confirmation ARCHIVER contrôlée côté serveur"
+    },
+    {
+      "id": "db098.hash",
+      "status": "PASS",
+      "message": "Snapshot final possède un hash"
+    },
+    {
+      "id": "db098.replay-fields",
+      "status": "PASS",
+      "message": "Rapport Replay utilise uniquement les colonnes V0.9.0 existantes"
+    },
+    {
+      "id": "db098.archived-snapshot",
+      "status": "PASS",
+      "message": "Une saison archivée relit son snapshot final figé"
+    },
+    {
+      "id": "db098.audit",
+      "status": "PASS",
+      "message": "Actions sensibles V0.9.8 journalisées"
+    },
+    {
+      "id": "db098.archive-readonly",
+      "status": "PASS",
+      "message": "Clôture passe la saison en archive inactive"
+    },
+    {
+      "id": "db098.transaction",
+      "status": "PASS",
+      "message": "Migration V0.9.8 encapsulée dans une transaction"
+    },
+    {
+      "id": "db098.app-version",
+      "status": "PASS",
+      "message": "Version backend V0.9.8 présente dans son patch historique"
+    },
+    {
+      "id": "db098.position-safe",
+      "status": "PASS",
+      "message": "Aucune régression du mot réservé position dans V0.9.8"
+    },
+    {
+      "id": "sql098.hotfix-sync",
+      "status": "PASS",
+      "message": "HOTFIX V0.9.8 historique identique à son patch SQL"
+    },
+    {
+      "id": "sql098.fresh-090",
+      "status": "PASS",
+      "message": "Installation fraîche conserve la V0.9.0 corrigée"
+    },
+    {
+      "id": "sql098.fresh-095",
+      "status": "PASS",
+      "message": "Installation fraîche contient le durcissement V0.9.5"
+    },
+    {
+      "id": "sql098.fresh-098",
+      "status": "PASS",
+      "message": "Installation fraîche contient V0.9.8"
+    },
+    {
+      "id": "sql099.fresh",
+      "status": "PASS",
+      "message": "Installation fraîche contient V0.9.9"
+    },
+    {
+      "id": "sql099.hotfix-sync",
+      "status": "PASS",
+      "message": "HOTFIX V0.9.9 identique au patch SQL validé"
+    },
+    {
+      "id": "db099.run-table",
+      "status": "PASS",
+      "message": "Table de scénarios pré-saison"
+    },
+    {
+      "id": "db099.virtual-players",
+      "status": "PASS",
+      "message": "Joueurs virtuels isolés"
+    },
+    {
+      "id": "db099.virtual-matches",
+      "status": "PASS",
+      "message": "Matchs virtuels isolés"
+    },
+    {
+      "id": "db099.virtual-predictions",
+      "status": "PASS",
+      "message": "Pronostics virtuels isolés"
+    },
+    {
+      "id": "db099.virtual-teams",
+      "status": "PASS",
+      "message": "Teams virtuelles isolées"
+    },
+    {
+      "id": "db099.load",
+      "status": "PASS",
+      "message": "Test de charge"
+    },
+    {
+      "id": "db099.cleanup",
+      "status": "PASS",
+      "message": "Nettoyage confirmé"
+    },
+    {
+      "id": "db099.onboarding",
+      "status": "PASS",
+      "message": "Progression onboarding"
+    },
+    {
+      "id": "db099.diagnostic",
+      "status": "PASS",
+      "message": "Diagnostic V0.9.9"
+    },
+    {
+      "id": "db099.owl",
+      "status": "PASS",
+      "message": "Textes Hibou V0.9.9"
+    },
+    {
+      "id": "db099.isolation",
+      "status": "PASS",
+      "message": "Bac à sable sans insertion dans matches/predictions/profiles"
+    },
+    {
+      "id": "db099.superadmin",
+      "status": "PASS",
+      "message": "RPC de répétition protégés côté serveur"
+    },
+    {
+      "id": "db099.cleanup-confirm",
+      "status": "PASS",
+      "message": "Nettoyage exige NETTOYER"
+    },
+    {
+      "id": "front099.assets",
+      "status": "PASS",
+      "message": "UI pré-saison branchée"
+    },
+    {
+      "id": "front099.admin",
+      "status": "PASS",
+      "message": "Cockpit répétition générale"
+    },
+    {
+      "id": "front099.steps",
+      "status": "PASS",
+      "message": "Étapes de répétition couvertes"
+    },
+    {
+      "id": "front099.onboarding",
+      "status": "PASS",
+      "message": "Tutoriel V0.9.9 intégré et boutons correctement ciblés"
+    },
+    {
+      "id": "front099.mobile",
+      "status": "PASS",
+      "message": "Pré-saison / tutoriel responsive"
+    },
+    {
+      "id": "front099.roadcheck",
+      "status": "PASS",
+      "message": "Grand road-check V1 accessible"
+    },
+    {
+      "id": "front099.testcenter",
+      "status": "PASS",
+      "message": "Centre de tests V0.9.9 accessible"
+    },
+    {
+      "id": "sw099.assets",
+      "status": "PASS",
+      "message": "Service Worker pré-cache V0.9.9"
+    },
+    {
+      "id": "assets099.manifest",
+      "status": "PASS",
+      "message": "Manifest référence les assets V0.9.9"
+    },
+    {
+      "id": "v0910.fixture.count",
+      "status": "PASS",
+      "message": "Calendrier UEFA intégré: 144 matchs"
+    },
+    {
+      "id": "v0910.fixture.days",
+      "status": "PASS",
+      "message": "Calendrier UEFA: 8 journées × 18"
+    },
+    {
+      "id": "v0910.fixture.clubs",
+      "status": "PASS",
+      "message": "Calendrier UEFA: 36 clubs × 8 matchs"
+    },
+    {
+      "id": "v0910.fixture.unique",
+      "status": "PASS",
+      "message": "Calendrier UEFA: aucune affiche dupliquée"
+    },
+    {
+      "id": "v0910.sql.manual-lock",
+      "status": "PASS",
+      "message": "SQL protège les corrections manuelles matchs + clubs"
+    },
+    {
+      "id": "v0910.sql.seed",
+      "status": "PASS",
+      "message": "RPC de chargement du calendrier officiel"
+    },
+    {
+      "id": "v0910.sql.champion",
+      "status": "PASS",
+      "message": "Champion 1 disponible depuis le catalogue C1 avant calendrier fournisseur"
+    },
+    {
+      "id": "v0910.sql.reset",
+      "status": "PASS",
+      "message": "Reset pré-production sécurisé et traces de recette finales nettoyées"
+    },
+    {
+      "id": "v0910.sql.hotfix-sync",
+      "status": "PASS",
+      "message": "HOTFIX V0.9.10 identique au patch SQL validé"
+    },
+    {
+      "id": "v0910.sql.fresh",
+      "status": "PASS",
+      "message": "Installation fraîche contient la V0.9.10"
+    },
+    {
+      "id": "v0910.front.admin",
+      "status": "PASS",
+      "message": "UI Admin calendrier/équipes/matchs manuels"
+    },
+    {
+      "id": "v0910.front.reset",
+      "status": "PASS",
+      "message": "UI reset avant ouverture"
+    },
+    {
+      "id": "v0910.fd.partial",
+      "status": "PASS",
+      "message": "Football-Data accepte les lots partiels"
+    },
+    {
+      "id": "v0910.fd.no-delete",
+      "status": "PASS",
+      "message": "Un lot partiel Football-Data ne supprime aucun match local"
+    },
+    {
+      "id": "v0910.fd.pair",
+      "status": "PASS",
+      "message": "Rapprochement calendrier local ↔ Football-Data par affiche"
+    },
+    {
+      "id": "v0910.fd.club-lock",
+      "status": "PASS",
+      "message": "Métadonnées club manuelles protégées"
+    },
+    {
+      "id": "v0910.ui.clean",
+      "status": "PASS",
+      "message": "Numéros de version techniques retirés des surfaces visibles Centre C1 / Soirées / Musée"
+    },
+    {
+      "id": "v0910.manual-create-lock",
+      "status": "PASS",
+      "message": "Les matchs créés manuellement sont verrouillés contre l’écrasement fournisseur"
+    },
+    {
+      "id": "v0910.badges100",
+      "status": "PASS",
+      "message": "Les 100 succès intégrés sont conservés"
+    },
+    {
+      "id": "tests.matrix-count",
+      "status": "PASS",
+      "message": "Matrice: 1920 contrôles (attendu 1920)"
+    },
+    {
+      "id": "tests.matrix-unique",
+      "status": "PASS",
+      "message": "IDs de la matrice uniques"
+    },
+    {
+      "id": "tests.matrix-last",
+      "status": "PASS",
+      "message": "Dernier contrôle: T1920 (attendu T1920)"
+    },
+    {
+      "id": "tests.center-count",
+      "status": "PASS",
+      "message": "Centre web contient 1920 tests manuels"
+    },
+    {
+      "id": "tests.center-version",
+      "status": "PASS",
+      "message": "Centre de tests V0.9.10 cohérent"
+    },
+    {
+      "id": "tests.center-diagnostic",
+      "status": "PASS",
+      "message": "Centre web exécute le diagnostic V0.9.10 et les sondes historiques V0.9.9"
+    },
+    {
+      "id": "tests.center-readiness-scope",
+      "status": "PASS",
+      "message": "Test readiness résout explicitement la saison active"
+    },
+    {
+      "id": "tests.center-v095-compat",
+      "status": "PASS",
+      "message": "Diagnostic historique V0.9.5 tolère le backend courant V0.9.10 sans masquer V0.9.10"
+    },
+    {
+      "id": "tests.center-current-release",
+      "status": "PASS",
+      "message": "Centre web contrôle réellement la release courante V0.9.10"
+    },
+    {
+      "id": "tests.windows-safe",
+      "status": "PASS",
+      "message": "Runner compatible chemins Windows"
+    },
+    {
+      "id": "docs.checklist-count",
+      "status": "PASS",
+      "message": "Checklist V0.9.10 contient 40 contrôles spécifiques"
+    },
+    {
+      "id": "version.no-stale-current",
+      "status": "PASS",
+      "message": "Aucune référence technique obsolète dans les surfaces courantes V0.9.10"
+    }
+  ]
+}

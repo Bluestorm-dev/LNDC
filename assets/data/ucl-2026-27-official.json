@@ -1,0 +1,1552 @@
+{
+  "schema_version": "0.9.10",
+  "competition": "UEFA Champions League",
+  "competition_code": "CL",
+  "season": "2026/27",
+  "season_start_year": 2026,
+  "source": "UEFA.com",
+  "source_url": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures/",
+  "published_date": "2026-08-29",
+  "timezone": "Europe/Paris",
+  "expected_clubs": 36,
+  "expected_league_matches": 144,
+  "clubs": [
+    "AEK Athens",
+    "Arsenal",
+    "Aston Villa",
+    "Atlético de Madrid",
+    "Barcelona",
+    "Bayern München",
+    "Bodø/Glimt",
+    "Borussia Dortmund",
+    "Club Brugge",
+    "Como",
+    "Fenerbahçe",
+    "Feyenoord",
+    "Galatasaray",
+    "Inter",
+    "LASK",
+    "Leipzig",
+    "Lens",
+    "Lille",
+    "Liverpool",
+    "Manchester City",
+    "Manchester United",
+    "Napoli",
+    "PSV Eindhoven",
+    "Paris Saint-Germain",
+    "Porto",
+    "Real Betis",
+    "Real Madrid",
+    "Roma",
+    "Sabah",
+    "Shakhtar Donetsk",
+    "Slavia Praha",
+    "Slovan Bratislava",
+    "Sporting CP",
+    "Stuttgart",
+    "Viking",
+    "Villarreal"
+  ],
+  "fixtures": [
+    {
+      "matchday": 1,
+      "home": "AEK Athens",
+      "away": "LASK",
+      "kickoff_at": "2026-09-08T18:45:00+02:00",
+      "kickoff_local": "2026-09-08T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 1,
+      "home": "Club Brugge",
+      "away": "Aston Villa",
+      "kickoff_at": "2026-09-08T18:45:00+02:00",
+      "kickoff_local": "2026-09-08T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 1,
+      "home": "Borussia Dortmund",
+      "away": "Villarreal",
+      "kickoff_at": "2026-09-08T21:00:00+02:00",
+      "kickoff_local": "2026-09-08T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 1,
+      "home": "Porto",
+      "away": "Manchester City",
+      "kickoff_at": "2026-09-08T21:00:00+02:00",
+      "kickoff_local": "2026-09-08T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 1,
+      "home": "Lille",
+      "away": "Real Betis",
+      "kickoff_at": "2026-09-08T21:00:00+02:00",
+      "kickoff_local": "2026-09-08T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 1,
+      "home": "Real Madrid",
+      "away": "Inter",
+      "kickoff_at": "2026-09-08T21:00:00+02:00",
+      "kickoff_local": "2026-09-08T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 1,
+      "home": "Barcelona",
+      "away": "Feyenoord",
+      "kickoff_at": "2026-09-09T18:45:00+02:00",
+      "kickoff_local": "2026-09-09T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 1,
+      "home": "Stuttgart",
+      "away": "Viking",
+      "kickoff_at": "2026-09-09T18:45:00+02:00",
+      "kickoff_local": "2026-09-09T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 1,
+      "home": "Liverpool",
+      "away": "Atlético de Madrid",
+      "kickoff_at": "2026-09-09T21:00:00+02:00",
+      "kickoff_local": "2026-09-09T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 1,
+      "home": "Paris Saint-Germain",
+      "away": "Slovan Bratislava",
+      "kickoff_at": "2026-09-09T21:00:00+02:00",
+      "kickoff_local": "2026-09-09T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 1,
+      "home": "Sporting CP",
+      "away": "Galatasaray",
+      "kickoff_at": "2026-09-09T21:00:00+02:00",
+      "kickoff_local": "2026-09-09T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 1,
+      "home": "Napoli",
+      "away": "Arsenal",
+      "kickoff_at": "2026-09-09T21:00:00+02:00",
+      "kickoff_local": "2026-09-09T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 1,
+      "home": "Fenerbahçe",
+      "away": "Roma",
+      "kickoff_at": "2026-09-10T18:45:00+02:00",
+      "kickoff_local": "2026-09-10T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 1,
+      "home": "PSV Eindhoven",
+      "away": "Shakhtar Donetsk",
+      "kickoff_at": "2026-09-10T18:45:00+02:00",
+      "kickoff_local": "2026-09-10T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 1,
+      "home": "Como",
+      "away": "Leipzig",
+      "kickoff_at": "2026-09-10T21:00:00+02:00",
+      "kickoff_local": "2026-09-10T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 1,
+      "home": "Bayern München",
+      "away": "Bodø/Glimt",
+      "kickoff_at": "2026-09-10T21:00:00+02:00",
+      "kickoff_local": "2026-09-10T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 1,
+      "home": "Manchester United",
+      "away": "Sabah",
+      "kickoff_at": "2026-09-10T21:00:00+02:00",
+      "kickoff_local": "2026-09-10T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 1,
+      "home": "Slavia Praha",
+      "away": "Lens",
+      "kickoff_at": "2026-09-10T21:00:00+02:00",
+      "kickoff_local": "2026-09-10T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 2,
+      "home": "Lens",
+      "away": "Sporting CP",
+      "kickoff_at": "2026-10-13T18:45:00+02:00",
+      "kickoff_local": "2026-10-13T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 2,
+      "home": "Sabah",
+      "away": "Slavia Praha",
+      "kickoff_at": "2026-10-13T18:45:00+02:00",
+      "kickoff_local": "2026-10-13T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 2,
+      "home": "Arsenal",
+      "away": "Lille",
+      "kickoff_at": "2026-10-13T21:00:00+02:00",
+      "kickoff_local": "2026-10-13T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 2,
+      "home": "Atlético de Madrid",
+      "away": "Manchester United",
+      "kickoff_at": "2026-10-13T21:00:00+02:00",
+      "kickoff_local": "2026-10-13T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 2,
+      "home": "Inter",
+      "away": "Club Brugge",
+      "kickoff_at": "2026-10-13T21:00:00+02:00",
+      "kickoff_local": "2026-10-13T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 2,
+      "home": "Galatasaray",
+      "away": "Barcelona",
+      "kickoff_at": "2026-10-13T21:00:00+02:00",
+      "kickoff_local": "2026-10-13T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 2,
+      "home": "Leipzig",
+      "away": "PSV Eindhoven",
+      "kickoff_at": "2026-10-13T21:00:00+02:00",
+      "kickoff_local": "2026-10-13T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 2,
+      "home": "Viking",
+      "away": "Bayern München",
+      "kickoff_at": "2026-10-13T21:00:00+02:00",
+      "kickoff_local": "2026-10-13T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 2,
+      "home": "Villarreal",
+      "away": "Napoli",
+      "kickoff_at": "2026-10-13T21:00:00+02:00",
+      "kickoff_local": "2026-10-13T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 2,
+      "home": "Feyenoord",
+      "away": "Como",
+      "kickoff_at": "2026-10-14T18:45:00+02:00",
+      "kickoff_local": "2026-10-14T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 2,
+      "home": "LASK",
+      "away": "Liverpool",
+      "kickoff_at": "2026-10-14T18:45:00+02:00",
+      "kickoff_local": "2026-10-14T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 2,
+      "home": "Roma",
+      "away": "Real Madrid",
+      "kickoff_at": "2026-10-14T21:00:00+02:00",
+      "kickoff_local": "2026-10-14T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 2,
+      "home": "Aston Villa",
+      "away": "Fenerbahçe",
+      "kickoff_at": "2026-10-14T21:00:00+02:00",
+      "kickoff_local": "2026-10-14T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 2,
+      "home": "Shakhtar Donetsk",
+      "away": "AEK Athens",
+      "kickoff_at": "2026-10-14T21:00:00+02:00",
+      "kickoff_local": "2026-10-14T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 2,
+      "home": "Bodø/Glimt",
+      "away": "Borussia Dortmund",
+      "kickoff_at": "2026-10-14T21:00:00+02:00",
+      "kickoff_local": "2026-10-14T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 2,
+      "home": "Manchester City",
+      "away": "Paris Saint-Germain",
+      "kickoff_at": "2026-10-14T21:00:00+02:00",
+      "kickoff_local": "2026-10-14T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 2,
+      "home": "Real Betis",
+      "away": "Porto",
+      "kickoff_at": "2026-10-14T21:00:00+02:00",
+      "kickoff_local": "2026-10-14T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 2,
+      "home": "Slovan Bratislava",
+      "away": "Stuttgart",
+      "kickoff_at": "2026-10-14T21:00:00+02:00",
+      "kickoff_local": "2026-10-14T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 3,
+      "home": "Fenerbahçe",
+      "away": "Slavia Praha",
+      "kickoff_at": "2026-10-20T18:45:00+02:00",
+      "kickoff_local": "2026-10-20T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 3,
+      "home": "Sabah",
+      "away": "Borussia Dortmund",
+      "kickoff_at": "2026-10-20T18:45:00+02:00",
+      "kickoff_local": "2026-10-20T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 3,
+      "home": "Roma",
+      "away": "Slovan Bratislava",
+      "kickoff_at": "2026-10-20T21:00:00+02:00",
+      "kickoff_local": "2026-10-20T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 3,
+      "home": "Porto",
+      "away": "PSV Eindhoven",
+      "kickoff_at": "2026-10-20T21:00:00+02:00",
+      "kickoff_local": "2026-10-20T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 3,
+      "home": "Liverpool",
+      "away": "Villarreal",
+      "kickoff_at": "2026-10-20T21:00:00+02:00",
+      "kickoff_local": "2026-10-20T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 3,
+      "home": "Manchester City",
+      "away": "AEK Athens",
+      "kickoff_at": "2026-10-20T21:00:00+02:00",
+      "kickoff_local": "2026-10-20T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 3,
+      "home": "Paris Saint-Germain",
+      "away": "Barcelona",
+      "kickoff_at": "2026-10-20T21:00:00+02:00",
+      "kickoff_local": "2026-10-20T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 3,
+      "home": "Napoli",
+      "away": "Bodø/Glimt",
+      "kickoff_at": "2026-10-20T21:00:00+02:00",
+      "kickoff_local": "2026-10-20T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 3,
+      "home": "Stuttgart",
+      "away": "Atlético de Madrid",
+      "kickoff_at": "2026-10-20T21:00:00+02:00",
+      "kickoff_local": "2026-10-20T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 3,
+      "home": "Como",
+      "away": "Manchester United",
+      "kickoff_at": "2026-10-21T18:45:00+02:00",
+      "kickoff_local": "2026-10-21T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 3,
+      "home": "Lille",
+      "away": "Galatasaray",
+      "kickoff_at": "2026-10-21T18:45:00+02:00",
+      "kickoff_local": "2026-10-21T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 3,
+      "home": "Aston Villa",
+      "away": "Viking",
+      "kickoff_at": "2026-10-21T21:00:00+02:00",
+      "kickoff_local": "2026-10-21T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 3,
+      "home": "Club Brugge",
+      "away": "Lens",
+      "kickoff_at": "2026-10-21T21:00:00+02:00",
+      "kickoff_local": "2026-10-21T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 3,
+      "home": "Bayern München",
+      "away": "Arsenal",
+      "kickoff_at": "2026-10-21T21:00:00+02:00",
+      "kickoff_local": "2026-10-21T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 3,
+      "home": "Inter",
+      "away": "Shakhtar Donetsk",
+      "kickoff_at": "2026-10-21T21:00:00+02:00",
+      "kickoff_local": "2026-10-21T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 3,
+      "home": "Real Madrid",
+      "away": "Leipzig",
+      "kickoff_at": "2026-10-21T21:00:00+02:00",
+      "kickoff_local": "2026-10-21T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 3,
+      "home": "Real Betis",
+      "away": "Feyenoord",
+      "kickoff_at": "2026-10-21T21:00:00+02:00",
+      "kickoff_local": "2026-10-21T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 3,
+      "home": "Sporting CP",
+      "away": "LASK",
+      "kickoff_at": "2026-10-21T21:00:00+02:00",
+      "kickoff_local": "2026-10-21T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 4,
+      "home": "Shakhtar Donetsk",
+      "away": "Sporting CP",
+      "kickoff_at": "2026-11-03T18:45:00+01:00",
+      "kickoff_local": "2026-11-03T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 4,
+      "home": "Galatasaray",
+      "away": "Stuttgart",
+      "kickoff_at": "2026-11-03T18:45:00+01:00",
+      "kickoff_local": "2026-11-03T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 4,
+      "home": "Atlético de Madrid",
+      "away": "Bayern München",
+      "kickoff_at": "2026-11-03T21:00:00+01:00",
+      "kickoff_local": "2026-11-03T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 4,
+      "home": "Barcelona",
+      "away": "Aston Villa",
+      "kickoff_at": "2026-11-03T21:00:00+01:00",
+      "kickoff_local": "2026-11-03T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 4,
+      "home": "Feyenoord",
+      "away": "Inter",
+      "kickoff_at": "2026-11-03T21:00:00+01:00",
+      "kickoff_local": "2026-11-03T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 4,
+      "home": "Bodø/Glimt",
+      "away": "Lille",
+      "kickoff_at": "2026-11-03T21:00:00+01:00",
+      "kickoff_local": "2026-11-03T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 4,
+      "home": "LASK",
+      "away": "Slovan Bratislava",
+      "kickoff_at": "2026-11-03T21:00:00+01:00",
+      "kickoff_local": "2026-11-03T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 4,
+      "home": "Manchester United",
+      "away": "Roma",
+      "kickoff_at": "2026-11-03T21:00:00+01:00",
+      "kickoff_local": "2026-11-03T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 4,
+      "home": "Villarreal",
+      "away": "Paris Saint-Germain",
+      "kickoff_at": "2026-11-03T21:00:00+01:00",
+      "kickoff_local": "2026-11-03T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 4,
+      "home": "AEK Athens",
+      "away": "Real Madrid",
+      "kickoff_at": "2026-11-04T18:45:00+01:00",
+      "kickoff_local": "2026-11-04T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 4,
+      "home": "Fenerbahçe",
+      "away": "Liverpool",
+      "kickoff_at": "2026-11-04T18:45:00+01:00",
+      "kickoff_local": "2026-11-04T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 4,
+      "home": "Borussia Dortmund",
+      "away": "Real Betis",
+      "kickoff_at": "2026-11-04T21:00:00+01:00",
+      "kickoff_local": "2026-11-04T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 4,
+      "home": "Porto",
+      "away": "Napoli",
+      "kickoff_at": "2026-11-04T21:00:00+01:00",
+      "kickoff_local": "2026-11-04T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 4,
+      "home": "PSV Eindhoven",
+      "away": "Club Brugge",
+      "kickoff_at": "2026-11-04T21:00:00+01:00",
+      "kickoff_local": "2026-11-04T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 4,
+      "home": "Leipzig",
+      "away": "Manchester City",
+      "kickoff_at": "2026-11-04T21:00:00+01:00",
+      "kickoff_local": "2026-11-04T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 4,
+      "home": "Lens",
+      "away": "Como",
+      "kickoff_at": "2026-11-04T21:00:00+01:00",
+      "kickoff_local": "2026-11-04T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 4,
+      "home": "Slavia Praha",
+      "away": "Arsenal",
+      "kickoff_at": "2026-11-04T21:00:00+01:00",
+      "kickoff_local": "2026-11-04T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 4,
+      "home": "Viking",
+      "away": "Sabah",
+      "kickoff_at": "2026-11-04T21:00:00+01:00",
+      "kickoff_local": "2026-11-04T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 5,
+      "home": "Bodø/Glimt",
+      "away": "LASK",
+      "kickoff_at": "2026-11-24T18:45:00+01:00",
+      "kickoff_local": "2026-11-24T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 5,
+      "home": "Galatasaray",
+      "away": "Aston Villa",
+      "kickoff_at": "2026-11-24T18:45:00+01:00",
+      "kickoff_local": "2026-11-24T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 5,
+      "home": "Arsenal",
+      "away": "Borussia Dortmund",
+      "kickoff_at": "2026-11-24T21:00:00+01:00",
+      "kickoff_local": "2026-11-24T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 5,
+      "home": "Como",
+      "away": "AEK Athens",
+      "kickoff_at": "2026-11-24T21:00:00+01:00",
+      "kickoff_local": "2026-11-24T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 5,
+      "home": "Feyenoord",
+      "away": "Porto",
+      "kickoff_at": "2026-11-24T21:00:00+01:00",
+      "kickoff_local": "2026-11-24T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 5,
+      "home": "Manchester City",
+      "away": "Napoli",
+      "kickoff_at": "2026-11-24T21:00:00+01:00",
+      "kickoff_local": "2026-11-24T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 5,
+      "home": "Leipzig",
+      "away": "Lens",
+      "kickoff_at": "2026-11-24T21:00:00+01:00",
+      "kickoff_local": "2026-11-24T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 5,
+      "home": "Real Madrid",
+      "away": "PSV Eindhoven",
+      "kickoff_at": "2026-11-24T21:00:00+01:00",
+      "kickoff_local": "2026-11-24T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 5,
+      "home": "Slovan Bratislava",
+      "away": "Real Betis",
+      "kickoff_at": "2026-11-24T21:00:00+01:00",
+      "kickoff_local": "2026-11-24T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 5,
+      "home": "Sabah",
+      "away": "Barcelona",
+      "kickoff_at": "2026-11-25T18:45:00+01:00",
+      "kickoff_local": "2026-11-25T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 5,
+      "home": "Slavia Praha",
+      "away": "Villarreal",
+      "kickoff_at": "2026-11-25T18:45:00+01:00",
+      "kickoff_local": "2026-11-25T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 5,
+      "home": "Atlético de Madrid",
+      "away": "Viking",
+      "kickoff_at": "2026-11-25T21:00:00+01:00",
+      "kickoff_local": "2026-11-25T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 5,
+      "home": "Club Brugge",
+      "away": "Liverpool",
+      "kickoff_at": "2026-11-25T21:00:00+01:00",
+      "kickoff_local": "2026-11-25T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 5,
+      "home": "Inter",
+      "away": "Stuttgart",
+      "kickoff_at": "2026-11-25T21:00:00+01:00",
+      "kickoff_local": "2026-11-25T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 5,
+      "home": "Shakhtar Donetsk",
+      "away": "Fenerbahçe",
+      "kickoff_at": "2026-11-25T21:00:00+01:00",
+      "kickoff_local": "2026-11-25T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 5,
+      "home": "Lille",
+      "away": "Bayern München",
+      "kickoff_at": "2026-11-25T21:00:00+01:00",
+      "kickoff_local": "2026-11-25T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 5,
+      "home": "Paris Saint-Germain",
+      "away": "Roma",
+      "kickoff_at": "2026-11-25T21:00:00+01:00",
+      "kickoff_local": "2026-11-25T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 5,
+      "home": "Sporting CP",
+      "away": "Manchester United",
+      "kickoff_at": "2026-11-25T21:00:00+01:00",
+      "kickoff_local": "2026-11-25T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 6,
+      "home": "Viking",
+      "away": "Feyenoord",
+      "kickoff_at": "2026-12-08T18:45:00+01:00",
+      "kickoff_local": "2026-12-08T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 6,
+      "home": "Villarreal",
+      "away": "Sabah",
+      "kickoff_at": "2026-12-08T18:45:00+01:00",
+      "kickoff_local": "2026-12-08T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 6,
+      "home": "AEK Athens",
+      "away": "Galatasaray",
+      "kickoff_at": "2026-12-08T21:00:00+01:00",
+      "kickoff_local": "2026-12-08T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 6,
+      "home": "Roma",
+      "away": "Sporting CP",
+      "kickoff_at": "2026-12-08T21:00:00+01:00",
+      "kickoff_local": "2026-12-08T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 6,
+      "home": "Aston Villa",
+      "away": "Paris Saint-Germain",
+      "kickoff_at": "2026-12-08T21:00:00+01:00",
+      "kickoff_local": "2026-12-08T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 6,
+      "home": "Barcelona",
+      "away": "Manchester City",
+      "kickoff_at": "2026-12-08T21:00:00+01:00",
+      "kickoff_local": "2026-12-08T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 6,
+      "home": "Bayern München",
+      "away": "Slavia Praha",
+      "kickoff_at": "2026-12-08T21:00:00+01:00",
+      "kickoff_local": "2026-12-08T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 6,
+      "home": "Manchester United",
+      "away": "Leipzig",
+      "kickoff_at": "2026-12-08T21:00:00+01:00",
+      "kickoff_local": "2026-12-08T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 6,
+      "home": "Napoli",
+      "away": "Club Brugge",
+      "kickoff_at": "2026-12-08T21:00:00+01:00",
+      "kickoff_local": "2026-12-08T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 6,
+      "home": "Real Betis",
+      "away": "Como",
+      "kickoff_at": "2026-12-09T18:45:00+01:00",
+      "kickoff_local": "2026-12-09T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 6,
+      "home": "Slovan Bratislava",
+      "away": "Shakhtar Donetsk",
+      "kickoff_at": "2026-12-09T18:45:00+01:00",
+      "kickoff_local": "2026-12-09T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 6,
+      "home": "Arsenal",
+      "away": "Real Madrid",
+      "kickoff_at": "2026-12-09T21:00:00+01:00",
+      "kickoff_local": "2026-12-09T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 6,
+      "home": "Borussia Dortmund",
+      "away": "Inter",
+      "kickoff_at": "2026-12-09T21:00:00+01:00",
+      "kickoff_local": "2026-12-09T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 6,
+      "home": "LASK",
+      "away": "Fenerbahçe",
+      "kickoff_at": "2026-12-09T21:00:00+01:00",
+      "kickoff_local": "2026-12-09T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 6,
+      "home": "Liverpool",
+      "away": "Porto",
+      "kickoff_at": "2026-12-09T21:00:00+01:00",
+      "kickoff_local": "2026-12-09T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 6,
+      "home": "PSV Eindhoven",
+      "away": "Atlético de Madrid",
+      "kickoff_at": "2026-12-09T21:00:00+01:00",
+      "kickoff_local": "2026-12-09T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 6,
+      "home": "Lens",
+      "away": "Bodø/Glimt",
+      "kickoff_at": "2026-12-09T21:00:00+01:00",
+      "kickoff_local": "2026-12-09T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 6,
+      "home": "Stuttgart",
+      "away": "Lille",
+      "kickoff_at": "2026-12-09T21:00:00+01:00",
+      "kickoff_local": "2026-12-09T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 7,
+      "home": "Bodø/Glimt",
+      "away": "Atlético de Madrid",
+      "kickoff_at": "2027-01-19T18:45:00+01:00",
+      "kickoff_local": "2027-01-19T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 7,
+      "home": "Galatasaray",
+      "away": "Feyenoord",
+      "kickoff_at": "2027-01-19T18:45:00+01:00",
+      "kickoff_local": "2027-01-19T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 7,
+      "home": "AEK Athens",
+      "away": "Roma",
+      "kickoff_at": "2027-01-19T21:00:00+01:00",
+      "kickoff_local": "2027-01-19T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 7,
+      "home": "Aston Villa",
+      "away": "Borussia Dortmund",
+      "kickoff_at": "2027-01-19T21:00:00+01:00",
+      "kickoff_local": "2027-01-19T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 7,
+      "home": "Inter",
+      "away": "Liverpool",
+      "kickoff_at": "2027-01-19T21:00:00+01:00",
+      "kickoff_local": "2027-01-19T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 7,
+      "home": "Porto",
+      "away": "Slavia Praha",
+      "kickoff_at": "2027-01-19T21:00:00+01:00",
+      "kickoff_local": "2027-01-19T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 7,
+      "home": "Lille",
+      "away": "Slovan Bratislava",
+      "kickoff_at": "2027-01-19T21:00:00+01:00",
+      "kickoff_local": "2027-01-19T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 7,
+      "home": "Real Madrid",
+      "away": "LASK",
+      "kickoff_at": "2027-01-19T21:00:00+01:00",
+      "kickoff_local": "2027-01-19T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 7,
+      "home": "Stuttgart",
+      "away": "Club Brugge",
+      "kickoff_at": "2027-01-19T21:00:00+01:00",
+      "kickoff_local": "2027-01-19T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 7,
+      "home": "Fenerbahçe",
+      "away": "Villarreal",
+      "kickoff_at": "2027-01-20T18:45:00+01:00",
+      "kickoff_local": "2027-01-20T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 7,
+      "home": "Sabah",
+      "away": "Napoli",
+      "kickoff_at": "2027-01-20T18:45:00+01:00",
+      "kickoff_local": "2027-01-20T18:45:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 7,
+      "home": "Como",
+      "away": "Paris Saint-Germain",
+      "kickoff_at": "2027-01-20T21:00:00+01:00",
+      "kickoff_local": "2027-01-20T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 7,
+      "home": "Manchester United",
+      "away": "Bayern München",
+      "kickoff_at": "2027-01-20T21:00:00+01:00",
+      "kickoff_local": "2027-01-20T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 7,
+      "home": "Leipzig",
+      "away": "Shakhtar Donetsk",
+      "kickoff_at": "2027-01-20T21:00:00+01:00",
+      "kickoff_local": "2027-01-20T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 7,
+      "home": "Lens",
+      "away": "Manchester City",
+      "kickoff_at": "2027-01-20T21:00:00+01:00",
+      "kickoff_local": "2027-01-20T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 7,
+      "home": "Real Betis",
+      "away": "Arsenal",
+      "kickoff_at": "2027-01-20T21:00:00+01:00",
+      "kickoff_local": "2027-01-20T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 7,
+      "home": "Sporting CP",
+      "away": "Barcelona",
+      "kickoff_at": "2027-01-20T21:00:00+01:00",
+      "kickoff_local": "2027-01-20T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 7,
+      "home": "Viking",
+      "away": "PSV Eindhoven",
+      "kickoff_at": "2027-01-20T21:00:00+01:00",
+      "kickoff_local": "2027-01-20T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 8,
+      "home": "Arsenal",
+      "away": "Sabah",
+      "kickoff_at": "2027-01-27T21:00:00+01:00",
+      "kickoff_local": "2027-01-27T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 8,
+      "home": "Roma",
+      "away": "Lille",
+      "kickoff_at": "2027-01-27T21:00:00+01:00",
+      "kickoff_local": "2027-01-27T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 8,
+      "home": "Atlético de Madrid",
+      "away": "Fenerbahçe",
+      "kickoff_at": "2027-01-27T21:00:00+01:00",
+      "kickoff_local": "2027-01-27T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 8,
+      "home": "Borussia Dortmund",
+      "away": "AEK Athens",
+      "kickoff_at": "2027-01-27T21:00:00+01:00",
+      "kickoff_local": "2027-01-27T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 8,
+      "home": "Club Brugge",
+      "away": "Bodø/Glimt",
+      "kickoff_at": "2027-01-27T21:00:00+01:00",
+      "kickoff_local": "2027-01-27T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 8,
+      "home": "Bayern München",
+      "away": "Real Betis",
+      "kickoff_at": "2027-01-27T21:00:00+01:00",
+      "kickoff_local": "2027-01-27T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 8,
+      "home": "Barcelona",
+      "away": "Como",
+      "kickoff_at": "2027-01-27T21:00:00+01:00",
+      "kickoff_local": "2027-01-27T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 8,
+      "home": "Shakhtar Donetsk",
+      "away": "Real Madrid",
+      "kickoff_at": "2027-01-27T21:00:00+01:00",
+      "kickoff_local": "2027-01-27T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 8,
+      "home": "Feyenoord",
+      "away": "Leipzig",
+      "kickoff_at": "2027-01-27T21:00:00+01:00",
+      "kickoff_local": "2027-01-27T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 8,
+      "home": "LASK",
+      "away": "Porto",
+      "kickoff_at": "2027-01-27T21:00:00+01:00",
+      "kickoff_local": "2027-01-27T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 8,
+      "home": "Liverpool",
+      "away": "Lens",
+      "kickoff_at": "2027-01-27T21:00:00+01:00",
+      "kickoff_local": "2027-01-27T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 8,
+      "home": "Manchester City",
+      "away": "Sporting CP",
+      "kickoff_at": "2027-01-27T21:00:00+01:00",
+      "kickoff_local": "2027-01-27T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 8,
+      "home": "Paris Saint-Germain",
+      "away": "Galatasaray",
+      "kickoff_at": "2027-01-27T21:00:00+01:00",
+      "kickoff_local": "2027-01-27T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 8,
+      "home": "PSV Eindhoven",
+      "away": "Stuttgart",
+      "kickoff_at": "2027-01-27T21:00:00+01:00",
+      "kickoff_local": "2027-01-27T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 8,
+      "home": "Slavia Praha",
+      "away": "Aston Villa",
+      "kickoff_at": "2027-01-27T21:00:00+01:00",
+      "kickoff_local": "2027-01-27T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 8,
+      "home": "Napoli",
+      "away": "Viking",
+      "kickoff_at": "2027-01-27T21:00:00+01:00",
+      "kickoff_local": "2027-01-27T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 8,
+      "home": "Villarreal",
+      "away": "Manchester United",
+      "kickoff_at": "2027-01-27T21:00:00+01:00",
+      "kickoff_local": "2027-01-27T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    },
+    {
+      "matchday": 8,
+      "home": "Slovan Bratislava",
+      "away": "Inter",
+      "kickoff_at": "2027-01-27T21:00:00+01:00",
+      "kickoff_local": "2027-01-27T21:00:00",
+      "timezone": "Europe/Paris",
+      "stadium": null,
+      "source": "UEFA"
+    }
+  ],
+  "knockout_windows": [
+    {
+      "phase_code": "KNOCKOUT_PLAYOFF",
+      "label": "Barrages phase à élimination directe",
+      "leg1_dates": [
+        "2027-02-16",
+        "2027-02-17"
+      ],
+      "leg2_dates": [
+        "2027-02-23",
+        "2027-02-24"
+      ]
+    },
+    {
+      "phase_code": "ROUND_OF_16",
+      "label": "Huitièmes de finale",
+      "leg1_dates": [
+        "2027-03-09",
+        "2027-03-10"
+      ],
+      "leg2_dates": [
+        "2027-03-16",
+        "2027-03-17"
+      ]
+    },
+    {
+      "phase_code": "QUARTER_FINAL",
+      "label": "Quarts de finale",
+      "leg1_dates": [
+        "2027-04-06",
+        "2027-04-07"
+      ],
+      "leg2_dates": [
+        "2027-04-13",
+        "2027-04-14"
+      ]
+    },
+    {
+      "phase_code": "SEMI_FINAL",
+      "label": "Demi-finales",
+      "leg1_dates": [
+        "2027-04-27",
+        "2027-04-28"
+      ],
+      "leg2_dates": [
+        "2027-05-04",
+        "2027-05-05"
+      ]
+    },
+    {
+      "phase_code": "FINAL",
+      "label": "Finale",
+      "leg1_dates": [
+        "2027-06-05"
+      ],
+      "leg2_dates": [],
+      "venue": "Estadio Metropolitano, Madrid"
+    }
+  ]
+}

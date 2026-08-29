@@ -1,0 +1,49 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.9.10
+============================================
+Base de cette release : V0.9.9 avec les 100 succès intégrés.
+
+1. SAUVEGARDE
+- Sauvegarder Supabase.
+- Faire une copie du dossier du site.
+
+2. APPLIQUER LE PATCH FRONT
+À la racine du projet :
+  node tools\apply-v0.9.10.mjs
+
+3. MIGRATION SQL (AVANT L'EDGE FUNCTION)
+Dans Supabase > SQL Editor, exécuter :
+  sql/HOTFIX_V0.9.10_EXISTING_DB.sql
+
+4. REDÉPLOYER sync-football-data
+Cette version modifie volontairement la synchronisation Football-Data :
+  supabase functions deploy sync-football-data
+Le secret FOOTBALL_DATA_API_KEY existant est conservé.
+
+5. TEST LOCAL
+  node tests\run-all-v0.9.10.mjs
+Attendu : 0 FAIL.
+
+6. DÉPLOIEMENT GITHUB PAGES
+Commit/push habituel puis :
+  node tests\run-all-v0.9.10.mjs --url=https://bluestorm-dev.github.io/LNDC/
+
+7. PREMIÈRE PRÉPARATION DE LA SAISON
+Admin > Compétition :
+- « Clubs C1 + logos » doit fournir les 36 clubs.
+- « Charger les 144 matchs UEFA » installe le calendrier officiel embarqué.
+- Vérifier l'état : 144/144 et 8/8.
+- Les corrections manuelles d'équipe ou de match peuvent être verrouillées.
+- « Calendrier CL » / Football-Data devient une mise à jour progressive : un lot partiel ne supprime rien.
+
+8. AVANT OUVERTURE AUX JOUEURS
+Admin > Application > « Préparer la saison pour l'ouverture ».
+Lire la prévisualisation puis taper exactement :
+  RESET AVANT OUVERTURE
+Cette opération nettoie pronostics de recette, choix champions, badges obtenus,
+gamification, Livre d’or/archive de recette et répétitions générales, mais conserve comptes, Teams, clubs et calendrier réel.
+Elle est bloquée après le premier coup d'envoi officiel.
+
+IMPORTANT
+- Ne pas déployer l'Edge Function avant la migration SQL V0.9.10 : elle utilise les nouveaux champs de protection manuelle.
+- Aucun fallback vers 2025/26 n'est réintroduit.
+- Le catalogue des 100 succès n'est pas supprimé par le reset ; seules les attributions aux joueurs le sont.

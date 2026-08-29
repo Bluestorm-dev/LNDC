@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.9.5 — administration modulaire
+// Le Nid des Champions V0.9.10 — administration modulaire
   const ADMIN_SECTIONS = new Set(["dashboard","matches","test","competition","players","teams","gamification","communication","application"]);
 
   function currentAdminSection(){
@@ -207,13 +207,15 @@
     const box=$("#adminMatches"); if(!box)return;
     box.innerHTML=state.matches.map(m=>`<div class="admin-match-v2 ${m.status==="live"?'live-admin':''}" data-admin-match="${m.id}">
       <div class="admin-match-title">${crestHTML(m.home_club)}<strong>${esc(m.home_club.short_name)} – ${esc(m.away_club.short_name)}</strong>${crestHTML(m.away_club)}${m.is_test?'<span class="chip">TEST</span>':''}<span class="chip ${statusClass(m.status)}">${esc(statusLabel(m.status))}</span></div>
+      <div class="admin-match-source"><span class="chip">${m.schedule_source==='uefa_seed'?'UEFA':m.schedule_source==='football-data'?'Football-Data':m.schedule_source==='manual'?'Manuel':esc(m.schedule_source||m.data_source||'')}</span>${m.manual_schedule_lock?'<span class="chip">🔒 correction manuelle</span>':''}<small>${new Date(m.kickoff_at).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'})}${m.stadium?` · ${esc(m.stadium)}`:''}</small></div>
       ${[m.odds_home,m.odds_draw,m.odds_away].every(v=>v!=null)?`<div class="admin-odds">1 ${fmtOdds(m.odds_home)} · N ${fmtOdds(m.odds_draw)} · 2 ${fmtOdds(m.odds_away)} <span>${esc(m.odds_bookmaker||m.odds_provider||"")}</span></div>`:""}
       <div class="admin-score"><input data-admin-home inputmode="numeric" type="number" min="0" max="99" value="${m.home_score??0}"><span>–</span><input data-admin-away inputmode="numeric" type="number" min="0" max="99" value="${m.away_score??0}"></div>
-      <div class="admin-match-actions"><button class="btn small live-update" data-admin-action="live">${m.status==="live"?'Actualiser LIVE':'Passer LIVE'}</button><button class="btn small" data-admin-action="finish">Terminer</button><button class="btn secondary small" data-admin-action="postpone">Reporter</button><button class="btn secondary small" data-admin-action="cancel">Annuler</button><button class="btn secondary small" data-admin-action="reopen">Réouvrir</button></div>
+      <div class="admin-match-actions"><button class="btn small live-update" data-admin-action="live">${m.status==="live"?'Actualiser LIVE':'Passer LIVE'}</button><button class="btn small" data-admin-action="finish">Terminer</button><button class="btn secondary small" data-admin-action="postpone">Reporter</button><button class="btn secondary small" data-admin-action="cancel">Annuler</button><button class="btn secondary small" data-admin-action="reopen">Réouvrir</button><button class="btn secondary small" data-edit-match-v0910="${m.id}">✏️ Match</button></div>
     </div>`).join("")||'<div class="empty">Aucun match dans cette journée.</div>';
     $$('[data-admin-match]',box).forEach(row=>{
       const h=$("[data-admin-home]",row),a=$("[data-admin-away]",row); if(h&&a)bindAlternatingScorePair(h,a,()=>{});
       $$('[data-admin-action]',row).forEach(btn=>btn.onclick=()=>adminMatchAction(row,btn.dataset.adminAction));
+      const edit=$('[data-edit-match-v0910]',row);if(edit)edit.onclick=()=>openMatchScheduleEditorV0910(edit.dataset.editMatchV0910);
     });
   }
 
@@ -339,12 +341,12 @@
           ? `Actualisation des cotes 1N2 ${seasonLabel} depuis football-data.org…`
           : action === "center"
             ? `Actualisation du Centre Ligue des champions ${seasonLabel} : résultats, classement et phases…`
-            : `Import des vrais matchs de phase de ligue ${seasonLabel} (8 × 18), sans décalage de saison…`;
+            : `Mise à jour Football-Data ${seasonLabel} : les lots partiels sont acceptés sans supprimer le calendrier local…`;
     setMsg("#syncStatus", pending);
     try {
       if(demoMode){setMsg("#syncStatus",action==="odds"?"Mode démo : les cotes affichées sont fictives et servent uniquement à tester l’interface.":"Mode démo : la synchronisation distante n'est pas appelée.","ok");return;}
       const {data,error}=await sb.functions.invoke("sync-football-data",{body:{action,seasonYear:seasonStartYear(),seasonSlug:state.season.slug,competitionCode:"CL"}});
-      if(error) throw new Error("La synchronisation Centre C1 a échoué. Si Football-Data n'a pas encore publié 2026/27, réessaie plus tard ; sinon consulte les logs de sync-football-data.");
+      if(error) throw new Error("La fonction sync-football-data ne répond pas au transport. Redéploie la fonction V0.9.10 puis consulte ses logs ; la clé API n’est pas supposée en cause tant que le fournisseur n’a pas répondu.");
       if(!data?.ok) throw new Error(data?.error||"Synchronisation impossible.");
       if(action==="center"){
         const importedLabel=data.sourceSeasonLabel||seasonDisplayLabel(data.sourceSeasonYear||seasonStartYear());
@@ -360,7 +362,7 @@
         return;
       }
       const importedLabel=data.sourceSeasonLabel||seasonDisplayLabel(data.sourceSeasonYear||seasonStartYear());
-      const common=`saison réelle ${importedLabel} · ${data.clubCount||0} clubs · ${data.logoCount||0} logos · ${data.matchdayCount||0} journées · ${data.matchCount||0} matchs`;
+      const partial=Boolean(data.partialCalendar);const received=Number(data.providerReceived||0);const common=`saison réelle ${importedLabel} · ${data.clubCount||0} clubs · ${data.logoCount||0} logos · ${data.matchdayCount||0} journées · ${data.matchCount||0} matchs locaux${received?` · ${received}/144 reçus maintenant de Football-Data`:''}${partial?' · lot partiel conservé sans suppression':''}`;
       if(action==="odds" && Number(data.oddsCount||0)===0){
         setMsg("#syncStatus",`⚠️ ${common} · aucune cote 1N2 reçue. Le flux football-data.org renvoie actuellement odds=null ; l’option Odds doit être disponible sur l’abonnement pour remplir ces valeurs.`);
       } else {
@@ -383,7 +385,7 @@
       const fd = await sb.functions.invoke("sync-football-data", {
         body: { action: "odds", seasonYear: seasonStartYear(), seasonSlug: state.season.slug, competitionCode: "CL" }
       });
-      if (fd.error) throw new Error("La fonction sync-football-data ne répond pas. Vérifie son déploiement et FOOTBALL_DATA_API_KEY.");
+      if (fd.error) throw new Error("La fonction sync-football-data ne répond pas au transport. Redéploie sync-football-data V0.9.10 et consulte ses logs. Le Nid ne conclut plus automatiquement à un problème de FOOTBALL_DATA_API_KEY.");
       if (!fd.data?.ok) throw new Error(fd.data?.error || "Synchronisation Football-Data impossible.");
 
       const fdCount = Number(fd.data.oddsCount || 0);
@@ -443,10 +445,10 @@
     try {
       if(!matchday_id||!home_club_id||!away_club_id||!kickoff)throw new Error("Informations du match incomplètes.");
       if(home_club_id===away_club_id)throw new Error("Un club ne peut pas jouer contre lui-même.");
-      if(demoMode){const id=`m-${Date.now()}`;state.allMatches.push({id,season_id:state.season.id,matchday_id,kickoff_at:kickoff,status:"scheduled",data_source:"manual",home_score:null,away_score:null,stadium,home_club:state.clubs.find(c=>c.id===home_club_id),away_club:state.clubs.find(c=>c.id===away_club_id)});state.selectedMatchdayId=matchday_id;state.matches=state.allMatches.filter(m=>m.matchday_id===matchday_id);renderAll();toast("Match ajouté en démo.");return;}
+      if(demoMode){const id=`m-${Date.now()}`;state.allMatches.push({id,season_id:state.season.id,matchday_id,kickoff_at:kickoff,status:"scheduled",data_source:"manual",schedule_source:"manual",manual_schedule_lock:true,manual_schedule_updated_at:new Date().toISOString(),home_score:null,away_score:null,stadium,home_club:state.clubs.find(c=>c.id===home_club_id),away_club:state.clubs.find(c=>c.id===away_club_id)});state.selectedMatchdayId=matchday_id;state.matches=state.allMatches.filter(m=>m.matchday_id===matchday_id);renderAll();toast("Match ajouté en démo.");return;}
       const md=state.matchdays.find(x=>x.id===matchday_id);
       const phaseId=(await sb.from("competition_phases").select("id").eq("season_id",state.season.id).eq("code","LEAGUE").maybeSingle()).data?.id||null;
-      const {error}=await sb.from("matches").insert({season_id:state.season.id,phase_id:phaseId,matchday_id,home_club_id,away_club_id,kickoff_at:kickoff,stadium:stadium||null,status:"scheduled",data_source:"manual"});
+      const {error}=await sb.from("matches").insert({season_id:state.season.id,phase_id:phaseId,matchday_id,home_club_id,away_club_id,kickoff_at:kickoff,stadium:stadium||null,status:"scheduled",data_source:"manual",schedule_source:"manual",manual_schedule_lock:true,manual_schedule_updated_at:new Date().toISOString()});
       if(error)throw error;state.selectedMatchdayId=md?.id||matchday_id;await loadData();renderAll();toast("Match ajouté au calendrier.");
     }catch(err){toast(friendlyError(err),"error");}
   }

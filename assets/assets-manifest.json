@@ -1,6 +1,6 @@
 {
   "app": "Le Nid des Champions",
-  "version": "0.9.9",
+  "version": "0.9.10",
   "schema": 1,
   "branding": {
     "owl_main": "assets/branding/owl/owl-masked-main.png"
@@ -1220,5 +1220,11 @@
       "legendary",
       "secret"
     ]
+  },
+  "preprod_v0910": {
+    "css": "css/preprod0910.css",
+    "js": "js/preprod0910.js",
+    "official_fixtures": "assets/data/ucl-2026-27-official.json",
+    "test_center": "tests/test-center-v0.9.10.html"
   }
 }
