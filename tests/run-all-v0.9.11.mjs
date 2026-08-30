@@ -251,6 +251,26 @@ need("v0911r2.local-diagnostics",
   release11.includes("match(s) locaux dans la saison")&&betclicEdge.includes("localSeasonRows")&&betclicEdge.includes("manualProtected"),
   "Le diagnostic expose les matchs locaux et les cotes manuelles protégées"
 );
+need("v0911r3.sync-no-400-feed",
+  betclicEdge.includes('if(action==="probe")')&&betclicEdge.includes('mode:"search-only-batched"'),
+  "La synchro Betclic n'analyse plus le flux général de 400 matchs"
+);
+need("v0911r3.detail-batch",
+  betclicEdge.includes("DETAIL_BATCH_SIZE=6")&&betclicEdge.includes("pairsToProcess")&&betclicEdge.includes("deferred"),
+  "Les marchés Betclic sont traités par lots de 6 maximum"
+);
+need("v0911r3.search-cap",
+  betclicEdge.includes("if(searchQueries>=4)break"),
+  "La synchro limite les recherches ciblées à 4 par exécution"
+);
+need("v0911r3.upstream-cap",
+  betclicEdge.includes("while(total<220000)"),
+  "Les réponses gRPC Betclic sont plafonnées à environ 220 Ko"
+);
+need("v0911r3.http546-ui",
+  release11.includes("HTTP 546")&&release11.includes("limite de ressources")&&release11.includes("lot suivant"),
+  "L'Admin explique le 546 et la synchronisation par lots"
+);
 need("v0911.betclic-admin",release11.includes("Tester Betclic")&&release11.includes("Synchroniser Betclic")&&release11.includes("sync-betclic-odds"),"Panneau Admin Betclic branché");
 need("v0911.betclic-fallback",release11.includes("saisie manuelle")&&release11.includes("source non officielle"),"UI rappelle le fallback manuel et le caractère expérimental");
 need("v0911.feature-defaults",["feature_knockout:false","feature_ucl_center:false","feature_evenings:false","feature_teams:false","feature_gamification:false","feature_messages:false","feature_rivals:false","feature_polls:false","feature_solitary_owl:false"].every(t=>admin9511.includes(t)),"Fonctions optionnelles fermées aux joueurs par défaut");

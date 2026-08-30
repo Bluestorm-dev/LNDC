@@ -159,7 +159,7 @@ async function grpcPost(service:string,method:string,payload:Uint8Array):Promise
     const reader=response.body.getReader(),chunks:Uint8Array[]=[];
     let total=0;
     try{
-      while(total<350000){
+      while(total<220000){
         const {done,value}=await reader.read();if(done)break;
         if(value){chunks.push(value);total+=value.length;}
         const raw=concat(chunks);
@@ -406,17 +406,19 @@ Deno.serve(async(req:Request)=>{
     const {data:setting}=await admin.from("app_settings").select("value").eq("key","feature_betclic_odds").maybeSingle();
     if(setting?.value===false && profile.role!=="super_admin")return json({ok:false,code:"betclic_disabled",error:"La source Betclic expérimentale est désactivée."},403);
 
-    const allMap=new Map<number,BMatch>();let total=0;
-    for(let page=0;page<MAX_PAGES;page++){
-      const offset=page*PAGE_SIZE;
-      const result=await getBetclicMatches(offset);
-      total=Math.max(total,result.total||0);
-      result.matches.forEach(m=>{if(m.id)allMap.set(m.id,m);});
-      if(!result.matches.length)break;
-      if(total>0&&offset+PAGE_SIZE>=total)break;
-    }
-    const events=[...allMap.values()];
+    // Le flux général est lourd à décoder. On le réserve au diagnostic "Tester Betclic",
+    // qui a déjà prouvé qu'il fonctionne. La vraie synchro utilise SearchService directement.
     if(action==="probe"){
+      const allMap=new Map<number,BMatch>();let total=0;
+      for(let page=0;page<MAX_PAGES;page++){
+        const offset=page*PAGE_SIZE;
+        const result=await getBetclicMatches(offset);
+        total=Math.max(total,result.total||0);
+        result.matches.forEach(m=>{if(m.id)allMap.set(m.id,m);});
+        if(!result.matches.length)break;
+        if(total>0&&offset+PAGE_SIZE>=total)break;
+      }
+      const events=[...allMap.values()];
       const range=eventRange(events);
       return json({ok:true,provider:"betclic-unofficial",received:events.length,total,feedFrom:range.from,feedTo:range.to,warning:"Source non officielle, susceptible de changer.",sample:events.slice(0,30).map(m=>({id:m.id,name:m.name,date:m.date,competition:m.competition,teams:m.teams}))});
     }
@@ -444,18 +446,20 @@ Deno.serve(async(req:Request)=>{
     const eligible=matchdayFallback?allEligible:scopedEligible;
 
     const manualProtected=eligible.filter(m=>String(m.odds_provider||"")==="manual").length;
-    const candidates=eligible.filter(m=>String(m.odds_provider||"")!=="manual");
+    const automaticEligible=eligible.filter(m=>String(m.odds_provider||"")!=="manual");
+    const missingFirst=automaticEligible.filter(m=>String(m.odds_provider||"")!=="betclic-unofficial");
+    const alreadyBetclic=automaticEligible.filter(m=>String(m.odds_provider||"")==="betclic-unofficial");
+    const candidates=[...missingFirst,...alreadyBetclic];
+
     const pairs:Array<{local:NidMatch,event:BMatch}>=[];
     const used=new Set<number>();
     const discovered=new Map<number,BMatch>();
-    events.forEach(e=>{if(e.id)discovered.set(e.id,e);});
-    const feedRange=eventRange(events);
+    const feedRange={from:null as string|null,to:null as string|null};
+    const matchedFromFeed=0;
 
-    // 1) Flux général : rapide, mais limité aux 400 premiers matchs football.
-    pairFromPool(candidates,events,pairs,used,limit);
-    const matchedFromFeed=pairs.length;
-
-    // 2) Recherche compétition : toujours exécutée.
+    // Recherche compétition directement : pas de lecture préalable des 400 matchs.
+    // Cette voie est beaucoup moins coûteuse en CPU/mémoire pour Supabase.
+    // 1) Recherche compétition : toujours exécutée.
     // Cela nous donne un diagnostic Betclic même si le filtre local retourne 0 candidat.
     let searchQueries=0,searchReceived=0;
     const searchErrors:string[]=[];
@@ -478,7 +482,7 @@ Deno.serve(async(req:Request)=>{
     if(candidates.length && pairs.length<Math.min(limit,candidates.length)){
       const unresolved=candidates.filter(c=>!isAlreadyPaired(c.id,pairs)).slice(0,limit);
       for(const local of unresolved){
-        if(searchQueries>=20)break; // 2 compétitions + 18 clubs max
+        if(searchQueries>=4)break; // 2 recherches compétition + 2 clubs max par exécution
         const term=preferredClubSearch(local.home_club);
         const key=normalizeName(term);
         if(!term||searchedTerms.has(key))continue;
@@ -509,8 +513,14 @@ Deno.serve(async(req:Request)=>{
         away:c.away_club?.name||c.away_club?.short_name||""
       }));
 
+    // Les détails de marché sont la partie la plus coûteuse.
+    // On les traite par petits lots pour rester sous les limites Edge Functions.
+    const DETAIL_BATCH_SIZE=6;
+    const pairsToProcess=pairs.slice(0,DETAIL_BATCH_SIZE);
+    const deferred=Math.max(0,pairs.length-pairsToProcess.length);
+
     let updated=0,noMarket=0,failed=0;const details:any[]=[];
-    for(const pair of pairs){
+    for(const pair of pairsToProcess){
       try{
         const detail=await getBetclicResult(pair.event.id!);
         const odds=extract1N2(detail);
@@ -528,8 +538,8 @@ Deno.serve(async(req:Request)=>{
       }
     }
 
-    await admin.from("audit_logs").insert({actor_id:user.id,action:"betclic_odds_sync_v0911",entity_type:matchdayId?"matchday":"season",entity_id:matchdayId||season.slug,new_data:{provider:"betclic-unofficial",received:events.length,localSeasonRows:(seasonRows||[]).length,eligibleLocal:eligible.length,candidates:candidates.length,manualProtected,requestedMatchdayId:matchdayId,matchdayFallback,matched:pairs.length,matchedFromFeed,matchedFromSearch,searchQueries,searchReceived,updated,noMarket,failed,feedFrom:feedRange.from,feedTo:feedRange.to,discoveredFrom:discoveredRange.from,discoveredTo:discoveredRange.to,searchErrors:searchErrors.slice(0,4)}});
-    return json({ok:true,provider:"betclic-unofficial",received:events.length,total,localSeasonRows:(seasonRows||[]).length,eligibleLocal:eligible.length,candidates:candidates.length,manualProtected,requestedMatchdayId:matchdayId,matchdayFallback,matched:pairs.length,matchedFromFeed,matchedFromSearch,searchQueries,searchReceived,updated,noMarket,failed,feedFrom:feedRange.from,feedTo:feedRange.to,discoveredFrom:discoveredRange.from,discoveredTo:discoveredRange.to,searchErrors:searchErrors.slice(0,4),unresolvedSample,warning:"Betclic est une source non officielle ; la saisie manuelle reste le secours.",details});
+    await admin.from("audit_logs").insert({actor_id:user.id,action:"betclic_odds_sync_v0911",entity_type:matchdayId?"matchday":"season",entity_id:matchdayId||season.slug,new_data:{provider:"betclic-unofficial",mode:"search-only-batched",received:0,localSeasonRows:(seasonRows||[]).length,eligibleLocal:eligible.length,candidates:candidates.length,manualProtected,requestedMatchdayId:matchdayId,matchdayFallback,matched:pairs.length,processed:pairsToProcess.length,deferred,matchedFromFeed,matchedFromSearch,searchQueries,searchReceived,updated,noMarket,failed,feedFrom:feedRange.from,feedTo:feedRange.to,discoveredFrom:discoveredRange.from,discoveredTo:discoveredRange.to,searchErrors:searchErrors.slice(0,4)}});
+    return json({ok:true,provider:"betclic-unofficial",mode:"search-only-batched",received:0,total:0,localSeasonRows:(seasonRows||[]).length,eligibleLocal:eligible.length,candidates:candidates.length,manualProtected,requestedMatchdayId:matchdayId,matchdayFallback,matched:pairs.length,processed:pairsToProcess.length,deferred,matchedFromFeed,matchedFromSearch,searchQueries,searchReceived,updated,noMarket,failed,feedFrom:feedRange.from,feedTo:feedRange.to,discoveredFrom:discoveredRange.from,discoveredTo:discoveredRange.to,searchErrors:searchErrors.slice(0,4),unresolvedSample,warning:"Betclic est une source non officielle ; la saisie manuelle reste le secours.",details});
   }catch(err){
     console.error("sync-betclic-odds",err);
     return json({ok:false,provider:"betclic-unofficial",code:"betclic_unavailable",error:err instanceof Error?err.message:"Erreur Betclic inconnue.",warning:"La source Betclic est expérimentale. Le Nid reste fonctionnel sans elle et les cotes peuvent être saisies manuellement."},200);
