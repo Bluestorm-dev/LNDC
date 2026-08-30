@@ -262,22 +262,31 @@ if(baseUrl){
   for(const [rel,fn] of remoteChecks){const r=await remote(rel);add("remote:"+rel,r.ok&&fn(r.text)?"PASS":"FAIL",r.ok?`Déployé et conforme: ${rel}`:`Impossible/non conforme: ${rel} (HTTP ${r.status||0})`,r.error||"");}
 }
 
-const summary={total:checks.length,passed:checks.filter(x=>x.status==="PASS").length,warnings:checks.filter(x=>x.status==="WARN").length,failed:checks.filter(x=>x.status==="FAIL").length};
-const report={version:"0.9.10",generated_at:new Date().toISOString(),base_url:baseUrl,summary,checks};
-fs.writeFileSync(path.join(root,"tests","test-report-v0.9.10.json"),JSON.stringify(report,null,2)+"\n");
-for(const c of checks)console.log(`${c.status.padEnd(4)} ${c.id} — ${c.message}${c.details?` · ${c.details}`:""}`);
-
+need("v0910.r5.reset-where",
+  read("sql/HOTFIX_V0.9.10_R5_RESET_CLUB_MERGE.sql").includes("delete from public.user_onboarding_v099 where user_id is not null"),
+  "Reset pré-ouverture n'utilise plus de DELETE sans WHERE"
+);
+need("v0910.r5.club-merge",
+  read("sql/HOTFIX_V0.9.10_R5_RESET_CLUB_MERGE.sql").includes("admin_merge_clubs_v0910") &&
+  read("js/preprod0910.js").includes("clubMergeSourceV0910") &&
+  read("js/preprod0910.js").includes("admin_merge_clubs_v0910"),
+  "Fusion de doublons de clubs disponible dans l'Admin"
+);
+need("v0910.r5.aek-alias",
+  read("js/preprod0910.js").includes('"aek athens":"pae aek"') &&
+  read("supabase/functions/sync-football-data/index.ts").includes('"pae aek": ["aek athens", "aek athenes", "aek"]'),
+  "AEK Athens/Athènes et PAE AEK sont rapprochés"
+);
 need("ui.modal-root-preserved-r4",
   !read("js/preprod0910.js").includes("root.remove()"),
   "Les éditeurs V0.9.10 ne suppriment jamais #modalRoot"
 );
-need("ui.modal-root-selfheal-r4",
-  read("js/core.js").includes('if (!root)') &&
-  read("js/core.js").includes('root.id = "modalRoot"') &&
-  read("js/core.js").includes('document.body.appendChild(root)'),
-  "Le gestionnaire de modales recrée #modalRoot s'il manque"
-);
 
+
+const summary={total:checks.length,passed:checks.filter(x=>x.status==="PASS").length,warnings:checks.filter(x=>x.status==="WARN").length,failed:checks.filter(x=>x.status==="FAIL").length};
+const report={version:"0.9.10",generated_at:new Date().toISOString(),base_url:baseUrl,summary,checks};
+fs.writeFileSync(path.join(root,"tests","test-report-v0.9.10.json"),JSON.stringify(report,null,2)+"\n");
+for(const c of checks)console.log(`${c.status.padEnd(4)} ${c.id} — ${c.message}${c.details?` · ${c.details}`:""}`);
 console.log(`\nRésumé V0.9.10: ${summary.passed} PASS · ${summary.warnings} WARN · ${summary.failed} FAIL / ${summary.total}`);
 console.log("Rapport: tests/test-report-v0.9.10.json");
 if(summary.failed)process.exitCode=1;

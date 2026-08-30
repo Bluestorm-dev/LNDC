@@ -28,6 +28,9 @@
     "porto":"porto",
     "stuttgart":"stuttgart",
     "como":"como",
+    "aek athens":"pae aek",
+    "aek athenes":"pae aek",
+    "pae aek":"aek athens",
   };
 
   function scoreClubMatch(source, club){
@@ -136,7 +139,9 @@
     <div class="grid grid-2"><div class="field"><label>Pays</label><input id="clubCountryV0910" value="${esc(club?.country||'')}"></div><div class="field"><label>Stade</label><input id="clubVenueV0910" value="${esc(club?.venue||'')}"></div></div>
     <div class="field"><label>Logo (URL facultative)</label><input id="clubLogoV0910" value="${esc(club?.logo_url||'')}"></div>
     ${club?'<label class="notification-toggle"><span>Protéger ces métadonnées des mises à jour Football-Data</span><input id="clubLockV0910" type="checkbox" checked></label>':''}
-    <div class="actions"><button id="saveClubV0910" class="btn gold">Enregistrer</button></div><div id="clubEditorMsgV0910" class="form-msg"></div>`;
+    <div class="actions"><button id="saveClubV0910" class="btn gold">Enregistrer</button></div>
+    ${club?`<hr class="admin-editor-separator-v0910"><section class="club-merge-v0910"><span class="eyebrow">Doublon de club</span><h4>Fusionner avec cette fiche</h4><p class="muted">La fiche ouverte sera conservée. Matchs, données C1 et identité Football-Data du doublon seront rattachés ici. Réservé au Super Admin.</p><div class="field"><label>Doublon à absorber</label><select id="clubMergeSourceV0910"><option value="">— Choisir un doublon —</option>${editableClubsV0910().filter(c=>String(c.id)!==String(club.id)).map(c=>`<option value="${c.id}">${esc(c.name)}${c.external_provider?` · ${esc(c.external_provider)}`:''}</option>`).join('')}</select></div><button id="mergeClubV0910" class="btn danger">Fusionner le doublon</button></section>`:''}
+    <div id="clubEditorMsgV0910" class="form-msg"></div>`;
   }
 
   function openClubEditorV0910(clubId=null){
@@ -153,6 +158,20 @@
           const {error}=await sb.rpc("admin_create_club_v0910",{p_name:args.name,p_short_name:args.short,p_tla:args.tla||null,p_country:args.country||null,p_venue:args.venue||null,p_logo_url:args.logo||null,p_competition_code:"CL",p_season_year:seasonStartYear()});if(error)throw error;
         }
         root.innerHTML="";await loadData();renderAll();await refreshCalendarHealthV0910();toast(club?"Équipe modifiée.":"Équipe ajoutée.");
+      }catch(err){setMsg("#clubEditorMsgV0910",friendlyError(err),"error");}
+    };
+    if(club && $("#mergeClubV0910",root))$("#mergeClubV0910",root).onclick=async()=>{
+      try{
+        const sourceId=$("#clubMergeSourceV0910",root)?.value;
+        if(!sourceId)throw new Error("Choisis le doublon à fusionner.");
+        const source=editableClubsV0910().find(c=>String(c.id)===String(sourceId));
+        if(!source)throw new Error("Doublon introuvable ou non modifiable.");
+        if(!confirm(`Fusionner « ${source.name} » dans « ${club.name} » ?\n\nLa fiche « ${club.name} » sera conservée.`))return;
+        const {error}=await sb.rpc("admin_merge_clubs_v0910",{p_keep_id:club.id,p_remove_id:sourceId});
+        if(error)throw error;
+        root.innerHTML="";
+        await loadData(); await refreshCalendarHealthV0910(); renderAll();
+        toast(`🔗 ${source.name} fusionné dans ${club.name}.`);
       }catch(err){setMsg("#clubEditorMsgV0910",friendlyError(err),"error");}
     };
   }

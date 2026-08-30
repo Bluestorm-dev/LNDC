@@ -12,6 +12,21 @@ type FDTeam = {
   venue?: string | null;
   area?: { name?: string | null } | null;
 };
+const normalizeClubName = (value: unknown) => String(value ?? "")
+  .normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+  .replace(/\b(fc|cf|afc|sk|fk|kv|ssc|vfb|rc|club|football|calcio|pae)\b/g, " ")
+  .replace(/[^a-z0-9]+/g, " ").trim().replace(/\s+/g, " ");
+
+const FOOTBALL_DATA_NAME_ALIASES: Record<string,string[]> = {
+  "pae aek": ["aek athens", "aek athenes", "aek"],
+};
+
+const teamIdentityNames = (team: FDTeam) => {
+  const raw = [team.name, team.shortName, team.tla].filter(Boolean).map(normalizeClubName);
+  const aliases = FOOTBALL_DATA_NAME_ALIASES[normalizeClubName(team.name)] || [];
+  return new Set([...raw, ...aliases.map(normalizeClubName)].filter(Boolean));
+};
+
 
 type FDMatch = {
   id: number;
@@ -242,16 +257,22 @@ Deno.serve(async (req: Request) => {
         .eq("external_id", team.id)
         .maybeSingle();
 
-      // Un club créé manuellement peut être rattaché au fournisseur par son nom exact,
-      // mais son verrou manuel reste prioritaire sur les métadonnées Football-Data.
+      // Un club créé manuellement peut être rattaché au fournisseur par son nom,
+      // son nom court, son sigle ou un alias connu. Son verrou manuel reste prioritaire.
       if (!existing) {
-        const byManualName = await admin
+        const { data: manualCandidates, error: manualError } = await admin
           .from("clubs")
-          .select("id,logo_storage_path,manual_metadata_lock")
-          .eq("name", team.name)
+          .select("id,name,short_name,tla,logo_storage_path,manual_metadata_lock")
           .is("external_provider", null)
-          .maybeSingle();
-        existing = byManualName.data || null;
+          .eq("is_active", true);
+        if (manualError) throw manualError;
+        const providerNames = teamIdentityNames(team);
+        const matched = (manualCandidates || []).filter((club: any) => {
+          const names = [club.name, club.short_name, club.tla].map(normalizeClubName).filter(Boolean);
+          return names.some((name: string) => providerNames.has(name));
+        });
+        if (matched.length === 1) existing = matched[0];
+        if (matched.length > 1) console.warn("Plusieurs clubs manuels correspondent à", team.name, matched.map((x: any) => x.name));
       }
 
       const providerIdentity = {
