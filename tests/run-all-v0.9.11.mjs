@@ -219,6 +219,18 @@ need("v0911.betclic-edge",betclicEdge.includes("GetMatchesBySportWithNotificatio
 need("v0911.betclic-no-secret",!betclicEdge.includes("BETCLIC_API_KEY")&&!betclicEdge.includes("password"),"Aucun secret/compte Betclic requis");
 need("v0911.betclic-manual-preserved",betclicEdge.includes('String(m.odds_provider||"")!=="manual"'),"Les cotes manuelles sont protégées contre Betclic");
 need("v0911.betclic-alias-aek",betclicEdge.includes("aek athens")&&betclicEdge.includes("pae aek"),"Alias AEK présents dans le rapprochement Betclic");
+need("v0911r1.betclic-search-service",
+  betclicEdge.includes("SearchMatchesWithNotifications")&&betclicEdge.includes("searchBetclic"),
+  "Fallback SearchService Betclic présent quand les 400 premiers matchs ne suffisent pas"
+);
+need("v0911r1.betclic-targeted-search",
+  betclicEdge.includes('"Ligue des Champions"')&&betclicEdge.includes('"Champions League"')&&betclicEdge.includes("preferredClubSearch"),
+  "Recherche ciblée compétition puis clubs disponible"
+);
+need("v0911r1.betclic-diagnostics",
+  betclicEdge.includes("searchQueries")&&betclicEdge.includes("searchReceived")&&betclicEdge.includes("discoveredFrom")&&release11.includes("Plage Betclic explorée"),
+  "Diagnostic Betclic expose recherches ciblées et plage de dates"
+);
 need("v0911.betclic-admin",release11.includes("Tester Betclic")&&release11.includes("Synchroniser Betclic")&&release11.includes("sync-betclic-odds"),"Panneau Admin Betclic branché");
 need("v0911.betclic-fallback",release11.includes("saisie manuelle")&&release11.includes("source non officielle"),"UI rappelle le fallback manuel et le caractère expérimental");
 need("v0911.feature-defaults",["feature_knockout:false","feature_ucl_center:false","feature_evenings:false","feature_teams:false","feature_gamification:false","feature_messages:false","feature_rivals:false","feature_polls:false","feature_solitary_owl:false"].every(t=>admin9511.includes(t)),"Fonctions optionnelles fermées aux joueurs par défaut");

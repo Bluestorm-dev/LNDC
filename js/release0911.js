@@ -39,9 +39,10 @@
         <span><i></i>Sans secret API</span>
       </div>
       ${probe?`<details class="betclic-debug-v0911"><summary>Dernier test · ${Number(probe.received||0)} rencontre(s) reçue(s)</summary>
+        ${probe.feedFrom||probe.feedTo?`<p class="muted">Plage du flux général : ${probe.feedFrom?esc(new Date(probe.feedFrom).toLocaleString("fr-FR")):"?"} → ${probe.feedTo?esc(new Date(probe.feedTo).toLocaleString("fr-FR")):"?"}</p>`:""}
         <div class="betclic-sample-v0911">${sample.length?sample.map(m=>`<div><b>${esc(m.name||"Match")}</b><small>${esc(m.competition||"")}${m.date?` · ${esc(new Date(m.date).toLocaleString("fr-FR"))}`:""}</small></div>`).join(""):'<div class="empty">Aucun match lisible dans la réponse.</div>'}</div>
       </details>`:""}
-      ${sync?`<div class="betclic-last-sync-v0911"><b>Dernière synchro</b><span>${Number(sync.matched||0)} apparié(s) · ${Number(sync.updated||0)} cote(s) mise(s) à jour · ${Number(sync.noMarket||0)} sans marché 1N2 · ${Number(sync.failed||0)} erreur(s)</span></div>`:""}
+      ${sync?`<div class="betclic-last-sync-v0911"><b>Dernière synchro</b><span>${Number(sync.matched||0)} apparié(s) · ${Number(sync.updated||0)} cote(s) mise(s) à jour · ${Number(sync.noMarket||0)} sans marché 1N2 · ${Number(sync.failed||0)} erreur(s)</span>${Number(sync.searchQueries||0)>0?`<small>${Number(sync.searchQueries||0)} recherche(s) ciblée(s) · ${Number(sync.searchReceived||0)} résultat(s) de recherche · ${Number(sync.matchedFromSearch||0)} rapprochement(s) via recherche</small>`:""}</div>`:""}
       <div id="betclicStatusV0911" class="form-msg"></div>
       <p class="admin-test-note-v095">⚠️ Source expérimentale et non affiliée à Betclic. Elle peut changer sans préavis. Le bouton ne remplace jamais les cotes saisies manuellement.</p>`;
     const probeBtn=$("#probeBetclicBtnV0911",root),syncBtn=$("#syncBetclicOddsBtnV0911",root);
@@ -87,8 +88,13 @@
       if(Number(data.updated||0)>0){
         setMsg("#betclicStatusV0911",`✓ ${Number(data.updated||0)} match(s) mis à jour depuis Betclic sur ${Number(data.matched||0)} reconnu(s).`,"ok");
         toast(`💶 Betclic : ${Number(data.updated||0)} cote(s) 1N2 mise(s) à jour.`);
+      }else if(Number(data.matched||0)===0){
+        const range=data.discoveredFrom||data.discoveredTo
+          ?` Plage Betclic explorée : ${data.discoveredFrom?new Date(data.discoveredFrom).toLocaleDateString("fr-FR"):"?"} → ${data.discoveredTo?new Date(data.discoveredTo).toLocaleDateString("fr-FR"):"?"}.`
+          :"";
+        setMsg("#betclicStatusV0911",`⚠️ Aucun match C1 rapproché. ${Number(data.received||0)} dans le flux général + ${Number(data.searchReceived||0)} résultat(s) via ${Number(data.searchQueries||0)} recherche(s) ciblée(s).${range} Si les dates C1 ne sont pas encore proposées par Betclic, c’est normal.`);
       }else{
-        setMsg("#betclicStatusV0911",`⚠️ ${Number(data.received||0)} rencontre(s) reçue(s), ${Number(data.matched||0)} rapprochée(s), mais aucune cote 1N2 exploitable. La saisie manuelle reste disponible.`);
+        setMsg("#betclicStatusV0911",`⚠️ ${Number(data.matched||0)} match(s) C1 rapproché(s), mais aucun marché 1N2 exploitable. La saisie manuelle reste disponible.`);
       }
     }catch(err){setMsg("#betclicStatusV0911",friendlyError(err),"error");}
   }
