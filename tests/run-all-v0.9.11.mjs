@@ -271,6 +271,22 @@ need("v0911r3.http546-ui",
   release11.includes("HTTP 546")&&release11.includes("limite de ressources")&&release11.includes("lot suivant"),
   "L'Admin explique le 546 et la synchronisation par lots"
 );
+need("v0911r4.search-name-fallback",
+  betclicEdge.includes("splitEventName")&&betclicEdge.includes("eventTeamPair")&&betclicEdge.includes("SearchService peut fournir uniquement"),
+  "Le matcher sait lire Club A - Club B même sans objets teams"
+);
+need("v0911r4.provisional-date",
+  betclicEdge.includes("eventDateCompatible")&&betclicEdge.includes("allowMissing=true"),
+  "Une date absente dans SearchService n'empêche plus l'appariement provisoire"
+);
+need("v0911r4.strict-detail-validation",
+  betclicEdge.includes("detailMatchesLocalStrict")&&betclicEdge.includes('status:"detail_mismatch"'),
+  "Le détail Betclic est revalidé strictement avant toute écriture de cote"
+);
+need("v0911r4.detail-rejected-ui",
+  release11.includes("rejeté(s) après vérification")&&betclicEdge.includes("detailRejected"),
+  "L'Admin distingue appariements provisoires et rejets après détail"
+);
 need("v0911.betclic-admin",release11.includes("Tester Betclic")&&release11.includes("Synchroniser Betclic")&&release11.includes("sync-betclic-odds"),"Panneau Admin Betclic branché");
 need("v0911.betclic-fallback",release11.includes("saisie manuelle")&&release11.includes("source non officielle"),"UI rappelle le fallback manuel et le caractère expérimental");
 need("v0911.feature-defaults",["feature_knockout:false","feature_ucl_center:false","feature_evenings:false","feature_teams:false","feature_gamification:false","feature_messages:false","feature_rivals:false","feature_polls:false","feature_solitary_owl:false"].every(t=>admin9511.includes(t)),"Fonctions optionnelles fermées aux joueurs par défaut");

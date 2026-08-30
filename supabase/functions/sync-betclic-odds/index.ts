@@ -334,11 +334,42 @@ function eventTeamNames(t:BTeam|undefined):string[]{return t?[t.name,t.short||""
 function teamMatches(local:ClubRef|null,event:BTeam|undefined):boolean{
   return localTeamNames(local).some(a=>eventTeamNames(event).some(b=>namesMatch(a,b)));
 }
-function eventMatchesLocal(local:NidMatch,event:BMatch):boolean{
-  if(event.teams.length<2)return false;
-  if(!teamMatches(local.home_club,event.teams[0])||!teamMatches(local.away_club,event.teams[1]))return false;
+function splitEventName(name:string):[BTeam,BTeam]|null{
+  const raw=String(name||"").trim();
+  if(!raw)return null;
+  for(const sep of [" - "," – "," — "," vs "," VS "," v "," V "]){
+    const idx=raw.indexOf(sep);
+    if(idx>0){
+      const home=raw.slice(0,idx).trim(),away=raw.slice(idx+sep.length).trim();
+      if(home&&away)return [{name:home,short:null},{name:away,short:null}];
+    }
+  }
+  return null;
+}
+function eventTeamPair(event:BMatch):[BTeam,BTeam]|null{
+  if(event.teams.length>=2)return [event.teams[0],event.teams[1]];
+  return splitEventName(event.name);
+}
+function eventNamesMatchLocal(local:NidMatch,event:BMatch):boolean{
+  const pair=eventTeamPair(event);
+  if(!pair)return false;
+  return teamMatches(local.home_club,pair[0])&&teamMatches(local.away_club,pair[1]);
+}
+function eventDateCompatible(local:NidMatch,event:BMatch,allowMissing=true):boolean{
   const a=new Date(local.kickoff_at).getTime(),b=new Date(event.date).getTime();
-  return Number.isFinite(a)&&Number.isFinite(b)&&Math.abs(a-b)<=36*3600_000;
+  if(!Number.isFinite(a))return false;
+  if(!Number.isFinite(b))return allowMissing;
+  return Math.abs(a-b)<=36*3600_000;
+}
+function eventMatchesLocal(local:NidMatch,event:BMatch):boolean{
+  // SearchService peut fournir uniquement "Club A - Club B".
+  // On autorise donc un appariement provisoire par noms, même si la date
+  // n'est pas encore présente. Le détail complet sera revalidé avant écriture.
+  return eventNamesMatchLocal(local,event)&&eventDateCompatible(local,event,true);
+}
+function detailMatchesLocalStrict(local:NidMatch,event:BMatch):boolean{
+  if(!eventNamesMatchLocal(local,event))return false;
+  return eventDateCompatible(local,event,false);
 }
 function eventRange(events:BMatch[]):{from:string|null,to:string|null}{
   const times=events.map(e=>new Date(e.date).getTime()).filter(Number.isFinite).sort((a,b)=>a-b);
@@ -519,10 +550,22 @@ Deno.serve(async(req:Request)=>{
     const pairsToProcess=pairs.slice(0,DETAIL_BATCH_SIZE);
     const deferred=Math.max(0,pairs.length-pairsToProcess.length);
 
-    let updated=0,noMarket=0,failed=0;const details:any[]=[];
+    let updated=0,noMarket=0,failed=0,detailRejected=0;const details:any[]=[];
     for(const pair of pairsToProcess){
       try{
         const detail=await getBetclicResult(pair.event.id!);
+        if(!detailMatchesLocalStrict(pair.local,detail.match)){
+          detailRejected++;
+          details.push({
+            match_id:pair.local.id,
+            betclic_id:pair.event.id,
+            name:pair.event.name,
+            detail_name:detail.match.name,
+            detail_date:detail.match.date,
+            status:"detail_mismatch"
+          });
+          continue;
+        }
         const odds=extract1N2(detail);
         if(!odds){noMarket++;details.push({match_id:pair.local.id,betclic_id:pair.event.id,name:pair.event.name,status:"no_1n2"});continue;}
         const now=new Date().toISOString();
@@ -538,8 +581,8 @@ Deno.serve(async(req:Request)=>{
       }
     }
 
-    await admin.from("audit_logs").insert({actor_id:user.id,action:"betclic_odds_sync_v0911",entity_type:matchdayId?"matchday":"season",entity_id:matchdayId||season.slug,new_data:{provider:"betclic-unofficial",mode:"search-only-batched",received:0,localSeasonRows:(seasonRows||[]).length,eligibleLocal:eligible.length,candidates:candidates.length,manualProtected,requestedMatchdayId:matchdayId,matchdayFallback,matched:pairs.length,processed:pairsToProcess.length,deferred,matchedFromFeed,matchedFromSearch,searchQueries,searchReceived,updated,noMarket,failed,feedFrom:feedRange.from,feedTo:feedRange.to,discoveredFrom:discoveredRange.from,discoveredTo:discoveredRange.to,searchErrors:searchErrors.slice(0,4)}});
-    return json({ok:true,provider:"betclic-unofficial",mode:"search-only-batched",received:0,total:0,localSeasonRows:(seasonRows||[]).length,eligibleLocal:eligible.length,candidates:candidates.length,manualProtected,requestedMatchdayId:matchdayId,matchdayFallback,matched:pairs.length,processed:pairsToProcess.length,deferred,matchedFromFeed,matchedFromSearch,searchQueries,searchReceived,updated,noMarket,failed,feedFrom:feedRange.from,feedTo:feedRange.to,discoveredFrom:discoveredRange.from,discoveredTo:discoveredRange.to,searchErrors:searchErrors.slice(0,4),unresolvedSample,warning:"Betclic est une source non officielle ; la saisie manuelle reste le secours.",details});
+    await admin.from("audit_logs").insert({actor_id:user.id,action:"betclic_odds_sync_v0911",entity_type:matchdayId?"matchday":"season",entity_id:matchdayId||season.slug,new_data:{provider:"betclic-unofficial",mode:"search-only-batched",received:0,localSeasonRows:(seasonRows||[]).length,eligibleLocal:eligible.length,candidates:candidates.length,manualProtected,requestedMatchdayId:matchdayId,matchdayFallback,matched:pairs.length,processed:pairsToProcess.length,deferred,matchedFromFeed,matchedFromSearch,searchQueries,searchReceived,updated,noMarket,detailRejected,failed,feedFrom:feedRange.from,feedTo:feedRange.to,discoveredFrom:discoveredRange.from,discoveredTo:discoveredRange.to,searchErrors:searchErrors.slice(0,4)}});
+    return json({ok:true,provider:"betclic-unofficial",mode:"search-only-batched",received:0,total:0,localSeasonRows:(seasonRows||[]).length,eligibleLocal:eligible.length,candidates:candidates.length,manualProtected,requestedMatchdayId:matchdayId,matchdayFallback,matched:pairs.length,processed:pairsToProcess.length,deferred,matchedFromFeed,matchedFromSearch,searchQueries,searchReceived,updated,noMarket,detailRejected,failed,feedFrom:feedRange.from,feedTo:feedRange.to,discoveredFrom:discoveredRange.from,discoveredTo:discoveredRange.to,searchErrors:searchErrors.slice(0,4),unresolvedSample,warning:"Betclic est une source non officielle ; la saisie manuelle reste le secours.",details});
   }catch(err){
     console.error("sync-betclic-odds",err);
     return json({ok:false,provider:"betclic-unofficial",code:"betclic_unavailable",error:err instanceof Error?err.message:"Erreur Betclic inconnue.",warning:"La source Betclic est expérimentale. Le Nid reste fonctionnel sans elle et les cotes peuvent être saisies manuellement."},200);
