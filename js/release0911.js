@@ -63,7 +63,7 @@
         ${probe.feedFrom||probe.feedTo?`<p class="muted">Plage du flux général : ${probe.feedFrom?esc(new Date(probe.feedFrom).toLocaleString("fr-FR")):"?"} → ${probe.feedTo?esc(new Date(probe.feedTo).toLocaleString("fr-FR")):"?"}</p>`:""}
         <div class="betclic-sample-v0911">${sample.length?sample.map(m=>`<div><b>${esc(m.name||"Match")}</b><small>${esc(m.competition||"")}${m.date?` · ${esc(new Date(m.date).toLocaleString("fr-FR"))}`:""}</small></div>`).join(""):'<div class="empty">Aucun match lisible dans la réponse.</div>'}</div>
       </details>`:""}
-      ${sync?`<div class="betclic-last-sync-v0911"><b>Dernière synchro</b><span>${Number(sync.matched||0)} apparié(s) · ${Number(sync.updated||0)} cote(s) mise(s) à jour · ${Number(sync.noMarket||0)} sans marché 1N2 · ${Number(sync.failed||0)} erreur(s)</span><small>${Number(sync.localSeasonRows||0)} match(s) locaux dans la saison · ${Number(sync.eligibleLocal||0)} éligible(s) · ${Number(sync.candidates||0)} candidat(s) auto · ${Number(sync.manualProtected||0)} protégé(s) manuellement</small>${Number(sync.searchQueries||0)>0?`<small>${Number(sync.searchQueries||0)} recherche(s) ciblée(s) · ${Number(sync.searchReceived||0)} résultat(s) · ${Number(sync.matchedFromSearch||0)} rapprochement(s) provisoire(s)${Number(sync.detailRejected||0)>0?` · ${Number(sync.detailRejected||0)} rejeté(s) après vérification`:""}</small>`:""}${Number(sync.processed||0)>0?`<small>Lot traité : ${Number(sync.processed||0)} match(s)${Number(sync.deferred||0)>0?` · ${Number(sync.deferred||0)} à traiter lors d’un prochain clic`:""}</small>`:""}</div>`:""}${sync?renderBetclicDiagnosticsV0911(sync):""}
+      ${sync?`<div class="betclic-last-sync-v0911"><b>Dernière synchro</b><span>${Number(sync.matched||0)} apparié(s) · ${Number(sync.updated||0)} cote(s) mise(s) à jour · ${Number(sync.noMarket||0)} sans marché 1N2 · ${Number(sync.failed||0)} erreur(s)</span><small>${Number(sync.localSeasonRows||0)} match(s) locaux dans la saison · ${Number(sync.eligibleLocal||0)} éligible(s) · ${Number(sync.candidates||0)} candidat(s) auto · ${Number(sync.manualProtected||0)} protégé(s) manuellement</small>${Number(sync.searchQueries||0)>0?`<small>${Number(sync.searchQueries||0)} recherche(s) par club · ${Number(sync.searchReceived||0)} résultat(s) · ${Number(sync.matchedFromSearch||0)} rapprochement(s) provisoire(s)${Number(sync.detailRejected||0)>0?` · ${Number(sync.detailRejected||0)} rejeté(s) après vérification`:""}</small>`:""}${Number(sync.searchBatchSize||0)>0?`<small>Lot local : ${Number(sync.searchBatchSize||0)} match(s) examinés · curseur ${Number(sync.cursor||0)} → ${Number(sync.nextCursor||0)}${Number(sync.processed||0)>0?` · ${Number(sync.processed||0)} détail(s) traité(s)`:""}</small>`:""}</div>`:""}${sync?renderBetclicDiagnosticsV0911(sync):""}
       <div id="betclicStatusV0911" class="form-msg"></div>
       <p class="admin-test-note-v095">⚠️ Source expérimentale et non affiliée à Betclic. Elle peut changer sans préavis. Le bouton ne remplace jamais les cotes saisies manuellement.</p>`;
     const probeBtn=$("#probeBetclicBtnV0911",root),syncBtn=$("#syncBetclicOddsBtnV0911",root);
@@ -98,9 +98,9 @@
         state.release0911.betclicLastSync={matched:3,updated:3,noMarket:0,failed:0};
         renderBetclicPanelV0911(); setMsg("#betclicStatusV0911","Mode démo : 3 cotes simulées.","ok"); return;
       }
-      // Betclic est synchronisé sur toute la saison C1.
-      // La journée sélectionnée dans l'UI ne doit pas masquer les autres rencontres.
-      const body={action:"sync",seasonSlug:state.season?.slug||"ucl-2026-27",matchdayId:null,limit:50};
+      // R6 : petits lots de fixtures locales, avec curseur tournant.
+      const cursor=Number(localStorage.getItem("nidc_betclic_cursor_v0911")||0);
+      const body={action:"sync",seasonSlug:state.season?.slug||"ucl-2026-27",matchdayId:null,limit:50,cursor};
       const {data,error}=await sb.functions.invoke("sync-betclic-odds",{body});
       if(error){
         const status=Number(error?.context?.status||error?.status||0);
@@ -109,6 +109,11 @@
       }
       if(!data?.ok)throw new Error(data?.error||"Synchronisation Betclic impossible.");
       state.release0911.betclicLastSync=data;
+      if(Number(data.updated||0)>0){
+        localStorage.setItem("nidc_betclic_cursor_v0911","0");
+      }else if(Number.isFinite(Number(data.nextCursor))){
+        localStorage.setItem("nidc_betclic_cursor_v0911",String(Number(data.nextCursor)));
+      }
       await loadData();
       renderAll();
       renderBetclicPanelV0911();
@@ -121,7 +126,7 @@
           ?` Plage Betclic explorée : ${data.discoveredFrom?new Date(data.discoveredFrom).toLocaleDateString("fr-FR"):"?"} → ${data.discoveredTo?new Date(data.discoveredTo).toLocaleDateString("fr-FR"):"?"}.`
           :"";
         const localDiag=` ${Number(data.localSeasonRows||0)} match(s) locaux lus, ${Number(data.eligibleLocal||0)} éligible(s), ${Number(data.candidates||0)} candidat(s) automatique(s), ${Number(data.manualProtected||0)} protégé(s) manuellement.`;
-        const betclicDiag=` ${Number(data.searchReceived||0)} résultat(s) via ${Number(data.searchQueries||0)} recherche(s) Betclic ciblée(s).`;
+        const betclicDiag=` ${Number(data.searchReceived||0)} résultat(s) via ${Number(data.searchQueries||0)} recherche(s) Betclic par club.`;
         setMsg("#betclicStatusV0911",`⚠️ Aucun match C1 rapproché.${localDiag}${betclicDiag}${range}`);
       }else{
         setMsg("#betclicStatusV0911",`⚠️ ${Number(data.matched||0)} match(s) C1 rapproché(s), mais aucun marché 1N2 exploitable. La saisie manuelle reste disponible.`);

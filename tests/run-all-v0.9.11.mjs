@@ -224,8 +224,8 @@ need("v0911r1.betclic-search-service",
   "Fallback SearchService Betclic présent quand les 400 premiers matchs ne suffisent pas"
 );
 need("v0911r1.betclic-targeted-search",
-  betclicEdge.includes('"Ligue des Champions"')&&betclicEdge.includes('"Champions League"')&&betclicEdge.includes("preferredClubSearch"),
-  "Recherche ciblée compétition puis clubs disponible"
+  betclicEdge.includes("preferredClubSearch"),
+  "Recherche ciblée par club conservée ; la recherche compétition a été remplacée en R6"
 );
 need("v0911r1.betclic-diagnostics",
   betclicEdge.includes("searchQueries")&&betclicEdge.includes("searchReceived")&&betclicEdge.includes("discoveredFrom")&&release11.includes("Plage Betclic explorée"),
@@ -244,8 +244,8 @@ need("v0911r2.matchday-fallback",
   "Une journée vide retombe automatiquement sur la saison"
 );
 need("v0911r2.search-always",
-  betclicEdge.includes("Recherche compétition : toujours exécutée")&&betclicEdge.includes('for(const q of ["Ligue des Champions","Champions League"])'),
-  "La recherche Betclic compétition est exécutée même avec 0 candidat local"
+  betclicEdge.includes("searchBetclic")&&betclicEdge.includes("preferredClubSearch"),
+  "Le moteur de recherche Betclic reste actif ; R6 évite volontairement la requête compétition ambiguë"
 );
 need("v0911r2.local-diagnostics",
   release11.includes("match(s) locaux dans la saison")&&betclicEdge.includes("localSeasonRows")&&betclicEdge.includes("manualProtected"),
@@ -256,12 +256,12 @@ need("v0911r3.sync-no-400-feed",
   "La synchro Betclic n'analyse plus le flux général de 400 matchs"
 );
 need("v0911r3.detail-batch",
-  betclicEdge.includes("DETAIL_BATCH_SIZE=6")&&betclicEdge.includes("pairsToProcess")&&betclicEdge.includes("deferred"),
-  "Les marchés Betclic sont traités par lots de 6 maximum"
+  betclicEdge.includes("DETAIL_BATCH_SIZE=4")&&betclicEdge.includes("pairsToProcess")&&betclicEdge.includes("deferred"),
+  "Les marchés Betclic restent traités par petits lots, réduits à 4 en R6"
 );
 need("v0911r3.search-cap",
-  betclicEdge.includes("if(searchQueries>=4)break"),
-  "La synchro limite les recherches ciblées à 4 par exécution"
+  betclicEdge.includes("FIXTURE_SEARCH_BATCH=4"),
+  "La synchro limite les recherches Betclic à 4 fixtures par exécution"
 );
 need("v0911r3.upstream-cap",
   betclicEdge.includes("while(total<220000)"),
@@ -298,6 +298,26 @@ need("v0911r5diag.ui-details",
 need("v0911r5diag.no-relaxed-write",
   betclicEdge.includes("detailMatchesLocalStrict")&&betclicEdge.includes('status:"detail_mismatch"'),
   "Le diagnostic n'assouplit pas la validation avant écriture"
+);
+need("v0911r6.fixture-search",
+  betclicEdge.includes("FIXTURE_SEARCH_BATCH=4")&&betclicEdge.includes("pairFromPool([local],found,pairs,used,1)"),
+  "La recherche Betclic part directement des fixtures C1 locales"
+);
+need("v0911r6.no-generic-champions-search",
+  !betclicEdge.includes('for(const q of ["Ligue des Champions","Champions League"])'),
+  "La recherche générique Ligue des Champions, ambiguë avec le hockey, est supprimée"
+);
+need("v0911r6.cursor",
+  betclicEdge.includes("nextCursor")&&release11.includes("nidc_betclic_cursor_v0911"),
+  "Un curseur fait tourner les lots de fixtures sans cote"
+);
+need("v0911r6.club-brugge-alias",
+  betclicEdge.includes('"club brugge":["club bruges"')&&betclicEdge.includes('"club bruges":["club brugge"'),
+  "Alias Club Brugge / Club Bruges ajouté"
+);
+need("v0911r6.resource-safe",
+  betclicEdge.includes("DETAIL_BATCH_SIZE=4")&&betclicEdge.includes("FIXTURE_SEARCH_BATCH=4"),
+  "Recherche et détails limités à quatre fixtures par exécution"
 );
 need("v0911.betclic-admin",release11.includes("Tester Betclic")&&release11.includes("Synchroniser Betclic")&&release11.includes("sync-betclic-odds"),"Panneau Admin Betclic branché");
 need("v0911.betclic-fallback",release11.includes("saisie manuelle")&&release11.includes("source non officielle"),"UI rappelle le fallback manuel et le caractère expérimental");
