@@ -381,6 +381,55 @@ function preferredClubSearch(club:ClubRef|null):string{
 function isAlreadyPaired(localId:string,pairs:Array<{local:NidMatch,event:BMatch}>):boolean{
   return pairs.some(p=>p.local.id===localId);
 }
+function diagnoseSearchEvent(event:BMatch,candidates:NidMatch[]){
+  const pair=eventTeamPair(event);
+  const b=event.date?new Date(event.date).getTime():NaN;
+  let nameMatch:NidMatch|null=null;
+  let closest:NidMatch|null=null;
+  let closestHours:number|null=null;
+
+  for(const local of candidates){
+    if(eventNamesMatchLocal(local,event)){
+      nameMatch=local;
+      const a=new Date(local.kickoff_at).getTime();
+      if(Number.isFinite(a)&&Number.isFinite(b)){
+        const h=Math.abs(a-b)/3600000;
+        if(closestHours==null||h<closestHours){closestHours=h;closest=local;}
+      }else if(!closest){closest=local;}
+    }
+  }
+
+  return {
+    betclic_id:event.id,
+    name:event.name,
+    date:event.date||null,
+    competition:event.competition||null,
+    teams:(pair||event.teams||[]).map(t=>t?.name||"").filter(Boolean),
+    reason:nameMatch
+      ? (closestHours==null?"name_match_missing_date":closestHours<=36?"would_match":"date_mismatch")
+      : "team_name_mismatch",
+    closest_local:closest?{
+      id:closest.id,
+      kickoff_at:closest.kickoff_at,
+      home:closest.home_club?.name||closest.home_club?.short_name||"",
+      away:closest.away_club?.name||closest.away_club?.short_name||"",
+      hours_apart:closestHours==null?null:Math.round(closestHours*10)/10
+    }:null
+  };
+}
+
+function searchDiagnostics(events:BMatch[],candidates:NidMatch[]){
+  const rows=events.slice(0,40).map(e=>diagnoseSearchEvent(e,candidates));
+  const counts={
+    total:rows.length,
+    wouldMatch:rows.filter(r=>r.reason==="would_match").length,
+    dateMismatch:rows.filter(r=>r.reason==="date_mismatch").length,
+    missingDate:rows.filter(r=>r.reason==="name_match_missing_date").length,
+    teamMismatch:rows.filter(r=>r.reason==="team_name_mismatch").length
+  };
+  return {counts,rows};
+}
+
 function pairFromPool(
   candidates:NidMatch[],
   pool:BMatch[],
@@ -532,6 +581,7 @@ Deno.serve(async(req:Request)=>{
     }
 
     const allDiscovered=[...discovered.values()];
+    const searchDiag=searchDiagnostics(allDiscovered,candidates);
     const discoveredRange=eventRange(allDiscovered);
     const matchedFromSearch=Math.max(0,pairs.length-matchedFromFeed);
     const unresolvedSample=candidates
@@ -581,8 +631,8 @@ Deno.serve(async(req:Request)=>{
       }
     }
 
-    await admin.from("audit_logs").insert({actor_id:user.id,action:"betclic_odds_sync_v0911",entity_type:matchdayId?"matchday":"season",entity_id:matchdayId||season.slug,new_data:{provider:"betclic-unofficial",mode:"search-only-batched",received:0,localSeasonRows:(seasonRows||[]).length,eligibleLocal:eligible.length,candidates:candidates.length,manualProtected,requestedMatchdayId:matchdayId,matchdayFallback,matched:pairs.length,processed:pairsToProcess.length,deferred,matchedFromFeed,matchedFromSearch,searchQueries,searchReceived,updated,noMarket,detailRejected,failed,feedFrom:feedRange.from,feedTo:feedRange.to,discoveredFrom:discoveredRange.from,discoveredTo:discoveredRange.to,searchErrors:searchErrors.slice(0,4)}});
-    return json({ok:true,provider:"betclic-unofficial",mode:"search-only-batched",received:0,total:0,localSeasonRows:(seasonRows||[]).length,eligibleLocal:eligible.length,candidates:candidates.length,manualProtected,requestedMatchdayId:matchdayId,matchdayFallback,matched:pairs.length,processed:pairsToProcess.length,deferred,matchedFromFeed,matchedFromSearch,searchQueries,searchReceived,updated,noMarket,detailRejected,failed,feedFrom:feedRange.from,feedTo:feedRange.to,discoveredFrom:discoveredRange.from,discoveredTo:discoveredRange.to,searchErrors:searchErrors.slice(0,4),unresolvedSample,warning:"Betclic est une source non officielle ; la saisie manuelle reste le secours.",details});
+    await admin.from("audit_logs").insert({actor_id:user.id,action:"betclic_odds_sync_v0911",entity_type:matchdayId?"matchday":"season",entity_id:matchdayId||season.slug,new_data:{provider:"betclic-unofficial",mode:"search-only-batched",received:0,localSeasonRows:(seasonRows||[]).length,eligibleLocal:eligible.length,candidates:candidates.length,manualProtected,requestedMatchdayId:matchdayId,matchdayFallback,matched:pairs.length,processed:pairsToProcess.length,deferred,matchedFromFeed,matchedFromSearch,searchQueries,searchReceived,updated,noMarket,detailRejected,failed,feedFrom:feedRange.from,feedTo:feedRange.to,discoveredFrom:discoveredRange.from,discoveredTo:discoveredRange.to,searchErrors:searchErrors.slice(0,4),searchDiagnosticCounts:searchDiag.counts}});
+    return json({ok:true,provider:"betclic-unofficial",mode:"search-only-batched",received:0,total:0,localSeasonRows:(seasonRows||[]).length,eligibleLocal:eligible.length,candidates:candidates.length,manualProtected,requestedMatchdayId:matchdayId,matchdayFallback,matched:pairs.length,processed:pairsToProcess.length,deferred,matchedFromFeed,matchedFromSearch,searchQueries,searchReceived,updated,noMarket,detailRejected,failed,feedFrom:feedRange.from,feedTo:feedRange.to,discoveredFrom:discoveredRange.from,discoveredTo:discoveredRange.to,searchErrors:searchErrors.slice(0,4),searchDiagnosticCounts:searchDiag.counts,searchDiagnosticRows:searchDiag.rows,unresolvedSample,warning:"Betclic est une source non officielle ; la saisie manuelle reste le secours.",details});
   }catch(err){
     console.error("sync-betclic-odds",err);
     return json({ok:false,provider:"betclic-unofficial",code:"betclic_unavailable",error:err instanceof Error?err.message:"Erreur Betclic inconnue.",warning:"La source Betclic est expérimentale. Le Nid reste fonctionnel sans elle et les cotes peuvent être saisies manuellement."},200);

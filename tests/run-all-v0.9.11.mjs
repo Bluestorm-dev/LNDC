@@ -287,6 +287,18 @@ need("v0911r4.detail-rejected-ui",
   release11.includes("rejeté(s) après vérification")&&betclicEdge.includes("detailRejected"),
   "L'Admin distingue appariements provisoires et rejets après détail"
 );
+need("v0911r5diag.search-diagnostics",
+  betclicEdge.includes("diagnoseSearchEvent")&&betclicEdge.includes("searchDiagnosticCounts")&&betclicEdge.includes("searchDiagnosticRows"),
+  "Le backend explique pourquoi les résultats Betclic ne sont pas rapprochés"
+);
+need("v0911r5diag.ui-details",
+  release11.includes("Diagnostic des")&&release11.includes("Noms de clubs non reconnus")&&release11.includes("date différente"),
+  "L'Admin affiche le diagnostic détaillé des résultats Betclic"
+);
+need("v0911r5diag.no-relaxed-write",
+  betclicEdge.includes("detailMatchesLocalStrict")&&betclicEdge.includes('status:"detail_mismatch"'),
+  "Le diagnostic n'assouplit pas la validation avant écriture"
+);
 need("v0911.betclic-admin",release11.includes("Tester Betclic")&&release11.includes("Synchroniser Betclic")&&release11.includes("sync-betclic-odds"),"Panneau Admin Betclic branché");
 need("v0911.betclic-fallback",release11.includes("saisie manuelle")&&release11.includes("source non officielle"),"UI rappelle le fallback manuel et le caractère expérimental");
 need("v0911.feature-defaults",["feature_knockout:false","feature_ucl_center:false","feature_evenings:false","feature_teams:false","feature_gamification:false","feature_messages:false","feature_rivals:false","feature_polls:false","feature_solitary_owl:false"].every(t=>admin9511.includes(t)),"Fonctions optionnelles fermées aux joueurs par défaut");

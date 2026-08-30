@@ -14,6 +14,27 @@
     return typeof v==="boolean"?v:(v==null?fallback:Boolean(v));
   }
 
+  function renderBetclicDiagnosticsV0911(sync){
+    const d=sync?.searchDiagnosticCounts||{};
+    const rows=Array.isArray(sync?.searchDiagnosticRows)?sync.searchDiagnosticRows:[];
+    if(!rows.length)return "";
+    const reasonLabel={
+      would_match:"Noms + date compatibles",
+      date_mismatch:"Noms OK · date différente",
+      name_match_missing_date:"Noms OK · date Betclic absente",
+      team_name_mismatch:"Noms de clubs non reconnus"
+    };
+    return `<details class="betclic-debug-v0911 betclic-unmatched-v0911">
+      <summary>🔎 Diagnostic des ${rows.length} résultats Betclic</summary>
+      <p class="muted">${Number(d.wouldMatch||0)} compatibles · ${Number(d.dateMismatch||0)} date différente · ${Number(d.missingDate||0)} sans date · ${Number(d.teamMismatch||0)} noms non reconnus</p>
+      <div class="betclic-sample-v0911">${rows.map(r=>`<div>
+        <b>${esc(r.name||r.teams?.join(" - ")||"Match Betclic")}</b>
+        <small>${esc(r.competition||"")}${r.date?` · ${esc(new Date(r.date).toLocaleString("fr-FR"))}`:" · date absente"}</small>
+        <small>${esc(reasonLabel[r.reason]||r.reason||"")}${r.closest_local?` · local : ${esc(r.closest_local.home)} - ${esc(r.closest_local.away)}${r.closest_local.hours_apart!=null?` · Δ ${r.closest_local.hours_apart} h`:""}`:""}</small>
+      </div>`).join("")}</div>
+    </details>`;
+  }
+
   function renderBetclicPanelV0911(){
     const root=$("#adminBetclicPanelV0911"); if(!root)return;
     const enabled=setting0911("feature_betclic_odds",true);
@@ -42,7 +63,7 @@
         ${probe.feedFrom||probe.feedTo?`<p class="muted">Plage du flux général : ${probe.feedFrom?esc(new Date(probe.feedFrom).toLocaleString("fr-FR")):"?"} → ${probe.feedTo?esc(new Date(probe.feedTo).toLocaleString("fr-FR")):"?"}</p>`:""}
         <div class="betclic-sample-v0911">${sample.length?sample.map(m=>`<div><b>${esc(m.name||"Match")}</b><small>${esc(m.competition||"")}${m.date?` · ${esc(new Date(m.date).toLocaleString("fr-FR"))}`:""}</small></div>`).join(""):'<div class="empty">Aucun match lisible dans la réponse.</div>'}</div>
       </details>`:""}
-      ${sync?`<div class="betclic-last-sync-v0911"><b>Dernière synchro</b><span>${Number(sync.matched||0)} apparié(s) · ${Number(sync.updated||0)} cote(s) mise(s) à jour · ${Number(sync.noMarket||0)} sans marché 1N2 · ${Number(sync.failed||0)} erreur(s)</span><small>${Number(sync.localSeasonRows||0)} match(s) locaux dans la saison · ${Number(sync.eligibleLocal||0)} éligible(s) · ${Number(sync.candidates||0)} candidat(s) auto · ${Number(sync.manualProtected||0)} protégé(s) manuellement</small>${Number(sync.searchQueries||0)>0?`<small>${Number(sync.searchQueries||0)} recherche(s) ciblée(s) · ${Number(sync.searchReceived||0)} résultat(s) · ${Number(sync.matchedFromSearch||0)} rapprochement(s) provisoire(s)${Number(sync.detailRejected||0)>0?` · ${Number(sync.detailRejected||0)} rejeté(s) après vérification`:""}</small>`:""}${Number(sync.processed||0)>0?`<small>Lot traité : ${Number(sync.processed||0)} match(s)${Number(sync.deferred||0)>0?` · ${Number(sync.deferred||0)} à traiter lors d’un prochain clic`:""}</small>`:""}</div>`:""}
+      ${sync?`<div class="betclic-last-sync-v0911"><b>Dernière synchro</b><span>${Number(sync.matched||0)} apparié(s) · ${Number(sync.updated||0)} cote(s) mise(s) à jour · ${Number(sync.noMarket||0)} sans marché 1N2 · ${Number(sync.failed||0)} erreur(s)</span><small>${Number(sync.localSeasonRows||0)} match(s) locaux dans la saison · ${Number(sync.eligibleLocal||0)} éligible(s) · ${Number(sync.candidates||0)} candidat(s) auto · ${Number(sync.manualProtected||0)} protégé(s) manuellement</small>${Number(sync.searchQueries||0)>0?`<small>${Number(sync.searchQueries||0)} recherche(s) ciblée(s) · ${Number(sync.searchReceived||0)} résultat(s) · ${Number(sync.matchedFromSearch||0)} rapprochement(s) provisoire(s)${Number(sync.detailRejected||0)>0?` · ${Number(sync.detailRejected||0)} rejeté(s) après vérification`:""}</small>`:""}${Number(sync.processed||0)>0?`<small>Lot traité : ${Number(sync.processed||0)} match(s)${Number(sync.deferred||0)>0?` · ${Number(sync.deferred||0)} à traiter lors d’un prochain clic`:""}</small>`:""}</div>`:""}${sync?renderBetclicDiagnosticsV0911(sync):""}
       <div id="betclicStatusV0911" class="form-msg"></div>
       <p class="admin-test-note-v095">⚠️ Source expérimentale et non affiliée à Betclic. Elle peut changer sans préavis. Le bouton ne remplace jamais les cotes saisies manuellement.</p>`;
     const probeBtn=$("#probeBetclicBtnV0911",root),syncBtn=$("#syncBetclicOddsBtnV0911",root);
