@@ -16,6 +16,7 @@
       .on("postgres_changes",{event:"*",schema:"public",table:"team_join_requests",filter:`season_id=eq.${state.season.id}`},()=>queueRealtimeRefresh("teams"))
       .on("postgres_changes",{event:"*",schema:"public",table:"team_events",filter:`season_id=eq.${state.season.id}`},()=>queueRealtimeRefresh("teams"))
       .on("postgres_changes",{event:"*",schema:"public",table:"notifications",filter:`user_id=eq.${state.user.id}`},()=>queueRealtimeRefresh("notifications"))
+      .on("postgres_changes",{event:"*",schema:"public",table:"app_settings"},()=>queueRealtimeRefresh("settings"))
       .on("postgres_changes",{event:"*",schema:"public",table:"rival_duels",filter:`season_id=eq.${state.season.id}`},()=>queueRealtimeRefresh("rivals"))
       .on("postgres_changes",{event:"*",schema:"public",table:"player_rivals",filter:`season_id=eq.${state.season.id}`},()=>queueRealtimeRefresh("rivals"))
       .on("postgres_changes",{event:"*",schema:"public",table:"gamification_events",filter:`season_id=eq.${state.season.id}`},()=>queueRealtimeRefresh("gamification"))
@@ -89,6 +90,10 @@
           await loadTeamData();renderTeams();renderProfile();renderRanking();renderAdminTeams();
         }else if(kind==="notifications"){
           await loadNotificationData();renderNotificationBell();if(!$("#notificationDrawer")?.classList.contains("hidden"))renderNotificationCenter();
+        }else if(kind==="settings"){
+          if(typeof loadPublicAppSettingsV095==="function")await loadPublicAppSettingsV095();
+          if(typeof applyFeatureFlagsV095==="function")applyFeatureFlagsV095();
+          if(typeof renderRelease0911Admin==="function"&&["admin","super_admin"].includes(state.profile?.role||""))renderRelease0911Admin().catch(()=>{});
         }else if(kind==="rivals"){
           await loadRivalData();renderHomeRival();renderRivalView();
         }else if(kind==="gamification"){

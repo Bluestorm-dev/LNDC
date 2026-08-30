@@ -30,6 +30,7 @@
   <link rel="stylesheet" href="css/finale098.css" />
   <link rel="stylesheet" href="css/preseason099.css" />
   <link rel="stylesheet" href="css/preprod0910.css" />
+  <link rel="stylesheet" href="css/release0911.css" />
   <title>Le Nid des Champions</title>
 </head>
 <body>
@@ -321,7 +322,7 @@
             <span><img class="nid-icon nid-icon-only" src="assets/icons/runtime/search.png" alt=""></span><input id="adminGlobalSearchV095" type="search" autocomplete="off" placeholder="Trouver une option…  Ctrl+K" aria-label="Rechercher une option dans l’administration" />
             <div id="adminSearchResultsV095" class="admin-search-results-v095 hidden" role="listbox"></div>
           </div>
-          <span class="chip">V0.9.10</span>
+          <span class="chip">V0.9.11</span>
         </div>
       </div>
 
@@ -374,9 +375,10 @@
           <section class="admin-panel" data-admin-panel="test" id="adminTestPanelSection">
             <div class="admin-panel-head"><div><span class="eyebrow gold">Laboratoire Super Admin</span><h3>Tests, diagnostics & Cron</h3><p>Retrouve ici les pages de validation de chaque jalon, puis les outils de matchs TEST et de rappels.</p></div><span class="chip">SUPER ADMIN</span></div>
             <article id="adminTestCentersV095" class="card card-pad admin-test-centers-v095">
-              <div class="section-title compact"><div><span class="eyebrow gold">Validation de l’application</span><h4>Centres de tests & road-check final</h4><p>La V0.9.10 sécurise le calendrier et le pré-lancement. Commence par son Centre automatique, puis reprends le road-check guidé pour la validation manuelle avant V0.10.0.</p></div><span class="chip">ACCÈS DIRECT</span></div>
+              <div class="section-title compact"><div><span class="eyebrow gold">Validation de l’application</span><h4>Centres de tests & road-check final</h4><p>La V0.9.11 ajoute les cotes Betclic expérimentales et l’ouverture progressive des fonctions. Commence par son Centre automatique, puis reprends le road-check guidé avant V0.10.0.</p></div><span class="chip">ACCÈS DIRECT</span></div>
               <div class="admin-test-links-v095">
-                <a class="admin-test-link-v095 current" href="tests/test-center-v0.9.10.html" target="_blank" rel="noopener"><span>🛡️</span><div><strong>Tests V0.9.10</strong><small>1 920 contrôles · sécurisation pré-lancement</small></div><i>↗</i></a>
+                <a class="admin-test-link-v095 current" href="tests/test-center-v0.9.11.html" target="_blank" rel="noopener"><span>🧪</span><div><strong>Tests V0.9.11</strong><small>1 940 contrôles · Betclic + ouverture progressive</small></div><i>↗</i></a>
+                <a class="admin-test-link-v095" href="tests/test-center-v0.9.10.html" target="_blank" rel="noopener"><span>📅</span><div><strong>Tests V0.9.10</strong><small>1 920 contrôles · calendrier & pré-lancement</small></div><i>↗</i></a>
                 <a class="admin-test-link-v095" href="tests/test-center-v0.9.9.html" target="_blank" rel="noopener"><span>🔥</span><div><strong>Tests V0.9.9</strong><small>1 880 contrôles · répétition générale</small></div><i>↗</i></a>
                 <a class="admin-test-link-v095 current" href="tests/road-check-v0.9.9.html" target="_blank" rel="noopener"><span>🧭</span><div><strong>Grand road-check V1</strong><small>24 missions guidées · validation manuelle</small></div><i>↗</i></a>
                 <a class="admin-test-link-v095" href="tests/test-center-v0.9.8.html" target="_blank" rel="noopener"><span>📘</span><div><strong>Tests V0.9.8</strong><small>1 660 contrôles · fin de saison & PDF</small></div><i>↗</i></a>
@@ -384,7 +386,7 @@
                 <a class="admin-test-link-v095" href="tests/test-center-v0.9.0.html" target="_blank" rel="noopener"><span>🧭</span><div><strong>Tests V0.9.0</strong><small>1 330 contrôles · saison & carrière</small></div><i>↗</i></a>
                 <a class="admin-test-link-v095" href="tests/test-center-v0.8.1.html" target="_blank" rel="noopener"><span>🔧</span><div><strong>Tests V0.8.1</strong><small>1 185 contrôles · historique</small></div><i>↗</i></a>
               </div>
-              <p class="admin-test-note-v095">Terminal : <code>node tests\run-all-v0.9.10.mjs</code> · Le grand road-check est maintenant prêt à être exécuté.</p>
+              <p class="admin-test-note-v095">Terminal : <code>node tests\run-all-v0.9.11.mjs</code> · Le grand road-check est maintenant prêt à être exécuté.</p>
             </article>
             <article id="adminPreseasonPanelV099" class="card card-pad admin-v095-block"><div class="empty">Chargement de la répétition générale…</div></article>
             <article class="card card-pad admin-test-control">
@@ -417,6 +419,7 @@
               </div>
               <div id="clubPreview" class="club-preview"></div>
             </article>
+            <article id="adminBetclicPanelV0911" class="card card-pad admin-v0911-block"><div class="empty">Chargement de la source Betclic expérimentale…</div></article>
             <article id="adminCalendarSafetyV0910" class="card card-pad preprod-calendar-card">
               <div class="admin-sync-row"><div><span class="eyebrow gold">Calendrier sécurisé</span><h3>UEFA + manuel + Football-Data</h3><p class="muted">Le calendrier officiel intégré sert de socle. Tes corrections manuelles peuvent être verrouillées ; Football-Data complète ensuite ce qu’il publie sans supprimer les rencontres absentes de sa réponse.</p></div><div class="actions"><button id="seedOfficialCalendarBtnV0910" class="btn gold small" type="button">📅 Charger les 144 matchs UEFA</button><button id="refreshCalendarHealthBtnV0910" class="btn secondary small" type="button">↻ État du calendrier</button></div></div>
               <div id="calendarHealthV0910"><div class="empty">État du calendrier en attente.</div></div>
@@ -475,6 +478,7 @@
             <div class="admin-panel-head"><div><span class="eyebrow">Le Nid parle</span><h3>Communication</h3><p>Hibou masqué, tickets privés et Web Push regroupés dans un seul espace.</p></div><span class="chip">SUPER ADMIN</span></div>
             <div class="admin-subhead"><div><h4>Hibou masqué</h4><p>Messages globaux, Team ou individuels.</p></div></div>
             <article id="adminOwlPanel" class="card card-pad"><div class="empty">Chargement…</div></article>
+            <article id="adminMessageCleanupV0911" class="card card-pad admin-v0911-block"><div class="empty">Chargement du nettoyage des messages…</div></article>
             <div class="admin-subhead"><div><h4>Tickets au Hibou</h4><p>Conversations privées, captures et diagnostic technique.</p></div><span class="chip">PRIVÉ</span></div>
             <article id="adminSupportPanel" class="card card-pad"><div class="empty">Chargement…</div></article>
             <div class="admin-subhead"><div><h4>Notifications & Web Push</h4><p>Journal de livraison, appareils et test Push vers toi ou un joueur précis.</p></div><span class="chip">PUSH</span></div>
@@ -484,7 +488,7 @@
           <section class="admin-panel" data-admin-panel="application">
             <div class="admin-panel-head"><div><span class="eyebrow">Technique</span><h3>Application</h3><p>Réglages globaux, saisons, sauvegardes, exports et traçabilité réunis au même endroit.</p></div><span class="chip">SYSTÈME</span></div>
             <div class="grid grid-2">
-              <article class="card card-pad admin-app-state"><span class="eyebrow gold">État</span><h3>Le Nid des Champions</h3><dl><div><dt>Version front</dt><dd id="adminAppVersion">0.9.10</dd></div><div><dt>Saison</dt><dd id="adminAppSeason">—</dd></div><div><dt>Backend</dt><dd id="adminAppBackend">—</dd></div><div><dt>Mon rôle</dt><dd id="adminAppRole">—</dd></div></dl></article>
+              <article class="card card-pad admin-app-state"><span class="eyebrow gold">État</span><h3>Le Nid des Champions</h3><dl><div><dt>Version front</dt><dd id="adminAppVersion">0.9.11</dd></div><div><dt>Saison</dt><dd id="adminAppSeason">—</dd></div><div><dt>Backend</dt><dd id="adminAppBackend">—</dd></div><div><dt>Mon rôle</dt><dd id="adminAppRole">—</dd></div></dl></article>
               <article class="card card-pad"><span class="eyebrow">Maintenance</span><h3>Actualiser le Nid</h3><p class="muted">Ces actions ne modifient aucune donnée métier dans Supabase.</p><div class="admin-maintenance-actions"><button id="adminReloadDataBtn" class="btn small" type="button"><img class="nid-icon" src="assets/icons/runtime/refresh.png" alt="">Recharger les données</button><button id="adminRefreshPwaBtn" class="btn secondary small" type="button">Nettoyer le cache PWA</button></div><div id="adminMaintenanceMsg" class="form-msg"></div></article>
               <article class="card card-pad"><span class="eyebrow danger">Avant ouverture officielle</span><h3>Reset propre de la recette</h3><p class="muted">Efface pronostics de test, favoris, badges obtenus, casseroles, records et scénarios de répétition, mais conserve les comptes, les Teams, les clubs et le calendrier réel. Cette action est bloquée après le premier coup d’envoi.</p><button id="prelaunchResetBtnV0910" class="btn danger" type="button">🧹 Préparer la saison pour l’ouverture</button></article>
             </div>
@@ -543,6 +547,7 @@
   <script src="js/finale098.js"></script>
   <script src="js/preseason099.js"></script>
   <script src="js/preprod0910.js"></script>
+  <script src="js/release0911.js"></script>
   <script src="js/realtime.js"></script>
   <script src="js/app.js"></script>
 </body>

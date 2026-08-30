@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.9.10 — administration modulaire
+// Le Nid des Champions V0.9.11 — administration modulaire
   const ADMIN_SECTIONS = new Set(["dashboard","matches","test","competition","players","teams","gamification","communication","application"]);
 
   function currentAdminSection(){
@@ -346,7 +346,7 @@
     try {
       if(demoMode){setMsg("#syncStatus",action==="odds"?"Mode démo : les cotes affichées sont fictives et servent uniquement à tester l’interface.":"Mode démo : la synchronisation distante n'est pas appelée.","ok");return;}
       const {data,error}=await sb.functions.invoke("sync-football-data",{body:{action,seasonYear:seasonStartYear(),seasonSlug:state.season.slug,competitionCode:"CL"}});
-      if(error) throw new Error("La fonction sync-football-data ne répond pas au transport. Redéploie la fonction V0.9.10 puis consulte ses logs ; la clé API n’est pas supposée en cause tant que le fournisseur n’a pas répondu.");
+      if(error) throw new Error("La fonction sync-football-data ne répond pas au transport. Redéploie la fonction V0.9.11 puis consulte ses logs ; la clé API n’est pas supposée en cause tant que le fournisseur n’a pas répondu.");
       if(!data?.ok) throw new Error(data?.error||"Synchronisation impossible.");
       if(action==="center"){
         const importedLabel=data.sourceSeasonLabel||seasonDisplayLabel(data.sourceSeasonYear||seasonStartYear());
@@ -375,58 +375,53 @@
   }
 
   async function syncOdds() {
-    setMsg("#syncStatus", "Recherche des cotes 1N2 : Football-Data puis source externe si nécessaire…");
+    setMsg("#syncStatus", "Recherche des cotes 1N2 : Football-Data + Betclic expérimental + saisie manuelle en secours…");
     try {
       if (demoMode) {
         setMsg("#syncStatus", "Mode démo : les cotes affichées sont fictives et servent uniquement à tester l’interface.", "ok");
         return;
       }
 
-      const fd = await sb.functions.invoke("sync-football-data", {
-        body: { action: "odds", seasonYear: seasonStartYear(), seasonSlug: state.season.slug, competitionCode: "CL" }
-      });
-      if (fd.error) {
-        setMsg("#syncStatus", "⚠️ sync-football-data n’a pas répondu correctement. Consulte les logs de l’Edge Function. Le calendrier local reste intact et les cotes peuvent être saisies manuellement depuis une journée.");
-        return;
-      }
-      if (!fd.data?.ok) {
-        setMsg("#syncStatus", `⚠️ ${fd.data?.error || "Synchronisation Football-Data impossible."} Les cotes manuelles restent disponibles : ouvre une journée puis un match.`);
-        return;
-      }
+      const sourceBits=[];
+      let fdCount=0,betclic=null,external=null;
 
-      const fdCount = Number(fd.data.oddsCount || 0);
-      let external = null;
-      let externalUnavailable = false;
+      try{
+        const fd=await sb.functions.invoke("sync-football-data",{
+          body:{action:"odds",seasonYear:seasonStartYear(),seasonSlug:state.season.slug,competitionCode:"CL"}
+        });
+        if(!fd.error&&fd.data?.ok){fdCount=Number(fd.data.oddsCount||0);sourceBits.push(`Football-Data : ${fdCount}`);}
+        else sourceBits.push("Football-Data : indisponible");
+      }catch(_){sourceBits.push("Football-Data : indisponible");}
 
-      // Complément optionnel pour les rencontres réelles à venir de la saison sélectionnée.
-      if (CFG.ODDS_EXTERNAL_ENABLED === true) {
-        try {
-          const ext = await sb.functions.invoke("sync-odds", {
-            body: { seasonSlug: state.season.slug, matchdayId: state.selectedMatchdayId || null }
-          });
-          if (!ext.error && ext.data?.ok) external = ext.data;
-          else externalUnavailable = true;
-        } catch (_) {
-          externalUnavailable = true;
-        }
+      const betclicEnabled=state.profile?.role==="super_admin" || (typeof featureEnabledV095==="function"?featureEnabledV095("feature_betclic_odds",true):true);
+      if(betclicEnabled){
+        try{
+          const b=await sb.functions.invoke("sync-betclic-odds",{body:{action:"sync",seasonSlug:state.season.slug,matchdayId:state.selectedMatchdayId||null,limit:24}});
+          if(!b.error&&b.data?.ok){
+            betclic=b.data;
+            sourceBits.push(`Betclic : ${Number(b.data.updated||0)} mise(s) à jour / ${Number(b.data.matched||0)} reconnue(s)`);
+            if(state.release0911)state.release0911.betclicLastSync=b.data;
+          }else sourceBits.push("Betclic : indisponible");
+        }catch(_){sourceBits.push("Betclic : indisponible");}
+      }else sourceBits.push("Betclic : désactivé");
+
+      // Ancienne source Odds-API.io laissée disponible uniquement si elle a été explicitement configurée.
+      if(CFG.ODDS_EXTERNAL_ENABLED===true){
+        try{
+          const ext=await sb.functions.invoke("sync-odds",{body:{seasonSlug:state.season.slug,matchdayId:state.selectedMatchdayId||null}});
+          if(!ext.error&&ext.data?.ok){external=ext.data;sourceBits.push(`Odds-API.io : ${Number(ext.data.updated||0)} mise(s) à jour`);}
+          else sourceBits.push("Odds-API.io : indisponible");
+        }catch(_){sourceBits.push("Odds-API.io : indisponible");}
       }
 
       await loadData();
       renderAll();
-
-      const extUpdated = Number(external?.updated || 0);
-      const extMatched = Number(external?.matched || 0);
-      const totalNow = state.allMatches.filter(m => [m.odds_home,m.odds_draw,m.odds_away].every(v => v != null)).length;
-      const sourceBits = [`Football-Data : ${fdCount}`];
-      if (external) sourceBits.push(`source externe : ${extUpdated} mise(s) à jour sur ${extMatched} match(s) reconnu(s)`);
-      else if (externalUnavailable) sourceBits.push("source externe activée mais indisponible");
-      else if (CFG.ODDS_EXTERNAL_ENABLED !== true) sourceBits.push("source externe désactivée");
-
-      if (totalNow > 0) {
-        setMsg("#syncStatus", `✓ ${totalNow} match(s) avec cotes 1N2 · ${sourceBits.join(" · ")}`, "ok");
+      const totalNow=state.allMatches.filter(m=>[m.odds_home,m.odds_draw,m.odds_away].every(v=>v!=null)).length;
+      if(totalNow>0){
+        setMsg("#syncStatus",`✓ ${totalNow} match(s) avec cotes 1N2 · ${sourceBits.join(" · ")}`,"ok");
         toast(`${totalNow} match(s) avec cotes 1N2.`);
-      } else {
-        setMsg("#syncStatus", `⚠️ Aucune cote reçue · ${sourceBits.join(" · ")}. Football-Data nécessite l’accès Odds ; la source externe nécessite ODDS_API_KEY. Le Nid n’invente aucune cote.`);
+      }else{
+        setMsg("#syncStatus",`⚠️ Aucune cote reçue · ${sourceBits.join(" · ")}. Ouvre une journée puis un match pour saisir les cotes manuellement.`);
         toast("Aucune cote 1N2 disponible pour ces rencontres.");
       }
     } catch (err) {

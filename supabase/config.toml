@@ -11,6 +11,11 @@ verify_jwt = true
 [functions.sync-odds]
 verify_jwt = true
 
+# V0.9.11 — cotes Betclic expérimentales, sans secret externe.
+[functions.sync-betclic-odds]
+verify_jwt = true
+
+
 # V0.6.0 — Web Push : auth utilisateur gérée dans la fonction ; le Cron utilise x-cron-secret.
 [functions.push-dispatch]
 verify_jwt = false

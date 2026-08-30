@@ -213,6 +213,11 @@
   function setView(name) {
     // V0.4.1 : le choix champion vit désormais dans Profil.
     if(name === "champions") name = "profile";
+    // V0.9.11 : une fonction verrouillée par le Super Admin disparaît aussi des accès directs.
+    if(typeof window.featureViewAllowedV0911==="function" && !window.featureViewAllowedV0911(name)){
+      toast("🔒 Cette fonction n’est pas encore ouverte aux joueurs.");
+      name="home";
+    }
     const titles={home:"Accueil",matches:"Pronostics",knockout:"Phases finales",ranking:"Classements",season:"Saison",ucl:"Ligue des champions",evenings:"Soirées européennes",teams:"Teams",museum:"Musée",profile:"Profil & champions",rival:"Rivalités",admin:"Administration"};
     $$(".view").forEach(v => v.classList.toggle("hidden", v.id !== `view-${name}`));
     $$('[data-view]').forEach(b => b.classList.toggle("active", b.dataset.view === name));

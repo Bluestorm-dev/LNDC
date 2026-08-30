@@ -1,10 +1,12 @@
 "use strict";
 
-// Le Nid des Champions V0.9.10 — cockpit Admin + sécurisation pré-lancement
+// Le Nid des Champions V0.9.11 — cockpit Admin + sécurisation pré-lancement
 (function(){
   const defaults={
-    registration_open:true,maintenance:false,feature_rivals:true,feature_polls:true,feature_api:true,
-    feature_solitary_owl:true,feature_gamification:true,feature_teams:true
+    registration_open:true,maintenance:false,feature_api:true,feature_betclic_odds:true,
+    feature_knockout:false,feature_ucl_center:false,feature_evenings:false,
+    feature_teams:false,feature_gamification:false,feature_messages:false,
+    feature_rivals:false,feature_polls:false,feature_solitary_owl:false
   };
   state.appSettings=state.appSettings||{...defaults};
   state.admin095=state.admin095||{loaded:false,loading:false,dashboard:null,backups:[],audit:[],auditTotal:0,auditPage:0,deletions:[],preview:null};
@@ -43,7 +45,7 @@
     ["Nettoyer le cache PWA","service worker cache actualiser","application","#adminRefreshPwaBtn","↻"],
     ["Tests techniques","diagnostic test cron calendrier","test","#adminTestPanelSection","🧪"],
     ["Répétition générale V1","pré saison rehearsal faux matchs charge onboarding tutoriel nettoyage","test","#adminPreseasonPanelV099","🔥"],
-    ["Centres de tests","tests page validation 0.8.1 0.9.0 0.9.5 0.9.8 0.9.9 0.9.10 road check matrice","test","#adminTestCentersV095","✅"]
+    ["Centres de tests","tests page validation 0.8.1 0.9.0 0.9.5 0.9.8 0.9.9 0.9.10 0.9.11 road check matrice","test","#adminTestCentersV095","✅"]
   ].map((x,i)=>({id:`cmd-${i+1}`,label:x[0],keywords:x[1],section:x[2],selector:x[3],icon:x[4]}));
 
   function boolSetting(key,fallback=true){const v=state.appSettings?.[key];return typeof v==="boolean"?v:(v==null?fallback:Boolean(v));}
@@ -63,21 +65,86 @@
   }
   window.registrationOpenV095=registrationOpenV095;
 
+  const VIEW_FEATURE_MAP_V0911={
+    knockout:"feature_knockout",
+    ucl:"feature_ucl_center",
+    evenings:"feature_evenings",
+    teams:"feature_teams",
+    museum:"feature_gamification",
+    rival:"feature_rivals"
+  };
+  function featureVisibleToCurrentUserV0911(key,fallback=false){
+    if(state.profile?.role==="super_admin")return true;
+    return boolSetting(key,fallback);
+  }
+  window.featureViewAllowedV0911=(view)=>{
+    const key=VIEW_FEATURE_MAP_V0911[String(view||"")];
+    return !key||featureVisibleToCurrentUserV0911(key,false);
+  };
   function applyFeatureFlagsV095(){
-    const teams=boolSetting("feature_teams"),gamification=boolSetting("feature_gamification"),rivals=boolSetting("feature_rivals"),polls=boolSetting("feature_polls"),solitary=boolSetting("feature_solitary_owl");
-    $$('[data-view="teams"]').forEach(x=>x.classList.toggle("feature-hidden-v095",!teams));
-    $$('[data-view="museum"]').forEach(x=>x.classList.toggle("feature-hidden-v095",!gamification));
-    const museumView=$("#view-museum");if(museumView)museumView.dataset.featureEnabled=String(gamification);
-    const teamsView=$("#view-teams");if(teamsView)teamsView.dataset.featureEnabled=String(teams);
-    const rivalHome=$("#homeRivalCard");if(rivalHome&&!rivals)rivalHome.classList.add("feature-hidden-v095");
-    const rivalView=$("#view-rival");if(rivalView)rivalView.dataset.featureEnabled=String(rivals);
+    const superAdmin=state.profile?.role==="super_admin";
+    const teams=featureVisibleToCurrentUserV0911("feature_teams",false);
+    const gamification=featureVisibleToCurrentUserV0911("feature_gamification",false);
+    const rivals=featureVisibleToCurrentUserV0911("feature_rivals",false);
+    const polls=featureVisibleToCurrentUserV0911("feature_polls",false);
+    const solitary=featureVisibleToCurrentUserV0911("feature_solitary_owl",false);
+    const knockout=featureVisibleToCurrentUserV0911("feature_knockout",false);
+    const ucl=featureVisibleToCurrentUserV0911("feature_ucl_center",false);
+    const evenings=featureVisibleToCurrentUserV0911("feature_evenings",false);
+    const messages=featureVisibleToCurrentUserV0911("feature_messages",false);
+
+    const setViewVisibility=(view,visible)=>{
+      $$(`[data-view="${view}"]`).forEach(x=>x.classList.toggle("feature-hidden-v095",!visible));
+      const root=$(`#view-${view}`);
+      if(root){root.dataset.featureEnabled=String(visible);root.classList.toggle("feature-locked-v0911",!visible&&!superAdmin);}
+    };
+    setViewVisibility("knockout",knockout);
+    setViewVisibility("ucl",ucl);
+    setViewVisibility("evenings",evenings);
+    setViewVisibility("teams",teams);
+    setViewVisibility("museum",gamification);
+    setViewVisibility("rival",rivals);
+
+    const rivalHome=$("#homeRivalCard");if(rivalHome)rivalHome.classList.toggle("feature-hidden-v095",!rivals);
+    const museumHome=$("#homeMuseumCard");if(museumHome)museumHome.classList.toggle("feature-hidden-v095",!gamification);
+    const narrativeHome=$("#homeNarrativeCard");if(narrativeHome)narrativeHome.classList.toggle("feature-hidden-v095",!gamification);
+    const eveningHome=$("#homeEveningCard");if(eveningHome)eveningHome.classList.toggle("feature-hidden-v095",!evenings);
+
     const pollTab=$('[data-memory-tab="polls"]');if(pollTab)pollTab.classList.toggle("feature-hidden-v095",!polls);
     if(!polls&&state.seasonMemoryTab==="polls"){state.seasonMemoryTab="overview";if(typeof renderSeasonMemory==="function")renderSeasonMemory();}
     const solitaryTab=$('[data-evening-tab="solitary"]');if(solitaryTab)solitaryTab.classList.toggle("feature-hidden-v095",!solitary);
     if(!solitary&&state.eveningTab==="solitary"){state.eveningTab="summary";if(typeof renderEveningHub==="function")renderEveningHub();}
-    const api=boolSetting("feature_api");["#syncClubsBtn","#syncClubCatalogBtn","#syncCalendarBtn","#syncUclCenterBtn","#syncOddsBtn"].forEach(sel=>{const el=$(sel);if(el){el.disabled=!api;el.title=api?"":"API désactivée dans les Feature flags";}});
-    const pollAdmin=$("#adminGeneralPollPanel");if(pollAdmin)pollAdmin.classList.toggle("feature-hidden-v095",!polls);
-    const gamiNav=$("#adminGamificationNav");if(gamiNav&&state.profile?.role==="super_admin")gamiNav.classList.toggle("feature-soft-disabled-v095",!gamification);
+
+    const bell=$("#notificationBell");if(bell)bell.classList.toggle("feature-hidden-v095",!messages);
+    const owlCard=$(".home-owl-card");if(owlCard)owlCard.classList.toggle("feature-hidden-v095",!messages);
+    const pushPrompt=$("#homePushPrompt");if(pushPrompt)pushPrompt.classList.toggle("feature-hidden-v095",!messages);
+    const notifPrefs=$("#notificationPreferencesPanel");if(notifPrefs)notifPrefs.classList.toggle("feature-hidden-v095",!messages);
+
+    const api=boolSetting("feature_api",true);
+    ["#syncClubsBtn","#syncClubCatalogBtn","#syncCalendarBtn","#syncUclCenterBtn","#syncOddsBtn","#syncBetclicOddsBtnV0911","#probeBetclicBtnV0911"].forEach(sel=>{
+      const el=$(sel);if(el){el.disabled=!api;el.title=api?"":"API désactivée dans les Feature flags";}
+    });
+    const betclic=boolSetting("feature_betclic_odds",true);
+    ["#syncBetclicOddsBtnV0911","#probeBetclicBtnV0911"].forEach(sel=>{
+      const el=$(sel);if(el&&!superAdmin){el.disabled=!betclic;el.title=betclic?"":"Source Betclic expérimentale désactivée";}
+    });
+
+    const pollAdmin=$("#adminGeneralPollPanel");if(pollAdmin)pollAdmin.classList.toggle("feature-hidden-v095",!polls&&!superAdmin);
+    const gamiNav=$("#adminGamificationNav");if(gamiNav&&state.profile?.role==="super_admin")gamiNav.classList.remove("feature-soft-disabled-v095");
+
+    if(superAdmin){
+      const statusPairs=[
+        ["knockout","feature_knockout"],["ucl","feature_ucl_center"],["evenings","feature_evenings"],
+        ["teams","feature_teams"],["museum","feature_gamification"]
+      ];
+      statusPairs.forEach(([view,key])=>{
+        $$(`[data-view="${view}"]`).forEach(el=>{
+          let chip=el.querySelector(".feature-lock-chip-v0911");
+          if(!chip){chip=document.createElement("small");chip.className="feature-lock-chip-v0911";el.appendChild(chip);}
+          const open=boolSetting(key,false);chip.textContent=open?"OUVERT":"VERROUILLÉ";chip.classList.toggle("open",open);
+        });
+      });
+    }
   }
   window.applyFeatureFlagsV095=applyFeatureFlagsV095;
 
@@ -147,7 +214,7 @@
   function renderAdminHealthV095(){
     const root=$("#adminHealthV095");if(!root)return;const d=state.admin095.dashboard||{};const maintenance=boolSetting("maintenance",false),api=boolSetting("feature_api",true),online=navigator.onLine;
     const issues=[];if(Number(d.players_pending||0))issues.push({icon:"🚪",n:d.players_pending,label:"inscription(s) à traiter",cmd:"cmd-10"});if(Number(d.avatars_pending||0))issues.push({icon:"🖼",n:d.avatars_pending,label:"avatar(s) à modérer",cmd:"cmd-11"});if(Number(d.tickets_open||0))issues.push({icon:"🎫",n:d.tickets_open,label:"ticket(s) ouvert(s)",cmd:"cmd-19"});if(Number(d.push_failed_24h||0))issues.push({icon:"⚠",n:d.push_failed_24h,label:"push en échec sur 24 h",cmd:"cmd-20"});if(Number(d.deletion_requests||0))issues.push({icon:"🗑",n:d.deletion_requests,label:"suppression(s) demandée(s)",cmd:"cmd-14"});
-    root.innerHTML=`<div class="admin-health-strip-v095"><span class="${online?'ok':'bad'}"><i></i>${online?'Réseau OK':'Hors ligne'}</span><span class="${maintenance?'warn':'ok'}"><i></i>${maintenance?'Maintenance active':'Application ouverte'}</span><span class="${api?'ok':'warn'}"><i></i>${api?'API autorisée':'API désactivée'}</span><span><i></i>${esc(state.season?.name||'Saison')}</span></div><div class="admin-action-center-v095"><div class="section-title compact"><div><span class="eyebrow gold">À traiter</span><h3>${issues.length?`${issues.length} point${issues.length>1?'s':''} à surveiller`:'Rien d’urgent'}</h3><p>${issues.length?'Le Nid te remonte uniquement ce qui réclame une action.':'Pas besoin de fouiller tous les menus : tout est calme.'}</p></div><span class="chip">V0.9.10</span></div><div class="admin-action-list-v095">${issues.length?issues.map(x=>`<button type="button" data-admin-health-command="${x.cmd}"><span>${x.icon}</span><b>${Number(x.n||0)}</b><em>${esc(x.label)}</em><i>›</i></button>`).join(''):'<div class="admin-all-clear-v095">✓ Aucun signal critique dans les données chargées.</div>'}</div></div>`;
+    root.innerHTML=`<div class="admin-health-strip-v095"><span class="${online?'ok':'bad'}"><i></i>${online?'Réseau OK':'Hors ligne'}</span><span class="${maintenance?'warn':'ok'}"><i></i>${maintenance?'Maintenance active':'Application ouverte'}</span><span class="${api?'ok':'warn'}"><i></i>${api?'API autorisée':'API désactivée'}</span><span><i></i>${esc(state.season?.name||'Saison')}</span></div><div class="admin-action-center-v095"><div class="section-title compact"><div><span class="eyebrow gold">À traiter</span><h3>${issues.length?`${issues.length} point${issues.length>1?'s':''} à surveiller`:'Rien d’urgent'}</h3><p>${issues.length?'Le Nid te remonte uniquement ce qui réclame une action.':'Pas besoin de fouiller tous les menus : tout est calme.'}</p></div><span class="chip">V0.9.11</span></div><div class="admin-action-list-v095">${issues.length?issues.map(x=>`<button type="button" data-admin-health-command="${x.cmd}"><span>${x.icon}</span><b>${Number(x.n||0)}</b><em>${esc(x.label)}</em><i>›</i></button>`).join(''):'<div class="admin-all-clear-v095">✓ Aucun signal critique dans les données chargées.</div>'}</div></div>`;
     $$('[data-admin-health-command]',root).forEach(b=>b.onclick=()=>runAdminCommandV095(b.dataset.adminHealthCommand));
   }
 
@@ -156,10 +223,31 @@
   function settingRow(key,title,desc,superOnly=true){const checked=boolSetting(key,defaults[key]);const disabled=superOnly&&state.profile?.role!=="super_admin";return `<label class="admin-setting-row-v095"><span><strong>${esc(title)}</strong><small>${esc(desc)}</small></span><input type="checkbox" data-admin-setting-v095="${esc(key)}" ${checked?'checked':''} ${disabled?'disabled':''}></label>`;}
   function renderAdminSettingsV095(){
     const root=$("#adminSettingsPanelV095");if(!root)return;
-    root.innerHTML=`<div class="section-title compact"><div><span class="eyebrow gold">Réglages globaux</span><h3>Ouverture & fonctionnalités</h3><p>Les réglages les plus sensibles sont réunis ici et chaque changement est journalisé.</p></div><span class="chip">SUPER ADMIN</span></div><div class="admin-settings-grid-v095"><section><h4>Accès</h4>${settingRow("maintenance","Mode maintenance","Bloque temporairement l’application pour les joueurs. Le Super Admin garde l’accès.")}${settingRow("registration_open","Inscriptions ouvertes","Autorise la création de nouvelles demandes de compte.")}</section><section><h4>Feature flags</h4>${settingRow("feature_api","Synchronisations API","Autorise les boutons Football-Data et cotes.")}${settingRow("feature_teams","Teams","Affiche les espaces Teams aux joueurs.")}${settingRow("feature_gamification","Musée & gamification","Affiche Musée, badges et gamification.")}${settingRow("feature_polls","Sondages","Affiche et autorise les sondages généraux.")}${settingRow("feature_rivals","Rivalités","Active les zones de rivalité.")}${settingRow("feature_solitary_owl","Hibou solitaire","Active le classement parallèle des soirées.")}</section></div><div id="adminSettingsMsgV095" class="form-msg"></div>`;
+    root.innerHTML=`<div class="section-title compact"><div><span class="eyebrow gold">Réglages globaux</span><h3>Ouverture progressive du Nid</h3><p>Le Super Admin voit toujours les fonctions pour les tester. Quand un interrupteur est coupé, les joueurs ne voient ni l’onglet ni l’accès direct correspondant.</p></div><span class="chip">SUPER ADMIN</span></div>
+      <div class="admin-settings-grid-v095">
+        <section><h4>Accès général</h4>
+          ${settingRow("maintenance","Mode maintenance","Bloque temporairement toute l’application pour les joueurs.")}
+          ${settingRow("registration_open","Inscriptions ouvertes","Autorise les nouvelles demandes de compte.")}
+          ${settingRow("feature_api","Synchronisations API","Autorise Football-Data et les sources de cotes côté administration.")}
+          ${settingRow("feature_betclic_odds","Betclic expérimental","Autorise la source Betclic non officielle pour les cotes 1N2.")}
+        </section>
+        <section><h4>Fonctions visibles aux joueurs</h4>
+          ${settingRow("feature_knockout","Phases finales","Affiche l’onglet Phases finales.")}
+          ${settingRow("feature_ucl_center","Centre Ligue des champions","Affiche le Centre C1 et ses données.")}
+          ${settingRow("feature_evenings","Soirées européennes","Affiche les soirées, archives et cartes associées.")}
+          ${settingRow("feature_teams","Teams","Affiche les espaces Teams.")}
+          ${settingRow("feature_gamification","Musée & gamification","Affiche Musée, badges, records et éléments associés.")}
+          ${settingRow("feature_messages","Messages & notifications","Affiche cloche, messages du Hibou et activation Push.")}
+          ${settingRow("feature_rivals","Rivalités","Affiche les zones de rivalité.")}
+          ${settingRow("feature_polls","Sondages","Affiche et autorise les sondages généraux.")}
+          ${settingRow("feature_solitary_owl","Hibou solitaire","Affiche le classement parallèle des soirées.")}
+        </section>
+      </div>
+      <div class="feature-gate-note-v0911">🔒 <b>Mode pré-lancement :</b> les fonctions optionnelles sont fermées aux joueurs par défaut. Ton compte Super Admin les conserve visibles avec un indicateur OUVERT / VERROUILLÉ.</div>
+      <div id="adminSettingsMsgV095" class="form-msg"></div>`;
     $$('[data-admin-setting-v095]',root).forEach(input=>input.onchange=()=>saveSettingV095(input.dataset.adminSettingV095,input.checked,input));
   }
-  async function saveSettingV095(key,value,input){if(state.profile?.role!=="super_admin")return;const risky=key==="maintenance"&&value;if(risky&&!confirm("Activer le mode maintenance ? Les joueurs seront bloqués jusqu’à sa désactivation.")){input.checked=false;return;}setMsg("#adminSettingsMsgV095","Enregistrement…");try{if(demoMode){state.appSettings[key]=value;}else{const {error}=await sb.rpc("admin_set_app_setting_v095",{p_key:key,p_value:value,p_reason:"Modification depuis le cockpit V0.9.5"});if(error)throw error;state.appSettings[key]=value;}applyFeatureFlagsV095();renderAdminHealthV095();setMsg("#adminSettingsMsgV095","Réglage enregistré.","ok");toast("Réglage mis à jour.");}catch(err){input.checked=!value;setMsg("#adminSettingsMsgV095",friendlyError(err),"error");}}
+  async function saveSettingV095(key,value,input){if(state.profile?.role!=="super_admin")return;const risky=key==="maintenance"&&value;if(risky&&!confirm("Activer le mode maintenance ? Les joueurs seront bloqués jusqu’à sa désactivation.")){input.checked=false;return;}setMsg("#adminSettingsMsgV095","Enregistrement…");try{if(demoMode){state.appSettings[key]=value;}else{const {error}=await sb.rpc("admin_set_app_setting_v095",{p_key:key,p_value:value,p_reason:"Modification depuis le cockpit V0.9.11"});if(error)throw error;state.appSettings[key]=value;}applyFeatureFlagsV095();renderAdminHealthV095();setMsg("#adminSettingsMsgV095","Réglage enregistré.","ok");toast("Réglage mis à jour.");}catch(err){input.checked=!value;setMsg("#adminSettingsMsgV095",friendlyError(err),"error");}}
 
   function renderAdminBackupsV095(){
     const root=$("#adminBackupPanelV095");if(!root)return;if(state.profile?.role!=="super_admin"){root.innerHTML='<div class="empty">Sauvegardes réservées au Super Admin.</div>';return;}

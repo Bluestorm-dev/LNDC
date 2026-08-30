@@ -1,0 +1,47 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.9.11
+================================================
+
+OBJECTIF
+- Tester une source Betclic non officielle pour les cotes 1N2.
+- Permettre au Super Admin d'ouvrir les fonctions du site progressivement.
+- Ajouter un nettoyage global de la communication de test.
+- Conserver les correctifs V0.9.10 : calendrier hybride, cotes manuelles,
+  reset sûr, fusion des doublons de clubs et modales.
+
+MISE À JOUR D'UNE V0.9.10 R5
+1. Fais une sauvegarde Supabase et du dossier LNDC.
+2. Copie les fichiers V0.9.11.
+3. Supabase > SQL Editor :
+   sql/HOTFIX_V0.9.11_EXISTING_DB.sql
+4. Contrôle en fin de SQL :
+   - app_version = 0.9.11
+   - admin_merge_clubs_v0910(uuid,uuid) existe
+   - admin_purge_messages_v0911(text) existe
+5. Déploie la nouvelle Function :
+   supabase functions deploy sync-betclic-odds
+6. Lance :
+   node tests\run-all-v0.9.11.mjs
+7. Déploie GitHub Pages puis lance :
+   node tests\run-all-v0.9.11.mjs --url=https://bluestorm-dev.github.io/LNDC/
+8. Fais Ctrl+F5 ou relance la PWA.
+
+AUCUN SECRET BETCLIC
+La source testée lit le flux public utilisé par le site Betclic. Aucun compte
+Betclic et aucune clé Betclic ne sont enregistrés.
+
+OUVERTURE PROGRESSIVE
+Admin > Application > Réglages globaux :
+le Super Admin peut ouvrir/fermer Phases finales, Centre C1, Soirées européennes,
+Teams, Musée, Messages, Rivalités, Sondages et Hibou solitaire.
+Le Super Admin continue à voir les fonctions fermées pour pouvoir les tester.
+
+NETTOYAGE DES MESSAGES
+Admin > Communication > Vider toute la communication de test.
+Confirmation exacte :
+SUPPRIMER TOUS LES MESSAGES
+
+BETCLIC
+Admin > Compétition > Betclic — source non officielle.
+Commence par « Tester Betclic » (lecture seule), puis seulement
+« Synchroniser Betclic ».
+Les cotes odds_provider=manual ne sont jamais remplacées.

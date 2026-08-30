@@ -97,3 +97,11 @@ V0.9.0 — Palmarès historique
 - Cette distinction est unique, persistante entre les saisons et visible dans le profil/carrière.
 
 - R2 Admin : accès direct depuis Laboratoire aux centres de tests V0.8.1, V0.9.0 et V0.9.5 ; recherche Admin enrichie.
+
+
+## V0.9.11
+
+- Cotes 1N2 Betclic expérimentales via une Edge Function séparée.
+- Ouverture progressive des fonctions par le Super Admin.
+- Nettoyage global de la communication de test.
+- Correctifs cumulés reset / fusion clubs / modales.

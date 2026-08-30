@@ -1,0 +1,34 @@
+LE NID DES CHAMPIONS — V0.9.11
+================================
+
+NOUVEAUTÉS
+• Source expérimentale Betclic pour les cotes 1N2.
+• Edge Function dédiée sync-betclic-odds, séparée de Football-Data.
+• Bouton de test non destructif avant synchronisation.
+• Conservation prioritaire des cotes saisies manuellement.
+• Rapprochement clubs avec alias, dont AEK Athens / AEK Athènes / PAE AEK.
+
+OUVERTURE PROGRESSIVE
+• Le Super Admin peut masquer aux joueurs les fonctions optionnelles.
+• Phases finales, Centre C1, Soirées européennes, Teams, Musée/gamification,
+  Messages/notifications, Rivalités, Sondages et Hibou solitaire.
+• Le Super Admin conserve un bypass pour tester les fonctions fermées.
+• Les accès directs aux vues verrouillées sont bloqués.
+• Les changements app_settings sont propagés par Realtime.
+
+COMMUNICATION
+• Compteur des données de communication.
+• Bouton Super Admin « Supprimer tous les messages » avec confirmation forte.
+• Suppression des messages Hibou, notifications, logs Push, support et Livre d'or.
+• Comptes, préférences et push subscriptions conservés.
+
+CORRECTIFS CUMULATIFS
+• Reset pré-ouverture : DELETE explicite avec WHERE.
+• RPC fusion de clubs recréée dans le patch.
+• Correctif des modales R4 conservé.
+• 100 succès conservés.
+
+IMPORTANT
+Betclic est une source non officielle et peut cesser de fonctionner si son
+backend change. Le Nid reste fonctionnel : Football-Data et la saisie manuelle
+restent disponibles.

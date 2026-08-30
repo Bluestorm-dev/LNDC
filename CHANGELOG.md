@@ -1,3 +1,10 @@
+## V0.9.11
+
+- Betclic expérimental pour les cotes 1N2.
+- Feature gates Super Admin avec bypass de test.
+- Purge globale des messages/notifications de recette.
+- Correctifs cumulés V0.9.10 R4/R5.
+
 # V0.9.10 — Sécurisation pré-production
 
 - Calendrier hybride UEFA + manuel + Football-Data partiel.

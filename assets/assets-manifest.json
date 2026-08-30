@@ -1,6 +1,6 @@
 {
   "app": "Le Nid des Champions",
-  "version": "0.9.10",
+  "version": "0.9.11",
   "schema": 1,
   "branding": {
     "owl_main": "assets/branding/owl/owl-masked-main.png"
