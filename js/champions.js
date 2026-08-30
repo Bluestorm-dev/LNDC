@@ -13,8 +13,24 @@
   }
 
 
-  function championLockText(open,closeAt){
+  function leagueMatchesForChampion(){
+    const league=typeof phaseByCode==="function"?phaseByCode("LEAGUE"):null;
+    return (state.allMatches||[]).filter(m=>!m.is_test&&m.status!=="cancelled"&&(!league||String(m.phase_id)===String(league.id)));
+  }
+
+  function championSecondUnlockInfo(){
+    const rows=leagueMatchesForChampion();
+    if(!rows.length)return "après la fin de la phase de ligue";
+    const last=rows.map(m=>new Date(m.kickoff_at)).filter(d=>Number.isFinite(d.getTime())).sort((a,b)=>b-a)[0];
+    return last?`après la fin de la J8 · dernière rencontre prévue le ${fmtDate(last.toISOString())}`:"après la fin de la phase de ligue";
+  }
+
+  function championLockText(open,closeAt,number=1){
     if(open) return closeAt?`Ouvert · jusqu'au ${fmtDate(closeAt)}`:"Ouvert";
+    if(number===2){
+      const remaining=leagueMatchesForChampion().some(m=>!["finished","cancelled"].includes(m.status));
+      if(remaining)return `🔒 S'ouvre ${championSecondUnlockInfo()}`;
+    }
     return "🔒 Verrouillé";
   }
 
@@ -30,9 +46,10 @@
     const selected=currentClub?`<div class="champion-current ${eliminated?'eliminated':''}">${crestHTML(currentClub,true)}<div><span>${number===1&&st.first_default?'🦉 OM attribué par défaut':'Ton choix'}</span><strong>${esc(clubName||currentClub.name||'')}</strong>${clubCountryHTML(currentClub)}<small>${eliminated?'Éliminé · le Hibou a sorti le mouchoir.':points?`🏆 +${points} points`:'Toujours en course'}</small></div></div>`:'';
     if(!open){
       if(selected)return selected;
+      if(number===2&&leagueMatchesForChampion().some(m=>!["finished","cancelled"].includes(m.status)))return `<div class="champion-locked-empty"><b>Deuxième champion · pas encore ouvert.</b><span>Il se déverrouille ${esc(championSecondUnlockInfo())}. Les clubs disponibles apparaîtront une fois le tableau final connu.</span></div>`;
       return `<div class="champion-locked-empty"><b>${number===1?'OM attribué automatiquement si aucun choix n’a été fait.':'Le deuxième choix n’était pas renseigné.'}</b><span>Le choix est désormais verrouillé.</span></div>`;
     }
-    if(number===2&&!candidates.length)return `<div class="champion-locked-empty"><b>Pas encore ouvert.</b><span>Le deuxième champion apparaît une fois la phase de ligue terminée et le tableau final connu.</span></div>`;
+    if(number===2&&!candidates.length)return `<div class="champion-locked-empty"><b>Ouverture en cours.</b><span>La phase de ligue est terminée ; les clubs seront proposés dès que le tableau final sera renseigné.</span></div>`;
     const opts=candidates.map(c=>{const fullClub=clubById(c.club_id||c.id)||c;const country=clubCountry(fullClub);return `<option value="${c.club_id||c.id}" ${String(c.club_id||c.id)===String(clubId)?'selected':''}>${esc(c.short_name||c.name)} — ${esc(c.name)}${country.name?` · ${esc(country.name)}`:''}</option>`;}).join('');
     return `${selected}<div class="champion-picker"><select data-champion-select="${number}"><option value="">Choisir un club…</option>${opts}</select><button class="btn ${number===1?'gold':''} small" data-save-champion="${number}">Enregistrer</button></div>${number===1?'<p class="champion-rule">Pas de choix au coup d’envoi du premier match ? <b>Olympique de Marseille</b> devient ton champion. Pas de réclamation au plumage.</p>':'<p class="champion-rule">Le même club peut être choisi deux fois : all-in possible à <b>150 points</b>.</p>'}`;
   }
@@ -40,8 +57,8 @@
   function renderChampions() {
     if(!$("#championFirstBody"))return;
     const st=state.championStatus||{};
-    $("#championFirstLock").textContent=championLockText(Boolean(st.first_open),st.first_close_at);
-    $("#championSecondLock").textContent=championLockText(Boolean(st.second_open),st.second_close_at);
+    $("#championFirstLock").textContent=championLockText(Boolean(st.first_open),st.first_close_at,1);
+    $("#championSecondLock").textContent=championLockText(Boolean(st.second_open),st.second_close_at,2);
     $("#championFirstBody").innerHTML=championPickHTML(1);
     $("#championSecondBody").innerHTML=championPickHTML(2);
     $$('[data-save-champion]').forEach(btn=>btn.onclick=()=>saveChampionPick(Number(btn.dataset.saveChampion)));

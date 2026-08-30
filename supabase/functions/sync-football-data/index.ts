@@ -724,6 +724,11 @@ Deno.serve(async (req: Request) => {
     if (fdStatus === 429) {
       return json({ ok: false, code: "provider_rate_limit", provider_status: 429, error: "Limite de requêtes Football-Data atteinte. Réessaie dans quelques minutes." }, 200);
     }
-    return json({ ok: false, error: error instanceof Error ? error.message : "Synchronisation impossible." }, 500);
+    if (fdStatus >= 500) {
+      return json({ ok: false, code: "provider_unavailable", provider_status: fdStatus, error: `Football-Data est momentanément indisponible (HTTP ${fdStatus}). Le calendrier local reste intact ; les cotes peuvent être saisies manuellement dans le Nid.` }, 200);
+    }
+    // La Function journalise l'erreur côté Supabase mais répond avec une enveloppe métier
+    // pour que l'Admin puisse rester utilisable et basculer sur la saisie manuelle.
+    return json({ ok: false, code: "sync_internal_error", error: "La synchronisation Football-Data a rencontré une erreur interne. Le calendrier local reste intact ; consulte les logs sync-football-data. Les cotes peuvent être saisies manuellement." }, 200);
   }
 });

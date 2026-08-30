@@ -2,7 +2,7 @@
 
 // Le Nid des Champions V0.9.10 — sécurisation pré-production.
 (() => {
-  state.preprod0910 = state.preprod0910 || { health:null, windows:[], loaded:false };
+  state.preprod0910 = state.preprod0910 || { health:null, windows:[], editableClubIds:[], loaded:false };
 
   const norm = value => String(value||"")
     .normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase()
@@ -53,12 +53,15 @@
   async function loadPreprodSafetyV0910(force=false){
     if(demoMode||!state.season)return;
     if(state.preprod0910.loaded&&!force)return;
-    const [h,w]=await Promise.all([
+    const year=seasonStartYear();
+    const [h,w,memberships]=await Promise.all([
       sb.rpc("get_calendar_health_v0910",{p_season_id:state.season.id}),
-      sb.from("competition_schedule_windows_v0910").select("phase_code,matchday_number,leg_number,label,starts_at,ends_at,source").eq("season_id",state.season.id).order("starts_at")
+      sb.from("competition_schedule_windows_v0910").select("phase_code,matchday_number,leg_number,label,starts_at,ends_at,source").eq("season_id",state.season.id).order("starts_at"),
+      sb.from("club_catalog_memberships").select("club_id").eq("competition_code","CL").eq("season_year",year)
     ]);
     if(!h.error)state.preprod0910.health=h.data||null;
     if(!w.error)state.preprod0910.windows=w.data||[];
+    if(!memberships.error)state.preprod0910.editableClubIds=[...new Set((memberships.data||[]).map(x=>String(x.club_id)))];
     state.preprod0910.loaded=true;
   }
 
@@ -72,12 +75,34 @@
     </div><p class="${h.complete?'form-msg ok':'form-msg'}">${h.complete?'✓ Calendrier de phase de ligue complet.':'⚠️ Calendrier incomplet : le Nid conserve les matchs locaux et accepte les mises à jour partielles du fournisseur.'}</p>`;
   }
 
+  function editableClubsV0910(){
+    const ids=new Set((state.preprod0910.editableClubIds||[]).map(String));
+    return (state.clubs||[]).filter(c=>ids.has(String(c.id))||c.metadata_source==='manual').slice().sort((a,b)=>a.name.localeCompare(b.name,'fr'));
+  }
+
+  function matchOddsLabelV0910(m){
+    const vals=[m.odds_home,m.odds_draw,m.odds_away];
+    if(!vals.every(v=>v!==null&&v!==undefined&&Number.isFinite(Number(v))))return '<span class="muted">Aucune cote</span>';
+    return `<span class="manual-odds-summary"><b>1 ${Number(vals[0]).toFixed(2)}</b><b>N ${Number(vals[1]).toFixed(2)}</b><b>2 ${Number(vals[2]).toFixed(2)}</b><small>${esc(m.odds_bookmaker||m.odds_provider||'')}</small></span>`;
+  }
+
   function renderPreprodSafetyV0910(){
     const health=$("#calendarHealthV0910"); if(health)health.innerHTML=calendarHealthHtmlV0910();
     const sel=$("#adminClubManualSelectV0910");
-    if(sel){const old=sel.value;sel.innerHTML=(state.clubs||[]).slice().sort((a,b)=>a.name.localeCompare(b.name,'fr')).map(c=>`<option value="${c.id}">${esc(c.name)}${c.country?` · ${esc(c.country)}`:''}</option>`).join('');if(old&&state.clubs.some(c=>c.id===old))sel.value=old;}
+    if(sel){
+      const previous=sel.value, clubs=editableClubsV0910();
+      sel.innerHTML=clubs.map(c=>`<option value="${c.id}">${esc(c.name)}${c.country?` · ${esc(c.country)}`:''}${c.metadata_source==='manual'?' · Manuel':''}</option>`).join('')||'<option value="">Aucun club C1</option>';
+      if(previous&&clubs.some(c=>String(c.id)===String(previous)))sel.value=previous;
+    }
     const windows=$("#officialWindowsV0910");
-    if(windows){windows.innerHTML=(state.preprod0910.windows||[]).map(w=>`<span class="schedule-window-chip"><b>${esc(w.label)}</b><small>${new Date(w.starts_at).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'})}</small></span>`).join('')||'<span class="muted">Fenêtres officielles chargées après migration SQL.</span>';}
+    if(windows){
+      windows.innerHTML=(state.preprod0910.windows||[]).map(w=>{
+        const day=Number(w.matchday_number||0);
+        const inner=`<b>${esc(w.label)}</b><small>${new Date(w.starts_at).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'})}</small>`;
+        return w.phase_code==='LEAGUE'&&day>=1&&day<=8?`<button type="button" class="schedule-window-chip editable" data-edit-matchday-v0910="${day}" title="Ouvrir les matchs de cette journée">${inner}<em>Modifier les matchs</em></button>`:`<span class="schedule-window-chip">${inner}</span>`;
+      }).join('')||'<span class="muted">Fenêtres officielles chargées après migration SQL.</span>';
+      $$('[data-edit-matchday-v0910]',windows).forEach(btn=>btn.onclick=()=>openMatchdayEditorV0910(Number(btn.dataset.editMatchdayV0910)));
+    }
   }
 
   async function refreshCalendarHealthV0910(){
@@ -115,7 +140,8 @@
   }
 
   function openClubEditorV0910(clubId=null){
-    const club=clubId?state.clubs.find(c=>c.id===clubId):null;
+    const club=clubId?editableClubsV0910().find(c=>String(c.id)===String(clubId)):null;
+    if(clubId&&!club)return toast("Seuls les clubs de la Ligue des champions et les clubs créés manuellement sont modifiables.","error");
     const root=modal(club?"Modifier une équipe":"Ajouter une équipe",clubEditorHtmlV0910(club));
     $("#saveClubV0910",root).onclick=async()=>{
       try{
@@ -133,17 +159,39 @@
 
   function openSelectedClubEditorV0910(){const id=$("#adminClubManualSelectV0910")?.value;if(id)openClubEditorV0910(id);}
 
+  function openMatchdayEditorV0910(number){
+    const md=(state.matchdays||[]).find(x=>!x.is_test&&Number(x.number)===Number(number));
+    if(!md)return toast(`Journée ${number} introuvable.`,"error");
+    const matches=(state.allMatches||[]).filter(m=>!m.is_test&&String(m.matchday_id)===String(md.id)).sort((a,b)=>new Date(a.kickoff_at)-new Date(b.kickoff_at));
+    const root=modal(`${esc(md.name||`Journée ${number}`)} — ${matches.length} match${matches.length>1?'s':''}`,`<div class="matchday-editor-v0910">
+      <p class="muted">Clique sur un match pour corriger équipes, horaire, stade ou saisir les cotes 1N2 manuellement. Une correction de calendrier peut être verrouillée face à Football-Data.</p>
+      <div class="matchday-editor-list-v0910">${matches.map(m=>`<article class="matchday-edit-row-v0910"><div><b>${esc(m.home_club?.short_name||m.home_club?.name||'?')} – ${esc(m.away_club?.short_name||m.away_club?.name||'?')}</b><small>${new Date(m.kickoff_at).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'})}${m.stadium?` · ${esc(m.stadium)}`:''}</small>${matchOddsLabelV0910(m)}</div><button class="btn small" data-edit-match-v0910="${m.id}">✏️ Modifier</button></article>`).join('')||'<div class="empty">Aucun match dans cette journée.</div>'}</div>
+    </div>`);
+    $$('[data-edit-match-v0910]',root).forEach(btn=>btn.onclick=()=>{const id=btn.dataset.editMatchV0910;root.remove();openMatchScheduleEditorV0910(id);});
+  }
+
   function openMatchScheduleEditorV0910(matchId){
-    const m=state.allMatches.find(x=>x.id===matchId);if(!m)return;
-    const clubOptions=id=>(state.clubs||[]).slice().sort((a,b)=>a.name.localeCompare(b.name,'fr')).map(c=>`<option value="${c.id}" ${c.id===id?'selected':''}>${esc(c.name)}</option>`).join('');
-    const mdOptions=['<option value="">— Sans journée —</option>',...(state.matchdays||[]).filter(md=>!md.is_test).map(md=>`<option value="${md.id}" ${md.id===m.matchday_id?'selected':''}>${esc(md.name)}</option>`)];
+    const m=state.allMatches.find(x=>String(x.id)===String(matchId));if(!m)return;
+    const allowedClubs=editableClubsV0910();
+    const clubOptions=id=>allowedClubs.map(c=>`<option value="${c.id}" ${String(c.id)===String(id)?'selected':''}>${esc(c.name)}</option>`).join('');
+    const mdOptions=['<option value="">— Sans journée —</option>',...(state.matchdays||[]).filter(md=>!md.is_test).map(md=>`<option value="${md.id}" ${String(md.id)===String(m.matchday_id)?'selected':''}>${esc(md.name)}</option>`)] ;
+    const oddsEditable=!['live','finished'].includes(String(m.status||''))&&new Date(m.kickoff_at).getTime()>Date.now();
     const root=modal("Modifier le match",`<div class="grid grid-2"><div class="field"><label>Domicile</label><select id="matchHomeV0910">${clubOptions(m.home_club?.id)}</select></div><div class="field"><label>Extérieur</label><select id="matchAwayV0910">${clubOptions(m.away_club?.id)}</select></div></div>
       <div class="grid grid-2"><div class="field"><label>Journée</label><select id="matchMdV0910">${mdOptions.join('')}</select></div><div class="field"><label>Date / heure</label><input id="matchKickoffV0910" type="datetime-local" value="${toLocalDateTimeInput(new Date(m.kickoff_at))}"></div></div>
       <div class="grid grid-2"><div class="field"><label>Stade</label><input id="matchStadiumV0910" value="${esc(m.stadium||'')}"></div><div class="field"><label>Pays du stade</label><input id="matchCountryV0910" value="${esc(m.venue_country||'')}"></div></div>
       <label class="notification-toggle"><span>Verrouiller cette correction manuelle face à Football-Data</span><input id="matchLockV0910" type="checkbox" checked></label>
-      <div class="actions"><button id="saveMatchV0910" class="btn gold">Enregistrer</button>${m.manual_schedule_lock?'<button id="unlockMatchV0910" class="btn secondary">Rendre à nouveau modifiable par Football-Data</button>':''}</div><div id="matchEditorMsgV0910" class="form-msg"></div>`);
+      <div class="actions"><button id="saveMatchV0910" class="btn gold">Enregistrer le match</button>${m.manual_schedule_lock?'<button id="unlockMatchV0910" class="btn secondary">Rendre à nouveau modifiable par Football-Data</button>':''}</div>
+      <hr class="admin-editor-separator-v0910">
+      <section class="manual-odds-editor-v0910"><span class="eyebrow">Cotes 1N2 manuelles</span><h4>Saisie pré-match</h4><p class="muted">Utilisée si Football-Data ne fournit pas les cotes. Les trois valeurs sont obligatoires et doivent être supérieures à 1,00.</p>
+        <div class="manual-odds-grid-v0910"><div class="field"><label>1 · Domicile</label><input id="oddsHomeV0910" type="number" min="1.01" step="0.01" value="${m.odds_home??''}" ${oddsEditable?'':'disabled'}></div><div class="field"><label>N · Nul</label><input id="oddsDrawV0910" type="number" min="1.01" step="0.01" value="${m.odds_draw??''}" ${oddsEditable?'':'disabled'}></div><div class="field"><label>2 · Extérieur</label><input id="oddsAwayV0910" type="number" min="1.01" step="0.01" value="${m.odds_away??''}" ${oddsEditable?'':'disabled'}></div></div>
+        <div class="field"><label>Bookmaker / source (facultatif)</label><input id="oddsBookmakerV0910" value="${esc(m.odds_bookmaker||'')}" placeholder="Ex. Betclic, Winamax, saisie manuelle" ${oddsEditable?'':'disabled'}></div>
+        <div class="actions"><button id="saveOddsV0910" class="btn" ${oddsEditable?'':'disabled'}>💶 Enregistrer les cotes</button><button id="clearOddsV0910" class="btn secondary" ${oddsEditable?'':'disabled'}>Effacer les cotes</button></div>${oddsEditable?'':'<p class="form-msg">🔒 Les cotes ne sont plus modifiables après le coup d’envoi.</p>'}
+      </section><div id="matchEditorMsgV0910" class="form-msg"></div>`);
     $("#saveMatchV0910",root).onclick=async()=>{try{const kickoff=parseFrenchLocalInput($("#matchKickoffV0910",root).value);if(!kickoff)throw new Error("Date invalide.");const {error}=await sb.rpc("admin_update_match_schedule_v0910",{p_match_id:m.id,p_home_club_id:$("#matchHomeV0910",root).value,p_away_club_id:$("#matchAwayV0910",root).value,p_kickoff_at:kickoff,p_matchday_id:$("#matchMdV0910",root).value||null,p_stadium:$("#matchStadiumV0910",root).value.trim()||null,p_venue_country:$("#matchCountryV0910",root).value.trim()||null,p_lock_manual:$("#matchLockV0910",root).checked});if(error)throw error;root.remove();await loadData();await refreshCalendarHealthV0910();renderAll();toast("Match modifié et protégé.");}catch(err){setMsg("#matchEditorMsgV0910",friendlyError(err),"error");}};
     if($("#unlockMatchV0910",root))$("#unlockMatchV0910",root).onclick=async()=>{try{const {error}=await sb.rpc("admin_unlock_match_schedule_v0910",{p_match_id:m.id});if(error)throw error;root.remove();await loadData();renderAll();toast("Le match pourra de nouveau être mis à jour par Football-Data.");}catch(err){setMsg("#matchEditorMsgV0910",friendlyError(err),"error");}};
+    const saveOdds=async clear=>{try{const home=Number($("#oddsHomeV0910",root)?.value),draw=Number($("#oddsDrawV0910",root)?.value),away=Number($("#oddsAwayV0910",root)?.value);const {error}=await sb.rpc("admin_update_match_odds_v0910",{p_match_id:m.id,p_odds_home:clear?null:home,p_odds_draw:clear?null:draw,p_odds_away:clear?null:away,p_bookmaker:clear?null:($("#oddsBookmakerV0910",root)?.value.trim()||null),p_clear:Boolean(clear)});if(error)throw error;root.remove();await loadData();await refreshCalendarHealthV0910();renderAll();toast(clear?"Cotes effacées.":"💶 Cotes 1N2 enregistrées manuellement.");}catch(err){setMsg("#matchEditorMsgV0910",friendlyError(err),"error");}};
+    if($("#saveOddsV0910",root))$("#saveOddsV0910",root).onclick=()=>saveOdds(false);
+    if($("#clearOddsV0910",root))$("#clearOddsV0910",root).onclick=()=>saveOdds(true);
   }
 
   async function openPrelaunchResetV0910(){
@@ -164,5 +212,5 @@
     if($("#prelaunchResetBtnV0910"))$("#prelaunchResetBtnV0910").onclick=openPrelaunchResetV0910;
   }
 
-  Object.assign(window,{loadPreprodSafetyV0910,renderPreprodSafetyV0910,refreshCalendarHealthV0910,seedOfficialCalendarV0910,openClubEditorV0910,openMatchScheduleEditorV0910,openPrelaunchResetV0910,bindPreprodSafetyV0910});
+  Object.assign(window,{loadPreprodSafetyV0910,renderPreprodSafetyV0910,refreshCalendarHealthV0910,seedOfficialCalendarV0910,openClubEditorV0910,openMatchdayEditorV0910,openMatchScheduleEditorV0910,openPrelaunchResetV0910,bindPreprodSafetyV0910});
 })();

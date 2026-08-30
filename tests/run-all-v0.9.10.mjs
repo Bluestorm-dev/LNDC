@@ -26,7 +26,8 @@ const required=[
   "css/preprod0910.css","js/preprod0910.js","assets/data/ucl-2026-27-official.json",
   "sql/029_patch_v0.9.10_preprod_safety.sql","sql/HOTFIX_V0.9.10_EXISTING_DB.sql","sql/000_INSTALL_FRESH_V0.9.10.sql",
   "tests/test-center-v0.9.10.html","docs/TEST_CHECKLIST_V0.9.10.md","docs/TEST_MATRIX_V0.9.10.md",
-  "INSTALLATION_V0.9.10.txt","PATCH_NOTES_V0.9.10.txt","README_TEST_SYSTEM_V0.9.10.md"
+  "INSTALLATION_V0.9.10.txt","PATCH_NOTES_V0.9.10.txt","README_TEST_SYSTEM_V0.9.10.md",
+  "sql/HOTFIX_V0.9.10_R3_ADMIN_CALENDAR_ODDS.sql"
 ];
 for(const rel of required)need("file:"+rel,exists(rel),exists(rel)?`Présent: ${rel}`:`Absent: ${rel}`);
 
@@ -191,6 +192,17 @@ need("v0910.ui.clean",!read("js/ucl.js").includes("Migration V0.8.0")&&!read("js
 need("v0910.manual-create-lock",read("js/admin.js").includes('schedule_source:"manual"')&&read("js/admin.js").includes("manual_schedule_lock:true"),"Les matchs créés manuellement sont verrouillés contre l’écrasement fournisseur");
 const badgeCat=JSON.parse(read("assets/badges/badge-catalog.json")||"{}");
 need("v0910.badges100",Number(badgeCat.count)===100&&Array.isArray(badgeCat.items)&&badgeCat.items.length===100,"Les 100 succès intégrés sont conservés");
+
+// V0.9.10 R3 — gestion calendrier par journée, cotes manuelles et robustesse fournisseur.
+const hotfixR3=read("sql/HOTFIX_V0.9.10_R3_ADMIN_CALENDAR_ODDS.sql");
+need("v0910r3.matchday-editor",pre10.includes("openMatchdayEditorV0910")&&pre10.includes("data-edit-matchday-v0910")&&pre10.includes("data-edit-match-v0910"),"Les 8 journées ouvrent une liste de matchs modifiables");
+need("v0910r3.manual-odds-front",pre10.includes("Cotes 1N2 manuelles")&&pre10.includes("admin_update_match_odds_v0910")&&pre10.includes("saveOddsV0910"),"Saisie manuelle 1/N/2 intégrée à l’éditeur de match");
+need("v0910r3.manual-odds-sql",hotfixR3.includes("admin_update_match_odds_v0910")&&hotfixR3.includes("odds_provider='manual'")&&hotfixR3.includes("après le coup d''envoi"),"RPC cotes manuelles sécurisé avant coup d’envoi");
+need("v0910r3.club-scope-front",pre10.includes("editableClubsV0910")&&pre10.includes("club_catalog_memberships")&&pre10.includes("metadata_source==='manual'"),"Sélecteur de clubs limité à la C1 + clubs créés manuellement");
+need("v0910r3.club-scope-sql",hotfixR3.includes("competition_code='CL'")&&hotfixR3.includes("metadata_source='manual'")&&hotfixR3.includes("Seuls les clubs de la Ligue des champions"),"Restriction clubs également imposée côté serveur");
+need("v0910r3.champion2-unlock",read("js/champions.js").includes("championSecondUnlockInfo")&&read("js/champions.js").includes("S'ouvre")&&read("js/champions.js").includes("dernière rencontre prévue"),"L’interface indique quand le deuxième choix Champion doit se déverrouiller");
+need("v0910r3.provider-5xx",edge.includes("provider_unavailable")&&edge.includes("fdStatus >= 500")&&edge.includes("sync_internal_error")&&edge.includes("}, 200)"),"Les erreurs fournisseur/Function reviennent sous forme d’état métier exploitable par l’Admin");
+need("v0910r3.odds-fallback-ui",read("js/admin.js").includes("Les cotes manuelles restent disponibles")&&read("js/admin.js").includes("ouvre une journée puis un match"),"Bouton Cotes 1N2 propose le repli manuel si le fournisseur échoue");
 
 const matrix=read("docs/TEST_MATRIX_V0.9.10.md");
 const ids=[...matrix.matchAll(/\*\*(T\d{4})\*\*/g)].map(m=>m[1]);

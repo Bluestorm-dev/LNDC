@@ -385,8 +385,14 @@
       const fd = await sb.functions.invoke("sync-football-data", {
         body: { action: "odds", seasonYear: seasonStartYear(), seasonSlug: state.season.slug, competitionCode: "CL" }
       });
-      if (fd.error) throw new Error("La fonction sync-football-data ne répond pas au transport. Redéploie sync-football-data V0.9.10 et consulte ses logs. Le Nid ne conclut plus automatiquement à un problème de FOOTBALL_DATA_API_KEY.");
-      if (!fd.data?.ok) throw new Error(fd.data?.error || "Synchronisation Football-Data impossible.");
+      if (fd.error) {
+        setMsg("#syncStatus", "⚠️ sync-football-data n’a pas répondu correctement. Consulte les logs de l’Edge Function. Le calendrier local reste intact et les cotes peuvent être saisies manuellement depuis une journée.");
+        return;
+      }
+      if (!fd.data?.ok) {
+        setMsg("#syncStatus", `⚠️ ${fd.data?.error || "Synchronisation Football-Data impossible."} Les cotes manuelles restent disponibles : ouvre une journée puis un match.`);
+        return;
+      }
 
       const fdCount = Number(fd.data.oddsCount || 0);
       let external = null;
