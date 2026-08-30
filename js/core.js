@@ -226,9 +226,16 @@
   }
 
   function modal(title, html) {
-    const root = $("#modalRoot");
+    let root = $("#modalRoot");
+    if (!root) {
+      root = document.createElement("div");
+      root.id = "modalRoot";
+      document.body.appendChild(root);
+      console.warn("[LNDC] modalRoot absent : conteneur recréé automatiquement.");
+    }
     root.innerHTML = `<div id="modalOverlay" class="modal-overlay"><div class="card card-pad modal-card"><div class="modal-head"><h3>${esc(title)}</h3><button id="modalClose" class="btn secondary small">Fermer</button></div><div class="modal-body">${html}</div></div></div>`;
-    $("#modalClose").onclick = () => root.innerHTML = "";
+    const close = $("#modalClose", root);
+    if (close) close.onclick = () => root.innerHTML = "";
     return root;
   }
 

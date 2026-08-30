@@ -266,6 +266,18 @@ const summary={total:checks.length,passed:checks.filter(x=>x.status==="PASS").le
 const report={version:"0.9.10",generated_at:new Date().toISOString(),base_url:baseUrl,summary,checks};
 fs.writeFileSync(path.join(root,"tests","test-report-v0.9.10.json"),JSON.stringify(report,null,2)+"\n");
 for(const c of checks)console.log(`${c.status.padEnd(4)} ${c.id} — ${c.message}${c.details?` · ${c.details}`:""}`);
+
+need("ui.modal-root-preserved-r4",
+  !read("js/preprod0910.js").includes("root.remove()"),
+  "Les éditeurs V0.9.10 ne suppriment jamais #modalRoot"
+);
+need("ui.modal-root-selfheal-r4",
+  read("js/core.js").includes('if (!root)') &&
+  read("js/core.js").includes('root.id = "modalRoot"') &&
+  read("js/core.js").includes('document.body.appendChild(root)'),
+  "Le gestionnaire de modales recrée #modalRoot s'il manque"
+);
+
 console.log(`\nRésumé V0.9.10: ${summary.passed} PASS · ${summary.warnings} WARN · ${summary.failed} FAIL / ${summary.total}`);
 console.log("Rapport: tests/test-report-v0.9.10.json");
 if(summary.failed)process.exitCode=1;
