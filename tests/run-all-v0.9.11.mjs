@@ -231,6 +231,26 @@ need("v0911r1.betclic-diagnostics",
   betclicEdge.includes("searchQueries")&&betclicEdge.includes("searchReceived")&&betclicEdge.includes("discoveredFrom")&&release11.includes("Plage Betclic explorée"),
   "Diagnostic Betclic expose recherches ciblées et plage de dates"
 );
+need("v0911r2.betclic-season-scope",
+  release11.includes("matchdayId:null")&&release11.includes("limit:50"),
+  "La synchro Betclic Admin travaille par défaut sur toute la saison"
+);
+need("v0911r2.local-null-test-tolerated",
+  betclicEdge.includes("m?.is_test!==true")&&betclicEdge.includes("allEligible"),
+  "Les anciennes lignes is_test=NULL restent éligibles"
+);
+need("v0911r2.matchday-fallback",
+  betclicEdge.includes("matchdayFallback")&&betclicEdge.includes("scopedEligible.length===0"),
+  "Une journée vide retombe automatiquement sur la saison"
+);
+need("v0911r2.search-always",
+  betclicEdge.includes("Recherche compétition : toujours exécutée")&&betclicEdge.includes('for(const q of ["Ligue des Champions","Champions League"])'),
+  "La recherche Betclic compétition est exécutée même avec 0 candidat local"
+);
+need("v0911r2.local-diagnostics",
+  release11.includes("match(s) locaux dans la saison")&&betclicEdge.includes("localSeasonRows")&&betclicEdge.includes("manualProtected"),
+  "Le diagnostic expose les matchs locaux et les cotes manuelles protégées"
+);
 need("v0911.betclic-admin",release11.includes("Tester Betclic")&&release11.includes("Synchroniser Betclic")&&release11.includes("sync-betclic-odds"),"Panneau Admin Betclic branché");
 need("v0911.betclic-fallback",release11.includes("saisie manuelle")&&release11.includes("source non officielle"),"UI rappelle le fallback manuel et le caractère expérimental");
 need("v0911.feature-defaults",["feature_knockout:false","feature_ucl_center:false","feature_evenings:false","feature_teams:false","feature_gamification:false","feature_messages:false","feature_rivals:false","feature_polls:false","feature_solitary_owl:false"].every(t=>admin9511.includes(t)),"Fonctions optionnelles fermées aux joueurs par défaut");

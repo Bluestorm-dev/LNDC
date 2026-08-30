@@ -423,12 +423,28 @@ Deno.serve(async(req:Request)=>{
 
     const {data:season,error:seasonError}=await admin.from("seasons").select("id,slug").eq("slug",seasonSlug).maybeSingle();
     if(seasonError||!season)throw new Error(`Saison ${seasonSlug} introuvable.`);
-    let query=admin.from("matches")
-      .select("id,kickoff_at,status,odds_provider,odds_updated_at,home_club:clubs!matches_home_club_id_fkey(name,short_name,tla),away_club:clubs!matches_away_club_id_fkey(name,short_name,tla)")
-      .eq("season_id",season.id).eq("is_test",false).in("status",["scheduled","postponed"]).order("kickoff_at");
-    if(matchdayId)query=query.eq("matchday_id",matchdayId);
-    const {data:rows,error:matchError}=await query;if(matchError)throw matchError;
-    const candidates=((rows||[]) as unknown as NidMatch[]).filter(m=>String(m.odds_provider||"")!=="manual");
+    // Charge toute la saison puis filtre côté Function.
+    // Important : d'anciennes lignes peuvent avoir is_test=NULL ; NULL signifie ici "pas un test".
+    const {data:seasonRows,error:matchError}=await admin.from("matches")
+      .select("id,matchday_id,kickoff_at,status,is_test,odds_provider,odds_updated_at,home_club:clubs!matches_home_club_id_fkey(name,short_name,tla),away_club:clubs!matches_away_club_id_fkey(name,short_name,tla)")
+      .eq("season_id",season.id).order("kickoff_at");
+    if(matchError)throw matchError;
+
+    const allEligible=((seasonRows||[]) as any[]).filter(m=>
+      m?.is_test!==true &&
+      ["scheduled","postponed"].includes(String(m?.status||"").toLowerCase())
+    ) as unknown as NidMatch[];
+
+    // Si une journée a été demandée mais qu'elle ne fournit aucun match exploitable,
+    // on retombe automatiquement sur toute la saison.
+    const scopedEligible=matchdayId
+      ? allEligible.filter((m:any)=>String((m as any).matchday_id||"")===String(matchdayId))
+      : allEligible;
+    const matchdayFallback=Boolean(matchdayId && scopedEligible.length===0 && allEligible.length>0);
+    const eligible=matchdayFallback?allEligible:scopedEligible;
+
+    const manualProtected=eligible.filter(m=>String(m.odds_provider||"")==="manual").length;
+    const candidates=eligible.filter(m=>String(m.odds_provider||"")!=="manual");
     const pairs:Array<{local:NidMatch,event:BMatch}>=[];
     const used=new Set<number>();
     const discovered=new Map<number,BMatch>();
@@ -439,28 +455,27 @@ Deno.serve(async(req:Request)=>{
     pairFromPool(candidates,events,pairs,used,limit);
     const matchedFromFeed=pairs.length;
 
-    // 2) Recherche compétition : la librairie source expose SearchMatchesWithNotifications.
+    // 2) Recherche compétition : toujours exécutée.
+    // Cela nous donne un diagnostic Betclic même si le filtre local retourne 0 candidat.
     let searchQueries=0,searchReceived=0;
     const searchErrors:string[]=[];
-    if(pairs.length<Math.min(limit,candidates.length)){
-      for(const q of ["Ligue des Champions","Champions League"]){
-        try{
-          searchQueries++;
-          const found=await searchBetclic(q);
-          searchReceived+=found.length;
-          found.forEach(e=>{if(e.id)discovered.set(e.id,e);});
-          pairFromPool(candidates,found,pairs,used,limit);
-          if(pairs.length>=Math.min(limit,candidates.length))break;
-        }catch(err){
-          searchErrors.push(`${q}: ${err instanceof Error?err.message:String(err)}`);
-        }
+    for(const q of ["Ligue des Champions","Champions League"]){
+      try{
+        searchQueries++;
+        const found=await searchBetclic(q);
+        searchReceived+=found.length;
+        found.forEach(e=>{if(e.id)discovered.set(e.id,e);});
+        if(candidates.length)pairFromPool(candidates,found,pairs,used,limit);
+        if(candidates.length && pairs.length>=Math.min(limit,candidates.length))break;
+      }catch(err){
+        searchErrors.push(`${q}: ${err instanceof Error?err.message:String(err)}`);
       }
     }
 
     // 3) Recherche ciblée par club pour les prochains matchs encore non appariés.
     // Maximum 18 requêtes : un matchday C1 contient 18 rencontres.
     const searchedTerms=new Set<string>();
-    if(pairs.length<Math.min(limit,candidates.length)){
+    if(candidates.length && pairs.length<Math.min(limit,candidates.length)){
       const unresolved=candidates.filter(c=>!isAlreadyPaired(c.id,pairs)).slice(0,limit);
       for(const local of unresolved){
         if(searchQueries>=20)break; // 2 compétitions + 18 clubs max
@@ -513,8 +528,8 @@ Deno.serve(async(req:Request)=>{
       }
     }
 
-    await admin.from("audit_logs").insert({actor_id:user.id,action:"betclic_odds_sync_v0911",entity_type:matchdayId?"matchday":"season",entity_id:matchdayId||season.slug,new_data:{provider:"betclic-unofficial",received:events.length,candidates:candidates.length,matched:pairs.length,matchedFromFeed,matchedFromSearch,searchQueries,searchReceived,updated,noMarket,failed,feedFrom:feedRange.from,feedTo:feedRange.to,discoveredFrom:discoveredRange.from,discoveredTo:discoveredRange.to,searchErrors:searchErrors.slice(0,4)}});
-    return json({ok:true,provider:"betclic-unofficial",received:events.length,total,candidates:candidates.length,matched:pairs.length,matchedFromFeed,matchedFromSearch,searchQueries,searchReceived,updated,noMarket,failed,feedFrom:feedRange.from,feedTo:feedRange.to,discoveredFrom:discoveredRange.from,discoveredTo:discoveredRange.to,searchErrors:searchErrors.slice(0,4),unresolvedSample,warning:"Betclic est une source non officielle ; la saisie manuelle reste le secours.",details});
+    await admin.from("audit_logs").insert({actor_id:user.id,action:"betclic_odds_sync_v0911",entity_type:matchdayId?"matchday":"season",entity_id:matchdayId||season.slug,new_data:{provider:"betclic-unofficial",received:events.length,localSeasonRows:(seasonRows||[]).length,eligibleLocal:eligible.length,candidates:candidates.length,manualProtected,requestedMatchdayId:matchdayId,matchdayFallback,matched:pairs.length,matchedFromFeed,matchedFromSearch,searchQueries,searchReceived,updated,noMarket,failed,feedFrom:feedRange.from,feedTo:feedRange.to,discoveredFrom:discoveredRange.from,discoveredTo:discoveredRange.to,searchErrors:searchErrors.slice(0,4)}});
+    return json({ok:true,provider:"betclic-unofficial",received:events.length,total,localSeasonRows:(seasonRows||[]).length,eligibleLocal:eligible.length,candidates:candidates.length,manualProtected,requestedMatchdayId:matchdayId,matchdayFallback,matched:pairs.length,matchedFromFeed,matchedFromSearch,searchQueries,searchReceived,updated,noMarket,failed,feedFrom:feedRange.from,feedTo:feedRange.to,discoveredFrom:discoveredRange.from,discoveredTo:discoveredRange.to,searchErrors:searchErrors.slice(0,4),unresolvedSample,warning:"Betclic est une source non officielle ; la saisie manuelle reste le secours.",details});
   }catch(err){
     console.error("sync-betclic-odds",err);
     return json({ok:false,provider:"betclic-unofficial",code:"betclic_unavailable",error:err instanceof Error?err.message:"Erreur Betclic inconnue.",warning:"La source Betclic est expérimentale. Le Nid reste fonctionnel sans elle et les cotes peuvent être saisies manuellement."},200);
