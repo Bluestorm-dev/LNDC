@@ -292,8 +292,8 @@ need("v0911r5diag.search-diagnostics",
   "Le backend explique pourquoi les résultats Betclic ne sont pas rapprochés"
 );
 need("v0911r5diag.ui-details",
-  release11.includes("Diagnostic des")&&release11.includes("Noms de clubs non reconnus")&&release11.includes("date différente"),
-  "L'Admin affiche le diagnostic détaillé des résultats Betclic"
+  release11.includes("Diagnostic Betclic du lot")&&release11.includes("Résultat hors fixture recherchée")&&release11.includes("écart(s) de date"),
+  "L'Admin affiche toujours le diagnostic détaillé des résultats Betclic"
 );
 need("v0911r5diag.no-relaxed-write",
   betclicEdge.includes("detailMatchesLocalStrict")&&betclicEdge.includes('status:"detail_mismatch"'),
@@ -318,6 +318,14 @@ need("v0911r6.club-brugge-alias",
 need("v0911r6.resource-safe",
   betclicEdge.includes("DETAIL_BATCH_SIZE=4")&&betclicEdge.includes("FIXTURE_SEARCH_BATCH=4"),
   "Recherche et détails limités à quatre fixtures par exécution"
+);
+need("v0911r7.barcelona-alias",
+  betclicEdge.includes('"barcelona":["barcelone"')&&betclicEdge.includes('"barcelone":["barcelona"'),
+  "Alias Barcelona / Barcelone ajouté depuis le diagnostic réel"
+);
+need("v0911r7.fixture-centric-diagnostic",
+  release11.includes("fixture(s) C1 du lot reconnue(s)")&&release11.includes("Résultat hors fixture recherchée"),
+  "Le diagnostic distingue les fixtures C1 du bruit des résultats Betclic"
 );
 need("v0911.betclic-admin",release11.includes("Tester Betclic")&&release11.includes("Synchroniser Betclic")&&release11.includes("sync-betclic-odds"),"Panneau Admin Betclic branché");
 need("v0911.betclic-fallback",release11.includes("saisie manuelle")&&release11.includes("source non officielle"),"UI rappelle le fallback manuel et le caractère expérimental");

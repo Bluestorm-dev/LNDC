@@ -22,11 +22,11 @@
       would_match:"Noms + date compatibles",
       date_mismatch:"Noms OK · date différente",
       name_match_missing_date:"Noms OK · date Betclic absente",
-      team_name_mismatch:"Noms de clubs non reconnus"
+      team_name_mismatch:"Résultat hors fixture recherchée"
     };
     return `<details class="betclic-debug-v0911 betclic-unmatched-v0911">
-      <summary>🔎 Diagnostic des ${rows.length} résultats Betclic</summary>
-      <p class="muted">${Number(d.wouldMatch||0)} compatibles · ${Number(d.dateMismatch||0)} date différente · ${Number(d.missingDate||0)} sans date · ${Number(d.teamMismatch||0)} noms non reconnus</p>
+      <summary>🔎 Diagnostic Betclic du lot</summary>
+      <p class="muted"><b>${Number(sync?.matched||0)}/${Number(sync?.searchBatchSize||0)}</b> fixture(s) C1 du lot reconnue(s) · ${Number(d.teamMismatch||0)} résultat(s) Betclic hors fixture ignoré(s)${Number(d.dateMismatch||0)?` · ${Number(d.dateMismatch||0)} écart(s) de date`:""}${Number(d.missingDate||0)?` · ${Number(d.missingDate||0)} sans date`:""}</p>
       <div class="betclic-sample-v0911">${rows.map(r=>`<div>
         <b>${esc(r.name||r.teams?.join(" - ")||"Match Betclic")}</b>
         <small>${esc(r.competition||"")}${r.date?` · ${esc(new Date(r.date).toLocaleString("fr-FR"))}`:" · date absente"}</small>

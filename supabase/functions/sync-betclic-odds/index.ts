@@ -306,6 +306,8 @@ const NAME_ALIASES:Record<string,string[]>={
   "atletico madrid":["atletico de madrid"],
   "club brugge":["club bruges","brugge","bruges","club brugge kv"],
   "club bruges":["club brugge","brugge","bruges","club brugge kv"],
+  "barcelona":["barcelone","fc barcelona"],
+  "barcelone":["barcelona","fc barcelona"],
 };
 function normalizeName(input:unknown):string{
   return String(input||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase()
