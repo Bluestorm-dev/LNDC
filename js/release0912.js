@@ -73,6 +73,49 @@
     return {key:"todo",label:"⚠ Prono à faire"};
   }
 
+  const HOME_CAROUSEL_DELAY_V0912 = 5000;
+  const homeCarouselTimersV0912 = new Map();
+
+  function stopAutoCarouselV0912(root){
+    if(!root)return;
+    const timer=homeCarouselTimersV0912.get(root.id);
+    if(timer)clearInterval(timer);
+    homeCarouselTimersV0912.delete(root.id);
+  }
+
+  function startAutoCarouselV0912(root){
+    if(!root)return;
+    stopAutoCarouselV0912(root);
+    const slides=[...root.querySelectorAll(".home-carousel-card-v0912")];
+    if(!slides.length){
+      delete root.dataset.autoIndexV0912;
+      return;
+    }
+
+    let index=Number(root.dataset.autoIndexV0912||0);
+    if(!Number.isFinite(index)||index<0||index>=slides.length)index=0;
+
+    const show=(next)=>{
+      index=((next%slides.length)+slides.length)%slides.length;
+      slides.forEach((slide,i)=>{
+        const active=i===index;
+        slide.classList.toggle("active-auto-v0912",active);
+        slide.setAttribute("aria-hidden",active?"false":"true");
+        if(slide.matches("button,[tabindex]"))slide.tabIndex=active?0:-1;
+      });
+      root.dataset.autoIndexV0912=String(index);
+    };
+
+    show(index);
+    if(slides.length>1){
+      const timer=setInterval(()=>{
+        if(document.hidden||!isDesktopV0912())return;
+        show(index+1);
+      },HOME_CAROUSEL_DELAY_V0912);
+      homeCarouselTimersV0912.set(root.id,timer);
+    }
+  }
+
   function renderHomeCarouselsV0912(){
     if(!isDesktopV0912()) return;
     const upcomingRoot = byId("homeUpcomingCarouselV0912");
@@ -91,6 +134,7 @@
         </button>`;
       }).join("") : '<div class="empty">Aucun rendez-vous à venir.</div>';
       upcomingRoot.querySelectorAll("[data-home-match-v0912]").forEach(b=>b.onclick=()=>goToMatchV0912(b.dataset.homeMatchV0912));
+      startAutoCarouselV0912(upcomingRoot);
     }
 
     const activityRoot = byId("homeActivityCarouselV0912");
@@ -106,20 +150,8 @@
       items.sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
       const unique=items.filter((x,i,arr)=>i===arr.findIndex(y=>`${y.kind}|${y.title}|${y.date}`===`${x.kind}|${x.title}|${x.date}`)).slice(0,18);
       activityRoot.innerHTML=unique.length?unique.map(x=>`<article class="home-carousel-card-v0912 home-life-card-v0912"><div class="life-icon">${x.icon}</div><small>${x.date?esc(fmtDate(x.date)):"Le Nid"}</small><h4>${esc(x.title)}</h4><p>${esc(x.text)}</p></article>`).join(""):'<div class="empty">Les casseroles, badges et records apparaîtront ici après les premiers matchs.</div>';
+      startAutoCarouselV0912(activityRoot);
     }
-    bindCarouselArrowsV0912();
-  }
-
-  function bindCarouselArrowsV0912(){
-    document.querySelectorAll("[data-carousel-prev],[data-carousel-next]").forEach(btn=>{
-      if(btn.dataset.boundV0912) return;
-      btn.dataset.boundV0912="1";
-      btn.onclick=()=>{
-        const id=btn.dataset.carouselPrev||btn.dataset.carouselNext;
-        const root=byId(id);if(!root)return;
-        root.scrollBy({left:(btn.dataset.carouselPrev?-1:1)*Math.max(300,root.clientWidth*.72),behavior:"smooth"});
-      };
-    });
   }
 
   function enhanceHomeNextV0912(){
@@ -279,7 +311,6 @@
 
   function setupStaticV0912(){
     setupProfileDomV0912();
-    bindCarouselArrowsV0912();
     setProfileTabV0912(state.profileTabV0912);
   }
 

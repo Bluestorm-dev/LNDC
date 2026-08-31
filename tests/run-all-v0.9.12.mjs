@@ -357,6 +357,18 @@ need("v0912.assets",contains("index.html","css/release0912.css","js/release0912.
 need("v0912.connection-label",index12.includes("Le Nid est connecté")&&index12.includes("appVersionChipV0912")&&!index12.includes("Supabase · LIVE"),"Topbar publique affiche connexion du Nid + version sans Supabase LIVE");
 need("v0912.desktop-nav",index12.includes("Classement du Nid")&&release12.includes('name==="knockout"')&&release12.includes('name==="season"')&&release12.includes('name="profile"'),"Navigation desktop simplifiée avec redirections historiques");
 need("v0912.home-carousels",index12.includes("homeUpcomingCarouselV0912")&&index12.includes("homeActivityCarouselV0912")&&release12.includes("matchPredictionStateV0912"),"Deux carrousels Accueil présents avec état du pronostic");
+need("v0912r1.carousel-auto-5s",
+  release12.includes("HOME_CAROUSEL_DELAY_V0912 = 5000")&&release12.includes("setInterval")&&release12.includes("startAutoCarouselV0912"),
+  "Les deux carrousels changent automatiquement de carte toutes les 5 secondes"
+);
+need("v0912r1.carousel-single-card",
+  css12.includes(".home-carousel-card-v0912{width:100%")&&css12.includes(".home-carousel-card-v0912.active-auto-v0912{display:grid"),
+  "Une seule carte de carrousel est visible à la fois"
+);
+need("v0912r1.carousel-no-arrows",
+  !index12.includes("data-carousel-prev")&&!index12.includes("data-carousel-next")&&!release12.includes("bindCarouselArrowsV0912")&&!css12.includes("carousel-arrows-v0912"),
+  "Aucune flèche ni défilement manuel horizontal sur les carrousels"
+);
 need("v0912.home-direct-match",release12.includes("goToMatchV0912")&&release12.includes('byId("homeNextAction")')&&release12.includes("scrollIntoView"),"Accueil ouvre directement le bon match de Pronostics");
 need("v0912.home-owl",css12.includes("home-owl")||css12.includes("home-owl-card"),"Message du Hibou renforcé sur desktop");
 need("v0912.predictions-two-columns",css12.includes("grid-template-columns:repeat(2")&&release12.includes("match-venue-v0912"),"Pronostics desktop en deux colonnes avec lieu du match");
