@@ -1,0 +1,39 @@
+LE NID DES CHAMPIONS — V0.9.12
+================================
+
+DESKTOP UX/UI
+• Barre technique remplacée par « Le Nid est connecté · V0.9.12 ».
+• Navigation allégée : Profil via avatar, Saison dans Profil, Phases finales dans le Centre C1.
+• Accueil raccourci avec carrousel des prochains matchs et carrousel casseroles/badges/records.
+• Prochain rendez-vous affiche l’état du pronostic et ouvre directement le bon match.
+• Message du Hibou masqué renforcé visuellement.
+
+PRONOSTICS
+• Deux matchs par ligne sur desktop.
+• Stade + pays.
+• Rang C1 par équipe.
+• Fiche club cliquable : forme, prochains matchs pronosticables, derniers résultats.
+
+CLASSEMENT / C1
+• « Classements » devient « Classement du Nid ».
+• Centre C1 : Classement / Phases finales / Infos.
+• Légende des zones déplacée avec le classement.
+• Pas de statistiques artificielles avant les premiers résultats.
+• Aucun badge de classement avant au moins un match officiel effectivement joué/noté.
+
+PROFIL
+• Ouverture depuis avatar/pseudo.
+• Onglets Mon profil / Saison & carrière / Préférences.
+• Catalogue d’avatars affiché seulement après « Changer mon avatar ».
+
+ADMIN MATCHS
+• Cockpit compact par journée.
+• Saisie clavier 1/N/2 + source.
+• Enregistrement groupé des cotes.
+• Score + statut depuis la ligne du match.
+• Confirmation avant validation/correction d’un résultat terminé.
+• Accès direct à l’éditeur complet de paramètres.
+
+NON-RÉGRESSION
+• Mobile volontairement conservé en l’état.
+• Betclic R7, calendrier hybride et 100 succès conservés.

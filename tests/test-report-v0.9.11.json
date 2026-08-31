@@ -1,12 +1,12 @@
 {
   "version": "0.9.11",
-  "generated_at": "2026-08-30T06:25:54.282Z",
+  "generated_at": "2026-08-31T04:43:47.324Z",
   "base_url": null,
   "summary": {
-    "total": 237,
-    "passed": 237,
+    "total": 264,
+    "passed": 258,
     "warnings": 0,
-    "failed": 0
+    "failed": 6
   },
   "checks": [
     {
@@ -346,27 +346,27 @@
     },
     {
       "id": "version.file",
-      "status": "PASS",
-      "message": "VERSION = 0.9.11 (attendu 0.9.11)"
+      "status": "FAIL",
+      "message": "VERSION = 0.9.12 (attendu 0.9.11)"
     },
     {
       "id": "version.config",
-      "status": "PASS",
+      "status": "FAIL",
       "message": "config.js annonce 0.9.11"
     },
     {
       "id": "version.config-example",
-      "status": "PASS",
+      "status": "FAIL",
       "message": "config.example.js annonce 0.9.11"
     },
     {
       "id": "version.cache",
-      "status": "PASS",
+      "status": "FAIL",
       "message": "Cache Service Worker V0.9.11"
     },
     {
       "id": "version.assets",
-      "status": "PASS",
+      "status": "FAIL",
       "message": "Manifest des assets V0.9.11"
     },
     {
@@ -496,7 +496,7 @@
     },
     {
       "id": "front.final.links",
-      "status": "PASS",
+      "status": "FAIL",
       "message": "Admin pointe vers le Centre V0.9.11 et conserve les centres historiques"
     },
     {
@@ -1008,6 +1008,141 @@
       "id": "v0911.betclic-alias-aek",
       "status": "PASS",
       "message": "Alias AEK présents dans le rapprochement Betclic"
+    },
+    {
+      "id": "v0911r1.betclic-search-service",
+      "status": "PASS",
+      "message": "Fallback SearchService Betclic présent quand les 400 premiers matchs ne suffisent pas"
+    },
+    {
+      "id": "v0911r1.betclic-targeted-search",
+      "status": "PASS",
+      "message": "Recherche ciblée par club conservée ; la recherche compétition a été remplacée en R6"
+    },
+    {
+      "id": "v0911r1.betclic-diagnostics",
+      "status": "PASS",
+      "message": "Diagnostic Betclic expose recherches ciblées et plage de dates"
+    },
+    {
+      "id": "v0911r2.betclic-season-scope",
+      "status": "PASS",
+      "message": "La synchro Betclic Admin travaille par défaut sur toute la saison"
+    },
+    {
+      "id": "v0911r2.local-null-test-tolerated",
+      "status": "PASS",
+      "message": "Les anciennes lignes is_test=NULL restent éligibles"
+    },
+    {
+      "id": "v0911r2.matchday-fallback",
+      "status": "PASS",
+      "message": "Une journée vide retombe automatiquement sur la saison"
+    },
+    {
+      "id": "v0911r2.search-always",
+      "status": "PASS",
+      "message": "Le moteur de recherche Betclic reste actif ; R6 évite volontairement la requête compétition ambiguë"
+    },
+    {
+      "id": "v0911r2.local-diagnostics",
+      "status": "PASS",
+      "message": "Le diagnostic expose les matchs locaux et les cotes manuelles protégées"
+    },
+    {
+      "id": "v0911r3.sync-no-400-feed",
+      "status": "PASS",
+      "message": "La synchro Betclic n'analyse plus le flux général de 400 matchs"
+    },
+    {
+      "id": "v0911r3.detail-batch",
+      "status": "PASS",
+      "message": "Les marchés Betclic restent traités par petits lots, réduits à 4 en R6"
+    },
+    {
+      "id": "v0911r3.search-cap",
+      "status": "PASS",
+      "message": "La synchro limite les recherches Betclic à 4 fixtures par exécution"
+    },
+    {
+      "id": "v0911r3.upstream-cap",
+      "status": "PASS",
+      "message": "Les réponses gRPC Betclic sont plafonnées à environ 220 Ko"
+    },
+    {
+      "id": "v0911r3.http546-ui",
+      "status": "PASS",
+      "message": "L'Admin explique le 546 et la synchronisation par lots"
+    },
+    {
+      "id": "v0911r4.search-name-fallback",
+      "status": "PASS",
+      "message": "Le matcher sait lire Club A - Club B même sans objets teams"
+    },
+    {
+      "id": "v0911r4.provisional-date",
+      "status": "PASS",
+      "message": "Une date absente dans SearchService n'empêche plus l'appariement provisoire"
+    },
+    {
+      "id": "v0911r4.strict-detail-validation",
+      "status": "PASS",
+      "message": "Le détail Betclic est revalidé strictement avant toute écriture de cote"
+    },
+    {
+      "id": "v0911r4.detail-rejected-ui",
+      "status": "PASS",
+      "message": "L'Admin distingue appariements provisoires et rejets après détail"
+    },
+    {
+      "id": "v0911r5diag.search-diagnostics",
+      "status": "PASS",
+      "message": "Le backend explique pourquoi les résultats Betclic ne sont pas rapprochés"
+    },
+    {
+      "id": "v0911r5diag.ui-details",
+      "status": "PASS",
+      "message": "L'Admin affiche toujours le diagnostic détaillé des résultats Betclic"
+    },
+    {
+      "id": "v0911r5diag.no-relaxed-write",
+      "status": "PASS",
+      "message": "Le diagnostic n'assouplit pas la validation avant écriture"
+    },
+    {
+      "id": "v0911r6.fixture-search",
+      "status": "PASS",
+      "message": "La recherche Betclic part directement des fixtures C1 locales"
+    },
+    {
+      "id": "v0911r6.no-generic-champions-search",
+      "status": "PASS",
+      "message": "La recherche générique Ligue des Champions, ambiguë avec le hockey, est supprimée"
+    },
+    {
+      "id": "v0911r6.cursor",
+      "status": "PASS",
+      "message": "Un curseur fait tourner les lots de fixtures sans cote"
+    },
+    {
+      "id": "v0911r6.club-brugge-alias",
+      "status": "PASS",
+      "message": "Alias Club Brugge / Club Bruges ajouté"
+    },
+    {
+      "id": "v0911r6.resource-safe",
+      "status": "PASS",
+      "message": "Recherche et détails limités à quatre fixtures par exécution"
+    },
+    {
+      "id": "v0911r7.barcelona-alias",
+      "status": "PASS",
+      "message": "Alias Barcelona / Barcelone ajouté depuis le diagnostic réel"
+    },
+    {
+      "id": "v0911r7.fixture-centric-diagnostic",
+      "status": "PASS",
+      "message": "Le diagnostic distingue les fixtures C1 du bruit des résultats Betclic"
     },
     {
       "id": "v0911.betclic-admin",

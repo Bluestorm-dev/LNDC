@@ -105,3 +105,12 @@ V0.9.0 — Palmarès historique
 - Ouverture progressive des fonctions par le Super Admin.
 - Nettoyage global de la communication de test.
 - Correctifs cumulés reset / fusion clubs / modales.
+
+
+## V0.9.12
+
+- Refonte UX/UI desktop.
+- Deux carrousels Accueil, Pronostics en deux colonnes et fiches clubs.
+- Centre C1 et Profil réorganisés.
+- Cockpit Admin pour cotes, résultats et paramètres des matchs.
+- Mobile préservé pour la passe suivante.

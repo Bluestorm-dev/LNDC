@@ -1,0 +1,37 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.9.12
+================================================
+
+OBJECTIF
+Refonte UX/UI desktop + cockpit d’exploitation des matchs.
+La passe mobile est volontairement différée.
+
+MISE À JOUR DEPUIS V0.9.11 R7
+1. Sauvegarde Supabase et le dossier LNDC.
+2. Copie le patch V0.9.12 à la racine en conservant l’arborescence.
+3. Supabase > SQL Editor : exécute
+   sql/HOTFIX_V0.9.12_EXISTING_DB.sql
+4. Aucun redéploiement d’Edge Function n’est requis uniquement pour V0.9.12.
+   La Function Betclic R7 existante est conservée telle quelle.
+5. Lance :
+   node tests\run-all-v0.9.12.mjs
+6. Déploie GitHub Pages.
+7. Puis :
+   node tests\run-all-v0.9.12.mjs --url=https://bluestorm-dev.github.io/LNDC/
+8. Ctrl+F5 ou relance la PWA.
+
+PREMIERS TESTS DESKTOP
+Accueil : deux carrousels et accès direct à un match.
+Pronostics : deux matchs par ligne, lieux, rangs et fiches clubs.
+Centre C1 : Classement / Phases finales / Infos.
+Profil : accès via avatar, onglets, bibliothèque avatars repliée.
+Admin : saisie cotes et résultat/état depuis le cockpit de journée.
+
+SQL V0.9.12
+- app_version = 0.9.12
+- badges classement conditionnés à played >= 1
+- RPC admin_save_matchday_odds_v0912(uuid,jsonb)
+- RPC admin_diagnostics_v0912()
+
+IMPORTANT
+La saisie groupée des cotes est atomique : si une ligne complète est invalide,
+la RPC échoue sans enregistrer partiellement le lot. Les lignes incomplètes sont ignorées.

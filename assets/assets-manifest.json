@@ -1,6 +1,6 @@
 {
   "app": "Le Nid des Champions",
-  "version": "0.9.11",
+  "version": "0.9.12",
   "schema": 1,
   "branding": {
     "owl_main": "assets/branding/owl/owl-masked-main.png"
@@ -1226,5 +1226,18 @@
     "js": "js/preprod0910.js",
     "official_fixtures": "assets/data/ucl-2026-27-official.json",
     "test_center": "tests/test-center-v0.9.10.html"
+  },
+  "release_v0911": {
+    "css": "css/release0911.css",
+    "js": "js/release0911.js",
+    "edge_function": "supabase/functions/sync-betclic-odds/index.ts",
+    "test_center": "tests/test-center-v0.9.11.html"
+  },
+  "desktop_v0912": {
+    "css": "css/release0912.css",
+    "js": "js/release0912.js",
+    "sql": "sql/031_patch_v0.9.12_desktop_ux.sql",
+    "test_center": "tests/test-center-v0.9.12.html",
+    "scope": "desktop UX/UI + match operations cockpit"
   }
 }

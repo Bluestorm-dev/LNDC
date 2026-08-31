@@ -31,6 +31,7 @@
   <link rel="stylesheet" href="css/preseason099.css" />
   <link rel="stylesheet" href="css/preprod0910.css" />
   <link rel="stylesheet" href="css/release0911.css" />
+  <link rel="stylesheet" href="css/release0912.css" />
   <title>Le Nid des Champions</title>
 </head>
 <body>
@@ -79,14 +80,11 @@
       <nav class="side-nav">
         <button data-view="home" class="active"><span class="nav-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/home.png" alt=""></span><span>Accueil</span></button>
         <button data-view="matches"><span class="nav-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/predictions.png" alt=""></span><span>Pronostics</span></button>
-        <button data-view="knockout"><span class="nav-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/knockout.png" alt=""></span><span>Phases finales</span></button>
-        <button data-view="ranking"><span class="nav-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/ranking.png" alt=""></span><span>Classements</span></button>
-        <button data-view="season"><span class="nav-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/season.png" alt=""></span><span>Saison</span></button>
+        <button data-view="ranking"><span class="nav-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/ranking.png" alt=""></span><span>Classement du Nid</span></button>
         <button data-view="ucl"><span class="nav-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/trophy.png" alt=""></span><span>Ligue des champions</span></button>
         <button data-view="evenings"><span class="nav-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/live.png" alt=""></span><span>Soirées européennes</span></button>
         <button data-view="teams"><span class="nav-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/teams.png" alt=""></span><span>Teams</span></button>
         <button data-view="museum"><span class="nav-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/museum.png" alt=""></span><span>Musée</span></button>
-        <button data-view="profile"><span class="nav-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/profile.png" alt=""></span><span>Profil</span></button>
         <button data-view="admin" id="adminNav" class="hidden"><span class="nav-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/admin.png" alt=""></span><span>Admin</span></button>
       </nav>
 
@@ -105,7 +103,7 @@
         <div class="page-heading"><span class="eyebrow">Champions League</span><h1 id="pageTitle">Accueil</h1></div>
         <div class="actions desktop-actions">
           <button id="notificationBell" class="notification-bell" type="button" aria-label="Notifications"><span><img class="nid-icon nid-icon-only" src="assets/icons/runtime/notification.png" alt=""></span><b id="notificationBellCount" class="hidden">0</b></button>
-          <span id="backendStatus" class="status-chip"><i class="status-dot"></i><span>Supabase</span></span>
+          <span id="backendStatus" class="status-chip"><i class="status-dot"></i><span>Le Nid est connecté</span></span><span id="appVersionChipV0912" class="chip version-chip-v0912">V0.9.12</span>
           <button id="logoutBtn" class="btn secondary small">Déconnexion</button>
         </div>
       </header>
@@ -135,8 +133,18 @@
         <article class="home-kpi"><span>Journée</span><strong id="kpiProgress">0/0</strong><small>pronostics saisis</small></article>
       </div>
 
+      <section class="home-carousel-section-v0912" aria-label="Prochains rendez-vous">
+        <div class="home-carousel-head-v0912"><div><span class="eyebrow">Prochains rendez-vous</span><h3>Mes prochains matchs</h3></div><div class="carousel-arrows-v0912"><button type="button" data-carousel-prev="homeUpcomingCarouselV0912" aria-label="Précédent">‹</button><button type="button" data-carousel-next="homeUpcomingCarouselV0912" aria-label="Suivant">›</button></div></div>
+        <div id="homeUpcomingCarouselV0912" class="home-carousel-track-v0912"><div class="empty">Le calendrier se prépare.</div></div>
+      </section>
+
+      <section class="home-carousel-section-v0912 home-life-section-v0912" aria-label="La vie du Nid">
+        <div class="home-carousel-head-v0912"><div><span class="eyebrow gold">Le Nid en mouvement</span><h3>Casseroles, badges & records</h3></div><div class="carousel-arrows-v0912"><button type="button" data-carousel-prev="homeActivityCarouselV0912" aria-label="Précédent">‹</button><button type="button" data-carousel-next="homeActivityCarouselV0912" aria-label="Suivant">›</button></div></div>
+        <div id="homeActivityCarouselV0912" class="home-carousel-track-v0912"><div class="empty">Les premières histoires du Nid apparaîtront après les matchs.</div></div>
+      </section>
+
       <div class="home-dashboard">
-        <article class="card home-next-card">
+        <article class="card home-next-card" id="homeNextCardV0912" tabindex="0" role="button" aria-label="Ouvrir le prochain match">
           <div class="home-card-head"><div><span class="eyebrow">Prochain rendez-vous</span><h3>À jouer</h3></div><button id="homeNextAction" class="text-action" type="button">Voir les pronostics →</button></div>
           <div id="homeNextMatch" class="home-next-body"><div class="empty">Le calendrier se prépare.</div></div>
         </article>
@@ -178,8 +186,8 @@
     <section id="view-ranking" class="view hidden">
       <div class="ranking-hero card card-pad">
         <div>
-          <span class="eyebrow">Classements & Live</span>
-          <h2>La table européenne du Nid</h2>
+          <span class="eyebrow">Classement du Nid</span>
+          <h2>Le classement du Nid</h2>
           <p id="rankingSubtitle" class="muted">Classement général, départages complets et mouvements en direct.</p>
         </div>
         <div class="ranking-live-actions">
@@ -272,6 +280,12 @@
 
     <section id="view-profile" class="view hidden">
       <div class="section-title profile-title"><div><span class="eyebrow">Mon espace</span><h3>Profil & champions</h3><p>Ton identité dans le Nid et tes deux paris les plus importants de la saison.</p></div></div>
+      <div class="profile-tabs-v0912" id="profileTabsV0912" role="tablist">
+        <button type="button" class="active" data-profile-tab-v0912="identity">Mon profil</button>
+        <button type="button" data-profile-tab-v0912="season">Saison & carrière</button>
+        <button type="button" data-profile-tab-v0912="preferences">Préférences</button>
+      </div>
+      <div id="profileIdentityV0912" class="profile-tab-panel-v0912 active" data-profile-panel-v0912="identity">
 
       <article class="card profile-card card-pad">
         <div class="profile-head"><div id="profileAvatar" class="profile-avatar-host">🦉</div><div><h2 id="profileUsername" style="margin:0">—</h2><div class="actions" style="margin-top:6px"><span id="profileRole" class="badge-role">joueur</span><span id="profileClub" class="badge-role">Club de cœur : —</span></div></div></div>
@@ -284,10 +298,15 @@
         <div id="profileMsg" class="form-msg"></div>
       </article>
 
-      <article id="profileCareerRoot" class="card card-pad" style="margin-top:14px"><div class="empty">Chargement de la carrière…</div></article>
+      </div>
+      <div id="profileSeasonV0912" class="profile-tab-panel-v0912" data-profile-panel-v0912="season">
+        <div id="profileSeasonSummaryV0912"></div>
+        <article id="profileCareerRoot" class="card card-pad" style="margin-top:14px"><div class="empty">Chargement de la carrière…</div></article>
+      </div>
+      <div id="profilePreferencesV0912" class="profile-tab-panel-v0912" data-profile-panel-v0912="preferences">
 
-      <div class="section-title avatar-profile-title"><div><span class="eyebrow">Identité visuelle</span><h3>Mon avatar</h3><p>Choisis un Hibou officiel ou envoie ton propre PNG/JPG/WebP. Les uploads personnels passent par la modération Admin.</p></div></div>
-      <article id="avatarEditor" class="card card-pad avatar-editor-card-v053"><div class="empty">Chargement de la bibliothèque…</div></article>
+      <div class="section-title avatar-profile-title"><div><span class="eyebrow">Identité visuelle</span><h3>Mon avatar</h3><p>La bibliothèque reste rangée tant que tu ne souhaites pas changer d’apparence.</p></div><button id="toggleAvatarEditorV0912" class="btn secondary small" type="button">🎭 Changer mon avatar</button></div>
+      <div id="avatarDrawerV0912" class="avatar-drawer-v0912 hidden"><article id="avatarEditor" class="card card-pad avatar-editor-card-v053"><div class="empty">Chargement de la bibliothèque…</div></article></div>
 
       <div class="section-title profile-team-title"><div><span class="eyebrow">Communauté</span><h3>Ma Team</h3><p>Ton appartenance actuelle et son identité visuelle.</p></div></div>
       <article id="profileTeamCard" class="card card-pad profile-team-card"><div class="empty">Chargement…</div></article>
@@ -308,6 +327,7 @@
       </div>
       <div class="champion-profile-note"><span><img class="nid-icon nid-icon-only" src="assets/icons/runtime/lock.png" alt=""></span><p><b>Secret jusqu'au verrouillage.</b> Les autres joueurs ne voient pas tes choix tant que la fenêtre correspondante reste ouverte. Si le premier choix est oublié, l'OM est attribué automatiquement.</p></div>
       <details class="card champion-board-details"><summary>Voir les choix du Nid après verrouillage</summary><article id="championBoard" class="card-pad champion-board"><div class="empty">Les plumes sont encore rabattues sur les parchemins.</div></article></details>
+      </div>
     </section>
 
     <section id="view-admin" class="view hidden admin-view">
@@ -322,7 +342,7 @@
             <span><img class="nid-icon nid-icon-only" src="assets/icons/runtime/search.png" alt=""></span><input id="adminGlobalSearchV095" type="search" autocomplete="off" placeholder="Trouver une option…  Ctrl+K" aria-label="Rechercher une option dans l’administration" />
             <div id="adminSearchResultsV095" class="admin-search-results-v095 hidden" role="listbox"></div>
           </div>
-          <span class="chip">V0.9.11</span>
+          <span class="chip">V0.9.12</span>
         </div>
       </div>
 
@@ -369,15 +389,17 @@
             </article>
             <div class="admin-subhead"><div><h4>Gestion des rencontres</h4><p>Passe un match LIVE, modifie son score autant de fois que nécessaire puis termine-le.</p></div></div>
             <div id="adminMatchdayTabs" class="matchday-tabs"></div>
-            <article id="adminMatches" class="card card-pad"></article>
+            <article id="adminMatchOpsV0912" class="card card-pad admin-match-ops-v0912"><div class="empty">Chargement du cockpit des matchs…</div></article>
+            <article id="adminMatches" class="card card-pad admin-matches-legacy-v0912"></article>
           </section>
 
           <section class="admin-panel" data-admin-panel="test" id="adminTestPanelSection">
             <div class="admin-panel-head"><div><span class="eyebrow gold">Laboratoire Super Admin</span><h3>Tests, diagnostics & Cron</h3><p>Retrouve ici les pages de validation de chaque jalon, puis les outils de matchs TEST et de rappels.</p></div><span class="chip">SUPER ADMIN</span></div>
             <article id="adminTestCentersV095" class="card card-pad admin-test-centers-v095">
-              <div class="section-title compact"><div><span class="eyebrow gold">Validation de l’application</span><h4>Centres de tests & road-check final</h4><p>La V0.9.11 ajoute les cotes Betclic expérimentales et l’ouverture progressive des fonctions. Commence par son Centre automatique, puis reprends le road-check guidé avant V0.10.0.</p></div><span class="chip">ACCÈS DIRECT</span></div>
+              <div class="section-title compact"><div><span class="eyebrow gold">Validation de l’application</span><h4>Centres de tests & road-check final</h4><p>La V0.9.12 refond l’expérience desktop et le cockpit des matchs. Valide d’abord le desktop avant la passe mobile.</p></div><span class="chip">ACCÈS DIRECT</span></div>
               <div class="admin-test-links-v095">
-                <a class="admin-test-link-v095 current" href="tests/test-center-v0.9.11.html" target="_blank" rel="noopener"><span>🧪</span><div><strong>Tests V0.9.11</strong><small>1 940 contrôles · Betclic + ouverture progressive</small></div><i>↗</i></a>
+                <a class="admin-test-link-v095 current" href="tests/test-center-v0.9.12.html" target="_blank" rel="noopener"><span>🎨</span><div><strong>Tests V0.9.12</strong><small>1 980 contrôles · UX/UI desktop & cockpit matchs</small></div><i>↗</i></a>
+                <a class="admin-test-link-v095" href="tests/test-center-v0.9.11.html" target="_blank" rel="noopener"><span>💶</span><div><strong>Tests V0.9.11</strong><small>1 940 contrôles · Betclic & ouverture progressive</small></div><i>↗</i></a>
                 <a class="admin-test-link-v095" href="tests/test-center-v0.9.10.html" target="_blank" rel="noopener"><span>📅</span><div><strong>Tests V0.9.10</strong><small>1 920 contrôles · calendrier & pré-lancement</small></div><i>↗</i></a>
                 <a class="admin-test-link-v095" href="tests/test-center-v0.9.9.html" target="_blank" rel="noopener"><span>🔥</span><div><strong>Tests V0.9.9</strong><small>1 880 contrôles · répétition générale</small></div><i>↗</i></a>
                 <a class="admin-test-link-v095 current" href="tests/road-check-v0.9.9.html" target="_blank" rel="noopener"><span>🧭</span><div><strong>Grand road-check V1</strong><small>24 missions guidées · validation manuelle</small></div><i>↗</i></a>
@@ -386,7 +408,7 @@
                 <a class="admin-test-link-v095" href="tests/test-center-v0.9.0.html" target="_blank" rel="noopener"><span>🧭</span><div><strong>Tests V0.9.0</strong><small>1 330 contrôles · saison & carrière</small></div><i>↗</i></a>
                 <a class="admin-test-link-v095" href="tests/test-center-v0.8.1.html" target="_blank" rel="noopener"><span>🔧</span><div><strong>Tests V0.8.1</strong><small>1 185 contrôles · historique</small></div><i>↗</i></a>
               </div>
-              <p class="admin-test-note-v095">Terminal : <code>node tests\run-all-v0.9.11.mjs</code> · Le grand road-check est maintenant prêt à être exécuté.</p>
+              <p class="admin-test-note-v095">Terminal : <code>node tests\run-all-v0.9.12.mjs</code> · Le grand road-check est maintenant prêt à être exécuté.</p>
             </article>
             <article id="adminPreseasonPanelV099" class="card card-pad admin-v095-block"><div class="empty">Chargement de la répétition générale…</div></article>
             <article class="card card-pad admin-test-control">
@@ -488,7 +510,7 @@
           <section class="admin-panel" data-admin-panel="application">
             <div class="admin-panel-head"><div><span class="eyebrow">Technique</span><h3>Application</h3><p>Réglages globaux, saisons, sauvegardes, exports et traçabilité réunis au même endroit.</p></div><span class="chip">SYSTÈME</span></div>
             <div class="grid grid-2">
-              <article class="card card-pad admin-app-state"><span class="eyebrow gold">État</span><h3>Le Nid des Champions</h3><dl><div><dt>Version front</dt><dd id="adminAppVersion">0.9.11</dd></div><div><dt>Saison</dt><dd id="adminAppSeason">—</dd></div><div><dt>Backend</dt><dd id="adminAppBackend">—</dd></div><div><dt>Mon rôle</dt><dd id="adminAppRole">—</dd></div></dl></article>
+              <article class="card card-pad admin-app-state"><span class="eyebrow gold">État</span><h3>Le Nid des Champions</h3><dl><div><dt>Version front</dt><dd id="adminAppVersion">0.9.12</dd></div><div><dt>Saison</dt><dd id="adminAppSeason">—</dd></div><div><dt>Backend</dt><dd id="adminAppBackend">—</dd></div><div><dt>Mon rôle</dt><dd id="adminAppRole">—</dd></div></dl></article>
               <article class="card card-pad"><span class="eyebrow">Maintenance</span><h3>Actualiser le Nid</h3><p class="muted">Ces actions ne modifient aucune donnée métier dans Supabase.</p><div class="admin-maintenance-actions"><button id="adminReloadDataBtn" class="btn small" type="button"><img class="nid-icon" src="assets/icons/runtime/refresh.png" alt="">Recharger les données</button><button id="adminRefreshPwaBtn" class="btn secondary small" type="button">Nettoyer le cache PWA</button></div><div id="adminMaintenanceMsg" class="form-msg"></div></article>
               <article class="card card-pad"><span class="eyebrow danger">Avant ouverture officielle</span><h3>Reset propre de la recette</h3><p class="muted">Efface pronostics de test, favoris, badges obtenus, casseroles, records et scénarios de répétition, mais conserve les comptes, les Teams, les clubs et le calendrier réel. Cette action est bloquée après le premier coup d’envoi.</p><button id="prelaunchResetBtnV0910" class="btn danger" type="button">🧹 Préparer la saison pour l’ouverture</button></article>
             </div>
@@ -548,6 +570,7 @@
   <script src="js/preseason099.js"></script>
   <script src="js/preprod0910.js"></script>
   <script src="js/release0911.js"></script>
+  <script src="js/release0912.js"></script>
   <script src="js/realtime.js"></script>
   <script src="js/app.js"></script>
 </body>

@@ -1,3 +1,12 @@
+## V0.9.12
+
+- Refonte desktop UX/UI et navigation.
+- Carrousels matchs + vie du Nid.
+- Pronostics 2 colonnes et fiches clubs.
+- Centre C1 / Profil réorganisés.
+- Cockpit Admin cotes et résultats.
+- Garde-fou badges de classement avant premier résultat.
+
 ## V0.9.11
 
 - Betclic expérimental pour les cotes 1N2.
