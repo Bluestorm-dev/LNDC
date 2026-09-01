@@ -108,7 +108,36 @@ end;$$;
 grant execute on function public.admin_save_matchday_odds_v0912(uuid,jsonb) to authenticated;
 
 -- ---------------------------------------------------------------------------
--- 3) Diagnostic courant V0.9.12.
+-- 3) Nouvelle inscription : notification interne + Web Push aux Super Admin.
+-- ---------------------------------------------------------------------------
+create or replace function public.notify_super_admin_registration_v0912()
+returns trigger
+language plpgsql
+security definer
+set search_path=public
+as $$
+declare
+  v_admin record;
+  v_season_id uuid;
+begin
+  if new.status <> 'pending' then return new; end if;
+  if tg_op='UPDATE' and old.status='pending' then return new; end if;
+  select s.id into v_season_id from public.seasons s where coalesce(s.is_active,false)=true order by s.created_at desc limit 1;
+  for v_admin in select p.id from public.profiles p where p.role='super_admin' and p.status='active' and p.id<>new.id loop
+    insert into public.notifications(user_id,season_id,category,title,body,importance,deep_link,payload,source_key,push_requested,created_at)
+    values(v_admin.id,v_season_id,'system','🚪 Nouvelle demande d’inscription',coalesce(nullif(new.username,''),'Un nouveau joueur')||' attend l’ouverture du Nid.','important','admin:players',jsonb_build_object('section','players','registration_user_id',new.id,'username',new.username),'registration-request:'||new.id::text,true,now())
+    on conflict(user_id,source_key) where source_key is not null do nothing;
+  end loop;
+  return new;
+end;$$;
+
+drop trigger if exists notify_super_admin_registration_v0912 on public.profiles;
+create trigger notify_super_admin_registration_v0912
+after insert or update of status on public.profiles
+for each row execute function public.notify_super_admin_registration_v0912();
+
+-- ---------------------------------------------------------------------------
+-- 4) Diagnostic courant V0.9.12.
 -- ---------------------------------------------------------------------------
 create or replace function public.admin_diagnostics_v0912()
 returns table(section text,test text,status text,detail text)
@@ -124,6 +153,10 @@ begin
   union all
   select 'Admin','Cotes journée',case when to_regprocedure('public.admin_save_matchday_odds_v0912(uuid,jsonb)') is not null then 'PASS' else 'FAIL' end,
          coalesce(to_regprocedure('public.admin_save_matchday_odds_v0912(uuid,jsonb)')::text,'RPC absente')
+  union all
+  select 'Notifications','Inscription → Super Admin',case when to_regprocedure('public.notify_super_admin_registration_v0912()') is not null
+       and exists(select 1 from pg_trigger where tgname='notify_super_admin_registration_v0912' and not tgisinternal) then 'PASS' else 'FAIL' end,
+       'Une demande pending crée une notification Push vers les Super Admin'
   union all
   select 'Gamification','Badges classement',case when not exists(
            select 1 from public.gamification_badges b

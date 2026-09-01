@@ -139,9 +139,11 @@
       ];
       statusPairs.forEach(([view,key])=>{
         $$(`[data-view="${view}"]`).forEach(el=>{
+          const open=boolSetting(key,false);
           let chip=el.querySelector(".feature-lock-chip-v0911");
+          if(open){chip?.remove();return;}
           if(!chip){chip=document.createElement("small");chip.className="feature-lock-chip-v0911";el.appendChild(chip);}
-          const open=boolSetting(key,false);chip.textContent=open?"OUVERT":"VERROUILLÉ";chip.classList.toggle("open",open);
+          chip.textContent="VERROUILLÉ";chip.classList.remove("open");
         });
       });
     }
@@ -243,7 +245,7 @@
           ${settingRow("feature_solitary_owl","Hibou solitaire","Affiche le classement parallèle des soirées.")}
         </section>
       </div>
-      <div class="feature-gate-note-v0911">🔒 <b>Mode pré-lancement :</b> les fonctions optionnelles sont fermées aux joueurs par défaut. Ton compte Super Admin les conserve visibles avec un indicateur OUVERT / VERROUILLÉ.</div>
+      <div class="feature-gate-note-v0911">🔒 <b>Mode pré-lancement :</b> les fonctions optionnelles sont fermées aux joueurs par défaut. Ton compte Super Admin conserve les fonctions verrouillées visibles avec l’indicateur VERROUILLÉ. Une fonction ouverte n’affiche aucune pastille.</div>
       <div id="adminSettingsMsgV095" class="form-msg"></div>`;
     $$('[data-admin-setting-v095]',root).forEach(input=>input.onchange=()=>saveSettingV095(input.dataset.adminSettingV095,input.checked,input));
   }

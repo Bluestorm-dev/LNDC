@@ -109,7 +109,7 @@
     show(index);
     if(slides.length>1){
       const timer=setInterval(()=>{
-        if(document.hidden||!isDesktopV0912())return;
+        if(document.hidden)return;
         show(index+1);
       },HOME_CAROUSEL_DELAY_V0912);
       homeCarouselTimersV0912.set(root.id,timer);
@@ -117,7 +117,6 @@
   }
 
   function renderHomeCarouselsV0912(){
-    if(!isDesktopV0912()) return;
     const upcomingRoot = byId("homeUpcomingCarouselV0912");
     if(upcomingRoot){
       const now = Date.now();
@@ -127,9 +126,13 @@
       upcomingRoot.innerHTML = upcoming.length ? upcoming.map(m=>{
         const st=matchPredictionStateV0912(m);
         return `<button type="button" class="home-carousel-card-v0912" data-home-match-v0912="${esc(m.id)}">
-          <div class="meta"><span>${esc(fmtDate(m.kickoff_at))}</span><span>${esc(fmtTime(m.kickoff_at))}</span></div>
-          <div class="fixture"><span>${esc(m.home_club?.short_name||m.home_club?.name||"?")}</span><b>VS</b><span>${esc(m.away_club?.short_name||m.away_club?.name||"?")}</span></div>
-          <div class="meta"><span>${esc(m.stadium||"Stade à confirmer")}</span><span>${esc(m.venue_country||"")}</span></div>
+          <div class="meta"><span>${esc(fmtDate(m.kickoff_at))} · ${esc(fmtTime(m.kickoff_at))}</span><span>${esc(m.status==="live"?"LIVE":"C1")}</span></div>
+          <div class="fixture fixture-visual-v0912">
+            <span class="fixture-team-v0912">${crestHTML(m.home_club)}<strong>${esc(compactClubName(m.home_club))}</strong>${clubCountryHTML(m.home_club)}</span>
+            <b>VS</b>
+            <span class="fixture-team-v0912">${crestHTML(m.away_club)}<strong>${esc(compactClubName(m.away_club))}</strong>${clubCountryHTML(m.away_club)}</span>
+          </div>
+          <div class="meta venue-meta-v0912"><span>📍 ${esc(m.stadium||m.home_club?.venue||"Stade à confirmer")}</span><span>${esc(m.venue_country||m.home_club?.country||"")}</span></div>
           <div class="state ${st.key}"><span>Pronostic</span><strong>${esc(st.label)}</strong></div>
         </button>`;
       }).join("") : '<div class="empty">Aucun rendez-vous à venir.</div>';
@@ -168,7 +171,6 @@
   }
 
   function enhancePredictionCardsV0912(){
-    if(!isDesktopV0912())return;
     document.querySelectorAll("#matchesPanel .match[data-match]").forEach(card=>{
       const m=safeArray(state.matches).find(x=>String(x.id)===String(card.dataset.match))||safeArray(state.allMatches).find(x=>String(x.id)===String(card.dataset.match));
       if(!m)return;
@@ -193,7 +195,7 @@
   function clubFixtureRowV0912(m,clubId,upcoming){
     const home=String(m.home_club?.id)===String(clubId);const mine=home?m.home_club:m.away_club;const opp=home?m.away_club:m.home_club;
     const score=m.status==="finished"?`${m.home_score??0}–${m.away_score??0}`:m.status==="live"?`${m.home_score??0}–${m.away_score??0}`:"VS";
-    return `<div class="club-fixture-row-v0912"><time>${esc(fmtDate(m.kickoff_at))}<br>${esc(fmtTime(m.kickoff_at))}</time><strong>${esc(mine?.short_name||mine?.name||"?")} ${score} ${esc(opp?.short_name||opp?.name||"?")}</strong>${upcoming?`<button class="btn small" type="button" data-club-prono-v0912="${esc(m.id)}">Pronostiquer</button>`:"<span class=\"chip\">${esc(statusLabel(m.status))}</span>"}</div>`;
+    return `<div class="club-fixture-row-v0912"><time>${esc(fmtDate(m.kickoff_at))}<br>${esc(fmtTime(m.kickoff_at))}</time><strong>${esc(compactClubName(mine))} ${score} ${esc(compactClubName(opp))}</strong>${upcoming?`<button class="btn small" type="button" data-club-prono-v0912="${esc(m.id)}">Pronostiquer</button>`:"<span class=\"chip\">${esc(statusLabel(m.status))}</span>"}</div>`;
   }
 
   function openClubSheetV0912(clubId){
@@ -214,7 +216,6 @@
     return `<div class="leaderboard-toolbar ucl-info-tabs-v0912"><button type="button" data-ucl-info-v0912="calendar" class="${tab==="calendar"?"active":""}">Calendrier & résultats</button><button type="button" data-ucl-info-v0912="clubs" class="${tab==="clubs"?"active":""}">Clubs</button></div><div class="ucl-info-body-v0912">${tab==="clubs"?uclClubsHTML():uclCalendarHTML()}</div>`;
   }
   function renderUclCenterV0912(){
-    if(!isDesktopV0912())return baseRenderUclCenter?.();
     const root=byId("uclCenterRoot");if(!root)return;
     if(state.uclCenterLoading){root.innerHTML='<article class="card card-pad"><div class="empty">Chargement du Centre Ligue des champions…</div></article>';return;}
     let tab=state.uclTab||"standings";if(!["standings","knockout","info"].includes(tab))tab="standings";state.uclTab=tab;
@@ -226,7 +227,6 @@
   }
 
   function setupProfileDomV0912(){
-    if(!isDesktopV0912())return;
     const identity=byId("profileIdentityV0912"),prefs=byId("profilePreferencesV0912");if(!identity||!prefs||identity.dataset.arrangedV0912)return;
     identity.dataset.arrangedV0912="1";
     const move=(selector)=>{const el=document.querySelector(selector);if(el)identity.appendChild(el);};
@@ -258,7 +258,7 @@
   }
   function adminMatchOpRowV0912(m){
     const bookmaker=m.odds_bookmaker||m.odds_provider||"Manuel";
-    return `<div class="admin-op-row-v0912" data-admin-op-row-v0912="${esc(m.id)}"><div class="admin-op-fixture-v0912"><strong>${esc(m.home_club?.short_name||m.home_club?.name||"?")} – ${esc(m.away_club?.short_name||m.away_club?.name||"?")}</strong><small>${esc(fmtDate(m.kickoff_at))} · ${esc(fmtTime(m.kickoff_at))}</small><small>📍 ${esc([m.stadium||m.home_club?.venue,m.venue_country||m.home_club?.country].filter(Boolean).join(" · ")||"Lieu à confirmer")}</small></div><div class="admin-op-odds-v0912"><label>1<input data-op-odd="home" inputmode="decimal" value="${m.odds_home??""}"></label><label>N<input data-op-odd="draw" inputmode="decimal" value="${m.odds_draw??""}"></label><label>2<input data-op-odd="away" inputmode="decimal" value="${m.odds_away??""}"></label><label>Source<input data-op-bookmaker value="${esc(bookmaker)}"></label></div><div class="admin-op-score-v0912"><label>Dom.<input data-op-score="home" type="number" min="0" max="99" value="${m.home_score??0}"></label><label>Ext.<input data-op-score="away" type="number" min="0" max="99" value="${m.away_score??0}"></label><label>État<select data-op-status><option value="scheduled" ${m.status==="scheduled"?"selected":""}>À venir</option><option value="live" ${m.status==="live"?"selected":""}>LIVE</option><option value="finished" ${m.status==="finished"?"selected":""}>Terminé</option><option value="postponed" ${m.status==="postponed"?"selected":""}>Reporté</option><option value="cancelled" ${m.status==="cancelled"?"selected":""}>Annulé</option></select></label></div><div class="admin-op-actions-v0912"><button type="button" class="btn secondary small" data-op-save-odds>💶 Cotes</button><button type="button" class="btn small" data-op-save-result>${m.status==="finished"?"Corriger":"Score / état"}</button><button type="button" class="btn secondary small" data-op-settings>⚙ Paramètres</button></div></div>`;
+    return `<div class="admin-op-row-v0912" data-admin-op-row-v0912="${esc(m.id)}"><div class="admin-op-fixture-v0912"><strong>${esc(compactClubName(m.home_club))} – ${esc(compactClubName(m.away_club))}</strong><small>${esc(fmtDate(m.kickoff_at))} · ${esc(fmtTime(m.kickoff_at))}</small><small>📍 ${esc([m.stadium||m.home_club?.venue,m.venue_country||m.home_club?.country].filter(Boolean).join(" · ")||"Lieu à confirmer")}</small></div><div class="admin-op-odds-v0912"><label>1<input data-op-odd="home" inputmode="decimal" value="${m.odds_home??""}"></label><label>N<input data-op-odd="draw" inputmode="decimal" value="${m.odds_draw??""}"></label><label>2<input data-op-odd="away" inputmode="decimal" value="${m.odds_away??""}"></label><label>Source<input data-op-bookmaker value="${esc(bookmaker)}"></label></div><div class="admin-op-score-v0912"><label>Dom.<input data-op-score="home" type="number" min="0" max="99" value="${m.home_score??0}"></label><label>Ext.<input data-op-score="away" type="number" min="0" max="99" value="${m.away_score??0}"></label><label>État<select data-op-status><option value="scheduled" ${m.status==="scheduled"?"selected":""}>À venir</option><option value="live" ${m.status==="live"?"selected":""}>LIVE</option><option value="finished" ${m.status==="finished"?"selected":""}>Terminé</option><option value="postponed" ${m.status==="postponed"?"selected":""}>Reporté</option><option value="cancelled" ${m.status==="cancelled"?"selected":""}>Annulé</option></select></label></div><div class="admin-op-actions-v0912"><button type="button" class="btn secondary small" data-op-save-odds>💶 Cotes</button><button type="button" class="btn small" data-op-save-result>${m.status==="finished"?"Corriger":"Score / état"}</button><button type="button" class="btn secondary small" data-op-settings>⚙ Paramètres</button></div></div>`;
   }
   function bindAdminOpRowV0912(row){
     row.querySelectorAll("input,select").forEach(input=>input.addEventListener("input",()=>row.classList.add("admin-op-dirty-v0912")));
@@ -309,9 +309,26 @@
     const v=byId("appVersionChipV0912");if(v)v.textContent=`V${CFG.APP_VERSION||"0.9.12"}`;
   }
 
+
+  function setupMobileMoreV0912(){
+    const btn=byId("mobileMoreNavV0912");
+    if(!btn||btn.dataset.boundV0912)return;
+    btn.dataset.boundV0912="1";
+    btn.onclick=()=>{
+      const root=modal("Plus",`<div class="mobile-more-grid-v0912">
+        <button type="button" data-mobile-more-view="evenings"><img class="nid-icon" src="assets/icons/runtime/live.png" alt=""><span><b>Soirées européennes</b><small>LIVE, soirées et tendances</small></span></button>
+        <button type="button" data-mobile-more-view="teams"><img class="nid-icon" src="assets/icons/runtime/teams.png" alt=""><span><b>Teams</b><small>Communautés du Nid</small></span></button>
+        <button type="button" data-mobile-more-view="museum"><img class="nid-icon" src="assets/icons/runtime/museum.png" alt=""><span><b>Musée</b><small>Badges, casseroles et records</small></span></button>
+        <button type="button" data-mobile-more-view="profile"><img class="nid-icon" src="assets/icons/runtime/profile.png" alt=""><span><b>Mon profil</b><small>Avatar, saison et préférences</small></span></button>
+      </div>`);
+      root.querySelectorAll("[data-mobile-more-view]").forEach(x=>x.onclick=()=>{const view=x.dataset.mobileMoreView;root.innerHTML="";window.setView(view);});
+    };
+  }
+
   function setupStaticV0912(){
     setupProfileDomV0912();
     setProfileTabV0912(state.profileTabV0912);
+    setupMobileMoreV0912();
   }
 
   window.setView = function(name){
@@ -323,20 +340,23 @@
       if(name==="profile")setProfileTabV0912(state.profileTabV0912||"identity");
       if(name==="ucl" && (!["standings","knockout","info"].includes(state.uclTab)))state.uclTab="standings";
       setTimeout(()=>{enhancePredictionCardsV0912();renderAdminMatchOpsV0912();},0);
+    }else{
+      const more=byId("mobileMoreNavV0912");
+      if(more)more.classList.toggle("active",["evenings","teams","museum","profile"].includes(name));
+      if(name==="profile"){setupProfileDomV0912();setProfileTabV0912(state.profileTabV0912||"identity");}
     }
     return result;
   };
 
-  window.renderHome = function(){baseRenderHome?.();if(isDesktopV0912()){renderHomeCarouselsV0912();enhanceHomeNextV0912();applyConnectionBadgeV0912();}};
+  window.renderHome = function(){baseRenderHome?.();renderHomeCarouselsV0912();if(isDesktopV0912())enhanceHomeNextV0912();applyConnectionBadgeV0912();};
   window.renderMatchPanels = function(){baseRenderMatchPanels?.();enhancePredictionCardsV0912();};
   window.renderRanking = function(){baseRenderRanking?.();if(isDesktopV0912()&&byId("pageTitle")&&!byId("view-ranking")?.classList.contains("hidden"))byId("pageTitle").textContent="Classement du Nid";};
-  window.renderProfile = function(){baseRenderProfile?.();if(isDesktopV0912()){setupProfileDomV0912();setProfileTabV0912(state.profileTabV0912||"identity");renderProfileSeasonV0912();}};
+  window.renderProfile = function(){baseRenderProfile?.();setupProfileDomV0912();setProfileTabV0912(state.profileTabV0912||"identity");renderProfileSeasonV0912();};
   window.renderUclCenter = renderUclCenterV0912;
   window.renderAdminMatches = function(){baseRenderAdminMatches?.();renderAdminMatchOpsV0912();};
 
   window.renderRelease0912 = function(){
-    if(!isDesktopV0912())return;
-    setupStaticV0912();applyConnectionBadgeV0912();renderHomeCarouselsV0912();enhanceHomeNextV0912();enhancePredictionCardsV0912();renderProfileSeasonV0912();renderAdminMatchOpsV0912();
+    setupStaticV0912();applyConnectionBadgeV0912();renderHomeCarouselsV0912();enhancePredictionCardsV0912();renderProfileSeasonV0912();renderAdminMatchOpsV0912();
   };
 
   setupStaticV0912();

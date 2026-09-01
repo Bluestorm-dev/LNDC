@@ -213,6 +213,11 @@
   function setView(name) {
     // V0.4.1 : le choix champion vit désormais dans Profil.
     if(name === "champions") name = "profile";
+    // V0.9.11 : une fonction verrouillée par le Super Admin disparaît aussi des accès directs.
+    if(typeof window.featureViewAllowedV0911==="function" && !window.featureViewAllowedV0911(name)){
+      toast("🔒 Cette fonction n’est pas encore ouverte aux joueurs.");
+      name="home";
+    }
     const titles={home:"Accueil",matches:"Pronostics",knockout:"Phases finales",ranking:"Classements",season:"Saison",ucl:"Ligue des champions",evenings:"Soirées européennes",teams:"Teams",museum:"Musée",profile:"Profil & champions",rival:"Rivalités",admin:"Administration"};
     $$(".view").forEach(v => v.classList.toggle("hidden", v.id !== `view-${name}`));
     $$('[data-view]').forEach(b => b.classList.toggle("active", b.dataset.view === name));
@@ -251,6 +256,41 @@
     const url = publicLogoUrl(club);
     const short = esc((club?.short_name || club?.tla || "?").slice(0,3));
     return `<span class="crest ${large ? "large" : ""}">${url ? `<img src="${esc(url)}" alt="" loading="lazy" onerror="this.remove();this.parentElement.classList.add('crest-fallback')">` : ""}<b>${short}</b></span>`;
+  }
+
+  // V0.9.12 R2 — nom compact pour les cartes et le mobile.
+  function compactClubName(club) {
+    if (!club) return "?";
+    const source = String(club.short_name || club.name || club.tla || "?").trim();
+    const identity = `${club.name||""} ${club.short_name||""} ${club.tla||""}`.toLocaleLowerCase("fr");
+    const aliases = [
+      [/club brugge|bruges/, "Club Brugge"],
+      [/internazionale|inter milan/, "Inter"],
+      [/real betis/, "Betis"],
+      [/borussia dortmund/, "Dortmund"],
+      [/barcelona|barcelone/, "Barcelone"],
+      [/aston villa/, "Aston Villa"],
+      [/real madrid/, "Real Madrid"],
+      [/manchester city/, "Man. City"],
+      [/manchester united/, "Man. United"],
+      [/paris saint.germain|paris sg|\bpsg\b/, "PSG"],
+      [/bayern.*munich|bayern.*münchen/, "Bayern"],
+      [/atletico madrid|atlético madrid/, "Atlético"],
+      [/olympique de marseille|\bom\b/, "Marseille"],
+      [/olympique lyonnais|\bol\b/, "Lyon"],
+      [/vfb stuttgart/, "Stuttgart"],
+      [/sporting.*lisbon|sporting.*portugal/, "Sporting"]
+    ];
+    for (const [rx,label] of aliases) if (rx.test(identity)) return label;
+    let value = source
+      .replace(/\b(Football Club|Futbol Club|Club de Fútbol|Club de Futbol)\b/gi,"")
+      .replace(/^(FC|CF|AFC|AC|SSC|VfB)\s+/i,"")
+      .replace(/\s+(FC|CF|AFC|AC|SSC|FK|SK)$/i,"")
+      .replace(/\s+/g," ").trim();
+    if (value.length <= 19) return value;
+    const words=value.split(" ");
+    if(words.length>2){const short=words.slice(0,2).join(" ");if(short.length<=19)return short;}
+    return club.tla ? String(club.tla).toUpperCase() : value.slice(0,18).trimEnd()+"…";
   }
 
   // V0.6.6 — drapeaux via FlagCDN : rendu identique sur Windows, Android et iOS.

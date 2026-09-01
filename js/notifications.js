@@ -127,6 +127,7 @@ function openNotificationDeepLink(link,payload={}){
   if(value==="rival"||value.startsWith("rival:")){setView("rival");renderRivalView();return;}
   if(value==="team"||value==="teams"||value.startsWith("team:")||value.startsWith("teams:")){const tab=value.split(":")[1]||payload?.tab;if(tab)state.teamTab=tab;setView("teams");if(typeof renderTeams==="function")renderTeams();return;}
   if(value==="matches"||value.startsWith("matches:")){const matchdayId=value.split(":")[1]||payload?.matchday_id;if(matchdayId&&state.matchdays.some(md=>String(md.id)===String(matchdayId)))selectMatchday(matchdayId);setView("matches");return;}
+  if(value==="admin"||value.startsWith("admin:")){const section=value.split(":")[1]||payload?.section||"dashboard";setView("admin");if(typeof setAdminSection==="function")setTimeout(()=>setAdminSection(section,{scroll:false}),0);if(section==="players")setTimeout(()=>document.querySelector("#registrationAdminSection")?.scrollIntoView({behavior:"smooth",block:"center"}),120);return;}
   if(value==="museum"||value.startsWith("museum:")){const tab=value.split(":")[1]||payload?.tab;if(tab)state.museumTab=tab;setView("museum");if(typeof renderMuseum==="function")renderMuseum();return;}
   setView(["home","profile","admin","ranking","teams","matches","knockout","season","museum"].includes(value)?value:"home");
 }

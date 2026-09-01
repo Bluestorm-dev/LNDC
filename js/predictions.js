@@ -25,9 +25,9 @@
         const status=next.status==="live"?'<span class="home-live-pill">● LIVE</span>':`<span>${esc(fmtDate(next.kickoff_at))}</span>`;
         nextRoot.innerHTML=`<div class="home-next-meta">${status}<small>${next.stadium?esc(next.stadium):next.tie_id?'Phase finale':'Champions League'}</small></div>
           <div class="home-next-fixture">
-            <div class="home-next-team">${crestHTML(next.home_club,true)}<strong>${esc(next.home_club?.short_name||next.home_club?.name||'—')}</strong>${clubCountryHTML(next.home_club)}</div>
+            <div class="home-next-team">${crestHTML(next.home_club,true)}<strong>${esc(compactClubName(next.home_club))}</strong>${clubCountryHTML(next.home_club)}</div>
             <div class="home-next-center"><span>${next.status==='live'?`${next.home_score??0} – ${next.away_score??0}`:'VS'}</span><small>${pred?`Ton prono ${pred.home_score}–${pred.away_score}`:locked?'Verrouillé':'Prono à faire'}</small></div>
-            <div class="home-next-team">${crestHTML(next.away_club,true)}<strong>${esc(next.away_club?.short_name||next.away_club?.name||'—')}</strong>${clubCountryHTML(next.away_club)}</div>
+            <div class="home-next-team">${crestHTML(next.away_club,true)}<strong>${esc(compactClubName(next.away_club))}</strong>${clubCountryHTML(next.away_club)}</div>
           </div>`;
         if(nextAction){nextAction.textContent=next.tie_id?'Ouvrir les phases finales →':'Voir les pronostics →';nextAction.onclick=()=>setView(targetView);}
       }
@@ -129,13 +129,13 @@
     return `<article class="match ${statusClass(m.status)} ${m.is_test?'match-test':''}" data-match="${m.id}">
       <div class="match-top"><span>${m.is_test?'<b class="test-pill">TEST</b> · ':''}${esc(fmtTime(m.kickoff_at))}${m.stadium?` · ${esc(m.stadium)}`:""}${m.venue_country?` · ${esc(m.venue_country)}`:""}${m.tie_id?` · ${m.leg_number===2?'retour':'aller'}`:""}</span><span class="match-top-right">${Number(m.points_multiplier||1)>1?`<b class="multiplier-badge">×${Number(m.points_multiplier)}</b>`:""}<span class="status-label ${statusClass(m.status)}">${esc(statusLabel(m.status))}${result?` · ${esc(result)}`:""}${m.penalties_home!=null&&m.penalties_away!=null?` · TAB ${m.penalties_home}–${m.penalties_away}`:""}</span></span></div>
       <div class="teams">
-        <div class="team">${crestHTML(m.home_club)}<strong>${esc(m.home_club.name)}</strong>${clubCountryHTML(m.home_club)}</div>
+        <div class="team" title="${esc(m.home_club?.name||compactClubName(m.home_club))}">${crestHTML(m.home_club)}<strong>${esc(compactClubName(m.home_club))}</strong>${clubCountryHTML(m.home_club)}</div>
         <div class="prediction-center">
           <div class="scorebox"><div class="score-control"><button data-delta="-1" data-side="home" ${locked||!editable||cancelled?'disabled':''}>−</button><input data-score="home" data-filled="${p?'true':'false'}" inputmode="numeric" min="0" max="99" value="${hs}" ${locked||!editable||cancelled?'disabled':''}/><button data-delta="1" data-side="home" ${locked||!editable||cancelled?'disabled':''}>+</button></div><span class="score-sep">–</span><div class="score-control"><button data-delta="-1" data-side="away" ${locked||!editable||cancelled?'disabled':''}>−</button><input data-score="away" data-filled="${p?'true':'false'}" inputmode="numeric" min="0" max="99" value="${as}" ${locked||!editable||cancelled?'disabled':''}/><button data-delta="1" data-side="away" ${locked||!editable||cancelled?'disabled':''}>+</button></div></div>
           <div class="save-state ${cancelled?'cancelled':locked?'locked':p?'saved':''}">${stateText}</div>${m.tie_id&&m.leg_number===2?'<small class="ko-score-hint">Score à 120 min si prolongation</small>':''}
           ${reveal}
         </div>
-        <div class="team">${crestHTML(m.away_club)}<strong>${esc(m.away_club.name)}</strong>${clubCountryHTML(m.away_club)}</div>
+        <div class="team" title="${esc(m.away_club?.name||compactClubName(m.away_club))}">${crestHTML(m.away_club)}<strong>${esc(compactClubName(m.away_club))}</strong>${clubCountryHTML(m.away_club)}</div>
       </div>
       ${odds}
     </article>`;

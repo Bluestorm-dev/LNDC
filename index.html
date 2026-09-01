@@ -133,22 +133,24 @@
         <article class="home-kpi"><span>Journée</span><strong id="kpiProgress">0/0</strong><small>pronostics saisis</small></article>
       </div>
 
-      <section class="home-carousel-section-v0912" aria-label="Prochains rendez-vous">
-        <div class="home-carousel-head-v0912"><div><span class="eyebrow">Prochains rendez-vous</span><h3>Mes prochains matchs</h3></div></div>
-        <div id="homeUpcomingCarouselV0912" class="home-carousel-track-v0912"><div class="empty">Le calendrier se prépare.</div></div>
-      </section>
+      <article class="card home-owl-card hibou home-owl-dashboard-v0912">
+        <img class="home-owl-mark home-owl-image" src="assets/branding/owl/owl-masked-main.png" alt="Hibou masqué" />
+        <div><span class="eyebrow gold">Le Hibou masqué</span><blockquote id="hibouMessage">« Les casseroles ont déjà réservé leur soirée. »</blockquote></div>
+      </article>
 
-      <section class="home-carousel-section-v0912 home-life-section-v0912" aria-label="La vie du Nid">
-        <div class="home-carousel-head-v0912"><div><span class="eyebrow gold">Le Nid en mouvement</span><h3>Casseroles, badges & records</h3></div></div>
-        <div id="homeActivityCarouselV0912" class="home-carousel-track-v0912"><div class="empty">Les premières histoires du Nid apparaîtront après les matchs.</div></div>
-      </section>
+      <div class="home-carousel-grid-v0912">
+        <section class="home-carousel-section-v0912" aria-label="Prochains rendez-vous">
+          <div class="home-carousel-head-v0912"><div><span class="eyebrow">Prochains rendez-vous</span><h3>Mes prochains matchs</h3></div></div>
+          <div id="homeUpcomingCarouselV0912" class="home-carousel-track-v0912"><div class="empty">Le calendrier se prépare.</div></div>
+        </section>
 
-      <div class="home-dashboard">
-        <article class="card home-next-card" id="homeNextCardV0912" tabindex="0" role="button" aria-label="Ouvrir le prochain match">
-          <div class="home-card-head"><div><span class="eyebrow">Prochain rendez-vous</span><h3>À jouer</h3></div><button id="homeNextAction" class="text-action" type="button">Voir les pronostics →</button></div>
-          <div id="homeNextMatch" class="home-next-body"><div class="empty">Le calendrier se prépare.</div></div>
-        </article>
+        <section class="home-carousel-section-v0912 home-life-section-v0912" aria-label="La vie du Nid">
+          <div class="home-carousel-head-v0912"><div><span class="eyebrow gold">Le Nid en mouvement</span><h3>Casseroles, badges & records</h3></div></div>
+          <div id="homeActivityCarouselV0912" class="home-carousel-track-v0912"><div class="empty">Les premières histoires du Nid apparaîtront après les matchs.</div></div>
+        </section>
+      </div>
 
+      <div class="home-dashboard home-dashboard-compact-v0912">
         <article class="card home-progress-card">
           <div class="home-card-head"><div><span class="eyebrow">Ma journée</span><h3 id="homeProgressTitle">Progression</h3></div><span id="homeProgressBadge" class="chip">0/0</span></div>
           <div class="home-progress-ring"><div id="homeProgressRing" class="progress-ring" style="--progress:0"><strong id="homeProgressPct">0%</strong><span>complété</span></div><div><p id="homeProgressText" class="muted">Aucun pronostic à compléter.</p><button class="btn small" data-jump="matches">Continuer</button></div></div>
@@ -160,10 +162,6 @@
         </article>
 
         <article id="homeRivalCard" class="card home-rival-card"><div class="empty">Chargement du rival…</div></article>
-
-        <article class="card home-owl-card hibou">
-          <img class="home-owl-mark home-owl-image" src="assets/branding/owl/owl-masked-main.png" alt="Hibou masqué" /><div><span class="eyebrow gold">Le Hibou masqué</span><blockquote id="hibouMessage">« Les casseroles ont déjà réservé leur soirée. »</blockquote></div>
-        </article>
       </div>
     </section>
 
@@ -526,16 +524,13 @@
     </section>
     </section>
 
-    <nav class="bottom-nav" aria-label="Navigation mobile">
+    <nav class="bottom-nav bottom-nav-v0912" aria-label="Navigation mobile">
       <button data-view="home" class="active"><span class="nid-mobile-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/home.png" alt=""></span>Accueil</button>
-      <button data-view="matches"><span class="nid-mobile-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/predictions.png" alt=""></span>Matchs</button>
+      <button data-view="matches"><span class="nid-mobile-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/predictions.png" alt=""></span>Pronos</button>
       <button data-view="ucl"><span class="nid-mobile-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/trophy.png" alt=""></span>C1</button>
-      <button data-view="evenings"><span class="nid-mobile-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/live.png" alt=""></span>Soirées</button>
-      <button data-view="knockout"><span class="nid-mobile-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/knockout.png" alt=""></span>Phases</button>
-      <button data-view="ranking"><span class="nid-mobile-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/ranking.png" alt=""></span>Classement</button>
-      <button data-view="season"><span class="nid-mobile-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/season.png" alt=""></span>Saison</button>
-      <button data-view="teams"><span class="nid-mobile-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/teams.png" alt=""></span>Teams</button>
-      <button data-view="profile"><span class="nid-mobile-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/profile.png" alt=""></span>Profil</button>
+      <button data-view="ranking"><span class="nid-mobile-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/ranking.png" alt=""></span>Nid</button>
+      <button id="mobileMoreNavV0912" type="button"><span class="nid-mobile-icon">•••</span>Plus</button>
+      <button data-view="admin" id="mobileAdminNavV0912" class="hidden"><span class="nid-mobile-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/admin.png" alt=""></span>Admin</button>
     </nav>
   </main>
 

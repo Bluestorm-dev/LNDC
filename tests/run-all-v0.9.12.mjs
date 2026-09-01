@@ -334,7 +334,7 @@ need("v0911r7.fixture-centric-diagnostic",
 need("v0911.betclic-admin",release11.includes("Tester Betclic")&&release11.includes("Synchroniser Betclic")&&release11.includes("sync-betclic-odds"),"Panneau Admin Betclic branché");
 need("v0911.betclic-fallback",release11.includes("saisie manuelle")&&release11.includes("source non officielle"),"UI rappelle le fallback manuel et le caractère expérimental");
 need("v0911.feature-defaults",["feature_knockout:false","feature_ucl_center:false","feature_evenings:false","feature_teams:false","feature_gamification:false","feature_messages:false","feature_rivals:false","feature_polls:false","feature_solitary_owl:false"].every(t=>admin9511.includes(t)),"Fonctions optionnelles fermées aux joueurs par défaut");
-need("v0911.feature-superadmin",admin9511.includes('state.profile?.role==="super_admin"')&&admin9511.includes("OUVERT")&&admin9511.includes("VERROUILLÉ"),"Super Admin conserve le bypass et voit l’état des fonctions");
+need("v0911.feature-superadmin",admin9511.includes('state.profile?.role==="super_admin"')&&admin9511.includes("VERROUILLÉ")&&admin9511.includes("chip?.remove"),"Super Admin conserve le bypass ; seules les fonctions verrouillées portent une pastille");
 need("v0911.feature-direct-guard",read("js/core.js").includes("featureViewAllowedV0911")&&read("js/core.js").includes("Cette fonction n’est pas encore ouverte aux joueurs"),"Accès direct à une vue verrouillée bloqué");
 need("v0911.feature-messages",admin9511.includes("#notificationBell")&&admin9511.includes(".home-owl-card")&&admin9511.includes("#homePushPrompt"),"Gate Messages masque cloche, Hibou et Push");
 need("v0911.feature-realtime",realtime11.includes('table:"app_settings"')&&realtime11.includes('queueRealtimeRefresh("settings")')&&realtime11.includes("applyFeatureFlagsV095"),"Feature gates propagés via Realtime");
@@ -352,7 +352,7 @@ need("v0911.diagnostic",sql11.includes("admin_diagnostics_v0911"),"Diagnostic SQ
 need("v0911.badges100",Number(badgeCat.count)===100&&badgeCat.items.length===100,"Les 100 succès restent intégrés");
 
 // V0.9.12 — Desktop UX/UI + cockpit matchs.
-const release12=read("js/release0912.js"), css12=read("css/release0912.css"), sql12=read("sql/031_patch_v0.9.12_desktop_ux.sql"), index12=read("index.html");
+const release12=read("js/release0912.js"), css12=read("css/release0912.css"), sql12=read("sql/031_patch_v0.9.12_desktop_ux.sql"), index12=read("index.html"), core12=read("js/core.js"), pred12=read("js/predictions.js"), notif12=read("js/notifications.js");
 need("v0912.assets",contains("index.html","css/release0912.css","js/release0912.js")&&contains("sw.js","./css/release0912.css","./js/release0912.js"),"Assets V0.9.12 branchés et pré-cachés");
 need("v0912.connection-label",index12.includes("Le Nid est connecté")&&index12.includes("appVersionChipV0912")&&!index12.includes("Supabase · LIVE"),"Topbar publique affiche connexion du Nid + version sans Supabase LIVE");
 need("v0912.desktop-nav",index12.includes("Classement du Nid")&&release12.includes('name==="knockout"')&&release12.includes('name==="season"')&&release12.includes('name="profile"'),"Navigation desktop simplifiée avec redirections historiques");
@@ -369,6 +369,15 @@ need("v0912r1.carousel-no-arrows",
   !index12.includes("data-carousel-prev")&&!index12.includes("data-carousel-next")&&!release12.includes("bindCarouselArrowsV0912")&&!css12.includes("carousel-arrows-v0912"),
   "Aucune flèche ni défilement manuel horizontal sur les carrousels"
 );
+need("v0912r2.home-side-by-side",index12.includes("home-carousel-grid-v0912")&&css12.includes("grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr)"),"Les deux carrousels Accueil sont côte à côte sur desktop");
+need("v0912r2.home-dashboard-compact",index12.includes("home-dashboard-compact-v0912")&&!index12.includes('id="homeNextCardV0912"')&&index12.indexOf("home-owl-dashboard-v0912")<index12.indexOf("home-carousel-grid-v0912"),"Accueil compact : doublon Prochain rendez-vous supprimé et Hibou remonté");
+need("v0912r2.carousel-branding",release12.includes("fixture-team-v0912")&&release12.includes("crestHTML(m.home_club)")&&release12.includes("clubCountryHTML(m.home_club)"),"Les cartes de prochains matchs affichent logos et drapeaux");
+need("v0912r2.short-club-names",core12.includes("function compactClubName")&&pred12.includes("compactClubName(m.home_club)")&&pred12.includes("compactClubName(m.away_club)"),"Les cartes Pronostics utilisent des noms de clubs compacts");
+need("v0912r2.registration-push",sql12.includes("notify_super_admin_registration_v0912")&&sql12.includes("'registration-request:'")&&sql12.includes("push_requested")&&sql12.includes("'admin:players'"),"Une nouvelle demande d'inscription génère une notification Push Super Admin");
+need("v0912r2.registration-deeplink",notif12.includes('value.startsWith("admin:")')&&notif12.includes("registrationAdminSection"),"La notification d'inscription ouvre directement Admin > Joueurs");
+need("v0912r2.mobile-admin-tab",index12.includes('id="mobileAdminNavV0912"')&&read("js/app.js").includes("mobileAdminNavV0912"),"Le mobile possède un onglet Admin réservé aux administrateurs");
+need("v0912r2.mobile-layout",css12.includes("vraie passe mobile")&&css12.includes(".mobile-more-grid-v0912")&&css12.includes(".profile-tabs-v0912{display:flex!important"),"La mise en page mobile V0.9.12 est remaniée");
+need("v0912r2.no-open-chip",read("js/admin095.js").includes('if(open){chip?.remove();return;}')&&!read("js/admin095.js").includes('chip.textContent=open?"OUVERT":"VERROUILLÉ"'),"Les fonctions ouvertes n'affichent plus la pastille OUVERT");
 need("v0912.home-direct-match",release12.includes("goToMatchV0912")&&release12.includes('byId("homeNextAction")')&&release12.includes("scrollIntoView"),"Accueil ouvre directement le bon match de Pronostics");
 need("v0912.home-owl",css12.includes("home-owl")||css12.includes("home-owl-card"),"Message du Hibou renforcé sur desktop");
 need("v0912.predictions-two-columns",css12.includes("grid-template-columns:repeat(2")&&release12.includes("match-venue-v0912"),"Pronostics desktop en deux colonnes avec lieu du match");
@@ -383,7 +392,7 @@ need("v0912.bulk-odds-sql",sql12.includes("admin_save_matchday_odds_v0912")&&sql
 need("v0912.admin-cockpit",index12.includes("adminMatchOpsV0912")&&release12.includes("renderAdminMatchOpsV0912")&&release12.includes("saveAllOddsV0912")&&release12.includes("saveOneResultV0912"),"Cockpit Admin cotes/résultats branché");
 need("v0912.admin-params",release12.includes("openMatchScheduleEditorV0910"),"Cockpit conserve l'éditeur complet des paramètres de match");
 need("v0912.final-result-confirm",release12.includes("confirm(")&&release12.includes("finished"),"Correction/validation d'un résultat terminé demande confirmation");
-need("v0912.mobile-preserved",css12.includes("@media (max-width:900px)")&&css12.includes("admin-matches-legacy-v0912")&&css12.includes("home-carousel-section-v0912{display:none!important}"),"Passe mobile explicitement préservée pour une version ultérieure");
+need("v0912.mobile-redesigned",css12.includes("vraie passe mobile")&&css12.includes("bottom-nav-v0912")&&css12.includes("home-carousel-section-v0912{display:block!important"),"La V0.9.12 dispose maintenant d’une vraie passe mobile");
 need("v0912.focus-match",css12.includes("focus-match-v0912")&&release12.includes("focus-match-v0912"),"Match ciblé visuellement après navigation directe");
 need("v0912.sql-safe-condition",sql12.includes("coalesce(b.condition_json->>'metric','') <> 'played'"),"Migration badges robuste aux conditions sans metric racine");
 need("v0912.diagnostic",sql12.includes("admin_diagnostics_v0912")&&sql12.includes("app_settings.app_version=0.9.12")||sql12.includes("'0.9.12'"),"Diagnostic SQL V0.9.12 présent");
