@@ -19,7 +19,7 @@
     if(section==="gamification"&&typeof renderAdminGamification==="function")renderAdminGamification();
     if(section==="application")renderAdminAppState();
     if(section==="dashboard")renderAdminDashboard();
-    if(typeof syncMobileDrawerV0912==="function")syncMobileDrawerV0912("admin");
+    if(typeof syncAdminMobileSectionV0912==="function")syncAdminMobileSectionV0912();
     if(scroll){const view=$("#view-admin");if(view)window.scrollTo({top:Math.max(0,view.offsetTop-72),behavior:"smooth"});}
   }
 
