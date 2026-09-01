@@ -383,6 +383,18 @@ need("v0912r4.logo-opens-sidebar",index12.includes('id="mobileSidebarTriggerV091
 need("v0912r4.desktop-safe",css12.includes(".mobile-sidebar-trigger-v0912,")&&css12.includes(".admin-mobile-section-v0912{display:none}"),"Les contrôles mobiles sont invisibles sur desktop");
 need("v0912r4.admin-select",index12.includes('id="adminMobileSectionV0912"')&&release12.includes("setAdminSection(select.value"),"Les rubriques Admin mobiles utilisent un select compact");
 need("v0912r4.carousel-mobile-reset",css12.includes("button.home-carousel-card-v0912")&&css12.includes("appearance:none!important")&&css12.includes("min-height:118px"),"Le carrousel mobile est compact et sans style bouton natif");
+
+need("v0912r41.no-literal-newlines",
+  !release12.slice(release12.indexOf("function openMobileSidebarV0912"),release12.indexOf("function setupStaticV0912")).includes("\\n") &&
+  !css12.slice(css12.indexOf("V0.9.12 R4 — mobile propre")).includes("\\n"),
+  "Les blocs R4 ne contiennent plus de séquences \\n littérales"
+);
+need("v0912r41.match-card-theme",
+  css12.includes("V0.9.12 R4.1 — garde-fous cartes de matchs") &&
+  css12.includes(".calendar-day .match") &&
+  css12.includes("button.home-carousel-card-v0912"),
+  "Les cartes de matchs restent dans le thème bleu du Nid sur mobile"
+);
 need("v0912.home-direct-match",release12.includes("goToMatchV0912")&&release12.includes('byId("homeNextAction")')&&release12.includes("scrollIntoView"),"Accueil ouvre directement le bon match de Pronostics");
 need("v0912.home-owl",css12.includes("home-owl")||css12.includes("home-owl-card"),"Message du Hibou renforcé sur desktop");
 need("v0912.predictions-two-columns",css12.includes("grid-template-columns:repeat(2")&&release12.includes("match-venue-v0912"),"Pronostics desktop en deux colonnes avec lieu du match");

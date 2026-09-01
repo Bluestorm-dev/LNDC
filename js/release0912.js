@@ -310,7 +310,52 @@
   }
 
 
-\n  function openMobileSidebarV0912(){\n    if(isDesktopV0912())return;\n    document.querySelector(".sidebar")?.classList.add("mobile-open-v0912");\n    byId("mobileSidebarBackdropV0912")?.classList.add("open");\n    byId("mobileSidebarBackdropV0912")?.setAttribute("aria-hidden","false");\n    byId("mobileSidebarTriggerV0912")?.setAttribute("aria-expanded","true");\n    document.body.classList.add("mobile-sidebar-open-v0912");\n  }\n\n  function closeMobileSidebarV0912(){\n    document.querySelector(".sidebar")?.classList.remove("mobile-open-v0912");\n    byId("mobileSidebarBackdropV0912")?.classList.remove("open");\n    byId("mobileSidebarBackdropV0912")?.setAttribute("aria-hidden","true");\n    byId("mobileSidebarTriggerV0912")?.setAttribute("aria-expanded","false");\n    document.body.classList.remove("mobile-sidebar-open-v0912");\n  }\n\n  function setupMobileSidebarV0912(){\n    const trigger=byId("mobileSidebarTriggerV0912");\n    if(!trigger||trigger.dataset.boundV0912)return;\n    trigger.dataset.boundV0912="1";\n    trigger.onclick=openMobileSidebarV0912;\n    byId("mobileSidebarCloseV0912")&&(byId("mobileSidebarCloseV0912").onclick=closeMobileSidebarV0912);\n    byId("mobileSidebarBackdropV0912")&&(byId("mobileSidebarBackdropV0912").onclick=closeMobileSidebarV0912);\n    document.querySelectorAll(".sidebar [data-view]").forEach(el=>el.addEventListener("click",()=>setTimeout(closeMobileSidebarV0912,0)));\n    document.addEventListener("keydown",e=>{if(e.key==="Escape")closeMobileSidebarV0912();});\n    window.addEventListener("resize",()=>{if(isDesktopV0912())closeMobileSidebarV0912();});\n  }\n\n  function syncAdminMobileSectionV0912(){\n    const select=byId("adminMobileSectionV0912");\n    if(!select)return;\n    const rows=[...document.querySelectorAll(".admin-nav [data-admin-section]")]\n      .filter(btn=>!btn.classList.contains("hidden"))\n      .map(btn=>({value:btn.dataset.adminSection,label:btn.querySelector("b")?.textContent?.trim()||btn.dataset.adminSection}));\n    const signature=rows.map(x=>`${x.value}:${x.label}`).join("|");\n    if(select.dataset.signatureV0912!==signature){\n      select.innerHTML=rows.map(x=>`<option value="${esc(x.value)}">${esc(x.label)}</option>`).join("");\n      select.dataset.signatureV0912=signature;\n      select.onchange=()=>{if(typeof setAdminSection==="function")setAdminSection(select.value,{scroll:false});};\n    }\n    if(typeof currentAdminSection==="function")select.value=currentAdminSection();\n  }\n\n  function setupStaticV0912(){
+
+  function openMobileSidebarV0912(){
+    if(isDesktopV0912())return;
+    document.querySelector(".sidebar")?.classList.add("mobile-open-v0912");
+    byId("mobileSidebarBackdropV0912")?.classList.add("open");
+    byId("mobileSidebarBackdropV0912")?.setAttribute("aria-hidden","false");
+    byId("mobileSidebarTriggerV0912")?.setAttribute("aria-expanded","true");
+    document.body.classList.add("mobile-sidebar-open-v0912");
+  }
+
+  function closeMobileSidebarV0912(){
+    document.querySelector(".sidebar")?.classList.remove("mobile-open-v0912");
+    byId("mobileSidebarBackdropV0912")?.classList.remove("open");
+    byId("mobileSidebarBackdropV0912")?.setAttribute("aria-hidden","true");
+    byId("mobileSidebarTriggerV0912")?.setAttribute("aria-expanded","false");
+    document.body.classList.remove("mobile-sidebar-open-v0912");
+  }
+
+  function setupMobileSidebarV0912(){
+    const trigger=byId("mobileSidebarTriggerV0912");
+    if(!trigger||trigger.dataset.boundV0912)return;
+    trigger.dataset.boundV0912="1";
+    trigger.onclick=openMobileSidebarV0912;
+    byId("mobileSidebarCloseV0912")&&(byId("mobileSidebarCloseV0912").onclick=closeMobileSidebarV0912);
+    byId("mobileSidebarBackdropV0912")&&(byId("mobileSidebarBackdropV0912").onclick=closeMobileSidebarV0912);
+    document.querySelectorAll(".sidebar [data-view]").forEach(el=>el.addEventListener("click",()=>setTimeout(closeMobileSidebarV0912,0)));
+    document.addEventListener("keydown",e=>{if(e.key==="Escape")closeMobileSidebarV0912();});
+    window.addEventListener("resize",()=>{if(isDesktopV0912())closeMobileSidebarV0912();});
+  }
+
+  function syncAdminMobileSectionV0912(){
+    const select=byId("adminMobileSectionV0912");
+    if(!select)return;
+    const rows=[...document.querySelectorAll(".admin-nav [data-admin-section]")]
+      .filter(btn=>!btn.classList.contains("hidden"))
+      .map(btn=>({value:btn.dataset.adminSection,label:btn.querySelector("b")?.textContent?.trim()||btn.dataset.adminSection}));
+    const signature=rows.map(x=>`${x.value}:${x.label}`).join("|");
+    if(select.dataset.signatureV0912!==signature){
+      select.innerHTML=rows.map(x=>`<option value="${esc(x.value)}">${esc(x.label)}</option>`).join("");
+      select.dataset.signatureV0912=signature;
+      select.onchange=()=>{if(typeof setAdminSection==="function")setAdminSection(select.value,{scroll:false});};
+    }
+    if(typeof currentAdminSection==="function")select.value=currentAdminSection();
+  }
+
+  function setupStaticV0912(){
     setupProfileDomV0912();
     setProfileTabV0912(state.profileTabV0912);
     setupMobileSidebarV0912();
