@@ -310,25 +310,62 @@
   }
 
 
-  function setupMobileMoreV0912(){
-    const btn=byId("mobileMoreNavV0912");
-    if(!btn||btn.dataset.boundV0912)return;
-    btn.dataset.boundV0912="1";
-    btn.onclick=()=>{
-      const root=modal("Plus",`<div class="mobile-more-grid-v0912">
-        <button type="button" data-mobile-more-view="evenings"><img class="nid-icon" src="assets/icons/runtime/live.png" alt=""><span><b>Soirées européennes</b><small>LIVE, soirées et tendances</small></span></button>
-        <button type="button" data-mobile-more-view="teams"><img class="nid-icon" src="assets/icons/runtime/teams.png" alt=""><span><b>Teams</b><small>Communautés du Nid</small></span></button>
-        <button type="button" data-mobile-more-view="museum"><img class="nid-icon" src="assets/icons/runtime/museum.png" alt=""><span><b>Musée</b><small>Badges, casseroles et records</small></span></button>
-        <button type="button" data-mobile-more-view="profile"><img class="nid-icon" src="assets/icons/runtime/profile.png" alt=""><span><b>Mon profil</b><small>Avatar, saison et préférences</small></span></button>
-      </div>`);
-      root.querySelectorAll("[data-mobile-more-view]").forEach(x=>x.onclick=()=>{const view=x.dataset.mobileMoreView;root.innerHTML="";window.setView(view);});
-    };
+  function mobileDrawerOpenV0912(){
+    if(isDesktopV0912())return;
+    byId("mobileDrawerV0912")?.classList.add("open");
+    byId("mobileDrawerBackdropV0912")?.classList.add("open");
+    byId("mobileDrawerV0912")?.setAttribute("aria-hidden","false");
+    byId("mobileMenuBtnV0912")?.setAttribute("aria-expanded","true");
+    document.body.classList.add("mobile-drawer-open-v0912");
+    syncMobileDrawerV0912();
+  }
+
+  function mobileDrawerCloseV0912(){
+    byId("mobileDrawerV0912")?.classList.remove("open");
+    byId("mobileDrawerBackdropV0912")?.classList.remove("open");
+    byId("mobileDrawerV0912")?.setAttribute("aria-hidden","true");
+    byId("mobileMenuBtnV0912")?.setAttribute("aria-expanded","false");
+    document.body.classList.remove("mobile-drawer-open-v0912");
+  }
+
+  function currentViewV0912(){
+    const v=[...document.querySelectorAll(".view")].find(x=>!x.classList.contains("hidden"));
+    return v?.id?.replace(/^view-/,"")||"home";
+  }
+
+  function syncMobileDrawerV0912(view=currentViewV0912()){
+    const root=byId("mobileDrawerV0912");if(!root)return;
+    root.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===view));
+    const admin=isAdminProfile();
+    byId("mobileDrawerAdminBlockV0912")?.classList.toggle("hidden",!admin);
+    byId("mobileDrawerGamificationV0912")?.classList.toggle("hidden",state.profile?.role!=="super_admin");
+    byId("mobileDrawerLabV0912")?.classList.toggle("hidden",state.profile?.role!=="super_admin");
+    byId("mobileDrawerAdminSectionsV0912")?.classList.toggle("visible",admin&&view==="admin");
+    const user=byId("mobileDrawerUserV0912");if(user)user.textContent=state.profile?.username||state.profile?.first_name||"Mon profil";
+    const season=byId("mobileDrawerSeasonV0912");if(season)season.textContent=state.season?.name||"Champions League";
+    const avatar=byId("mobileDrawerAvatarV0912"),source=byId("sidebarUserAvatar");if(avatar)avatar.innerHTML=source?.innerHTML||esc((state.profile?.username||"P").slice(0,1).toUpperCase());
+    const section=typeof currentAdminSection==="function"?currentAdminSection():"dashboard";
+    root.querySelectorAll("[data-mobile-admin-section]").forEach(b=>b.classList.toggle("active",b.dataset.mobileAdminSection===section));
+  }
+
+  function setupMobileDrawerV0912(){
+    const btn=byId("mobileMenuBtnV0912");if(!btn||btn.dataset.boundV0912)return;btn.dataset.boundV0912="1";
+    btn.onclick=mobileDrawerOpenV0912;
+    byId("mobileDrawerCloseV0912")&&(byId("mobileDrawerCloseV0912").onclick=mobileDrawerCloseV0912);
+    byId("mobileDrawerBackdropV0912")&&(byId("mobileDrawerBackdropV0912").onclick=mobileDrawerCloseV0912);
+    const profile=byId("mobileDrawerV0912")?.querySelector("[data-drawer-profile]");if(profile){profile.onclick=()=>{mobileDrawerCloseV0912();window.setView("profile")};profile.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();profile.click()}}}
+    byId("mobileDrawerV0912")?.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>setTimeout(mobileDrawerCloseV0912,0)));
+    byId("mobileDrawerV0912")?.querySelectorAll("[data-mobile-admin-section]").forEach(b=>b.onclick=()=>{const section=b.dataset.mobileAdminSection;mobileDrawerCloseV0912();window.setView("admin");setTimeout(()=>{if(typeof setAdminSection==="function")setAdminSection(section,{scroll:false});syncMobileDrawerV0912("admin")},20)});
+    byId("adminMobileMenuBtnV0912")&&(byId("adminMobileMenuBtnV0912").onclick=mobileDrawerOpenV0912);
+    document.addEventListener("keydown",e=>{if(e.key==="Escape")mobileDrawerCloseV0912()});
+    window.addEventListener("resize",()=>{if(isDesktopV0912())mobileDrawerCloseV0912()});
+    syncMobileDrawerV0912();
   }
 
   function setupStaticV0912(){
     setupProfileDomV0912();
     setProfileTabV0912(state.profileTabV0912);
-    setupMobileMoreV0912();
+    setupMobileDrawerV0912();
   }
 
   window.setView = function(name){
@@ -341,9 +378,9 @@
       if(name==="ucl" && (!["standings","knockout","info"].includes(state.uclTab)))state.uclTab="standings";
       setTimeout(()=>{enhancePredictionCardsV0912();renderAdminMatchOpsV0912();},0);
     }else{
-      const more=byId("mobileMoreNavV0912");
-      if(more)more.classList.toggle("active",["evenings","teams","museum","profile"].includes(name));
       if(name==="profile"){setupProfileDomV0912();setProfileTabV0912(state.profileTabV0912||"identity");}
+      syncMobileDrawerV0912(name);
+      mobileDrawerCloseV0912();
     }
     return result;
   };

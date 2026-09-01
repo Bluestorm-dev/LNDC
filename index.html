@@ -99,6 +99,7 @@
 
     <section class="workspace">
       <header class="topbar">
+        <button id="mobileMenuBtnV0912" class="mobile-menu-btn-v0912" type="button" aria-label="Ouvrir le menu" aria-controls="mobileDrawerV0912" aria-expanded="false"><span></span><span></span><span></span></button>
         <div class="mobile-brand"><img src="assets/icons/icon-192.png" alt="" /><strong>Le Nid des Champions</strong></div>
         <div class="page-heading"><span class="eyebrow">Champions League</span><h1 id="pageTitle">Accueil</h1></div>
         <div class="actions desktop-actions">
@@ -336,6 +337,7 @@
           <p>Un espace par métier, sans dérouler toute l'administration sur une seule page.</p>
         </div>
         <div class="admin-head-tools-v095">
+          <button id="adminMobileMenuBtnV0912" class="admin-mobile-menu-btn-v0912" type="button"><span>☰</span><b>Rubriques</b></button>
           <div class="admin-search-v095">
             <span><img class="nid-icon nid-icon-only" src="assets/icons/runtime/search.png" alt=""></span><input id="adminGlobalSearchV095" type="search" autocomplete="off" placeholder="Trouver une option…  Ctrl+K" aria-label="Rechercher une option dans l’administration" />
             <div id="adminSearchResultsV095" class="admin-search-results-v095 hidden" role="listbox"></div>
@@ -524,14 +526,41 @@
     </section>
     </section>
 
-    <nav class="bottom-nav bottom-nav-v0912" aria-label="Navigation mobile">
-      <button data-view="home" class="active"><span class="nid-mobile-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/home.png" alt=""></span>Accueil</button>
-      <button data-view="matches"><span class="nid-mobile-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/predictions.png" alt=""></span>Pronos</button>
-      <button data-view="ucl"><span class="nid-mobile-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/trophy.png" alt=""></span>C1</button>
-      <button data-view="ranking"><span class="nid-mobile-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/ranking.png" alt=""></span>Nid</button>
-      <button id="mobileMoreNavV0912" type="button"><span class="nid-mobile-icon">•••</span>Plus</button>
-      <button data-view="admin" id="mobileAdminNavV0912" class="hidden"><span class="nid-mobile-icon"><img class="nid-icon nid-icon-only" src="assets/icons/runtime/admin.png" alt=""></span>Admin</button>
-    </nav>
+    <div id="mobileDrawerBackdropV0912" class="mobile-drawer-backdrop-v0912" aria-hidden="true"></div>
+    <aside id="mobileDrawerV0912" class="mobile-drawer-v0912" aria-label="Navigation mobile" aria-hidden="true">
+      <div class="mobile-drawer-head-v0912">
+        <div class="mobile-drawer-brand-v0912"><img src="assets/icons/icon-192.png" alt=""><div><strong>Le Nid des Champions</strong><small id="mobileDrawerSeasonV0912">Champions League</small></div></div>
+        <button id="mobileDrawerCloseV0912" type="button" aria-label="Fermer le menu">×</button>
+      </div>
+      <div class="mobile-drawer-user-v0912" data-drawer-profile role="button" tabindex="0"><span id="mobileDrawerAvatarV0912" class="mobile-drawer-avatar-v0912">P</span><span><strong id="mobileDrawerUserV0912">Mon profil</strong><small>Avatar, saison et préférences</small></span><b>›</b></div>
+      <nav class="mobile-drawer-nav-v0912">
+        <span class="mobile-drawer-label-v0912">Le Nid</span>
+        <button data-view="home"><img class="nid-icon" src="assets/icons/runtime/home.png" alt=""><span><b>Accueil</b><small>Mon tableau de bord</small></span></button>
+        <button data-view="matches"><img class="nid-icon" src="assets/icons/runtime/predictions.png" alt=""><span><b>Pronostics</b><small>Les matchs à jouer</small></span></button>
+        <button data-view="ranking"><img class="nid-icon" src="assets/icons/runtime/ranking.png" alt=""><span><b>Classement du Nid</b><small>Rang et performances</small></span></button>
+        <button data-view="ucl"><img class="nid-icon" src="assets/icons/runtime/trophy.png" alt=""><span><b>Ligue des champions</b><small>Classement, tableau et infos</small></span></button>
+        <span class="mobile-drawer-label-v0912">Communauté</span>
+        <button data-view="evenings"><img class="nid-icon" src="assets/icons/runtime/live.png" alt=""><span><b>Soirées européennes</b><small>LIVE et tendances</small></span></button>
+        <button data-view="teams"><img class="nid-icon" src="assets/icons/runtime/teams.png" alt=""><span><b>Teams</b><small>Communautés du Nid</small></span></button>
+        <button data-view="museum"><img class="nid-icon" src="assets/icons/runtime/museum.png" alt=""><span><b>Musée</b><small>Badges, casseroles et records</small></span></button>
+        <div id="mobileDrawerAdminBlockV0912" class="mobile-drawer-admin-v0912 hidden">
+          <span class="mobile-drawer-label-v0912">Administration</span>
+          <button data-view="admin" class="mobile-drawer-admin-main-v0912"><img class="nid-icon" src="assets/icons/runtime/admin.png" alt=""><span><b>Centre de contrôle</b><small>Pilotage du Nid</small></span></button>
+          <div id="mobileDrawerAdminSectionsV0912" class="mobile-drawer-admin-sections-v0912">
+            <button type="button" data-mobile-admin-section="dashboard"><span>🏠</span>Vue d’ensemble</button>
+            <button type="button" data-mobile-admin-section="matches"><span>⚽</span>Matchs & LIVE</button>
+            <button type="button" data-mobile-admin-section="competition"><span>🏆</span>Compétition</button>
+            <button type="button" data-mobile-admin-section="players"><span>👥</span>Joueurs & accès</button>
+            <button type="button" data-mobile-admin-section="teams"><span>🦉</span>Teams</button>
+            <button id="mobileDrawerGamificationV0912" type="button" data-mobile-admin-section="gamification" class="hidden"><span>🏅</span>Contenu & Musée</button>
+            <button type="button" data-mobile-admin-section="communication"><span>📣</span>Communication</button>
+            <button type="button" data-mobile-admin-section="application"><span>⚙️</span>Système & sécurité</button>
+            <button id="mobileDrawerLabV0912" type="button" data-mobile-admin-section="test" class="hidden"><span>🧪</span>Laboratoire</button>
+          </div>
+        </div>
+      </nav>
+      <div class="mobile-drawer-foot-v0912"><span><i class="status-dot"></i> Le Nid est connecté</span><small>V0.9.12</small></div>
+    </aside>
   </main>
 
   <div id="modalRoot"></div>
