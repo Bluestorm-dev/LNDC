@@ -509,6 +509,23 @@ need("v0913.new-player-push",sql13.includes('notify_super_admin_registration_v09
 need("v0913.hard-delete-edge",edge13.includes('admin.auth.admin.deleteUser')&&edge13.includes('role!==\"super_admin\"')&&edge13.includes('captain_user_id'),"Suppression définitive protégée par une Edge Function Super Admin");
 need("v0913.delete-ui",read("js/admin.js").includes('data-admin-player-delete')&&read("js/admin.js").includes('deletePlayerAccountV0913'),"Le Super Admin peut supprimer un compte depuis Joueurs");
 need("v0913.release-wired",index12.includes('css/release0913.css')&&index12.includes('js/release0913.js')&&read("js/app.js").includes('renderRelease0913'),"V0.9.13 est branchée dans l'application");
+need("v0913r1.onboarding-close-first",
+  release13.includes("L'enregistrement est terminé : fermer la fenêtre immédiatement.") &&
+  release13.includes('root.remove();') &&
+  release13.indexOf('root.remove();') < release13.indexOf('Promise.allSettled(['),
+  "Terminer ferme l'onboarding avant les rafraîchissements réseau"
+);
+need("v0913r1.onboarding-local-complete",
+  release13.includes("state.preseason099.onboarding={") &&
+  release13.includes("completed_at:completedAt") &&
+  release13.includes("onboardingLoaded=true"),
+  "L'état local est marqué terminé pour empêcher une réouverture immédiate"
+);
+need("v0913r1.push-nonblocking",
+  release13.includes("Promise.resolve(enablePushNotifications()).catch") &&
+  !release13.includes("await enablePushNotifications();"),
+  "La demande Push ne bloque plus la fermeture de l'onboarding"
+);
 
 const summary={total:checks.length,passed:checks.filter(x=>x.status==="PASS").length,warnings:checks.filter(x=>x.status==="WARN").length,failed:checks.filter(x=>x.status==="FAIL").length};
 const report={version:"0.9.13",generated_at:new Date().toISOString(),base_url:baseUrl,summary,checks};
