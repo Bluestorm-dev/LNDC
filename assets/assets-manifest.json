@@ -1,6 +1,6 @@
 {
   "app": "Le Nid des Champions",
-  "version": "0.9.12",
+  "version": "0.9.13",
   "schema": 1,
   "branding": {
     "owl_main": "assets/branding/owl/owl-masked-main.png"
@@ -1239,5 +1239,13 @@
     "sql": "sql/031_patch_v0.9.12_desktop_ux.sql",
     "test_center": "tests/test-center-v0.9.12.html",
     "scope": "desktop UX/UI + match operations cockpit"
+  },
+  "release_v0913": {
+    "css": "css/release0913.css",
+    "js": "js/release0913.js",
+    "sql": "sql/032_patch_v0.9.13_mobile_onboarding_accounts.sql",
+    "edge_function": "supabase/functions/admin-delete-user-v0913/index.ts",
+    "test_center": "tests/test-center-v0.9.13.html",
+    "scope": "mobile UI + onboarding + account lifecycle"
   }
 }

@@ -1,0 +1,10 @@
+Le Nid des Champions — V0.9.13
+
+- mobile : menu logo + libellé MENU ;
+- avatar Team proportionnel au bouclier ;
+- Pronostics mobile : équipes séparées des contrôles +/- ;
+- fiche équipe refondue et pronostic direct ;
+- onboarding première connexion : prise en main, avatar, club de cœur, Champion, notifications ;
+- inscription validée automatiquement ;
+- notification Super Admin lors d'un nouveau compte ;
+- suppression définitive d'un compte par Super Admin via Edge Function.

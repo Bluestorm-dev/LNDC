@@ -1,6 +1,6 @@
 "use strict";
 
-// Le Nid des Champions V0.9.5 — authentification et accès
+// Le Nid des Champions V0.9.13 — authentification et accès
   function toggleAuthTab(which) {
     const loginTab = which === "login";
     $("#loginForm").classList.toggle("hidden", !loginTab);
@@ -47,7 +47,7 @@
 
   async function register(e) {
     e.preventDefault();
-    setMsg("#registerMsg", "Création de la demande…");
+    setMsg("#registerMsg", "Création du compte…");
     const username=$("#regUsername").value.trim(), first_name=$("#regFirstName").value.trim(), email=$("#regEmail").value.trim(), password=$("#regPassword").value;
     try {
       if (!/^[\p{L}\p{N}_. -]{2,24}$/u.test(username)) throw new Error("Pseudo invalide (2 à 24 caractères).");
@@ -66,7 +66,7 @@
       const {data,error}=await sb.auth.signUp({email,password,options:{data:{username,first_name}}});
       if(error) throw error;
       if(data.session) await sb.auth.signOut();
-      setMsg("#registerMsg","🦉 Demande créée. Le Super Admin doit maintenant ouvrir la porte du Nid.","ok");
+      setMsg("#registerMsg","✅ Compte créé et validé automatiquement. Tu peux te connecter et terminer ta première installation.","ok");
       $("#registerForm").reset(); toggleAuthTab("login"); $("#loginUsername").value=username;
     } catch(err) { setMsg("#registerMsg",friendlyError(err),"error"); }
     finally { registrationInProgress=false; }

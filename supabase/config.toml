@@ -19,3 +19,7 @@ verify_jwt = true
 # V0.6.0 — Web Push : auth utilisateur gérée dans la fonction ; le Cron utilise x-cron-secret.
 [functions.push-dispatch]
 verify_jwt = false
+
+# V0.9.13 — suppression définitive de compte, Super Admin uniquement.
+[functions.admin-delete-user-v0913]
+verify_jwt = true

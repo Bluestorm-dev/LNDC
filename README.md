@@ -1,4 +1,17 @@
-# Le Nid des Champions — V0.9.10
+# Le Nid des Champions — V0.9.13
+
+## Nouveautés V0.9.13 — Mobile, onboarding & comptes
+
+- navigation mobile rendue explicite sans hamburger : le logo affiche **MENU** ;
+- Pronostics mobile réorganisés pour séparer les équipes des contrôles de score ;
+- fiche équipe modernisée avec saisie directe du pronostic ;
+- assistant de première connexion en 5 étapes ;
+- comptes validés automatiquement à l’inscription ;
+- suppression définitive de comptes réservée au Super Admin.
+
+Voir `INSTALLATION_V0.9.13.txt`.
+
+---
 
 ## Nouveautés V0.9.9 — Pré-saison & répétition générale
 

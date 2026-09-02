@@ -1,3 +1,13 @@
+## V0.9.13
+
+- Refonte mobile ciblée : menu explicite, Pronostics sans chevauchement et fiches équipes.
+- Pronostic directement depuis la fiche d’une équipe.
+- Onboarding première connexion : avatar, club de cœur, Champion et notifications.
+- Validation automatique des nouveaux comptes.
+- Notification Super Admin à chaque nouvelle inscription.
+- Suppression définitive d’un compte par le Super Admin via Edge Function sécurisée.
+- Harmonisation des avatars dans les boucliers Team.
+
 ## V0.9.12
 
 - Refonte desktop UX/UI et navigation.
