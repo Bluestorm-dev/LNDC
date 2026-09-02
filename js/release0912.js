@@ -142,17 +142,53 @@
 
     const activityRoot = byId("homeActivityCarouselV0912");
     if(activityRoot){
-      const items=[];
-      const rankingStarted=rankingStartedV0912();
-      const badges=safeArray(state.museumSummary?.badges)
-        .filter(b=>b.obtained && (rankingStarted || String(b.category||"").toLowerCase()!=="classement"))
-        .map(b=>({kind:"badge",date:b.earned_at||b.updated_at||"",icon:"🏅",title:b.name||"Nouveau badge",text:b.description||"Une nouvelle pièce rejoint le Musée."}));
-      const events=safeArray(state.gamificationEvents).map(e=>({kind:e.event_type||"event",date:e.created_at||"",icon:e.event_type==="casserole"?"🍳":e.event_type==="genius"?"✨":"🦉",title:e.title||"Le Nid bouge",text:e.message||""}));
-      const records=safeArray(state.gamificationRecords).filter(r=>r.active!==false).map(r=>({kind:"record",date:r.achieved_at||"",icon:"🏆",title:r.record_name||r.record_key||"Nouveau record",text:`${state.profileDirectory?.get?.(String(r.user_id))?.username||"Un joueur"} · ${Number(r.value||0)}`}));
-      items.push(...badges,...events,...records);
-      items.sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
-      const unique=items.filter((x,i,arr)=>i===arr.findIndex(y=>`${y.kind}|${y.title}|${y.date}`===`${x.kind}|${x.title}|${x.date}`)).slice(0,18);
-      activityRoot.innerHTML=unique.length?unique.map(x=>`<article class="home-carousel-card-v0912 home-life-card-v0912"><div class="life-icon">${x.icon}</div><small>${x.date?esc(fmtDate(x.date)):"Le Nid"}</small><h4>${esc(x.title)}</h4><p>${esc(x.text)}</p></article>`).join(""):'<div class="empty">Les casseroles, badges et records apparaîtront ici après les premiers matchs.</div>';
+      const ownerName=userId=>state.profileDirectory?.get?.(String(userId))?.username||"Un joueur";
+      const matchdayName=id=>safeArray(state.matchdays).find(md=>String(md.id)===String(id))?.name||"";
+      const recordIcon=category=>({
+        performance:"🔥",
+        precision:"🎯",
+        series:"⚡",
+        ranking:"👑",
+        rivalries:"⚔️",
+        casseroles:"🍳",
+        genius:"💡",
+        unusual:"🦉"
+      })[String(category||"").toLowerCase()]||"🏆";
+
+      // Le Nid en mouvement = MÉMOIRE COLLECTIVE.
+      // Jamais les badges personnels du joueur connecté.
+      const records=safeArray(state.gamificationRecords)
+        .filter(r=>r.active!==false && String(r.scope||"nid")==="nid")
+        .map(r=>{
+          const md=matchdayName(r.matchday_id);
+          const value=Number(r.value||0);
+          return {
+            kind:"record",
+            date:r.achieved_at||"",
+            icon:recordIcon(r.category),
+            title:r.record_name||r.record_key||"Record du Nid",
+            text:[ownerName(r.user_id),Number.isFinite(value)?`${value} ${String(r.metadata?.unit||"").trim()}`.trim():"",md].filter(Boolean).join(" · ")
+          };
+        });
+
+      const events=safeArray(state.gamificationEvents)
+        .filter(e=>["casserole","genius"].includes(String(e.event_type||"")))
+        .map(e=>({
+          kind:e.event_type,
+          date:e.created_at||"",
+          icon:e.event_type==="casserole"?"🍳":"✨",
+          title:e.title||(e.event_type==="casserole"?"Casserole du Nid":"Coup de génie"),
+          text:e.message||`${ownerName(e.user_id)} fait parler le Nid.`
+        }));
+
+      const items=[...records,...events].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
+      const unique=items
+        .filter((x,i,arr)=>i===arr.findIndex(y=>`${y.kind}|${y.title}|${y.date}`===`${x.kind}|${x.title}|${x.date}`))
+        .slice(0,18);
+
+      activityRoot.innerHTML=unique.length
+        ?unique.map(x=>`<article class="home-carousel-card-v0912 home-life-card-v0912"><div class="life-icon">${x.icon}</div><small>${x.date?esc(fmtDate(x.date)):"Le Nid"}</small><h4>${esc(x.title)}</h4><p>${esc(x.text)}</p></article>`).join("")
+        :'<div class="empty">Les records du Nid et les premières casseroles apparaîtront ici après les résultats.</div>';
       startAutoCarouselV0912(activityRoot);
     }
   }

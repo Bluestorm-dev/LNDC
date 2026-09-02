@@ -500,7 +500,7 @@ need("ui.modal-root-preserved-r4",
 
 
 need("v0913.mobile-menu-visible",index12.includes('mobileSidebarTriggerV0912')&&index12.includes('<span>Menu</span>')&&css13.includes('min-width:66px'),"Le bouton mobile affiche clairement MENU sans hamburger");
-need("v0913.team-avatar-scale",css13.includes('.team-avatar>.avatar{width:70%!important;height:70%!important'),"L'avatar Team garde une taille proportionnelle au bouclier");
+need("v0913.team-avatar-scale",css13.includes('.team-avatar>.avatar{width:82%!important;height:82%!important'),"L'avatar Team utilise mieux la surface du bouclier");
 need("v0913.predictions-mobile-layout",css13.includes('grid-template-areas:\"home away\" \"score score\"'),"Les équipes et les +/- ne se chevauchent plus sur mobile");
 need("v0913.club-sheet-prono",release13.includes('club-prono-card-v0913')&&release13.includes('savePrediction(id,Number(home.value'),"La fiche équipe permet de pronostiquer directement");
 need("v0913.onboarding-five",release13.includes('Configuration du Nid')&&release13.includes('Choisis ton avatar')&&release13.includes('club préféré')&&release13.includes('Champion n°1')&&release13.includes('notificationPreset'),"Onboarding première connexion couvre avatar, club, Champion et notifications");
@@ -509,23 +509,30 @@ need("v0913.new-player-push",sql13.includes('notify_super_admin_registration_v09
 need("v0913.hard-delete-edge",edge13.includes('admin.auth.admin.deleteUser')&&edge13.includes('role!==\"super_admin\"')&&edge13.includes('captain_user_id'),"Suppression définitive protégée par une Edge Function Super Admin");
 need("v0913.delete-ui",read("js/admin.js").includes('data-admin-player-delete')&&read("js/admin.js").includes('deletePlayerAccountV0913'),"Le Super Admin peut supprimer un compte depuis Joueurs");
 need("v0913.release-wired",index12.includes('css/release0913.css')&&index12.includes('js/release0913.js')&&read("js/app.js").includes('renderRelease0913'),"V0.9.13 est branchée dans l'application");
-need("v0913r1.onboarding-close-first",
-  release13.includes("L'enregistrement est terminé : fermer la fenêtre immédiatement.") &&
-  release13.includes('root.remove();') &&
-  release13.indexOf('root.remove();') < release13.indexOf('Promise.allSettled(['),
-  "Terminer ferme l'onboarding avant les rafraîchissements réseau"
-);
-need("v0913r1.onboarding-local-complete",
-  release13.includes("state.preseason099.onboarding={") &&
-  release13.includes("completed_at:completedAt") &&
+need("v0913r1.onboarding-closes-before-push",
+  release13.includes("root.remove();") &&
+  release13.indexOf("root.remove();") < release13.indexOf("enablePushNotifications();") &&
   release13.includes("onboardingLoaded=true"),
-  "L'état local est marqué terminé pour empêcher une réouverture immédiate"
+  "Terminer ferme l'onboarding avant toute demande Push et fige son état"
 );
-need("v0913r1.push-nonblocking",
-  release13.includes("Promise.resolve(enablePushNotifications()).catch") &&
-  !release13.includes("await enablePushNotifications();"),
-  "La demande Push ne bloque plus la fermeture de l'onboarding"
+need("v0913r1.collective-carousel-no-personal-badges",
+  release12.includes("MÉMOIRE COLLECTIVE") &&
+  !release12.slice(release12.indexOf("const activityRoot"),release12.indexOf("function enhanceHomeNextV0912")).includes("museumSummary?.badges") &&
+  release12.includes('String(r.scope||"nid")==="nid"'),
+  "Le Nid en mouvement utilise les records collectifs et non les badges personnels"
 );
+need("v0913r1.collective-carousel-events",
+  release12.includes('["casserole","genius"]') &&
+  index12.includes("Records, exploits & casseroles"),
+  "Le carrousel collectif met en avant records, exploits et casseroles"
+);
+need("v0913r1.rival-avatar-footprint",
+  css13.includes("V0.9.13 R1 — duel") &&
+  css13.includes(".home-rival-versus>div>.team-avatar") &&
+  css13.includes("width:56px!important"),
+  "Les deux avatars du duel ont la même empreinte visuelle"
+);
+
 
 const summary={total:checks.length,passed:checks.filter(x=>x.status==="PASS").length,warnings:checks.filter(x=>x.status==="WARN").length,failed:checks.filter(x=>x.status==="FAIL").length};
 const report={version:"0.9.13",generated_at:new Date().toISOString(),base_url:baseUrl,summary,checks};

@@ -63,73 +63,39 @@
     try{
       if(state.championStatus?.first_open&&!d.championClubId&&!state.championStatus?.first_club_id)throw new Error("Choisis ton Champion avant de terminer.");
       const fav=clubById(d.favoriteClubId);
-      const prefs=notificationPresetPrefsV0913(d.notificationPreset);
-
-      if(demoMode){
-        state.profile.avatar_key=d.avatarKey;
-        state.profile.avatar_source="library";
-        state.profile.club_heart=fav?.name||null;
-        state.notificationPreferences=prefs;
-        localStorage.setItem(`nidc_demo_notification_preferences:${state.user.id}`,JSON.stringify(prefs));
-      }else{
+      if(demoMode){state.profile.avatar_key=d.avatarKey;state.profile.avatar_source="library";state.profile.club_heart=fav?.name||null;localStorage.setItem(`nidc_demo_notification_preferences:${state.user.id}`,JSON.stringify(notificationPresetPrefsV0913(d.notificationPreset)));}
+      else{
         const av=await sb.rpc("select_player_avatar_v053",{p_avatar_key:d.avatarKey});if(av.error)throw av.error;
         const pr=await sb.from("profiles").update({club_heart:fav?.name||null}).eq("id",state.user.id);if(pr.error)throw pr.error;
-        if(state.championStatus?.first_open&&d.championClubId&&String(d.championClubId)!==String(state.championStatus?.first_club_id||"")){
-          const cp=await sb.rpc("save_champion_pick_v040",{p_pick_number:1,p_club_id:d.championClubId,p_season_id:state.season.id});if(cp.error)throw cp.error;
-        }
-        const np=await sb.from("notification_preferences").upsert(prefs,{onConflict:"user_id"});if(np.error)throw np.error;
+        if(state.championStatus?.first_open&&d.championClubId&&String(d.championClubId)!==String(state.championStatus?.first_club_id||"")){const cp=await sb.rpc("save_champion_pick_v040",{p_pick_number:1,p_club_id:d.championClubId,p_season_id:state.season.id});if(cp.error)throw cp.error;}
+        const prefs=notificationPresetPrefsV0913(d.notificationPreset);const np=await sb.from("notification_preferences").upsert(prefs,{onConflict:"user_id"});if(np.error)throw np.error;
         const ob=await sb.rpc("save_my_onboarding_v099",{p_step:4,p_completed:true,p_dismissed:false});if(ob.error)throw ob.error;
       }
+      const wantsPush=!!d.enablePush;
 
-      // L'enregistrement est terminé : fermer la fenêtre immédiatement.
-      // Les rafraîchissements réseau suivants ne doivent jamais bloquer "Terminer".
-      const completedAt=new Date().toISOString();
-      if(state.profile){
-        state.profile.avatar_key=d.avatarKey;
-        state.profile.avatar_source="library";
-        state.profile.club_heart=fav?.name||null;
-      }
-      state.notificationPreferences=prefs;
-      if(state.championStatus?.first_open&&d.championClubId){
-        state.championStatus.first_club_id=d.championClubId;
-        state.championStatus.first_club_name=clubById(d.championClubId)?.name||state.championStatus.first_club_name||null;
-      }
-      if(state.preseason099){
-        state.preseason099.onboarding={
-          ...(state.preseason099.onboarding||{}),
-          current_step:4,
-          completed_at:completedAt,
-          dismissed_at:null
-        };
-        state.preseason099.onboardingLoaded=true;
-      }
-      sessionStorage.setItem("nidc-v0913-onboarding-offered","1");
+      // Figer immédiatement l'onboarding comme terminé côté client.
+      // Cela évite que renderAll() / maybeOfferTutorialV099 ne le rouvre.
+      state.preseason099=state.preseason099||{};
+      state.preseason099.onboarding={
+        ...(state.preseason099.onboarding||{}),
+        current_step:4,
+        completed_at:state.preseason099.onboarding?.completed_at||new Date().toISOString(),
+        dismissed_at:null
+      };
+      state.preseason099.onboardingLoaded=true;
+
+      if(!demoMode){await loadProfile();await Promise.all([loadChampionData(),loadNotificationData()]);}
+
       state.release0913.onboardingDraft=null;
-
-      // Déclencher la demande Push depuis le clic utilisateur, mais ne pas attendre
-      // son résultat pour rendre la main à l'utilisateur.
-      if(d.enablePush&&typeof enablePushNotifications==="function"){
-        Promise.resolve(enablePushNotifications()).catch(()=>{});
-      }
-
       root.remove();
-      q("#onboardingOverlayV0913")?.remove();
       renderAll();
       toast("🦉 Ton Nid est prêt. Bienvenue !");
 
-      // Mise à jour de fond : un échec ici ne réouvre jamais l'onboarding.
-      if(!demoMode){
-        Promise.allSettled([
-          typeof loadProfile==="function"?loadProfile():Promise.resolve(),
-          typeof loadChampionData==="function"?loadChampionData():Promise.resolve(),
-          typeof loadNotificationData==="function"?loadNotificationData():Promise.resolve()
-        ]).then(()=>{try{renderAll();}catch(_){}});
+      // La permission Push ne doit jamais bloquer la fermeture de la fenêtre.
+      if(wantsPush&&typeof enablePushNotifications==="function"){
+        try{await enablePushNotifications();}catch(_){}
       }
-    }catch(err){
-      btn.disabled=false;
-      const box=q("#onboardingMsgV0913",root);
-      if(box){box.textContent=friendlyError(err);box.className="form-msg error";}
-    }
+    }catch(err){btn.disabled=false;const box=q("#onboardingMsgV0913",root);if(box){box.textContent=friendlyError(err);box.className="form-msg error";}}
   }
 
   function openOnboardingV0913(manual=false){

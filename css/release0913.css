@@ -26,8 +26,8 @@
   .mobile-brand strong{font-size:.75rem!important}
 
   /* Team : avatar personnel proportionnel au bouclier, partout. */
-  .team-avatar>.avatar{width:70%!important;height:70%!important;max-width:none!important;max-height:none!important}
-  .home-hero-avatar>.team-avatar>.avatar,.player-cell>.team-avatar>.avatar,.my-ranking-sticky .sticky-name>.team-avatar>.avatar,.team-member-row .team-avatar>.avatar,.team-request-row .team-avatar>.avatar,.nid-prediction-row .team-avatar>.avatar,.team-rank-preview .team-avatar>.avatar{width:70%!important;height:70%!important;max-width:none!important;max-height:none!important}
+  .team-avatar>.avatar{width:82%!important;height:82%!important;max-width:none!important;max-height:none!important}
+  .home-hero-avatar>.team-avatar>.avatar,.player-cell>.team-avatar>.avatar,.my-ranking-sticky .sticky-name>.team-avatar>.avatar,.team-member-row .team-avatar>.avatar,.team-request-row .team-avatar>.avatar,.nid-prediction-row .team-avatar>.avatar,.team-rank-preview .team-avatar>.avatar{width:82%!important;height:82%!important;max-width:none!important;max-height:none!important}
   .team-preview-member .team-avatar>.avatar{width:72%!important;height:72%!important;max-width:none!important;max-height:none!important}
 
   /* Pronostics : équipes en haut, contrôles dessous. Aucun chevauchement. */
@@ -45,4 +45,31 @@
 
   /* Onboarding mobile */
   .onboarding-overlay-v0913{padding:7px}.onboarding-modal-v0913{max-height:96dvh;border-radius:20px}.onboarding-top-v0913{padding:13px 14px 8px}.onboarding-progress-v0913{margin:0 14px}.onboarding-body-v0913{padding:15px 14px}.onboarding-actions-v0913{padding:9px 14px 13px;grid-template-columns:auto 1fr auto}.onboarding-feature-grid-v0913{grid-template-columns:1fr}.onboarding-avatar-grid-v0913{grid-template-columns:repeat(3,1fr);max-height:48dvh}.onboarding-avatar-grid-v0913 img{width:58px;height:58px}.notification-presets-v0913{grid-template-columns:1fr}.notification-presets-v0913 button{padding:10px}.onboarding-welcome-v0913>img{width:90px;height:90px}
+}
+
+
+/* V0.9.13 R1 — duel : même empreinte visuelle avec ou sans Team */
+.home-rival-versus>div>.avatar,
+.home-rival-versus>div>.team-avatar{
+  width:56px!important;
+  height:56px!important;
+  flex:0 0 56px!important;
+  transform:none!important;
+}
+.home-rival-versus>div>.team-avatar>.avatar{
+  width:82%!important;
+  height:82%!important;
+  max-width:none!important;
+  max-height:none!important;
+}
+.home-rival-versus>div>.avatar{
+  border-radius:18px!important;
+}
+@media(max-width:900px){
+  .home-rival-versus>div>.avatar,
+  .home-rival-versus>div>.team-avatar{
+    width:54px!important;
+    height:54px!important;
+    flex-basis:54px!important;
+  }
 }

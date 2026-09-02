@@ -1,18 +1,25 @@
 LE NID DES CHAMPIONS — V0.9.13 R1
 =====================================
 
-CORRECTION ONBOARDING
-Le bouton « Terminer » pouvait rester bloqué parce que la modale n'était
-fermée qu'après le rechargement du profil, du Champion et des notifications.
+CORRECTIONS
+1. Onboarding
+- Le bouton Terminer ferme la fenêtre immédiatement après sauvegarde.
+- L'état local est marqué terminé avant renderAll().
+- La demande de permission Push intervient APRES la fermeture et ne peut
+  donc plus bloquer la modale.
 
-R1 :
-- les choix sont enregistrés ;
-- l'onboarding est marqué terminé localement ;
-- la fenêtre est fermée immédiatement ;
-- l'activation Push ne bloque plus la fermeture ;
-- les rechargements de données se font ensuite en arrière-plan ;
-- aucun échec de rafraîchissement ne peut rouvrir la fenêtre.
+2. Rival
+- Même empreinte visuelle pour un joueur avec ou sans bouclier Team.
+- L'avatar personnel occupe désormais 82 % du bouclier au lieu de 70 %.
 
+3. Le Nid en mouvement
+- Suppression totale des badges personnels du carrousel Accueil.
+- Affiche uniquement la mémoire collective :
+  records du Nid, meilleurs scores/performances enregistrés,
+  séries/records, casseroles et coups de génie.
+- Nouveau titre : Records, exploits & casseroles.
+
+INSTALLATION
+Appliquer directement par-dessus V0.9.13.
 Aucun SQL.
 Aucune Edge Function.
-À appliquer par-dessus V0.9.13.
