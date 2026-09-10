@@ -31,13 +31,46 @@
     const pending=p.avatar_source==="upload"&&p.avatar_moderation_status==="pending";
     return `<span class="avatar player-avatar-core player-avatar-transparent ${pending&&allowPending?'avatar-pending':''}"><img class="player-avatar-image" src="${esc(url)}" alt="Avatar de ${esc(p?.username||'joueur')}" loading="lazy" onerror="this.remove();this.parentElement.classList.add('avatar-broken')"><b aria-hidden="true">${esc(initial)}</b>${pending&&allowPending?'<em title="En attente de modération">⏳</em>':''}</span>`;
   }
+  // V0.9.14b — distinction historique visible directement sur l’avatar.
+  async function loadAvatarAwardHoldersV0914b() {
+    state.avatarAwardHolders=state.avatarAwardHolders||{};
+    if(demoMode||!configured||!sb){state.avatarAwardHolders.worldCup2026=null;return;}
+    try{
+      const {data,error}=await sb.from("player_distinctions")
+        .select("user_id")
+        .eq("code","nid-pronos-world-cup-2026")
+        .eq("active",true)
+        .limit(1)
+        .maybeSingle();
+      if(error)throw error;
+      state.avatarAwardHolders.worldCup2026=data?.user_id?String(data.user_id):null;
+    }catch(err){
+      console.warn("V0.9.14b distinction avatar",err);
+      state.avatarAwardHolders.worldCup2026=null;
+    }
+  }
+  function hasWorldCupWinnerStarV0914b(profile){
+    const p=profileForUser(profile),uid=String(p?.user_id||p?.id||"");
+    if(!uid)return false;
+    if(String(state.avatarAwardHolders?.worldCup2026||"")===uid)return true;
+    const distinctions=Array.isArray(p?.distinctions)?p.distinctions:[];
+    return distinctions.some(d=>String(d?.code||"")==="nid-pronos-world-cup-2026"&&d?.active!==false);
+  }
+  function avatarWinnerStarHTMLV0914b(profile){
+    if(!hasWorldCupWinnerStarV0914b(profile))return "";
+    return `<span class="avatar-distinction-star avatar-distinction-star-worldcup" title="Vainqueur du Nid des Pronos 2026" aria-label="Vainqueur du Nid des Pronos 2026">★</span>`;
+  }
   function avatarHTML(profile,opts={}) {
     const p=profileForUser(profile);
     const userId=p?.user_id||p?.id;
     const team=teamForUser(userId);
     const core=avatarCoreHTML(p,opts);
-    if(!team) return core;
-    return `<span class="team-avatar unified-player-avatar ${teamClass(team)}" style="${teamVisualVars(team)}" data-player-id="${esc(userId||'')}" title="${esc(team.team_name||team.name||'Team')}">${core}</span>`;
+    const star=avatarWinnerStarHTMLV0914b(p);
+    if(!team){
+      if(!star)return core;
+      return core.replace(/<\/span>\s*$/,`${star}</span>`);
+    }
+    return `<span class="team-avatar unified-player-avatar ${teamClass(team)}" style="${teamVisualVars(team)}" data-player-id="${esc(userId||'')}" title="${esc(team.team_name||team.name||'Team')}">${core}${star}</span>`;
   }
 
   async function signAvatarRows(rows,{allowPendingForAdmin=false}={}) {
@@ -60,4 +93,5 @@
     const rows=(data||[]).map(p=>({...p,user_id:p.id}));
     await signAvatarRows(rows);
     state.profileDirectory=new Map(rows.map(p=>[String(p.id),p]));
+    await loadAvatarAwardHoldersV0914b();
   }

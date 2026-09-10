@@ -1,6 +1,6 @@
 {
   "app": "Le Nid des Champions",
-  "version": "0.9.13",
+  "version": "0.9.14",
   "schema": 1,
   "branding": {
     "owl_main": "assets/branding/owl/owl-masked-main.png"
@@ -1247,5 +1247,12 @@
     "edge_function": "supabase/functions/admin-delete-user-v0913/index.ts",
     "test_center": "tests/test-center-v0.9.13.html",
     "scope": "mobile UI + onboarding + account lifecycle"
+  },
+  "release_v0914": {
+    "css": "css/release0914.css",
+    "js": "js/release0914.js",
+    "sql": "sql/033_patch_v0.9.14_badges_reveal.sql",
+    "test_center": "tests/test-center-v0.9.14.html",
+    "scope": "100 nouveaux badges + reveals animés par rareté + détail cliquable du Musée"
   }
 }

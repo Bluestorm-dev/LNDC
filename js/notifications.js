@@ -186,15 +186,22 @@ async function enablePushNotifications(){
     if(!subscription)subscription=await registration.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:base64UrlToUint8Array(keyRes.publicKey)});
     const j=subscription.toJSON();
     if(!j.keys?.p256dh||!j.keys?.auth)throw new Error("Le navigateur n’a pas fourni les clés de l’abonnement Push.");
-    const {error}=await sb.rpc("register_my_push_subscription_v064",{
+    const pushArgs={
       p_endpoint:subscription.endpoint,
       p_p256dh:j.keys.p256dh,
       p_auth_key:j.keys.auth,
       p_device_name:pushDeviceName(),
       p_user_agent:navigator.userAgent,
       p_platform:navigator.userAgentData?.platform||navigator.platform||null
-    });
-    if(error)throw error;await loadNotificationData();renderNotificationPreferences();renderHomePushPrompt();toast("🔔 Cet appareil recevra les push du Nid.");
+    };
+    let regRes=await sb.rpc("register_my_push_subscription_v100",pushArgs);
+    // Compatibilité pendant le déploiement progressif du HOTFIX V1.0.0.
+    if(regRes.error && /register_my_push_subscription_v100|schema cache|function/i.test(String(regRes.error.message||"")))regRes=await sb.rpc("register_my_push_subscription_v064",pushArgs);
+    if(regRes.error)throw regRes.error;
+    // L'activation de l'appareil doit aussi activer la préférence Push du joueur.
+    const {error:prefErr}=await sb.from("notification_preferences").upsert({user_id:state.user.id,notifications_enabled:true,push_enabled:true},{onConflict:"user_id"});
+    if(prefErr)console.warn("Préférence Push V1.0.0 non bloquante",prefErr);
+    await loadNotificationData();renderNotificationPreferences();renderHomePushPrompt();toast("🔔 Notifications activées sur cet appareil.");
   }catch(err){toast(friendlyError(err),"error");}
 }
 

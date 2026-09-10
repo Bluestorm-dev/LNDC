@@ -94,3 +94,32 @@
 .avatar-category>div{display:grid;grid-template-columns:repeat(5,minmax(72px,1fr));gap:7px;padding:0 9px 10px}
 @media(max-width:980px){.avatar-category>div{grid-template-columns:repeat(6,minmax(68px,1fr))}}
 @media(max-width:680px){.avatar-category>div{grid-template-columns:repeat(4,minmax(62px,1fr))}}
+
+
+/* ==========================================================================
+   V0.9.14b — Étoile historique : vainqueur du Nid des Pronos 2026
+   ========================================================================== */
+.avatar-distinction-star{
+  position:absolute;left:50%;top:-8px;transform:translateX(-50%);
+  width:18px;height:18px;display:grid;place-items:center;border-radius:999px;
+  color:#fff7cf;font-size:.78rem;font-weight:950;line-height:1;
+  background:radial-gradient(circle at 35% 30%,#fffbe8 0%,#ffeaa3 24%,#f4c74d 50%,#cb8a15 100%);
+  border:1px solid rgba(255,231,160,.82);
+  box-shadow:0 2px 8px rgba(0,0,0,.38),0 0 12px rgba(255,212,92,.46);
+  z-index:20;pointer-events:none;
+}
+.avatar-distinction-star:after{content:"";position:absolute;inset:-3px;border-radius:999px;border:1px solid rgba(255,220,120,.23)}
+@keyframes avatarLegacyStarPulseV0914b{
+  0%,100%{transform:translateX(-50%) scale(1);filter:brightness(1)}
+  50%{transform:translateX(-50%) scale(1.09);filter:brightness(1.18)}
+}
+.avatar-distinction-star-worldcup{animation:avatarLegacyStarPulseV0914b 2.2s ease-in-out infinite}
+.sidebar-avatar .avatar-distinction-star{width:14px;height:14px;top:-6px;font-size:.58rem}
+.profile-avatar-host .avatar-distinction-star{width:20px;height:20px;top:-10px;font-size:.9rem}
+.avatar-preview-stage .avatar-distinction-star{width:24px;height:24px;top:-12px;font-size:1rem}
+.team-avatar.unified-player-avatar{overflow:visible!important}
+.team-avatar.unified-player-avatar .avatar-distinction-star{top:-9px}
+@media(max-width:680px){
+  .avatar-distinction-star{width:16px;height:16px;top:-7px;font-size:.68rem}
+}
+@media(prefers-reduced-motion:reduce){.avatar-distinction-star-worldcup{animation:none}}

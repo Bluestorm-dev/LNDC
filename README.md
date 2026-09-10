@@ -1,4 +1,44 @@
-# Le Nid des Champions — V0.9.13
+# Le Nid des Champions — V1.0.0
+
+PWA de pronostics UEFA Champions League. V1.0.0 est la première version pensée pour la compétition réellement en cours : LIVE multi-matchs, classement mobile lisible, cockpit résultats, notifications stabilisées et Musée actif pendant la journée.
+
+## Nouveautés V1.0.0
+
+- Accueil LIVE : carrousel des matchs actuellement en direct avec ouverture des **Pronos du Nid**.
+- « Le Nid en mouvement » refondu : leader, exacts, précision, casseroles, génie et records.
+- Suppression de la carte d’accueil « La grande intuition ».
+- Fiche d’un autre joueur : ses choix Champion deviennent visibles après leur verrouillage.
+- Classement entièrement repensé pour mobile.
+- Pronostics : matchs terminés automatiquement repoussés en bas.
+- Super Admin / Matchs & LIVE : regroupement par journée UEFA, LIVE en tête, journées terminées en bas, sans création de nouvelle journée dans ce cockpit.
+- Records du Musée mis à jour dès les premiers matchs terminés d’une journée.
+- Push activable par les joueurs non-admin et reprise correcte d’un abonnement navigateur déjà existant.
+- Notifications de changement de rang différées jusqu’à la fin du LIVE et dédupliquées.
+
+## Mise à jour depuis V0.9.14b
+
+1. Copier les fichiers du patch à la racine du dépôt.
+2. Exécuter `sql/HOTFIX_V1.0.0_EXISTING_DB.sql` dans Supabase.
+3. **Redéployer `supabase/functions/push-dispatch`**. C’est indispensable pour le correctif des notifications de classement pendant le LIVE.
+4. Commit / push GitHub Pages.
+5. Fermer complètement la PWA puis la rouvrir ; sur navigateur, faire une actualisation forcée.
+6. Lancer `node tests/run-all-v1.0.0.mjs`.
+
+Pour une installation neuve, utiliser `sql/000_INSTALL_FRESH_V1.0.0.sql`.
+
+Voir `INSTALLATION_V1.0.0.txt` et `README_TEST_SYSTEM_V1.0.0.md`.
+
+---
+
+# Le Nid des Champions — V0.9.14
+
+## Nouveautés V0.9.14 — Badges & Musée
+- 100 nouvelles médailles découpées en 512x512, sans numérotation intégrée.
+- Reveal animé par rareté lors de l’obtention d’un succès.
+- Clic sur un succès dans le Musée : grande fiche animée + date d’obtention.
+- GSAP/Anime.js utilisés quand disponibles, avec fallback natif.
+
+Voir `INSTALLATION_V0.9.14.txt`.
 
 ## Nouveautés V0.9.13 — Mobile, onboarding & comptes
 

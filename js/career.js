@@ -173,7 +173,12 @@ async function renderAdminDistinctionPanelV090(){
     </section>
     <details class="admin-advanced-distinction"><summary>＋ Ajouter une autre distinction historique</summary><div class="grid grid-3"><div class="field"><label>Joueur</label><select id="distPlayerV090">${playerOptions}</select></div><div class="field"><label>Code</label><input id="distCodeV090" value="distinction-historique"></div><div class="field"><label>Icône</label><input id="distIconV090" value="🏆" maxlength="8"></div></div><div class="field"><label>Libellé</label><input id="distLabelV090" value="Distinction du Nid"></div><div class="field"><label>Description</label><input id="distDescV090" value="Distinction historique attribuée par le Super Admin."></div><div class="actions"><button id="awardDistV090" class="btn secondary small">Attribuer / mettre à jour</button></div><div id="distMsgV090" class="form-msg"></div></details>`;
 
-  const refreshMemory=async()=>{state.seasonMemoryLoaded=false;await loadSeasonMemoryData(true);renderProfileCareerV090();renderSeasonMemory();};
+  const refreshMemory=async()=>{
+    state.seasonMemoryLoaded=false;
+    await loadSeasonMemoryData(true);
+    if(typeof loadAvatarAwardHoldersV0914b==="function")await loadAvatarAwardHoldersV0914b();
+    renderProfileCareerV090();renderSeasonMemory();renderAll();
+  };
   const setWinner=$("#setWorldCupWinnerV090",root);if(setWinner)setWinner.onclick=async()=>{
     if(demoMode)return setMsg("#worldCupWinnerMsgV090","Disponible avec Supabase.","error");
     const userId=$("#worldCupWinnerPlayerV090",root)?.value;if(!userId)return setMsg("#worldCupWinnerMsgV090","Choisis un joueur.","error");

@@ -1,3 +1,37 @@
+# V1.0.0 — LIVE & UX de compétition
+
+La Ligue des champions a commencé : cette version transforme l’interface de pré-saison en cockpit de compétition, surtout sur mobile.
+
+- **Notifications de classement** : aucun changement de rang n’est notifié pendant qu’un match officiel est LIVE. Le bilan est calculé une fois la séquence LIVE terminée, sur le classement officiel, avec une clé stable qui empêche les doublons. Les doublons identiques déjà présents dans la même minute sont masqués par le hotfix.
+- **Accueil — Champions** : suppression de la carte « La grande intuition / Mes champions », devenue redondante. Les choix Champion des autres joueurs sont désormais visibles depuis leur fiche uniquement après leur verrouillage ; avant cela, ils restent secrets.
+- **Accueil — LIVE** : dès qu’un ou plusieurs matchs sont en direct, le carrousel « Mes prochains matchs » devient « Les matchs en direct », affiche score et équipes et ouvre au clic le modal **Pronos du Nid** du match.
+- **Accueil — Le Nid en mouvement** : refonte en carrousel narratif inspiré du Nid des Pronos : leader, sniper/exacts, hibou en feu/précision, casseroles, coups de génie et records actifs.
+- **Classement** : remplacement du grand tableau mobile par des cartes joueur lisibles : rang et variation, avatar, nom/Team, métrique principale, points, exacts, précision et nombre de pronostics joués. Le contexte LIVE est explicitement signalé comme provisoire.
+- **Pronostics** : matchs LIVE et à venir en premier ; matchs terminés/cancelled descendus en bas de la journée avec séparateur.
+- **Super Admin — Matchs & LIVE** : suppression de « Nouvelle journée » dans le flux courant. Tous les matchs sont regroupés par journée UEFA ; journées LIVE d’abord, journées à gérer ensuite, journées terminées en bas. Dans chaque journée : LIVE → à venir → terminés. Saisie rapide du score, LIVE, Terminer, Réouvrir et paramètres du match.
+- **Musée — Records** : les records de journée commencent à vivre dès qu’au moins un match officiel de la journée est terminé, au lieu d’attendre la fin complète des 18 matchs.
+- **Notifications Push joueurs** : nouvel enregistrement `register_my_push_subscription_v100` accessible aux joueurs actifs. Un endpoint Web Push déjà lié à un ancien compte sur le même navigateur peut être réattribué au compte connecté ; l’activation force aussi `notifications_enabled` et `push_enabled`.
+- **PWA** : cache V1.0.0 dédié pour forcer la mise à jour des nouveaux fichiers.
+- **Tests** : 19 contrôles statiques V1.0.0 + vérification syntaxique de tous les fichiers JavaScript.
+
+> Important : le correctif anti-spam de classement se trouve aussi dans l’Edge Function `push-dispatch`. Après mise à jour des fichiers et du SQL, il faut **redéployer cette Edge Function**.
+
+---
+
+# V0.9.14b — Étoile du vainqueur du Nid des Pronos 2026
+
+- La distinction permanente `nid-pronos-world-cup-2026` ajoute désormais une étoile dorée au-dessus de l’avatar du vainqueur.
+- L’étoile suit le joueur dans tous les rendus utilisant `avatarHTML` : classement, profil, Rival, Teams, sidebar, accueil et vues sociales.
+- L’attribution ou le retrait depuis l’administration actualise immédiatement le porteur de l’étoile.
+- Aucun changement de schéma : la table `player_distinctions` et la RPC dédiée existent déjà.
+- Cache PWA renommé pour forcer le chargement des nouveaux fichiers.
+
+## V0.9.14
+- Nouveau pack visuel des 100 succès, découpé en PNG 512x512.
+- Reveals distincts Commun / Rare / Épique / Légendaire / Secret.
+- Fiche de succès animée dans le Musée avec date d’obtention.
+- Support souris, tactile et clavier pour l’ouverture des succès.
+
 ## V0.9.13
 
 - Refonte mobile ciblée : menu explicite, Pronostics sans chevauchement et fiches équipes.

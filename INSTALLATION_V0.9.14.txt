@@ -1,0 +1,22 @@
+LE NID DES CHAMPIONS — INSTALLATION V0.9.14
+
+OBJET
+- Remplacement des 100 images de succès par les nouvelles médailles 2026.
+- Découpe 512x512 sans numéro ni libellé intégré dans l'image.
+- Animation de réception distincte selon la rareté : Commun, Rare, Épique, Légendaire et Secret.
+- Dans le Musée, un clic sur un succès ouvre sa fiche avec animation et date d'obtention.
+
+MISE À JOUR DEPUIS V0.9.13
+1. Copier le contenu de la V0.9.14 sur GitHub Pages.
+2. Dans Supabase > SQL Editor, exécuter : sql/HOTFIX_V0.9.14_EXISTING_DB.sql
+   Cette requête met uniquement app_version à 0.9.14. Aucun changement de schéma.
+3. Aucun redéploiement Edge Function.
+4. Sur PC : Ctrl+F5.
+5. Sur mobile/PWA : fermer complètement l'application puis la rouvrir afin que le cache V0.9.14 remplace le cache V0.9.13.
+
+TEST CONSEILLÉ
+- Ouvrir Musée > Badges.
+- Cliquer sur un badge obtenu : la grande fiche doit s'ouvrir et afficher la date d'obtention.
+- Vérifier un badge commun, rare, épique et légendaire : l'animation doit être différente.
+- Vérifier qu'un succès secret non découvert reste masqué.
+- Lancer : node tests/run-all-v0.9.14.mjs

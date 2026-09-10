@@ -1,0 +1,35 @@
+LE NID DES CHAMPIONS — PATCH V0.9.14b -> V1.0.0
+================================================
+
+OBJECTIF
+Passer d'une interface de pré-saison à une interface exploitable pendant les vraies soirées de Ligue des champions, notamment avec plusieurs matchs LIVE en parallèle.
+
+PRINCIPALES MODIFICATIONS
+- Anti-spam notifications de classement pendant le LIVE.
+- Accueil LIVE cliquable vers les Pronos du Nid.
+- Suppression de « La grande intuition » sur l'accueil.
+- Choix Champions des autres joueurs visibles dans leur fiche après verrouillage.
+- « Le Nid en mouvement » refondu en stories du Nid.
+- Classement mobile refondu en cartes lisibles.
+- Pronostics : terminés en bas.
+- Super Admin : matchs groupés par journée, LIVE d'abord, terminés en bas, sans bouton Nouvelle journée.
+- Records du Musée actifs pendant une journée en cours.
+- Activation Push réparée pour les joueurs standards.
+
+FICHIERS V1.0.0 PRINCIPAUX
+- css/release100.css
+- js/release100.js
+- js/profile.js
+- js/notifications.js
+- js/app.js
+- supabase/functions/push-dispatch/index.ts
+- sql/HOTFIX_V1.0.0_EXISTING_DB.sql
+- sql/034_patch_v1.0.0_live_ux.sql
+- sql/000_INSTALL_FRESH_V1.0.0.sql
+- tests/test-v1.0.0.mjs
+- tests/run-all-v1.0.0.mjs
+- tests/test-center-v1.0.0.html
+- index.html / sw.js / config*.js / VERSION
+
+À NE PAS OUBLIER
+Après le SQL, REDÉPLOYER l'Edge Function push-dispatch. Le SQL seul ne corrige pas le moteur distant qui génère les notifications de classement.

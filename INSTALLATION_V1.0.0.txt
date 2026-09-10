@@ -1,0 +1,70 @@
+LE NID DES CHAMPIONS — INSTALLATION / MISE À JOUR V1.0.0
+=========================================================
+
+CAS 1 — MISE À JOUR DEPUIS V0.9.14b
+-----------------------------------
+
+1. Sauvegarde
+   - Conserver une copie du dépôt et, si possible, une sauvegarde Supabase avant le déploiement.
+
+2. Fichiers
+   - Copier tout le contenu du patch V0.9.14b -> V1.0.0 à la racine du dépôt.
+   - Écraser les fichiers portant le même nom.
+   - Le fichier config.js du patch conserve la configuration du snapshot fourni. Si ton dépôt de production contient des clés/config différentes, conserve tes valeurs SUPABASE_URL / SUPABASE_ANON_KEY / VAPID_PUBLIC_KEY et mets seulement APP_VERSION à "1.0.0".
+
+3. Supabase SQL
+   - Ouvrir l'éditeur SQL Supabase.
+   - Exécuter : sql/HOTFIX_V1.0.0_EXISTING_DB.sql
+   - Le script :
+       * ajoute register_my_push_subscription_v100 ;
+       * permet aux joueurs actifs d'activer leurs notifications Push ;
+       * réattribue proprement un endpoint navigateur au compte connecté ;
+       * active les records à partir du premier match terminé d'une journée ;
+       * nettoie les doublons identiques de notifications de classement ;
+       * recale l'état de référence du classement sur le classement officiel ;
+       * passe app_version à 1.0.0.
+
+4. Edge Function — ÉTAPE OBLIGATOIRE
+   - Redéployer la fonction : supabase/functions/push-dispatch
+   - Avec la CLI Supabase, depuis la racine du projet :
+       supabase functions deploy push-dispatch
+   - Ou effectuer le redéploiement depuis ton flux habituel Supabase.
+
+   IMPORTANT : sans ce redéploiement, l'ancien moteur continuera à produire des
+   notifications de classement à chaque mise à jour d'un score LIVE.
+
+5. GitHub Pages / PWA
+   - Commit et push.
+   - Le Service Worker utilise un nouveau cache V1.0.0.
+   - Sur mobile : fermer complètement la PWA puis la rouvrir.
+   - Sur navigateur : actualisation forcée (Ctrl+F5 / Ctrl+Shift+R).
+
+6. Tests
+   - Depuis la racine du dépôt :
+       node tests/run-all-v1.0.0.mjs
+   - Résultat attendu : 19 PASS · 0 FAIL.
+   - Puis ouvrir : tests/test-center-v1.0.0.html
+   - Faire le road-check LIVE avec au moins deux comptes si possible.
+
+
+CAS 2 — INSTALLATION NEUVE
+--------------------------
+
+1. Renseigner config.js.
+2. Exécuter sql/000_INSTALL_FRESH_V1.0.0.sql.
+3. Déployer les Edge Functions du projet, en particulier push-dispatch.
+4. Publier le dépôt.
+5. Lancer les tests V1.0.0.
+
+
+POINTS À TESTER EN PRIORITÉ LE SOIR D'UN MATCH
+-----------------------------------------------
+
+- Modifier plusieurs fois le score d'un match LIVE : aucune notification de rang ne doit tomber pendant le LIVE.
+- Après la fin de tous les matchs actuellement LIVE : une seule notification de mouvement de rang doit être créée si le rang officiel a changé.
+- Accueil : pendant un LIVE, le carrousel affiche les matchs LIVE ; un clic ouvre les Pronos du Nid.
+- Classement : lisible sur mobile, avec mention provisoire LIVE.
+- Pronostics : les matchs terminés sont en bas.
+- Super Admin > Matchs & LIVE : journées regroupées, LIVE en premier, terminées en bas.
+- Musée > Records : un record peut exister avant que les 18 matchs d'une journée soient tous terminés.
+- Compte joueur normal : le bouton d'activation des notifications doit fonctionner.

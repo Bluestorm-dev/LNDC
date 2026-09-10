@@ -1,0 +1,23 @@
+import fs from "node:fs";
+import path from "node:path";
+const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),"..");
+const read=p=>fs.readFileSync(path.join(root,p),"utf8");
+let pass=0,fail=0;const check=(name,ok,detail="")=>{console.log(`${ok?"PASS":"FAIL"} ${name}${detail?` — ${detail}`:""}`);ok?pass++:fail++;};
+check("version.file",read("VERSION").trim()==="0.9.14");
+check("version.config",read("config.js").includes('APP_VERSION: "0.9.14"'));
+check("version.cache",read("sw.js").includes("nid-champions-v0.9.14-badges-reveal"));
+check("release.css",fs.existsSync(path.join(root,"css/release0914.css")));
+check("release.js",fs.existsSync(path.join(root,"js/release0914.js")));
+check("release.wired",read("index.html").includes("css/release0914.css")&&read("index.html").includes("js/release0914.js"));
+check("animation.libs",read("index.html").includes("gsap.min.js")&&read("index.html").includes("anime.min.js"));
+const rel=read("js/release0914.js");
+check("museum.open",rel.includes("openMuseumBadgeV0914"));
+check("museum.date",rel.includes("Date d’obtention")&&rel.includes("earned_at"));
+check("reveal.levels",["common","rare","epic","legendary","secret"].every(x=>rel.includes(`rarity===\"${x}\"`)||rel.includes(`rarity==\"${x}\"`)));
+const catalog=JSON.parse(read("assets/badges/badge-catalog.json"));
+check("badges.count",catalog.items?.length===100,`${catalog.items?.length||0} asset(s)`);
+let bad=0;
+for(const item of catalog.items||[]){const f=path.join(root,item.file);if(!fs.existsSync(f)){bad++;continue;}const b=fs.readFileSync(f);if(!(b[0]===0x89&&b[1]===0x50&&b[2]===0x4e&&b[3]===0x47))bad++;}
+check("badges.png",bad===0,`${bad} anomalie(s)`);
+check("sql.patch",read("sql/HOTFIX_V0.9.14_EXISTING_DB.sql").includes('"0.9.14"'));
+console.log(`\nRésumé V0.9.14: ${pass} PASS · ${fail} FAIL`);process.exitCode=fail?1:0;

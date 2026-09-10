@@ -1,0 +1,35 @@
+LE NID DES CHAMPIONS — MINI HOTFIX V0.9.14b
+
+But
+- Ajouter une étoile dorée au-dessus de l'avatar du détenteur de la distinction
+  « Vainqueur du Nid des Pronos — Coupe du monde 2026 ».
+
+Distinction utilisée
+- code : nid-pronos-world-cup-2026
+- aucune nouvelle table / colonne / RPC
+
+Fichiers modifiés
+- js/avatars.js
+- js/career.js
+- css/avatars.css
+- index.html
+- js/app.js
+- config.js
+- config.example.js
+- sw.js
+- VERSION
+- CHANGELOG.md
+
+Fichier ajouté
+- sql/HOTFIX_V0.9.14b_EXISTING_DB.sql
+
+Installation
+1. Copier les fichiers du patch à la racine du dépôt en écrasant les anciens.
+2. Exécuter sql/HOTFIX_V0.9.14b_EXISTING_DB.sql dans Supabase (mise à jour du numéro de version uniquement).
+3. Commit / push GitHub Pages.
+4. Fermer puis rouvrir la PWA ; sur navigateur, faire une actualisation forcée.
+
+Comportement
+- Une seule étoile est affichée, puisque la distinction 2026 n'autorise qu'un détenteur actif.
+- L'étoile est visible partout où l'application utilise avatarHTML().
+- Attribuer/retirer le titre depuis l'administration rafraîchit l'affichage immédiatement.

@@ -1,0 +1,20 @@
+Le Nid des Champions — V0.9.14
+
+BADGES
+- 100 nouvelles images découpées en 512x512 à partir des planches validées.
+- Aucun numéro intégré aux images.
+- Les chemins d'assets existants sont conservés : aucune migration des 100 lignes du catalogue n'est nécessaire.
+
+RÉVÉLATION
+- Commun : apparition bronze courte et lisible.
+- Rare : impulsion et anneaux bleus.
+- Épique : énergie violette, particules et mouvement élastique Anime.js/GSAP.
+- Légendaire : montée en lumière dorée, rayons et particules renforcées.
+- Secret : apparition brouillée/mystique cyan-violet.
+- Fallback natif Web Animations si GSAP/Anime.js ne sont pas disponibles.
+
+MUSÉE
+- Les cartes de succès sont maintenant cliquables au clavier et à la souris/tactile.
+- La fiche affiche image, rareté, catégorie, portée, statut, description et date d'obtention.
+- Le détail rejoue l'animation de la rareté.
+- Les secrets non obtenus restent masqués.

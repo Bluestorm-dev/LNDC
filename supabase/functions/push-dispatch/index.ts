@@ -175,19 +175,47 @@ async function createCompletedMatchdaySummaries(){
 }
 
 async function updateRankingNotifications(){
-  const {data:seasons}=await admin.from("seasons").select("id").eq("is_active",true).limit(1);const season=seasons?.[0];if(!season)return {created:0};
-  const {data:rows,error}=await admin.rpc("get_leaderboard_v040",{p_season_id:season.id,p_scope:"general",p_matchday_id:null,p_evening_date:null,p_include_live:true});if(error||!rows)return {created:0};
-  const {data:oldRows}=await admin.from("ranking_notification_state").select("*").eq("season_id",season.id);const old=new Map((oldRows||[]).map((r:any)=>[r.user_id,r]));const nowMap=new Map((rows||[]).map((r:any)=>[r.user_id,r]));
-  const {data:rivals}=await admin.from("player_rivals").select("user_id,rival_user_id").eq("season_id",season.id);const rivalMap=new Map((rivals||[]).map((r:any)=>[r.user_id,r.rival_user_id]));let created=0;
-  for(const r of rows||[]){const prev:any=old.get(r.user_id);if(prev&&Number(prev.rank)!==Number(r.rank)){
-      const from=Number(prev.rank),to=Number(r.rank);let title="📈 Le classement bouge",body=`Tu passes #${from} → #${to}.`,push=false;
-      if(from>3&&to<=3){title="🏆 Entrée sur le podium";push=true;}else if(from<=3&&to>3){title="Le podium s’éloigne";push=true;}else if(from!==1&&to===1){title="👑 Tu prends la tête du Nid";push=true;}else if(from===1&&to!==1){title="La première place vient de changer de bec";push=true;}
-      const rivalId=rivalMap.get(r.user_id),oldR=old.get(rivalId),newR=nowMap.get(rivalId);if(oldR&&newR){const wasAhead=from<Number(oldR.rank),isAhead=to<Number(newR.rank);if(wasAhead!==isAhead){title=isAhead?"⚔️ Tu dépasses ton rival":"⚔️ Ton rival vient de te dépasser";body=isAhead?`Tu passes devant ton rival : #${to} contre #${newR.rank}.`:`Ton rival est #${newR.rank}, toi #${to}.`;push=true;}}
-      const {error:nErr}=await admin.from("notifications").insert({user_id:r.user_id,season_id:season.id,category:push&&title.includes("rival")?"rival":"ranking",title,body,importance:push?"important":"normal",deep_link:push&&title.includes("rival")?"rival":"ranking",payload:{from_rank:from,to_rank:to},source_key:`rank-change:${r.user_id}:${Date.now()}`,push_requested:push,push_not_before:push?new Date().toISOString():null});if(!nErr)created++;
+  const {data:seasons}=await admin.from("seasons").select("id").eq("is_active",true).limit(1);
+  const season=seasons?.[0];if(!season)return {created:0};
+
+  // V1.0.0 : pendant un LIVE, le classement peut changer à chaque saisie de score.
+  // On ne notifie donc rien et on ne déplace PAS l'état de référence. La notification
+  // tombe une seule fois, après le dernier coup de sifflet du bloc LIVE.
+  const {count:liveCount}=await admin.from("matches").select("id",{count:"exact",head:true})
+    .eq("season_id",season.id).eq("status","live").eq("is_test",false);
+  if(Number(liveCount||0)>0)return {created:0,deferred:true,live:Number(liveCount||0)};
+
+  const {data:rows,error}=await admin.rpc("get_leaderboard_v040",{p_season_id:season.id,p_scope:"general",p_matchday_id:null,p_evening_date:null,p_include_live:false});
+  if(error||!rows)return {created:0};
+  const {data:oldRows}=await admin.from("ranking_notification_state").select("*").eq("season_id",season.id);
+  const old=new Map((oldRows||[]).map((r:any)=>[r.user_id,r]));
+  const nowMap=new Map((rows||[]).map((r:any)=>[r.user_id,r]));
+  const {data:rivals}=await admin.from("player_rivals").select("user_id,rival_user_id").eq("season_id",season.id);
+  const rivalMap=new Map((rivals||[]).map((r:any)=>[r.user_id,r.rival_user_id]));
+  const {data:lastFinished}=await admin.from("matches").select("id,updated_at,kickoff_at").eq("season_id",season.id).eq("status","finished").eq("is_test",false).order("updated_at",{ascending:false}).limit(1);
+  const cycle=lastFinished?.[0]?.id||"initial";
+  let created=0;
+
+  for(const r of rows||[]){
+    const prev:any=old.get(r.user_id);
+    if(prev&&Number(prev.rank)!==Number(r.rank)){
+      const from=Number(prev.rank),to=Number(r.rank);let title="📈 Le classement bouge",body=`Tu passes #${from} → #${to}.`,push=false,category="ranking",deepLink="ranking";
+      if(from>3&&to<=3){title="🏆 Entrée sur le podium";push=true;}
+      else if(from<=3&&to>3){title="Le podium s’éloigne";push=true;}
+      else if(from!==1&&to===1){title="👑 Tu prends la tête du Nid";push=true;}
+      else if(from===1&&to!==1){title="La première place vient de changer de bec";push=true;}
+      const rivalId=rivalMap.get(r.user_id),oldR=old.get(rivalId),newR=nowMap.get(rivalId);
+      if(oldR&&newR){
+        const wasAhead=from<Number(oldR.rank),isAhead=to<Number(newR.rank);
+        if(wasAhead!==isAhead){title=isAhead?"⚔️ Tu dépasses ton rival":"⚔️ Ton rival vient de te dépasser";body=isAhead?`Tu passes devant ton rival : #${to} contre #${newR.rank}.`:`Ton rival est #${newR.rank}, toi #${to}.`;push=true;category="rival";deepLink="rival";}
+      }
+      const sourceKey=`rank-change:${season.id}:${r.user_id}:${cycle}:${from}:${to}`;
+      const {error:nErr}=await admin.from("notifications").insert({user_id:r.user_id,season_id:season.id,category,title,body,importance:push?"important":"normal",deep_link:deepLink,payload:{from_rank:from,to_rank:to,after_live:true},source_key:sourceKey,push_requested:push,push_not_before:push?new Date().toISOString():null});
+      if(!nErr)created++;
     }
     await admin.from("ranking_notification_state").upsert({season_id:season.id,user_id:r.user_id,rank:Number(r.rank),points:Number(r.points||0),updated_at:new Date().toISOString()},{onConflict:"season_id,user_id"});
   }
-  return {created};
+  return {created,deferred:false};
 }
 
 async function createRivalPreMatchNotifications() {
