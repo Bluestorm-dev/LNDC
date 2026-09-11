@@ -195,7 +195,7 @@
     try{const {data,error}=await sb.rpc("get_nid_movement_v101",{p_season_id:state.season.id});if(!error){state.nidMovementStatsV101=data||[];state.nidMovementStatsLoadedAtV101=Date.now();}}catch(_){}finally{state.nidMovementStatsLoadingV101=false;}
   }
   window.loadMovementV101=loadMovementV101;
-  function storyPlayerV101(userId){const p=state.profileDirectory?.get?.(String(userId));return p?`<div class="nid-story-player-v100">${avatarHTML({...p,user_id})}<strong>${esc(p.username||"Joueur")}</strong></div>`:"";}
+  function storyPlayerV101(userId){const p=state.profileDirectory?.get?.(String(userId));return p?`<div class="nid-story-player-v100">${avatarHTML({...p,user_id:userId})}<strong>${esc(p.username||"Joueur")}</strong></div>`:"";}
   function movementStoriesV101(){
     const rows=safe(state.nidMovementRankingV100?.length?state.nidMovementRankingV100:state.rankingRows).filter(r=>r.user_id),stats=safe(state.nidMovementStatsV101),stories=[];
     const leader=rows.slice().sort((a,b)=>Number(a.rank||999)-Number(b.rank||999))[0];if(leader)stories.push({kind:"leader",icon:"👑",user:leader.user_id,eyebrow:"Classement",title:"Le patron du Nid",value:`#1 · ${Number(leader.points||0)} pts`,text:`${Number(leader.exact_scores||0)} exact(s) · ${Number(leader.precision_pct||0).toFixed(1)}% de précision`});

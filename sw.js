@@ -1,4 +1,4 @@
-const CACHE = "nid-champions-v1.0.1-live-c1";
+const CACHE = "nid-champions-v1.0.1a-live-c1";
 const CORE = [
   "./","./index.html","./manifest.webmanifest","./config.js",
   "./css/base.css","./css/icons.css","./css/predictions.css","./css/ranking.css","./css/clubs.css","./css/champions.css","./css/layout.css","./css/teams.css","./css/avatars.css","./css/communication.css","./css/social.css","./css/admin.css","./css/gamification.css","./css/ucl.css","./css/evenings.css","./css/v080.css","./css/career.css","./css/admin095.css","./css/finale098.css","./css/final-report098.css","./css/preseason099.css",
