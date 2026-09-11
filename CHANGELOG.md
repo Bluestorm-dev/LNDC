@@ -1,3 +1,21 @@
+# V1.0.1 — LIVE C1 & finitions UX
+
+- Le Centre Ligue des champions se met à jour dès qu'un score LIVE change dans `matches` : scores et classement de phase de ligue sont recalculés côté front avec mention provisoire.
+- Ajout d'un onglet **Buteurs & cartons** dans le Centre C1. La Edge Function Football-Data récupère les buteurs et déplie les bookings afin d'alimenter `ucl_player_stats` et `ucl_discipline_stats`.
+- Enrichissement des clubs avec adresse, site, fondation, couleurs, entraîneur et effectif. Les objets légers reçus via `/matches` n'écrasent plus ces métadonnées riches.
+- Refonte du modal club : identité, repères C1, effectif, meilleur buteur, cartons, historique actuel du club dans le Nid, prochains matchs et résultats.
+- Les carrousels d'accueil héritent des couleurs et du fond de la Team avec transition animée.
+- Le ruban LIVE devient un bandeau défilant façon flash infos, chaque match restant cliquable.
+- « Le Nid en mouvement » expose désormais records actifs, série de zéros, total/volume des casseroles et coups de génie.
+- Le modal joueur explicite la forme récente : Exact, Bon écart, Bon résultat ou Raté avec points, et affiche Casserole/Génie/série à zéro.
+- Le classement montre en rouge le delta de points LIVE individuel et la fin de page ne laisse plus transparaître les statistiques collectives sous les cartes.
+- Les rivalités sont recalculées par trigger après évolution des matchs et un rattrapage traite immédiatement les journées déjà terminées.
+- L'onglet Pronostics saute automatiquement vers la prochaine journée non terminée quand la journée courante est finie.
+- Road-check statique V1.0.1 : 35 contrôles + vérification syntaxique de tous les JS.
+- Correction du runner V1.0.0 sous Windows : utilisation de `fileURLToPath(import.meta.url)` au lieu de l'URL brute.
+
+---
+
 # V1.0.0 — LIVE & UX de compétition
 
 La Ligue des champions a commencé : cette version transforme l’interface de pré-saison en cockpit de compétition, surtout sur mobile.

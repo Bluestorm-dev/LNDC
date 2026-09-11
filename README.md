@@ -1,3 +1,36 @@
+# Le Nid des Champions — V1.0.1
+
+V1.0.1 est la première passe de finition après le démarrage réel de la Ligue des champions : le Centre C1 suit désormais le LIVE, les écrans mobiles sont clarifiés et les statistiques joueurs/clubs gagnent en profondeur.
+
+## Nouveautés V1.0.1
+
+- **Centre Ligue des champions en LIVE** : score et classement provisoire se recalculent dès qu'un match du Nid évolue, sans attendre une synchronisation manuelle.
+- **Buteurs & cartons C1** : nouvel onglet alimenté par Football-Data lors de la synchronisation du Centre C1.
+- **Fiches clubs enrichies** : pays, stade, adresse, année de fondation, entraîneur, couleurs, effectif, bilan C1 dans le Nid, meilleur buteur, discipline et calendrier récent/à venir.
+- **Accueil / carrousels** : les cartes reprennent l'identité visuelle de la Team du joueur et changent avec une vraie transition.
+- **Le Nid en mouvement** : records, séries à zéro, détail des casseroles et des coups de génie avec leurs points.
+- **Ruban LIVE** : défilement continu façon flash infos ; un match est cliquable pour ouvrir les Pronos du Nid.
+- **Classement** : points LIVE provisoires individuels affichés en rouge et correction du chevauchement visuel en bas du classement.
+- **Fiche joueur** : la forme récente n'utilise plus des ronds incompréhensibles ; chaque résultat est libellé avec son type et ses points.
+- **Rivalités** : finalisation automatique en base dès qu'une journée devient entièrement terminée, puis rafraîchissement du front.
+- **Pronostics** : si la journée affichée est finie, l'ouverture de l'onglet bascule automatiquement sur la prochaine journée à jouer.
+- **Tests** : nouveau road-check V1.0.1 et chemins Node compatibles Windows, y compris les dossiers contenant des accents.
+
+## Mise à jour depuis V1.0.0
+
+1. Exécuter `sql/HOTFIX_V1.0.1_EXISTING_DB.sql` dans Supabase **avant de publier le nouveau front**.
+2. Redéployer `supabase/functions/sync-football-data`.
+3. Copier le patch V1.0.1 à la racine du dépôt et publier GitHub Pages.
+4. Dans le Super Admin, lancer une synchronisation **Centre C1** une fois afin de remplir effectifs, buteurs et cartons.
+5. Fermer complètement la PWA puis la rouvrir.
+6. Lancer `node tests/run-all-v1.0.1.mjs`.
+
+Pour une installation neuve, utiliser `sql/000_INSTALL_FRESH_V1.0.1.sql`.
+
+Voir `INSTALLATION_V1.0.1.txt` et `README_TEST_SYSTEM_V1.0.1.md`.
+
+---
+
 # Le Nid des Champions — V1.0.0
 
 PWA de pronostics UEFA Champions League. V1.0.0 est la première version pensée pour la compétition réellement en cours : LIVE multi-matchs, classement mobile lisible, cockpit résultats, notifications stabilisées et Musée actif pendant la journée.

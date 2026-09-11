@@ -1,10 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const root = path.resolve(__dirname, "..");
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
 const read=p=>fs.readFileSync(path.join(root,p),"utf8");
 let pass=0,fail=0;const check=(name,ok,detail="")=>{console.log(`${ok?"PASS":"FAIL"} ${name}${detail?` — ${detail}`:""}`);ok?pass++:fail++;};
 const index=read("index.html"),rel=read("js/release100.js"),notif=read("js/notifications.js"),profile=read("js/profile.js"),edge=read("supabase/functions/push-dispatch/index.ts"),sql=read("sql/HOTFIX_V1.0.0_EXISTING_DB.sql"),sw=read("sw.js");

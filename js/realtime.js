@@ -51,11 +51,12 @@
       const next=rows||[],key=liveSnapshotKey(next),prev=state.liveSnapshotKey||liveSnapshotKey(state.adminAllMatches||state.allMatches);
       if(force||key!==prev){
         state.liveSnapshotKey=key;state.adminAllMatches=next;state.allMatches=next.filter(m=>!m.is_test||m.test_enabled!==false);state.matches=state.allMatches.filter(m=>m.matchday_id===state.selectedMatchdayId);
+        if(typeof syncUclLiveFromMatchesV101==="function")syncUclLiveFromMatchesV101();
         if(typeof maybeAutoSelectLiveRankingScope==="function")maybeAutoSelectLiveRankingScope();
         const promises=[refreshMyPredictionSnapshot(),loadRankingData(state.rankingScope,false)];
         if(typeof loadGamificationData==="function")promises.push(loadGamificationData());
         await Promise.all(promises);
-        renderMatchPanels();renderHistory();renderRanking();renderCollectiveStats();renderLiveTicker();renderHome();updateKpis();if(typeof renderMuseum==="function")renderMuseum();if(typeof renderHomeMuseumCard==="function")renderHomeMuseumCard(); if(typeof renderHomeNarrativeCard==="function")renderHomeNarrativeCard();
+        renderMatchPanels();renderHistory();renderRanking();renderCollectiveStats();renderLiveTicker();renderHome();updateKpis();if(typeof renderMuseum==="function")renderMuseum();if(typeof renderHomeMuseumCard==="function")renderHomeMuseumCard(); if(typeof renderHomeNarrativeCard==="function")renderHomeNarrativeCard();if(state.uclCenterLoaded&&typeof renderUclCenter==="function")renderUclCenter();
       }
     }catch(err){console.warn("LIVE fallback",err);}finally{state.livePollBusy=false;}
   }
@@ -81,8 +82,10 @@
           // Le payload réveille immédiatement le front ; la lecture serveur reste la source de vérité.
           if(payload?.new?.id){state.liveSnapshotKey="";}
           await refreshLiveSnapshot(true);
-          if(payload?.new?.status==="finished"&&typeof loadSeasonMemoryData==="function"){
-            state.seasonMemoryLoaded=false;await loadSeasonMemoryData(true);renderSeasonMemory?.();renderProfileCareerV090?.();
+          if(payload?.new?.status==="finished"){
+            if(typeof maybeRefreshRivalsAfterMatchV101==="function")maybeRefreshRivalsAfterMatchV101();
+            if(typeof loadMovementV101==="function")loadMovementV101(true).then(()=>renderHome?.()).catch(()=>{});
+            if(typeof loadSeasonMemoryData==="function"){state.seasonMemoryLoaded=false;await loadSeasonMemoryData(true);renderSeasonMemory?.();renderProfileCareerV090?.();}
           }
         }else if(kind==="predictions"){
           await loadRankingData(state.rankingScope,false);await Promise.all([loadTeamData(),loadRivalData()]);renderRanking();renderCollectiveStats();renderTeams();renderHomeRival();renderRivalView();updateKpis();

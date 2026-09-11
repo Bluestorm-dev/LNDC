@@ -1,6 +1,6 @@
 {
   "app": "Le Nid des Champions",
-  "version": "0.9.14",
+  "version": "1.0.1",
   "schema": 1,
   "branding": {
     "owl_main": "assets/branding/owl/owl-masked-main.png"
@@ -1254,5 +1254,20 @@
     "sql": "sql/033_patch_v0.9.14_badges_reveal.sql",
     "test_center": "tests/test-center-v0.9.14.html",
     "scope": "100 nouveaux badges + reveals animés par rareté + détail cliquable du Musée"
+  },
+  "release_v100": {
+    "css": "css/release100.css",
+    "js": "js/release100.js",
+    "sql": "sql/HOTFIX_V1.0.0_EXISTING_DB.sql",
+    "test_center": "tests/test-center-v1.0.0.html",
+    "scope": "LIVE de compétition + accueil + classement mobile + cockpit Matchs & LIVE"
+  },
+  "release_v101": {
+    "css": "css/release101.css",
+    "js": "js/release101.js",
+    "sql": "sql/HOTFIX_V1.0.1_EXISTING_DB.sql",
+    "edge_function": "supabase/functions/sync-football-data/index.ts",
+    "test_center": "tests/test-center-v1.0.1.html",
+    "scope": "LIVE C1 + carrousels Team + mouvement + rivalités + fiches clubs + buteurs/cartons"
   }
 }

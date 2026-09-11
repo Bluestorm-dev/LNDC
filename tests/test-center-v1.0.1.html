@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LNDC · Tests V1.0.1</title><style>
+body{margin:0;background:#071027;color:#eaf0ff;font:15px system-ui;padding:24px}.wrap{max-width:920px;margin:auto}.card{background:#0d1938;border:1px solid #26365f;border-radius:18px;padding:18px;margin:12px 0}h1,h2{margin:.2em 0}.gold{color:#efd06d}.test{display:grid;grid-template-columns:32px 1fr;gap:10px;padding:10px 0;border-top:1px solid #1e2c50}.test:first-child{border-top:0}.test input{width:20px;height:20px}.muted{color:#91a3ca}code{background:#060c1e;padding:3px 6px;border-radius:6px}.group{color:#ad9cff;text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;font-weight:800;margin-top:20px}
+</style></head><body><div class="wrap"><span class="gold">LE NID DES CHAMPIONS</span><h1>Road-check V1.0.1</h1><p class="muted">LIVE C1, carrousels Team, classement, rivalités, profils et fiches clubs.</p>
+<section class="card"><h2>Contrôles prioritaires</h2>
+<p class="group">LIVE & accueil</p>
+<label class="test"><input type="checkbox"><span>Pendant un LIVE, modifier le score : l'onglet Ligue des champions reflète immédiatement score et classement provisoire sans synchronisation manuelle.</span></label>
+<label class="test"><input type="checkbox"><span>Le ruban LIVE défile en continu façon flash infos et un clic sur un match ouvre les pronostics du Nid.</span></label>
+<label class="test"><input type="checkbox"><span>Les deux carrousels de l’accueil reprennent les couleurs/fond de la Team du joueur et changent de carte avec une transition.</span></label>
+<label class="test"><input type="checkbox"><span>« Le Nid en mouvement » fait apparaître records, séries de zéro, casseroles et génies avec leurs points.</span></label>
+<p class="group">Classement & profils</p>
+<label class="test"><input type="checkbox"><span>Pendant le LIVE, chaque carte du classement affiche son delta de points LIVE en rouge.</span></label>
+<label class="test"><input type="checkbox"><span>Descendre jusqu’au dernier joueur : aucune statistique collective ne doit transparaître sous/derrière les cartes.</span></label>
+<label class="test"><input type="checkbox"><span>Ouvrir un joueur : les cinq formes récentes sont libellées (Exact, Bon écart, Bon résultat, Raté) avec points.</span></label>
+<label class="test"><input type="checkbox"><span>Le modal joueur détaille points/événements Casserole, Génie et série actuelle à zéro.</span></label>
+<p class="group">Rivalités & pronostics</p>
+<label class="test"><input type="checkbox"><span>Après le dernier résultat d’une journée, la rivalité de la journée se finalise et l’accueil/rivalité se mettent à jour.</span></label>
+<label class="test"><input type="checkbox"><span>Si la journée affichée est terminée, ouvrir « Pronostics » bascule automatiquement sur la prochaine journée non terminée.</span></label>
+<p class="group">Ligue des champions & clubs</p>
+<label class="test"><input type="checkbox"><span>Centre C1 : l’onglet « Buteurs & cartons » affiche les buteurs/passes et les cartons après synchronisation.</span></label>
+<label class="test"><input type="checkbox"><span>Ouvrir une équipe : fiche lisible avec pays, stade, fondation, coach, couleurs, effectif, historique C1 dans le Nid, meilleur buteur et cartons.</span></label>
+<label class="test"><input type="checkbox"><span>Depuis une fiche club, un clic sur un prochain match ouvre correctement la journée/pronostic correspondant.</span></label>
+</section>
+<section class="card"><h2>Test statique</h2><p>Lancer depuis la racine : <code>node tests\run-all-v1.0.1.mjs</code></p><p class="muted">Le résumé doit terminer à 0 FAIL.</p></section></div></body></html>

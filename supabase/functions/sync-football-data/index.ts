@@ -10,7 +10,13 @@ type FDTeam = {
   tla?: string | null;
   crest?: string | null;
   venue?: string | null;
+  address?: string | null;
+  website?: string | null;
+  founded?: number | null;
+  clubColors?: string | null;
   area?: { name?: string | null } | null;
+  coach?: { name?: string | null; nationality?: string | null } | null;
+  squad?: Array<{ id:number; name:string; position?:string|null; dateOfBirth?:string|null; nationality?:string|null }> | null;
 };
 const normalizeClubName = (value: unknown) => String(value ?? "")
   .normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
@@ -48,6 +54,21 @@ type FDMatch = {
   } | null;
   homeTeam: FDTeam;
   awayTeam: FDTeam;
+  bookings?: Array<{
+    minute?: number | null;
+    team?: { id?: number | null; name?: string | null } | null;
+    player?: { id?: number | null; name?: string | null } | null;
+    card?: string | null;
+  }> | null;
+};
+
+type FDScorer = {
+  player: { id:number; name:string; position?:string|null; nationality?:string|null };
+  team: FDTeam;
+  playedMatches?: number | null;
+  goals?: number | null;
+  assists?: number | null;
+  penalties?: number | null;
 };
 
 const json = (body: unknown, status = 200) =>
@@ -171,9 +192,9 @@ Deno.serve(async (req: Request) => {
     const seasonSlug = String(payload?.seasonSlug || "ucl-2026-27");
     const competitionCode = String(payload?.competitionCode || "CL").toUpperCase();
 
-    const fdFetch = async (path: string) => {
+    const fdFetch = async (path: string, extraHeaders: Record<string,string> = {}) => {
       const response = await fetch(`https://api.football-data.org/v4${path}`, {
-        headers: { "X-Auth-Token": footballKey },
+        headers: { "X-Auth-Token": footballKey, ...extraHeaders },
       });
       if (!response.ok) {
         const body = await response.text();
@@ -282,7 +303,7 @@ Deno.serve(async (req: Request) => {
         provider_metadata_updated_at: nowIso,
         updated_at: nowIso,
       };
-      const providerMetadata = {
+      const providerMetadata: Record<string,unknown> = {
         name: team.name,
         short_name: team.shortName || team.tla || team.name,
         tla: team.tla || null,
@@ -294,6 +315,23 @@ Deno.serve(async (req: Request) => {
         logo_updated_at: withLogo ? nowIso : null,
         metadata_source: "football-data",
       };
+
+      // Les objets équipe inclus dans /matches sont plus légers que ceux de /teams.
+      // On n'écrase donc jamais les détails riches (effectif, coach, adresse...) avec
+      // des valeurs vides lors d'une synchro LIVE de match.
+      const hasRichTeamDetails = team.address !== undefined || team.website !== undefined ||
+        team.founded !== undefined || team.clubColors !== undefined || team.coach !== undefined ||
+        team.squad !== undefined;
+      if (team.address !== undefined) providerMetadata.address = team.address || null;
+      if (team.website !== undefined) providerMetadata.website = team.website || null;
+      if (team.founded !== undefined) providerMetadata.founded = Number.isInteger(team.founded) ? team.founded : null;
+      if (team.clubColors !== undefined) providerMetadata.club_colors = team.clubColors || null;
+      if (team.coach !== undefined) {
+        providerMetadata.coach_name = team.coach?.name || null;
+        providerMetadata.coach_nationality = team.coach?.nationality || null;
+      }
+      if (team.squad !== undefined) providerMetadata.squad = Array.isArray(team.squad) ? team.squad : [];
+      if (hasRichTeamDetails) providerMetadata.provider_details_updated_at = nowIso;
 
       if (existing) {
         const locked = Boolean(existing.manual_metadata_lock);
@@ -397,6 +435,8 @@ Deno.serve(async (req: Request) => {
     let catalogLogoCount = 0;
     let centerMatchCount = 0;
     let standingsCount = 0;
+    let scorerCount = 0;
+    let bookingCount = 0;
     const catalogByCompetition: Record<string,{clubs:number;logos:number;name:string}> = {};
 
     if (action === "clubs" || action === "full") {
@@ -459,7 +499,26 @@ Deno.serve(async (req: Request) => {
         .from("seasons").select("id").eq("slug", seasonSlug).single();
       if (seasonError || !season) throw new Error(`Saison ${seasonSlug} introuvable.`);
 
-      const matchesPayload = await fdFetch(`/competitions/${encodeURIComponent(competitionCode)}/matches?season=${sourceSeasonYear}`);
+      const [matchesPayload, centerTeamsPayload] = await Promise.all([
+        fdFetch(`/competitions/${encodeURIComponent(competitionCode)}/matches?season=${sourceSeasonYear}`, {
+          "X-Unfold-Bookings": "true",
+          "X-Unfold-Lineups": "true",
+          "X-Unfold-Goals": "true",
+        }),
+        fdFetch(`/competitions/${encodeURIComponent(competitionCode)}/teams?season=${sourceSeasonYear}`),
+      ]);
+      const centerTeams = [...new Map(((centerTeamsPayload?.teams || []) as FDTeam[]).map(team => [team.id, team])).values()];
+      for (const team of centerTeams) {
+        const clubId = await upsertTeam(team, false);
+        await upsertMembership(clubId, "CL", "UEFA Champions League", team.area?.name || null, sourceSeasonYear);
+      }
+
+      let scorersPayload: any = {};
+      try {
+        scorersPayload = await fdFetch(`/competitions/${encodeURIComponent(competitionCode)}/scorers?season=${sourceSeasonYear}&limit=100`);
+      } catch (scorersError) {
+        console.warn("Buteurs Football-Data indisponibles ; le Centre C1 reste utilisable.", scorersError);
+      }
       let standingsPayload: any = {};
       try {
         standingsPayload = await fdFetch(`/competitions/${encodeURIComponent(competitionCode)}/standings?season=${sourceSeasonYear}`);
@@ -509,6 +568,56 @@ Deno.serve(async (req: Request) => {
         const { error } = await admin.from("ucl_matches").upsert(row, { onConflict: "external_provider,external_match_id" });
         if (error) throw new Error(`Migration V0.8.0 absente ou ucl_matches indisponible : ${error.message}`);
         centerMatchCount++;
+      }
+
+      const scorers = (scorersPayload?.scorers || []) as FDScorer[];
+      if (Array.isArray(scorersPayload?.scorers)) {
+        const { error: clearScorersError } = await admin.from("ucl_player_stats").delete().eq("season_id", season.id);
+        if (clearScorersError) throw new Error(`Migration V1.0.1 absente ou ucl_player_stats indisponible : ${clearScorersError.message}`);
+        for (const item of scorers) {
+          if (!item?.player?.id || !item?.player?.name || !item?.team?.id) continue;
+          const clubId = await upsertTeam(item.team, false);
+          const { error } = await admin.from("ucl_player_stats").upsert({
+            season_id: season.id, player_external_id: item.player.id, player_name: item.player.name, club_id: clubId,
+            position: item.player.position || null, nationality: item.player.nationality || null,
+            played_matches: Number(item.playedMatches || 0), goals: Number(item.goals || 0), assists: Number(item.assists || 0), penalties: Number(item.penalties || 0),
+            updated_at: new Date().toISOString(),
+          }, { onConflict: "season_id,player_external_id" });
+          if (error) throw error;
+          scorerCount++;
+        }
+      }
+
+      const hasBookings = centerMatches.some(match => Array.isArray(match.bookings));
+      if (hasBookings) {
+        const { error: clearCardsError } = await admin.from("ucl_discipline_stats").delete().eq("season_id", season.id);
+        if (clearCardsError) throw new Error(`Migration V1.0.1 absente ou ucl_discipline_stats indisponible : ${clearCardsError.message}`);
+        const discipline = new Map<number,{name:string;teamId:number|null;yellow:number;red:number;yellowRed:number}>();
+        for (const match of centerMatches) {
+          for (const booking of match.bookings || []) {
+            const pid = Number(booking?.player?.id || 0);
+            if (!pid) continue;
+            const current = discipline.get(pid) || { name:String(booking?.player?.name || "Joueur"), teamId:Number(booking?.team?.id || 0) || null, yellow:0, red:0, yellowRed:0 };
+            const card = String(booking?.card || "").toUpperCase();
+            if (card === "RED") current.red++;
+            else if (card === "YELLOW_RED") current.yellowRed++;
+            else if (card === "YELLOW") current.yellow++;
+            current.teamId = Number(booking?.team?.id || current.teamId || 0) || null;
+            discipline.set(pid,current); bookingCount++;
+          }
+        }
+        for (const [pid,item] of discipline) {
+          let clubId:string|null = null;
+          if (item.teamId) {
+            const sourceTeam = centerTeams.find(team=>team.id===item.teamId) || centerMatches.flatMap(m=>[m.homeTeam,m.awayTeam]).find(team=>team.id===item.teamId);
+            if (sourceTeam) clubId = await upsertTeam(sourceTeam,false);
+          }
+          const { error } = await admin.from("ucl_discipline_stats").upsert({
+            season_id: season.id, player_external_id: pid, player_name: item.name, club_id: clubId,
+            yellow_cards: item.yellow, red_cards: item.red, yellow_red_cards: item.yellowRed, updated_at: new Date().toISOString(),
+          }, { onConflict: "season_id,player_external_id" });
+          if (error) throw error;
+        }
       }
 
       const totalStanding = (standingsPayload?.standings || []).find((x: any) => String(x?.type || "").toUpperCase() === "TOTAL") || standingsPayload?.standings?.[0];
@@ -721,10 +830,10 @@ Deno.serve(async (req: Request) => {
       action: "football_data_sync",
       entity_type: "season",
       entity_id: seasonSlug,
-      new_data: { action, competitionCode, sourceSeasonYear, sourceSeasonLabel, requestedSeasonYear, clubCount, logoCount, matchdayCount, matchCount, oddsCount, centerMatchCount, standingsCount, repairedLegacyClubs, catalogClubCount, catalogLogoCount, catalogByCompetition, providerReceived, matchedByPair, manualProtected, partialCalendar: providerReceived < EXPECTED_LEAGUE_MATCHES, expectedClubs: EXPECTED_CLUBS, expectedLeagueMatches: EXPECTED_LEAGUE_MATCHES },
+      new_data: { action, competitionCode, sourceSeasonYear, sourceSeasonLabel, requestedSeasonYear, clubCount, logoCount, matchdayCount, matchCount, oddsCount, centerMatchCount, standingsCount, scorerCount, bookingCount, repairedLegacyClubs, catalogClubCount, catalogLogoCount, catalogByCompetition, providerReceived, matchedByPair, manualProtected, partialCalendar: providerReceived < EXPECTED_LEAGUE_MATCHES, expectedClubs: EXPECTED_CLUBS, expectedLeagueMatches: EXPECTED_LEAGUE_MATCHES },
     });
 
-    return json({ ok: true, action, clubCount, logoCount, matchdayCount, matchCount, oddsCount, centerMatchCount, standingsCount, repairedLegacyClubs, catalogClubCount, catalogLogoCount, catalogByCompetition, providerReceived, matchedByPair, manualProtected, partialCalendar: providerReceived < EXPECTED_LEAGUE_MATCHES, sourceSeasonYear, sourceSeasonLabel, requestedSeasonYear, expectedClubs: EXPECTED_CLUBS, expectedLeagueMatches: EXPECTED_LEAGUE_MATCHES });
+    return json({ ok: true, action, clubCount, logoCount, matchdayCount, matchCount, oddsCount, centerMatchCount, standingsCount, scorerCount, bookingCount, repairedLegacyClubs, catalogClubCount, catalogLogoCount, catalogByCompetition, providerReceived, matchedByPair, manualProtected, partialCalendar: providerReceived < EXPECTED_LEAGUE_MATCHES, sourceSeasonYear, sourceSeasonLabel, requestedSeasonYear, expectedClubs: EXPECTED_CLUBS, expectedLeagueMatches: EXPECTED_LEAGUE_MATCHES });
   } catch (error) {
     console.error("sync-football-data", error);
     const fdStatus = Number((error as any)?.footballDataStatus || 0);

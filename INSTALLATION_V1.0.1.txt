@@ -1,0 +1,63 @@
+LE NID DES CHAMPIONS — MISE À JOUR V1.0.1
+================================================
+
+BASE ATTENDUE : V1.0.0
+
+IMPORTANT : la V1.0.1 ajoute des colonnes et deux tables lues directement par le front.
+Exécuter le SQL AVANT de publier les fichiers du nouveau front.
+
+1) SAUVEGARDE
+-------------
+- Conserver une copie de la V1.0.0 et, si possible, une sauvegarde Supabase.
+
+2) SUPABASE / SQL
+-----------------
+Dans SQL Editor, exécuter :
+
+  sql/HOTFIX_V1.0.1_EXISTING_DB.sql
+
+Le hotfix ajoute :
+- métadonnées enrichies dans public.clubs ;
+- public.ucl_player_stats ;
+- public.ucl_discipline_stats ;
+- RPC get_nid_movement_v101 ;
+- trigger de finalisation/rattrapage des rivalités ;
+- app_version = 1.0.1.
+
+3) EDGE FUNCTION FOOTBALL-DATA
+------------------------------
+Depuis la racine du dépôt lié à Supabase :
+
+  npx supabase functions deploy sync-football-data
+
+Le secret FOOTBALL_DATA_API_KEY doit déjà être présent.
+
+4) FRONT / GITHUB
+-----------------
+Copier les fichiers du patch V1.0.0 -> V1.0.1 à la racine du dépôt en écrasant les fichiers concernés, puis :
+
+  git add .
+  git commit -m "Le Nid des Champions v1.0.1"
+  git push origin main
+
+5) PEUPLER LES NOUVELLES DONNÉES C1
+------------------------------------
+Après publication, ouvrir Super Admin > Ligue des champions et lancer une synchronisation Centre C1.
+Cette synchro remplit notamment l'effectif, les buteurs et les cartons disponibles chez Football-Data.
+
+6) PWA
+------
+Fermer complètement la PWA et la rouvrir. Le cache passe à nid-champions-v1.0.1-live-c1.
+
+7) TEST
+-------
+Depuis la racine :
+
+  node tests\run-all-v1.0.1.mjs
+
+Attendu pour le build livré : 35 PASS · 0 FAIL.
+Le road-check manuel est disponible dans tests/test-center-v1.0.1.html.
+
+INSTALLATION NEUVE
+------------------
+Utiliser sql/000_INSTALL_FRESH_V1.0.1.sql puis déployer les Edge Functions nécessaires.
