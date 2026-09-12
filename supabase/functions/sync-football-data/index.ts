@@ -598,12 +598,15 @@ Deno.serve(async (req: Request) => {
             const pid = Number(booking?.player?.id || 0);
             if (!pid) continue;
             const current = discipline.get(pid) || { name:String(booking?.player?.name || "Joueur"), teamId:Number(booking?.team?.id || 0) || null, yellow:0, red:0, yellowRed:0 };
-            const card = String(booking?.card || "").toUpperCase();
-            if (card === "RED") current.red++;
-            else if (card === "YELLOW_RED") current.yellowRed++;
-            else if (card === "YELLOW") current.yellow++;
+            const card = String(booking?.card || "").trim().toUpperCase().replace(/[\s-]+/g, "_");
+            let recognized = true;
+            if (["RED","RED_CARD"].includes(card)) current.red++;
+            else if (["YELLOW_RED","YELLOW_RED_CARD","SECOND_YELLOW","SECOND_YELLOW_CARD"].includes(card)) current.yellowRed++;
+            else if (["YELLOW","YELLOW_CARD"].includes(card)) current.yellow++;
+            else recognized = false;
             current.teamId = Number(booking?.team?.id || current.teamId || 0) || null;
-            discipline.set(pid,current); bookingCount++;
+            discipline.set(pid,current);
+            if (recognized) bookingCount++;
           }
         }
         for (const [pid,item] of discipline) {
