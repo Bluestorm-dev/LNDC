@@ -74,7 +74,7 @@
   function disciplineRowsV102d(){return typeof window.uclDedupeRowsV102d==="function"?window.uclDedupeRowsV102d(state.uclDisciplineV101,"discipline"):safe(state.uclDisciplineV101);}
   function cardScoreV101(x){return Number(x.red_cards||0)*100+Number(x.yellow_red_cards||0)*20+Number(x.yellow_cards||0);}
   function disciplineLabelV102d(x){if(typeof window.uclDisciplineLabelV102d==="function")return window.uclDisciplineLabelV102d(x);const parts=[],y=Number(x.yellow_cards||0),yr=Number(x.yellow_red_cards||0),r=Number(x.red_cards||0);if(y>0)parts.push(y+" 🟨");if(yr>0)parts.push(yr+" 🟨🟥");if(r>0)parts.push(r+" 🟥");return parts.join(" · ")||"0";}
-  function playerStatClubV101(row){return clubById(row.club_id);}
+  function playerStatClubV101(row){return typeof window.uclResolvePlayerClubV102e==="function"?window.uclResolvePlayerClubV102e(row):clubById(row.club_id);}
   function uclPlayerStatsHTMLV101(){
     const scorers=scorerRowsV101().slice(0,30),cards=disciplineRowsV102d().filter(x=>cardScoreV101(x)>0).sort((a,b)=>cardScoreV101(b)-cardScoreV101(a)).slice(0,30);
     return `<div class="ucl-stats-grid-v101">
