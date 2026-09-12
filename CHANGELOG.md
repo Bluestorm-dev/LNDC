@@ -1,3 +1,13 @@
+# V1.0.2 — finition LIVE & données C1 manuelles
+
+- Classement : suppression du fond Team hors avatars, correction des recouvrements et suppression du bandeau sticky sur desktop.
+- Super Admin > Matchs & LIVE : retrait du formulaire d’ajout unitaire en haut du cockpit.
+- Super Admin > Compétition : éditeur manuel C1 pour fiche club, effectif, palmarès, buteurs et cartons.
+- Fiche club : nouvelle présentation, identité, palmarès C1, historique, effectif, meilleur buteur et discipline.
+- Profil joueur : modal entièrement réorganisée et plus lisible.
+- Distinction Nid des Pronos 2026 : étoile brodée extraite de la référence Coupe du monde fournie.
+- Cache PWA et version : 1.0.2.
+
 # V1.0.1 — LIVE C1 & finitions UX
 
 - Le Centre Ligue des champions se met à jour dès qu'un score LIVE change dans `matches` : scores et classement de phase de ligue sont recalculés côté front avec mention provisoire.

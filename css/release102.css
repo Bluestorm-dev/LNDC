@@ -1,0 +1,66 @@
+/* Le Nid des Champions V1.0.2 — finition classement, profils, clubs et saisie C1 */
+
+/* --------------------------------------------------------------------------
+   Classement : aucun fond Team hors avatar, aucun recouvrement du pouls du Nid
+   -------------------------------------------------------------------------- */
+#view-ranking .ranking-v100-wrap,
+#view-ranking .ranking-list-v100{position:relative!important;z-index:auto!important;overflow:visible!important}
+#view-ranking .ranking-row-v100,
+#view-ranking .ranking-row-v101{
+  --team-primary:#315cff;--team-secondary:#7454ff;
+  background:linear-gradient(145deg,rgba(12,27,61,.99),rgba(6,14,34,.995))!important;
+  position:relative!important;z-index:auto!important;
+}
+#view-ranking .ranking-row-v100.me{
+  background:linear-gradient(145deg,rgba(17,31,65,.995),rgba(7,16,38,.998))!important;
+  border-color:rgba(232,200,110,.52)!important;
+  box-shadow:inset 4px 0 0 #e8c86e!important;
+}
+#view-ranking>.section-title,#view-ranking>.collective-grid{position:relative!important;z-index:auto!important;background:transparent!important}
+#view-ranking .collective-card{position:relative;z-index:auto}
+.my-ranking-sticky{background:linear-gradient(90deg,rgba(12,25,57,.97),rgba(8,19,46,.98))!important;border-color:rgba(232,200,110,.34)!important;box-shadow:0 10px 30px rgba(0,0,0,.2),inset 3px 0 var(--ucl-gold)!important}
+@media(min-width:761px){#view-ranking .my-ranking-sticky{display:none!important}}
+
+/* Le fond Team de V1.0.1 reste STRICTEMENT limité aux deux carrousels accueil. */
+#view-ranking .team-carousel-v101,#view-ranking [style*="--team-primary"]{background-color:transparent}
+
+/* --------------------------------------------------------------------------
+   Super Admin : le formulaire d'ajout unitaire n'encombre plus Matchs & LIVE
+   -------------------------------------------------------------------------- */
+.admin-panel[data-admin-panel="matches"]>.admin-builder-v100{display:none!important}
+
+/* --------------------------------------------------------------------------
+   Profil joueur V1.0.2
+   -------------------------------------------------------------------------- */
+.modal-card.player-modal-v102{width:min(720px,calc(100vw - 24px));max-height:92dvh;padding:0!important;overflow:auto}
+.player-modal-v102 .modal-head{position:sticky;top:0;z-index:8;padding:12px 16px;background:rgba(5,12,31,.96);backdrop-filter:blur(16px);border-bottom:1px solid rgba(130,154,221,.13)}
+.player-modal-v102 .modal-body{margin:0}
+.player-sheet-v102{padding:0 18px 18px}
+.player-hero-v102{position:relative;display:grid;grid-template-columns:90px minmax(0,1fr) auto;align-items:center;gap:14px;margin:0 -18px 15px;padding:18px 20px;background:radial-gradient(circle at 12% 15%,rgba(82,115,255,.22),transparent 34%),linear-gradient(145deg,#102552,#071431);border-bottom:1px solid rgba(126,153,226,.15)}
+.player-hero-v102>.avatar,.player-hero-v102>.team-avatar{width:82px;height:82px;flex-basis:82px}.player-hero-v102>.team-avatar>.avatar{width:54px!important;height:54px!important}
+.player-hero-v102 h2{margin:3px 0 2px;font-size:1.55rem}.player-hero-v102 p{margin:0;color:#90a3ca}.player-rival-v102{align-self:start;padding:5px 8px;border:1px solid rgba(157,113,255,.3);border-radius:999px;color:#ccbaff;font-size:.56rem;font-weight:900}
+.player-kpis-v102{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:13px}.player-kpis-v102 article{padding:12px 10px;border:1px solid rgba(126,153,225,.13);border-radius:15px;background:rgba(255,255,255,.025);display:grid;gap:2px}.player-kpis-v102 small{font-size:.54rem;color:#7e91ba;text-transform:uppercase;letter-spacing:.08em}.player-kpis-v102 b{font-size:1.35rem}.player-kpis-v102 span{font-size:.58rem;color:#93a3c7}
+.player-section-v102{margin-top:14px;padding:14px;border:1px solid rgba(127,151,220,.11);border-radius:17px;background:rgba(255,255,255,.017)}.player-section-title-v102{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:10px}.player-section-title-v102 small{color:#7488b2;font-size:.58rem}
+.player-sheet-v102 .public-champions-v100{margin:0;background:transparent;border:0;padding:0}
+.player-fun-v102{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.player-fun-v102 article{display:flex;align-items:center;gap:8px;padding:10px;border-radius:13px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.055)}.player-fun-v102 article>span{font-size:1.2rem}.player-fun-v102 article>div{display:grid}.player-fun-v102 small{font-size:.51rem;color:#8092bb;text-transform:uppercase}.player-fun-v102 b{font-size:.82rem}.player-fun-v102 em{font-size:.52rem;color:#798db8;font-style:normal}.player-fun-v102 .casserole{border-color:rgba(246,168,69,.16)}.player-fun-v102 .genius{border-color:rgba(137,113,255,.18)}
+.player-form-v102{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.player-form-v102>span{display:grid;place-items:center;gap:2px;padding:9px 3px;border-radius:12px;background:rgba(255,255,255,.025);border:1px solid rgba(127,151,221,.09)}.player-form-v102 b{font-size:1rem}.player-form-v102 small{font-size:.5rem;color:#a8b5d3}.player-form-v102 em{font-style:normal;font-size:.49rem;color:#7387b1}.player-form-exact{border-color:rgba(232,200,110,.23)!important}.player-form-difference,.player-form-result{border-color:rgba(83,205,174,.17)!important}.player-form-miss{opacity:.72}
+.player-dist-v102{display:grid;gap:6px}.player-dist-v102>span{display:grid;grid-template-columns:28px 1fr;align-items:center;gap:8px;padding:8px;border-radius:11px;background:rgba(255,255,255,.02)}.player-dist-v102>span>b{font-size:1rem}.player-dist-v102>span>span{display:grid}.player-dist-v102 strong{font-size:.65rem}.player-dist-v102 small{color:#7d90b9;font-size:.54rem}.player-actions-v102{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+
+/* --------------------------------------------------------------------------
+   Fiche club V1.0.2
+   -------------------------------------------------------------------------- */
+.modal-card.club-sheet-modal-v102{width:min(900px,calc(100vw - 24px))}.club-sheet-v102{padding:0 18px 20px}.club-hero-v102{position:relative;display:grid;grid-template-columns:100px minmax(0,1fr) auto;align-items:center;gap:16px;margin:0 -18px 14px;padding:20px;background:radial-gradient(circle at 12% 18%,rgba(75,108,255,.23),transparent 34%),radial-gradient(circle at 90% 0,rgba(232,200,110,.08),transparent 28%),linear-gradient(145deg,#102654,#071431);border-bottom:1px solid rgba(126,153,225,.15)}.club-hero-v102>.crest{width:88px;height:88px}.club-hero-v102 h2{font-size:1.65rem;margin:4px 0}.club-hero-v102 p{margin:0;color:#91a3c8}
+.club-summary-v102{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}.club-summary-v102 article{padding:11px;border:1px solid rgba(127,151,222,.12);border-radius:14px;background:rgba(255,255,255,.022);display:grid;gap:2px;text-align:center}.club-summary-v102 small{font-size:.5rem;color:#7e91ba;text-transform:uppercase}.club-summary-v102 b{font-size:1.15rem}.club-summary-v102 span{font-size:.54rem;color:#8194bb}.club-titles-v102 b{color:#f2d878;letter-spacing:.04em}
+.club-identity-v102{display:grid;grid-template-columns:1.35fr 1fr;gap:10px;margin-bottom:12px}.club-identity-v102>div,.club-identity-v102>aside{padding:13px;border:1px solid rgba(127,151,222,.11);border-radius:15px;background:rgba(255,255,255,.018)}.club-identity-v102 dl{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin:9px 0}.club-identity-v102 dl>div{display:grid;gap:2px;padding:7px 8px;border-radius:9px;background:rgba(255,255,255,.025)}.club-identity-v102 dt{font-size:.49rem;text-transform:uppercase;color:#7488b4}.club-identity-v102 dd{margin:0;font-size:.64rem;font-weight:800}.club-identity-v102 p{margin:6px 0 0;color:#8295bc;font-size:.59rem;line-height:1.4;word-break:break-word}.club-identity-v102 aside h3{margin:6px 0;font-size:.9rem}.club-identity-v102 aside p{font-size:.64rem;line-height:1.5}
+.club-feature-grid-v102{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}.club-feature-grid-v102 article{display:flex;align-items:flex-start;gap:9px;padding:11px;border:1px solid rgba(127,151,222,.11);border-radius:14px;background:rgba(255,255,255,.018)}.club-feature-grid-v102 article>span{font-size:1.2rem}.club-feature-grid-v102 small{font-size:.5rem;color:#7b8fb8;text-transform:uppercase}.club-feature-grid-v102 h3{font-size:.8rem;margin:3px 0}.club-feature-grid-v102 p{margin:0;color:#7f93ba;font-size:.56rem;line-height:1.4}.club-section-v102{margin-top:14px}
+
+/* --------------------------------------------------------------------------
+   Saisie C1 Super Admin
+   -------------------------------------------------------------------------- */
+#adminC1ManualV102{margin-top:12px}.c1-manual-grid-v102{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}.c1-manual-grid-v102>section{padding:13px;border:1px solid var(--line-soft);border-radius:15px;background:rgba(255,255,255,.016)}.c1-manual-grid-v102 h4{margin:0 0 10px}.c1-player-numbers-v102{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.c1-player-admin-list-v102{display:grid;gap:5px;margin-top:12px;max-height:300px;overflow:auto}.c1-player-admin-row-v102{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px;border-top:1px solid rgba(255,255,255,.055)}.c1-player-admin-row-v102>span{display:grid}.c1-player-admin-row-v102 strong{font-size:.65rem}.c1-player-admin-row-v102 small{font-size:.53rem;color:#7f92bb}
+
+@media(max-width:760px){
+  .player-sheet-v102{padding:0 12px 14px}.player-hero-v102{grid-template-columns:68px 1fr;margin:0 -12px 12px;padding:15px 13px}.player-hero-v102>.avatar,.player-hero-v102>.team-avatar{width:62px;height:62px;flex-basis:62px}.player-hero-v102>.team-avatar>.avatar{width:42px!important;height:42px!important}.player-hero-v102 h2{font-size:1.12rem}.player-rival-v102{position:absolute;right:10px;top:9px}.player-kpis-v102{grid-template-columns:repeat(2,1fr)}.player-fun-v102{grid-template-columns:repeat(2,1fr)}.player-form-v102{grid-template-columns:repeat(5,minmax(0,1fr));gap:3px}.player-form-v102>span{padding:7px 1px}.player-form-v102 small{font-size:.43rem}.player-actions-v102 .btn{flex:1 1 45%}
+  .club-sheet-v102{padding:0 12px 16px}.club-hero-v102{grid-template-columns:70px 1fr;margin:0 -12px 12px;padding:15px 13px}.club-hero-v102>.crest{width:62px;height:62px}.club-hero-v102 h2{font-size:1.15rem}.club-summary-v102{grid-template-columns:repeat(2,1fr)}.club-identity-v102{grid-template-columns:1fr}.club-feature-grid-v102{grid-template-columns:1fr}.club-identity-v102 dl{grid-template-columns:1fr 1fr}
+  .c1-manual-grid-v102{grid-template-columns:1fr}.c1-player-numbers-v102{grid-template-columns:repeat(2,1fr)}
+}

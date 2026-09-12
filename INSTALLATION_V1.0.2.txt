@@ -1,0 +1,26 @@
+LE NID DES CHAMPIONS — V1.0.2
+================================
+
+IMPORTANT : exécuter le SQL AVANT de publier le nouveau front.
+
+1) Supabase > SQL Editor
+   Exécuter : sql/HOTFIX_V1.0.2_EXISTING_DB.sql
+
+2) Décompresser le patch V1.0.1a -> V1.0.2 à la racine du dépôt LNDC
+   et accepter l'écrasement des fichiers.
+
+3) Test local Node
+   node tests\run-all-v1.0.2.mjs
+   Résultat attendu : 15 PASS · 0 FAIL
+
+4) Git
+   git add .
+   git commit -m "Le Nid des Champions v1.0.2"
+   git push origin main
+
+5) PWA
+   Fermer complètement l'application puis la rouvrir.
+
+Pas de redéploiement d'Edge Function obligatoire pour V1.0.2.
+Les données buteurs/cartons/club peuvent désormais être complétées manuellement dans :
+Super Admin > Compétition > Données C1 manuelles.

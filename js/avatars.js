@@ -58,7 +58,7 @@
   }
   function avatarWinnerStarHTMLV0914b(profile){
     if(!hasWorldCupWinnerStarV0914b(profile))return "";
-    return `<span class="avatar-distinction-star avatar-distinction-star-worldcup" title="Vainqueur du Nid des Pronos 2026" aria-label="Vainqueur du Nid des Pronos 2026">★</span>`;
+    return `<span class="avatar-distinction-star avatar-distinction-star-worldcup" title="Vainqueur du Nid des Pronos 2026 · Coupe du monde" aria-label="Vainqueur du Nid des Pronos 2026 · Coupe du monde"><img src="assets/ui/world-cup-winner-star-2026.png" alt="" aria-hidden="true"></span>`;
   }
   function avatarHTML(profile,opts={}) {
     const p=profileForUser(profile);

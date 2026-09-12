@@ -97,29 +97,26 @@
 
 
 /* ==========================================================================
-   V0.9.14b — Étoile historique : vainqueur du Nid des Pronos 2026
+   V1.0.2 — Étoile brodée : vainqueur du Nid des Pronos 2026 / Coupe du monde
    ========================================================================== */
 .avatar-distinction-star{
-  position:absolute;left:50%;top:-8px;transform:translateX(-50%);
-  width:18px;height:18px;display:grid;place-items:center;border-radius:999px;
-  color:#fff7cf;font-size:.78rem;font-weight:950;line-height:1;
-  background:radial-gradient(circle at 35% 30%,#fffbe8 0%,#ffeaa3 24%,#f4c74d 50%,#cb8a15 100%);
-  border:1px solid rgba(255,231,160,.82);
-  box-shadow:0 2px 8px rgba(0,0,0,.38),0 0 12px rgba(255,212,92,.46);
-  z-index:20;pointer-events:none;
+  position:absolute;left:50%;top:-10px;transform:translateX(-50%);
+  width:22px;height:22px;display:grid;place-items:center;
+  z-index:20;pointer-events:none;background:transparent!important;border:0!important;
+  box-shadow:none!important;overflow:visible!important;
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.55)) drop-shadow(0 0 4px rgba(246,205,85,.26));
 }
-.avatar-distinction-star:after{content:"";position:absolute;inset:-3px;border-radius:999px;border:1px solid rgba(255,220,120,.23)}
-@keyframes avatarLegacyStarPulseV0914b{
-  0%,100%{transform:translateX(-50%) scale(1);filter:brightness(1)}
-  50%{transform:translateX(-50%) scale(1.09);filter:brightness(1.18)}
+.avatar-distinction-star:after{display:none!important}
+.avatar-distinction-star img{width:100%;height:100%;object-fit:contain;display:block}
+@keyframes avatarLegacyStarPulseV102{
+  0%,100%{transform:translateX(-50%) scale(1);filter:drop-shadow(0 2px 2px rgba(0,0,0,.55)) drop-shadow(0 0 3px rgba(246,205,85,.22))}
+  50%{transform:translateX(-50%) scale(1.06);filter:drop-shadow(0 2px 2px rgba(0,0,0,.55)) drop-shadow(0 0 6px rgba(246,205,85,.4))}
 }
-.avatar-distinction-star-worldcup{animation:avatarLegacyStarPulseV0914b 2.2s ease-in-out infinite}
-.sidebar-avatar .avatar-distinction-star{width:14px;height:14px;top:-6px;font-size:.58rem}
-.profile-avatar-host .avatar-distinction-star{width:20px;height:20px;top:-10px;font-size:.9rem}
-.avatar-preview-stage .avatar-distinction-star{width:24px;height:24px;top:-12px;font-size:1rem}
+.avatar-distinction-star-worldcup{animation:avatarLegacyStarPulseV102 2.8s ease-in-out infinite}
+.sidebar-avatar .avatar-distinction-star{width:17px;height:17px;top:-8px}
+.profile-avatar-host .avatar-distinction-star{width:25px;height:25px;top:-13px}
+.avatar-preview-stage .avatar-distinction-star{width:30px;height:30px;top:-16px}
 .team-avatar.unified-player-avatar{overflow:visible!important}
-.team-avatar.unified-player-avatar .avatar-distinction-star{top:-9px}
-@media(max-width:680px){
-  .avatar-distinction-star{width:16px;height:16px;top:-7px;font-size:.68rem}
-}
+.team-avatar.unified-player-avatar .avatar-distinction-star{top:-11px}
+@media(max-width:680px){.avatar-distinction-star{width:20px;height:20px;top:-9px}}
 @media(prefers-reduced-motion:reduce){.avatar-distinction-star-worldcup{animation:none}}

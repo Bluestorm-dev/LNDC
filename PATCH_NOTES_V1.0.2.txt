@@ -1,0 +1,1 @@
+V1.0.2 corrige la finition visuelle du classement et ajoute un vrai mode de secours manuel pour les données C1 que Football-Data ne fournit pas toujours : informations club, effectif, palmarès, buteurs et cartons. Le modal joueur et la fiche club sont également refondus. L'étoile du vainqueur 2026 reprend désormais un rendu brodé issu de la référence fournie.
