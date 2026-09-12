@@ -1,0 +1,17 @@
+/* Le Nid des Champions V1.0.2d */
+.ucl-player-row-v101.ucl-discipline-row-v102d{
+  grid-template-columns:28px 34px minmax(0,1fr) auto;
+}
+.ucl-player-row-v101.ucl-discipline-row-v102d>.cards-v101{
+  white-space:nowrap;
+  font-size:.72rem;
+  text-align:right;
+}
+@media(max-width:680px){
+  .ucl-player-row-v101.ucl-discipline-row-v102d{
+    grid-template-columns:24px 30px minmax(0,1fr) auto;
+  }
+  .ucl-player-row-v101.ucl-discipline-row-v102d>.cards-v101{
+    font-size:.82rem;
+  }
+}
