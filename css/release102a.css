@@ -1,0 +1,99 @@
+/* Le Nid des Champions V1.0.2a */
+
+/* 1) Classement complet d'abord, Pouls du Nid ensuite. */
+#view-ranking .premium-ranking-wrap,
+#view-ranking .ranking-v100-wrap{
+  max-height:none!important;
+  height:auto!important;
+  min-height:0!important;
+  overflow:visible!important;
+  contain:none!important;
+  margin-bottom:24px!important;
+}
+#view-ranking .ranking-list-v100{
+  position:relative!important;
+  z-index:2!important;
+  display:grid!important;
+  overflow:visible!important;
+}
+#view-ranking .my-ranking-sticky{
+  position:relative!important;
+  top:auto!important;
+  z-index:3!important;
+}
+#view-ranking>.section-title{
+  position:relative!important;
+  z-index:1!important;
+  clear:both!important;
+  margin-top:8px!important;
+}
+#view-ranking>.collective-grid{
+  position:relative!important;
+  z-index:1!important;
+  clear:both!important;
+}
+
+/* 2) Transition des carrousels indépendante des couleurs Team. */
+.home-carousel-track-v0912{isolation:isolate}
+.home-carousel-track-v0912>.home-carousel-card-v0912.carousel-transition-v102a{
+  display:grid!important;
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  opacity:0;
+  pointer-events:none;
+  transform:translate3d(30px,0,0) scale(.987);
+  filter:blur(2px);
+  transition:opacity .5s ease,transform .58s cubic-bezier(.2,.8,.2,1),filter .42s ease;
+  overflow:hidden!important;
+}
+.home-carousel-track-v0912>.nid-story-v102a.carousel-transition-v102a{display:flex!important}
+.home-carousel-track-v0912>.home-carousel-card-v0912.carousel-transition-v102a.active-auto-v0912{
+  position:relative!important;
+  opacity:1;
+  pointer-events:auto;
+  transform:none;
+  filter:none;
+  z-index:2;
+}
+
+/* AUCUNE couleur Team sur les cartes match. */
+#homeUpcomingCarouselV0912 .home-carousel-card-v0912:before,
+#homeUpcomingCarouselV0912 .home-carousel-card-v0912:after{display:none!important}
+#homeUpcomingCarouselV0912 .home-carousel-card-v0912{
+  background:linear-gradient(145deg,rgba(11,25,59,.96),rgba(5,13,32,.98))!important;
+  border-color:rgba(126,149,219,.16)!important;
+}
+
+/* Couleurs Team seulement pour l'histoire DU joueur appartenant à cette Team. */
+#homeActivityCarouselV0912 .nid-story-v102a{background:linear-gradient(145deg,rgba(11,25,59,.97),rgba(5,13,32,.985))!important;border-color:rgba(126,149,219,.16)!important}
+#homeActivityCarouselV0912 .nid-story-v102a.story-team-theme-v102a{position:relative;background:transparent!important;border-color:color-mix(in srgb,var(--team-secondary,#516cff) 42%,rgba(255,255,255,.1))!important}
+#homeActivityCarouselV0912 .story-team-theme-v102a:before{content:"";display:block!important;position:absolute;inset:0;z-index:-2;background:linear-gradient(135deg,var(--team-primary,#132c63),var(--team-secondary,#623ca7));opacity:.7}
+#homeActivityCarouselV0912 .story-team-theme-v102a:after{content:"";display:block!important;position:absolute;inset:0;z-index:-1;background:linear-gradient(110deg,rgba(3,8,23,.84),rgba(5,12,30,.58) 60%,rgba(4,8,22,.76)),radial-gradient(circle at 82% 15%,rgba(255,255,255,.1),transparent 34%);pointer-events:none}
+#homeActivityCarouselV0912 .story-team-theme-v102a.bg-solid:before{background:var(--team-primary,#132c63)}
+#homeActivityCarouselV0912 .story-team-theme-v102a.bg-vertical:before{background:linear-gradient(180deg,var(--team-primary),var(--team-secondary))}
+#homeActivityCarouselV0912 .story-team-theme-v102a.bg-horizontal:before{background:linear-gradient(90deg,var(--team-primary),var(--team-secondary))}
+#homeActivityCarouselV0912 .story-team-theme-v102a.bg-diagonal:before{background:linear-gradient(135deg,var(--team-primary),var(--team-secondary))}
+#homeActivityCarouselV0912 .story-team-theme-v102a.bg-split-vertical:before{background:linear-gradient(90deg,var(--team-primary) 0 50%,var(--team-secondary) 50%)}
+#homeActivityCarouselV0912 .story-team-theme-v102a.bg-split-horizontal:before{background:linear-gradient(180deg,var(--team-primary) 0 50%,var(--team-secondary) 50%)}
+#homeActivityCarouselV0912 .story-team-theme-v102a.bg-split-diagonal:before{background:linear-gradient(135deg,var(--team-primary) 0 49.5%,var(--team-secondary) 50.5%)}
+#homeActivityCarouselV0912 .story-team-theme-v102a.bg-stripes-vertical:before{background:repeating-linear-gradient(90deg,var(--team-primary) 0 14%,var(--team-secondary) 14% 28%)}
+#homeActivityCarouselV0912 .story-team-theme-v102a.bg-stripes-horizontal:before{background:repeating-linear-gradient(180deg,var(--team-primary) 0 14%,var(--team-secondary) 14% 28%)}
+#homeActivityCarouselV0912 .story-team-theme-v102a.bg-stripes-diagonal:before{background:repeating-linear-gradient(135deg,var(--team-primary) 0 13%,var(--team-secondary) 13% 26%)}
+#homeActivityCarouselV0912 .story-team-theme-v102a.bg-quarters:before{background:conic-gradient(var(--team-primary) 0 25%,var(--team-secondary) 25% 50%,var(--team-primary) 50% 75%,var(--team-secondary) 75%)}
+
+/* 3) Détail des casseroles / coups de génie. */
+.gami-detail-v102a{display:grid;gap:5px;margin:8px 0;padding:9px 11px;border:1px solid rgba(126,151,222,.15);border-radius:12px;background:rgba(2,8,25,.34);line-height:1.35}
+.gami-detail-v102a>strong{font-size:.7rem;color:#edf3ff}
+.gami-detail-v102a>span{color:#b8c5e4;font-size:.64rem}
+.gami-detail-v102a>span b{color:#f0d77e}.gami-detail-v102a>span i{padding:0 4px;color:#6f82ad;font-style:normal}
+.gami-detail-v102a>small{color:#8fa2ca;font-size:.58rem}
+.gami-detail-v102a.compact{margin:6px 0 4px;padding:7px 9px}.gami-detail-v102a.compact>strong{font-size:.64rem}.gami-detail-v102a.compact>span{font-size:.59rem}.gami-detail-v102a.compact>small{font-size:.54rem}
+
+.player-gami-details-v102a{margin-top:18px}.player-gami-event-list-v102a{display:grid;gap:8px}.player-gami-event-v102a{padding:10px 11px;border:1px solid rgba(126,151,222,.14);border-radius:14px;background:rgba(255,255,255,.02)}.player-gami-event-v102a>div:first-child{display:flex;align-items:center;justify-content:space-between;gap:10px}.player-gami-event-v102a>div:first-child>b{font-size:.67rem}.player-gami-event-v102a>div:first-child>strong{font-size:.86rem;color:#efd67d}.player-gami-event-v102a.casserole>div:first-child>strong{color:#ffba72}.player-gami-event-v102a p{margin:6px 0 0;color:#899bc0;font-size:.61rem;line-height:1.4}
+.museum-event .gami-detail-v102a{margin-top:7px}
+
+@media(max-width:680px){
+  #view-ranking .my-ranking-sticky{margin-bottom:8px!important}
+  .gami-detail-v102a>strong{font-size:.64rem}.gami-detail-v102a>span{font-size:.58rem}.gami-detail-v102a>small{font-size:.53rem}
+}
