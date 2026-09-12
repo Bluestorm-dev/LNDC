@@ -570,11 +570,18 @@ Deno.serve(async (req: Request) => {
         centerMatchCount++;
       }
 
+      const normalizePlayerNameV102d = (name: unknown) => String(name || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().replace(/\s+/g, " ");
       const scorers = (scorersPayload?.scorers || []) as FDScorer[];
+      const uniqueScorersV102d = new Map<string,FDScorer>();
+      for (const item of scorers) {
+        const key = normalizePlayerNameV102d(item?.player?.name) || String(item?.player?.id || "");
+        const prev = uniqueScorersV102d.get(key);
+        if (!prev || Number(item?.goals || 0) > Number(prev?.goals || 0) || (Number(item?.goals || 0) === Number(prev?.goals || 0) && Number(item?.playedMatches || 0) > Number(prev?.playedMatches || 0))) uniqueScorersV102d.set(key,item);
+      }
       if (Array.isArray(scorersPayload?.scorers)) {
         const { error: clearScorersError } = await admin.from("ucl_player_stats").delete().eq("season_id", season.id);
         if (clearScorersError) throw new Error(`Migration V1.0.1 absente ou ucl_player_stats indisponible : ${clearScorersError.message}`);
-        for (const item of scorers) {
+        for (const item of uniqueScorersV102d.values()) {
           if (!item?.player?.id || !item?.player?.name || !item?.team?.id) continue;
           const clubId = await upsertTeam(item.team, false);
           const { error } = await admin.from("ucl_player_stats").upsert({
@@ -609,7 +616,20 @@ Deno.serve(async (req: Request) => {
             if (recognized) bookingCount++;
           }
         }
+        const uniqueDisciplineV102d = new Map<string,{pid:number;item:{name:string;teamId:number|null;yellow:number;red:number;yellowRed:number}}>();
         for (const [pid,item] of discipline) {
+          const key = normalizePlayerNameV102d(item.name) || String(pid);
+          const prev = uniqueDisciplineV102d.get(key);
+          if (!prev) uniqueDisciplineV102d.set(key,{pid,item:{...item}});
+          else {
+            prev.item.yellow = Math.max(prev.item.yellow,item.yellow);
+            prev.item.yellowRed = Math.max(prev.item.yellowRed,item.yellowRed);
+            prev.item.red = Math.max(prev.item.red,item.red);
+            prev.item.teamId = prev.item.teamId || item.teamId;
+            if (pid > 0 && prev.pid <= 0) prev.pid = pid;
+          }
+        }
+        for (const {pid,item} of uniqueDisciplineV102d.values()) {
           let clubId:string|null = null;
           if (item.teamId) {
             const sourceTeam = centerTeams.find(team=>team.id===item.teamId) || centerMatches.flatMap(m=>[m.homeTeam,m.awayTeam]).find(team=>team.id===item.teamId);

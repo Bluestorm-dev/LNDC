@@ -96,16 +96,12 @@
         const main=button.querySelector(":scope > b.cards-v101");
         const detail=button.querySelector(":scope > small:last-child");
         const y=Number(data.yellow_cards||0),yr=Number(data.yellow_red_cards||0),r=Number(data.red_cards||0);
-        let primary="";
-        if(r>0) primary=`${r} 🟥`;
-        else if(yr>0) primary=`${yr} 🟨🟥`;
-        else primary=`${y} 🟨`;
-        if(main) main.textContent=primary;
         const all=[];
         if(y>0) all.push(`${y} 🟨`);
         if(yr>0) all.push(`${yr} 🟨🟥`);
         if(r>0) all.push(`${r} 🟥`);
-        if(detail) detail.textContent=all.join(" · ");
+        if(main) main.textContent=all.join(" · ")||"0";
+        if(detail) detail.remove();
         button.title=all.join(" · ");
       });
     }finally{root._fixingCardsV102c=false;}

@@ -70,14 +70,16 @@
     syncUclLiveFromMatchesV101();
   };
 
-  function scorerRowsV101(){return safe(state.uclScorersV101).filter(x=>Number(x.goals||0)>0||Number(x.assists||0)>0);}
+  function scorerRowsV101(){const rows=typeof window.uclDedupeRowsV102d==="function"?window.uclDedupeRowsV102d(state.uclScorersV101,"scorers"):safe(state.uclScorersV101);return rows.filter(x=>Number(x.goals||0)>0||Number(x.assists||0)>0);}
+  function disciplineRowsV102d(){return typeof window.uclDedupeRowsV102d==="function"?window.uclDedupeRowsV102d(state.uclDisciplineV101,"discipline"):safe(state.uclDisciplineV101);}
   function cardScoreV101(x){return Number(x.red_cards||0)*100+Number(x.yellow_red_cards||0)*20+Number(x.yellow_cards||0);}
+  function disciplineLabelV102d(x){if(typeof window.uclDisciplineLabelV102d==="function")return window.uclDisciplineLabelV102d(x);const parts=[],y=Number(x.yellow_cards||0),yr=Number(x.yellow_red_cards||0),r=Number(x.red_cards||0);if(y>0)parts.push(y+" 🟨");if(yr>0)parts.push(yr+" 🟨🟥");if(r>0)parts.push(r+" 🟥");return parts.join(" · ")||"0";}
   function playerStatClubV101(row){return clubById(row.club_id);}
   function uclPlayerStatsHTMLV101(){
-    const scorers=scorerRowsV101().slice(0,30),cards=safe(state.uclDisciplineV101).filter(x=>cardScoreV101(x)>0).sort((a,b)=>cardScoreV101(b)-cardScoreV101(a)).slice(0,30);
+    const scorers=scorerRowsV101().slice(0,30),cards=disciplineRowsV102d().filter(x=>cardScoreV101(x)>0).sort((a,b)=>cardScoreV101(b)-cardScoreV101(a)).slice(0,30);
     return `<div class="ucl-stats-grid-v101">
       <section class="card card-pad"><div class="section-title compact"><div><span class="eyebrow gold">Buteurs</span><h3>Classement des buteurs</h3><p>Buts, passes décisives et matchs joués en C1.</p></div></div><div class="ucl-player-table-v101">${scorers.length?scorers.map((x,i)=>{const c=playerStatClubV101(x);return `<button type="button" class="ucl-player-row-v101" ${c?`data-ucl-club-v101="${esc(c.id)}"`:""}><span class="ucl-player-rank-v101">${i+1}</span>${c?crestHTML(c):'<span></span>'}<span><strong>${esc(x.player_name)}</strong><small>${esc(c?.short_name||c?.name||x.position||"")}</small></span><b>${Number(x.goals||0)}</b><small>${Number(x.assists||0)} pd · ${Number(x.played_matches||0)} mj</small></button>`}).join(""):'<div class="empty">Les buteurs apparaîtront après la prochaine synchronisation C1.</div>'}</div></section>
-      <section class="card card-pad"><div class="section-title compact"><div><span class="eyebrow">Discipline</span><h3>Cartons</h3><p>Jaunes, doubles jaunes et rouges.</p></div></div><div class="ucl-player-table-v101">${cards.length?cards.map((x,i)=>{const c=playerStatClubV101(x);return `<button type="button" class="ucl-player-row-v101" ${c?`data-ucl-club-v101="${esc(c.id)}"`:""}><span class="ucl-player-rank-v101">${i+1}</span>${c?crestHTML(c):'<span></span>'}<span><strong>${esc(x.player_name)}</strong><small>${esc(c?.short_name||c?.name||"")}</small></span><b class="cards-v101">${Number(x.yellow_cards||0)} 🟨</b><small>${Number(x.yellow_red_cards||0)} 🟨🟥 · ${Number(x.red_cards||0)} 🟥</small></button>`}).join(""):'<div class="empty">Les cartons apparaîtront après la prochaine synchronisation C1.</div>'}</div></section>
+      <section class="card card-pad"><div class="section-title compact"><div><span class="eyebrow">Discipline</span><h3>Cartons</h3><p>Jaunes, doubles jaunes et rouges.</p></div></div><div class="ucl-player-table-v101">${cards.length?cards.map((x,i)=>{const c=playerStatClubV101(x);return `<button type="button" class="ucl-player-row-v101 ucl-discipline-row-v102d" ${c?`data-ucl-club-v101="${esc(c.id)}"`:""}><span class="ucl-player-rank-v101">${i+1}</span>${c?crestHTML(c):'<span></span>'}<span><strong>${esc(x.player_name)}</strong><small>${esc(c?.short_name||c?.name||"")}</small></span><b class="cards-v101">${esc(disciplineLabelV102d(x))}</b></button>`}).join(""):'<div class="empty">Les cartons apparaîtront après la prochaine synchronisation C1.</div>'}</div></section>
     </div>${state.uclExtraStatsErrorV101?`<div class="ucl-warning">⚠ ${esc(state.uclExtraStatsErrorV101)}</div>`:""}`;
   }
 
@@ -117,7 +119,7 @@
     const matches=safe(state.uclMatches).filter(m=>String(m.home_club?.id)===String(clubId)||String(m.away_club?.id)===String(clubId)).sort((a,b)=>new Date(a.kickoff_at)-new Date(b.kickoff_at));
     const now=Date.now(),next=matches.filter(m=>m.status!=="cancelled"&&new Date(m.kickoff_at).getTime()>now).slice(0,5),recent=matches.filter(m=>m.status==="finished").slice(-5).reverse();
     const scorers=scorerRowsV101().filter(x=>String(x.club_id)===String(clubId)).sort((a,b)=>Number(b.goals)-Number(a.goals)||Number(b.assists)-Number(a.assists));const best=scorers[0];
-    const cards=safe(state.uclDisciplineV101).filter(x=>String(x.club_id)===String(clubId));const totals=cards.reduce((a,x)=>({y:a.y+Number(x.yellow_cards||0),yr:a.yr+Number(x.yellow_red_cards||0),r:a.r+Number(x.red_cards||0)}),{y:0,yr:0,r:0});
+    const cards=disciplineRowsV102d().filter(x=>String(x.club_id)===String(clubId));const totals=cards.reduce((a,x)=>({y:a.y+Number(x.yellow_cards||0),yr:a.yr+Number(x.yellow_red_cards||0),r:a.r+Number(x.red_cards||0)}),{y:0,yr:0,r:0});
     const squad=safe(club.squad);const groups=["Gardiens","Défense","Milieu","Attaque"].map(label=>[label,squad.filter(p=>squadGroupV101(p.position)===label)]).filter(([,items])=>items.length);
     const hist=clubHistoryV101(clubId),titles=Number(club.ucl_titles||0);
     const palette=[club.club_colors,club.country].filter(Boolean).join(" · ")||"Informations à compléter";
