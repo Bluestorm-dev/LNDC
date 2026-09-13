@@ -1,6 +1,6 @@
 {
   "app": "Le Nid des Champions",
-  "version": "1.0.2",
+  "version": "1.0.2g",
   "schema": 1,
   "branding": {
     "owl_main": "assets/branding/owl/owl-masked-main.png"
@@ -1090,8 +1090,7 @@
         "name": "Humour · Personnages",
         "count": 12
       }
-    ],
-    "source_sheets": "assets/avatars/source-sheets/2026-08-28"
+    ]
   },
   "teams": {
     "identity": "CSS blason shape + colors/pattern only; no Team logo",
@@ -1172,20 +1171,6 @@
     "narrative_subjects": 34,
     "narrative_templates_per_subject": 40,
     "narrative_seed_total": 1360
-  },
-  "icon_pack_2026_08": {
-    "catalog": "assets/icons/icon-catalog.json",
-    "app_count": 25,
-    "ui_count": 38,
-    "football_count": 31,
-    "badge_count": 32,
-    "total": 126,
-    "source_sheets": [
-      "assets/source-sheets/icons-2026-08/planche_d_icônes_hiboux_et_football.png",
-      "assets/source-sheets/icons-2026-08/pack_d_icônes_hibou_football_bleu_et_or.png",
-      "assets/source-sheets/icons-2026-08/pack_d_icônes_football_mascotte_hibou.png",
-      "assets/source-sheets/icons-2026-08/autocollants_de_badges_de_football_hibou.png"
-    ]
   },
   "icon_runtime_2026_08": {
     "directory": "assets/icons/runtime",
@@ -1269,5 +1254,14 @@
     "edge_function": "supabase/functions/sync-football-data/index.ts",
     "test_center": "tests/test-center-v1.0.1.html",
     "scope": "LIVE C1 + carrousels Team + mouvement + rivalités + fiches clubs + buteurs/cartons"
+  },
+  "repository_cleanup": {
+    "version": "1.0.2g",
+    "runtime_only_assets": true,
+    "removed": [
+      "legacy icon packs",
+      "raw source sheets",
+      "*.bak backups"
+    ]
   }
 }

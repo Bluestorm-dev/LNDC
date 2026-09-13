@@ -317,7 +317,8 @@
     "United Kingdom":["Royaume-Uni","gb"], "Royaume-Uni":["Royaume-Uni","gb"],
     Cyprus:["Chypre","cy"], Chypre:["Chypre","cy"],
     Azerbaijan:["Azerbaïdjan","az"], Azerbaïdjan:["Azerbaïdjan","az"],
-    Kazakhstan:["Kazakhstan","kz"]
+    Kazakhstan:["Kazakhstan","kz"],
+    Ukraine:["Ukraine","ua"]
   };
 
   function clubCountry(club) {
@@ -325,6 +326,8 @@
     // Monaco évolue dans le système français : pour le Nid, son pays sportif affiché est la France.
     const identity = `${club.name||""} ${club.short_name||""} ${club.tla||""}`.toLocaleLowerCase("fr");
     if (identity.includes("monaco")) return {name:"France",code:"fr"};
+    // Le Shakhtar Donetsk est ukrainien : force le drapeau même si une ancienne donnée Supabase a laissé le pays vide.
+    if (identity.includes("shakhtar") || identity.includes("chakhtar")) return {name:"Ukraine",code:"ua"};
     const raw = String(club.country || "").trim();
     if (!raw) return {name:"",code:""};
     const mapped = COUNTRY_DISPLAY[raw];

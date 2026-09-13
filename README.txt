@@ -1,12 +1,14 @@
-LE NID DES CHAMPIONS — CORRECTIF V0.9.5 R3 — CENTRE DE TESTS
+Le Nid des Champions — correctif nettoyage V1.0.2g R2
 
-Corrige uniquement le Centre de tests V0.9.5 :
-- titre V0.9.0 -> V0.9.5 ;
-- sous-titre V0.1.x -> V0.8.1 -> V0.1.x -> V0.9.5 ;
-- faux FAIL config.version : comparaison 0.9.0 -> 0.9.5 ;
-- runner renforcé pour détecter ces incohérences à l'avenir.
+Ce correctif ne modifie ni Supabase, ni le drapeau du Shakhtar, ni la version.
+Il supprime seulement les 7 éléments que le test V1.0.2g signale encore présents.
 
-Aucun SQL. Aucun redéploiement Edge Function.
+Installation :
+1. Copier le contenu de ce ZIP à la racine du dépôt LNDC.
+2. Ouvrir CMD dans cette racine.
+3. Lancer : node tools\cleanup-v1.0.2g-r2.mjs
+4. Relancer : node tests\test-v1.0.2g-cleanup.mjs
+5. Si 13 PASS / 0 FAIL : git add -A
 
-Installation : copier le dossier tests/ à la racine de l'application en remplaçant les deux fichiers.
-Puis redéployer sur GitHub Pages et faire Ctrl+F5.
+Important : le script utilise volontairement le dossier courant (process.cwd()),
+pour éviter qu'une détection automatique ne nettoie un autre dossier LNDC.
